@@ -1,3 +1,6 @@
+use std::borrow::Borrow;
+use std::hash::Hash;
+
 use actix_web::{delete, web};
 use actix_web::{get, post, Responder};
 use itertools::Itertools;
@@ -98,4 +101,59 @@ pub async fn remove_branch(info: web::Query<Branch>) -> AppResult<String> {
     branch.delete()?;
 
     Ok(Default::default())
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+struct Author {
+    name: String,
+    email: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+struct CommitInfo {
+    hash: String,
+    author: Author,
+    commiter: Author,
+    message: String,
+    summary: String,
+    time: u64,
+}
+
+#[get("/repo/commits")]
+pub async fn get_commits(info: web::Query<Branch>) -> AppResult<impl Responder> {
+    let repo = git2::Repository::open(&info.repo.repo_path)?;
+    let branch = repo.find_branch(&info.name, git2::BranchType::Local)?;
+    let oid = branch.get().target().unwrap();
+
+    let mut walker = repo.revwalk()?;
+    walker.push(oid)?;
+    walker.set_sorting(git2::Sort::TIME)?;
+
+    let mut commits = vec![];
+    for id in walker {
+        let id = id?;
+        let commit = repo.find_commit(id)?;
+        let author = Author {
+            name: commit.author().name().unwrap().into(),
+            email: commit.author().email().unwrap().into(),
+        };
+        let commiter = Author {
+            name: commit.committer().name().unwrap().into(),
+            email: commit.committer().email().unwrap().into(),
+        };
+        let info = commit.message().unwrap();
+        let summary = commit.summary().unwrap();
+        let hash = commit.id().to_string();
+        let date = commit.time().seconds();
+        commits.push(CommitInfo {
+            hash,
+            author,
+            commiter,
+            message: info.into(),
+            summary: summary.into(),
+            time: date as u64,
+        });
+    }
+
+    Ok(web::Json(commits))
 }

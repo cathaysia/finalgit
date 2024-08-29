@@ -5,9 +5,11 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 pub mod branch;
+pub mod checkout;
 pub mod common;
 pub mod diff;
 pub mod error;
+pub mod list;
 pub mod tag;
 
 pub use error::*;

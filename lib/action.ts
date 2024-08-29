@@ -1,3 +1,4 @@
+import { CommitInfo } from "@/components/CommitPanel";
 import axios from "axios";
 import { Console } from "console";
 
@@ -23,14 +24,22 @@ export interface TagInfo {
 }
 
 export async function fetchTags() {
-	let path =
-		"http://localhost:8823/repo/tags?repo_path=/Users/banma-3451/aliosdds";
-
 	let rep = await axios.get(`${process.env.GIT_SERVER}/repo/tags/`, {
 		params: {
-			repo_path: `/Users/banma-3451/aliosdds`,
+			repo_path: process.env.GIT_REPO,
 		},
 	});
 
 	return rep.data as TagInfo[];
+}
+
+export async function fetchCommits(branch: string) {
+	let rep = await axios.get(`${process.env.GIT_SERVER}/repo/commits`, {
+		params: {
+			repo_path: process.env.GIT_REPO,
+			name: branch,
+		},
+	});
+
+	return rep.data as CommitInfo[];
 }

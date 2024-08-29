@@ -13,9 +13,15 @@ export interface GitSideBarProps {
 	className?: string;
 	branches: BranchInfo[];
 	tags: TagInfo[];
+	on_branch?: (branch: string) => void;
 }
 
-export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
+export function GitSideBar({
+	className,
+	branches,
+	tags,
+	on_branch,
+}: GitSideBarProps) {
 	let [text, setText] = useState<string>();
 
 	return (
@@ -41,7 +47,14 @@ export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 							return true;
 						})
 						.map((item) => (
-							<Card className="p-6">
+							<Card
+								className="p-6"
+								onClick={(e) => {
+									if (on_branch) {
+										on_branch(item.name);
+									}
+								}}
+							>
 								<p>{item.name}</p>
 								{item.remote && <Badge>{item.remote}</Badge>}
 							</Card>
@@ -59,7 +72,14 @@ export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 							return true;
 						})
 						.map((item) => (
-							<Card className="p-6">
+							<Card
+								className="p-6"
+								onClick={(e) => {
+									if (on_branch) {
+										on_branch(item.name);
+									}
+								}}
+							>
 								<p>{item.name}</p>
 								{item.remote && <Badge>{item.remote}</Badge>}
 							</Card>

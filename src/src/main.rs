@@ -23,6 +23,7 @@ async fn main() {
             .service(branch::remove_branch)
             .service(branch::set_remote_branch)
             .service(branch::rename_branch)
+            .service(branch::get_commits)
             .service(tag::get_tags)
             .service(tag::remove_tag)
             .wrap(Cors::permissive())

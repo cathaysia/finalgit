@@ -20,3 +20,9 @@ impl serde::Serialize for AppError {
         serializer.serialize_str(&errormsg)
     }
 }
+
+impl actix_web::ResponseError for AppError {
+    fn status_code(&self) -> actix_web::http::StatusCode {
+        actix_web::http::StatusCode::from_u16(500).unwrap()
+    }
+}

@@ -6,9 +6,10 @@
 #![allow(dead_code)]
 use std::path::Path;
 
+use actix_cors::Cors;
 use actix_web::{App, HttpServer};
 use git2::Repository;
-use gitserver::server::branches;
+use gitserver::{branch, tag};
 
 const BIND_PORT: u16 = 8823;
 
@@ -16,9 +17,18 @@ const BIND_PORT: u16 = 8823;
 async fn main() {
     setup_log();
 
-    let server = HttpServer::new(|| App::new().service(branches))
-        .bind(("127.0.0.1", BIND_PORT))
-        .unwrap();
+    let server = HttpServer::new(|| {
+        App::new()
+            .service(branch::get_branch_info)
+            .service(branch::remove_branch)
+            .service(branch::set_remote_branch)
+            .service(branch::rename_branch)
+            .service(tag::get_tags)
+            .service(tag::remove_tag)
+            .wrap(Cors::permissive())
+    })
+    .bind(("127.0.0.1", BIND_PORT))
+    .unwrap();
     server.run().await.unwrap();
 }
 

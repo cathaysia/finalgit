@@ -7,8 +7,10 @@ export interface BranchInfo {
 }
 
 export async function fetchBranches() {
-	let rep = await axios.post("http://127.0.0.1:8823/repo/branch/", {
-		repo_path: "/Users/banma-3451/aliosdds",
+	let rep = await axios.get(`${process.env.GIT_SERVER}/repo/branch/`, {
+		params: {
+			repo_path: `${process.env.GIT_REPO}`,
+		},
 	});
 
 	return rep.data as BranchInfo[];

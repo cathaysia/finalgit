@@ -1,5 +1,5 @@
 import { fetchBranches } from "@/lib/action";
-import { GitSideBar } from "@/stories/GitSidebar";
+import { GitSideBar } from "@/components/GitSidebar";
 
 export default async function Home() {
 	const branches = await fetchBranches();

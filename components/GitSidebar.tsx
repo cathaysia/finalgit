@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export interface GitSideBarProps {
 	className?: string;
@@ -47,17 +48,21 @@ export function GitSideBar({
 							return true;
 						})
 						.map((item) => (
-							<Card
-								className="p-6"
+							<button
+								className="p-4 block w-full text-left h-20 border-l-4 hover:border-slate-800"
 								onClick={(e) => {
 									if (on_branch) {
-										on_branch(item.name);
+										let name = item.name;
+										if (item.remote) {
+											name = item.remote + "/" + item.name;
+										}
+										on_branch(name);
 									}
 								}}
 							>
 								<p>{item.name}</p>
 								{item.remote && <Badge>{item.remote}</Badge>}
-							</Card>
+							</button>
 						))}
 				</TabsContent>
 				<TabsContent value="remote">

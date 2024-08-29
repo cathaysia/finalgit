@@ -12,12 +12,16 @@ struct TagInfo {
     commit: String,
 }
 
-#[get("/repo/tags")]
+#[get("/repo/tags/")]
 pub async fn get_tags(info: web::Query<Repo>) -> AppResult<impl Responder> {
     let git = git2::Repository::open(&info.repo_path)?;
     let mut taginfos = vec![];
     git.tag_foreach(|oid, name| {
-        let name = std::str::from_utf8(name).unwrap().to_string();
+        let name = std::str::from_utf8(name)
+            .unwrap()
+            .strip_prefix("refs/tags/")
+            .unwrap()
+            .to_string();
         let commit = oid.to_string();
         taginfos.push(TagInfo { name, commit });
         true

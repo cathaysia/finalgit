@@ -9,20 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export interface GitSideBarProps {
 	className?: string;
 	branches: BranchInfo[];
 	tags: TagInfo[];
-	on_branch?: (branch: string) => void;
 }
 
-export function GitSideBar({
-	className,
-	branches,
-	tags,
-	on_branch,
-}: GitSideBarProps) {
+export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 	let [text, setText] = useState<string>();
 
 	return (
@@ -47,23 +42,22 @@ export function GitSideBar({
 							}
 							return true;
 						})
-						.map((item) => (
-							<button
-								className="p-4 block w-full text-left h-20 border-l-4 hover:border-slate-800"
-								onClick={(e) => {
-									if (on_branch) {
-										let name = item.name;
-										if (item.remote) {
-											name = item.remote + "/" + item.name;
-										}
-										on_branch(name);
-									}
-								}}
-							>
-								<p>{item.name}</p>
-								{item.remote && <Badge>{item.remote}</Badge>}
-							</button>
-						))}
+						.map((item) => {
+							let name = item.name;
+							if (item.remote) {
+								name = item.remote + "/" + item.name;
+							}
+
+							return (
+								<Link
+									className="p-4 block w-full text-left h-20 border-l-4 hover:border-slate-800"
+									href={`/commit?branch=${name}`}
+								>
+									<p>{item.name}</p>
+									{item.remote && <Badge>{item.remote}</Badge>}
+								</Link>
+							);
+						})}
 				</TabsContent>
 				<TabsContent value="remote">
 					{branches
@@ -76,19 +70,19 @@ export function GitSideBar({
 							}
 							return true;
 						})
-						.map((item) => (
-							<Card
-								className="p-6"
-								onClick={(e) => {
-									if (on_branch) {
-										on_branch(item.name);
-									}
-								}}
-							>
-								<p>{item.name}</p>
-								{item.remote && <Badge>{item.remote}</Badge>}
-							</Card>
-						))}
+						.map((item) => {
+							let name = item.name;
+							if (item.remote) {
+								name = item.remote + "/" + item.name;
+							}
+
+							return (
+								<Link className="p-6" href={`/commit?branch=${name}`}>
+									<p>{item.name}</p>
+									{item.remote && <Badge>{item.remote}</Badge>}
+								</Link>
+							);
+						})}
 				</TabsContent>
 				<TabsContent value="tag">
 					{tags

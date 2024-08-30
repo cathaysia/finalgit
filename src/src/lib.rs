@@ -4,6 +4,7 @@
 #![allow(unused_mut)]
 #![allow(unused_imports)]
 #![allow(dead_code)]
+pub mod action;
 pub mod branch;
 pub mod checkout;
 pub mod common;

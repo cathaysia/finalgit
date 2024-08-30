@@ -30,7 +30,7 @@ export default function RootLayout({
 							<NavBar />
 						</ResizablePanel>
 						<ResizableHandle />
-						<ResizablePanel defaultSize={85}>
+						<ResizablePanel defaultSize={85} className="p-4">
 							<div>{children}</div>
 						</ResizablePanel>
 					</ResizablePanelGroup>

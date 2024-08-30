@@ -3,8 +3,12 @@
 import { BranchInfo, TagInfo } from "@/lib/action";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BranchCard from "./BranchCard";
-import { FaTag } from "react-icons/fa";
+import { FaCodeBranch, FaTag } from "react-icons/fa";
 import TagCard from "./TagCard";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useState } from "react";
 
 export interface GitSideBarProps {
 	className?: string;
@@ -13,9 +17,31 @@ export interface GitSideBarProps {
 }
 
 export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
+	const [currentTab, setCurrentTab] = useState<string>("local");
+	let icon = <FaCodeBranch />;
+	if (currentTab == "tag") {
+		icon = <FaTag />;
+	}
+
 	return (
 		<div className={className}>
-			<Tabs defaultValue="local">
+			<div className="w-full h-20 inline-flex items-center">
+				<Input />
+				<Button
+					onClick={(e) => {
+						console.log("create branch");
+					}}
+				>
+					{icon}
+					Create
+				</Button>
+			</div>
+			<Tabs
+				defaultValue="local"
+				onValueChange={(e) => {
+					setCurrentTab(e);
+				}}
+			>
 				<TabsList className="w-full">
 					<TabsTrigger value="local">Local</TabsTrigger>
 					<TabsTrigger value="remote">Remote</TabsTrigger>

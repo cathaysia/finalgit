@@ -4,6 +4,10 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useSearchParams } from "next/navigation";
 import { FaCodeBranch } from "react-icons/fa";
+import { Button } from "./ui/button";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { cn } from "@/lib/utils";
 
 export interface BranchCardProps {
 	branch: string;
@@ -23,18 +27,37 @@ export default function BranchCard({ branch, remote }: BranchCardProps) {
 	const key = `${branchKind}/${branchName}`;
 
 	return (
-		<Link
+		<div
 			className={clsx(
-				"p-4 block w-full text-left h-20 border-l-4 hover:border-slate-800",
+				"flex justify-between items-center w-full h-20 border-l-4 hover:border-slate-800",
 				{
 					"bg-sky-100 text-blue-600": currentBranch == key,
 				},
 			)}
-			href={href}
 		>
-			<FaCodeBranch className="inline" />
-			<p>{branch}</p>
-			<Badge>{remote ? remote : "local"}</Badge>
-		</Link>
+			<Link className={clsx("p-4 text-left w-4/5")} href={href} title={branch}>
+				<div className="flex">
+					<FaCodeBranch className="inline" />
+					<p>{branch}</p>
+				</div>
+				<Badge>{remote ? remote : "local"}</Badge>
+			</Link>
+			<Button
+				className="bg-blue-800 text-white h-16 rounded-none"
+				onClick={() => {
+					console.log(`remove ${branch}`);
+				}}
+			>
+				<MdEdit />
+			</Button>
+			<Button
+				className="bg-red-800 text-white h-16 rounded-none"
+				onClick={() => {
+					console.log(`remove ${branch}`);
+				}}
+			>
+				<MdDelete />
+			</Button>
+		</div>
 	);
 }

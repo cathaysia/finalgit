@@ -1,4 +1,4 @@
-import { CommitInfo } from "@/components/CommitPanel";
+import { CommitInfo } from "@/app/commit/page";
 import axios from "axios";
 import { Console } from "console";
 
@@ -39,13 +39,14 @@ export async function fetchTags() {
 	return rep.data as TagInfo[];
 }
 
-export async function fetchCommits(branch: string) {
+export async function fetchCommits(branch: string, kind: string) {
 	let rep = await axios.get(
 		`${process.env.NEXT_PUBLIC_GIT_SERVER}/repo/commits`,
 		{
 			params: {
 				repo_path: process.env.NEXT_PUBLIC_GIT_REPO,
 				name: branch,
+				kind: kind,
 			},
 		},
 	);

@@ -1,15 +1,10 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardContent } from "@/components/card";
-import { Input } from "@/components/ui/input";
 import { BranchInfo, TagInfo } from "@/lib/action";
-import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import BranchCard from "./BranchCard";
+import { FaTag } from "react-icons/fa";
+import TagCard from "./TagCard";
 
 export interface GitSideBarProps {
 	className?: string;
@@ -18,13 +13,8 @@ export interface GitSideBarProps {
 }
 
 export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
-	let [text, setText] = useState<string>();
-
 	return (
-		<div className={cn(className)}>
-			<div className="w-full">
-				<Input type="text" onChange={(e) => setText(e.target.value)} />
-			</div>
+		<div className={className}>
 			<Tabs defaultValue="local">
 				<TabsList className="w-full">
 					<TabsTrigger value="local">Local</TabsTrigger>
@@ -36,27 +26,8 @@ export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 						.filter((v) => {
 							return v.kind == "Local";
 						})
-						.filter((v) => {
-							if (text && !v.name.startsWith(text)) {
-								return false;
-							}
-							return true;
-						})
 						.map((item) => {
-							let name = item.name;
-							if (item.remote) {
-								name = item.remote + "/" + item.name;
-							}
-
-							return (
-								<Link
-									className="p-4 block w-full text-left h-20 border-l-4 hover:border-slate-800"
-									href={`/commit?branch=${name}`}
-								>
-									<p>{item.name}</p>
-									{item.remote && <Badge>{item.remote}</Badge>}
-								</Link>
-							);
+							return <BranchCard remote={item.remote} branch={item.name} />;
 						})}
 				</TabsContent>
 				<TabsContent value="remote">
@@ -64,39 +35,14 @@ export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 						.filter((v) => {
 							return v.kind == "Remote";
 						})
-						.filter((v) => {
-							if (text && !v.name.startsWith(text)) {
-								return false;
-							}
-							return true;
-						})
 						.map((item) => {
-							let name = item.name;
-							if (item.remote) {
-								name = item.remote + "/" + item.name;
-							}
-
-							return (
-								<Link className="p-6" href={`/commit?branch=${name}`}>
-									<p>{item.name}</p>
-									{item.remote && <Badge>{item.remote}</Badge>}
-								</Link>
-							);
+							return <BranchCard remote={item.remote} branch={item.name} />;
 						})}
 				</TabsContent>
 				<TabsContent value="tag">
-					{tags
-						.filter((item) => {
-							if (text && !item.name.startsWith(text)) {
-								return false;
-							}
-							return true;
-						})
-						.map((item) => (
-							<Card className="p-6">
-								<p>{item.name}</p>
-							</Card>
-						))}
+					{tags.map((item) => (
+						<TagCard name={item.name} hash={item.commit} key={item.commit} />
+					))}
 				</TabsContent>
 			</Tabs>
 		</div>

@@ -7,6 +7,7 @@ import {
 	ResizablePanel,
 	ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
 							<NavBar />
 						</ResizablePanel>
 						<ResizableHandle />
-						<ResizablePanel defaultSize={85}>{children}</ResizablePanel>
+						<ResizablePanel defaultSize={85}>
+							<div>{children}</div>
+						</ResizablePanel>
 					</ResizablePanelGroup>
 				</main>
 			</body>

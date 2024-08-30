@@ -14,6 +14,7 @@ struct Branch {
     #[serde(flatten)]
     repo: Repo,
     name: String,
+    kind: Option<BranchKind>,
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -23,7 +24,7 @@ struct BranchInfo {
     kind: BranchKind,
 }
 
-#[derive(Debug, Clone, Hash, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 enum BranchKind {
     Remote,
     Local,
@@ -38,6 +39,15 @@ impl From<git2::BranchType> for BranchKind {
     }
 }
 
+impl From<BranchKind> for git2::BranchType {
+    fn from(value: BranchKind) -> Self {
+        match value {
+            BranchKind::Remote => git2::BranchType::Remote,
+            BranchKind::Local => git2::BranchType::Local,
+        }
+    }
+}
+
 #[get("/repo/branch/")]
 pub async fn get_branch_info(info: web::Query<Repo>) -> AppResult<impl Responder> {
     let repo_path = info.repo_path.as_str();
@@ -46,17 +56,29 @@ pub async fn get_branch_info(info: web::Query<Repo>) -> AppResult<impl Responder
     let branches = repo
         .branches(None)?
         .flatten()
-        .map(|(branch, kind)| {
+        .filter_map(|(branch, kind)| {
             let refname = branch.name().unwrap().unwrap();
             trace!(%refname);
-            let (remote, branch) = match refname.split_once('/') {
-                None => (None, refname),
-                Some((remote, branch)) => (Some(remote), branch),
-            };
-            BranchInfo {
-                remote: remote.map(|item| item.into()),
-                name: branch.into(),
-                kind: kind.into(),
+            match kind {
+                git2::BranchType::Local => Some(BranchInfo {
+                    remote: None,
+                    name: refname.into(),
+                    kind: BranchKind::Local,
+                }),
+                git2::BranchType::Remote => {
+                    let (remote, branch) = match refname.split_once('/') {
+                        Some((remote, branch)) => (Some(remote), branch),
+                        None => unreachable!(),
+                    };
+                    if branch == "HEAD" {
+                        return None;
+                    }
+                    Some(BranchInfo {
+                        remote: remote.map(|item| item.into()),
+                        name: branch.into(),
+                        kind: kind.into(),
+                    })
+                }
             }
         })
         .collect_vec();
@@ -122,7 +144,7 @@ struct CommitInfo {
 #[get("/repo/commits")]
 pub async fn get_commits(info: web::Query<Branch>) -> AppResult<impl Responder> {
     let repo = git2::Repository::open(&info.repo.repo_path)?;
-    let branch = repo.find_branch(&info.name, git2::BranchType::Local)?;
+    let branch = repo.find_branch(&info.name, info.kind.unwrap().into())?;
     let oid = branch.get().target().unwrap();
 
     let mut walker = repo.revwalk()?;
@@ -154,6 +176,8 @@ pub async fn get_commits(info: web::Query<Branch>) -> AppResult<impl Responder> 
             time: date as u64,
         });
     }
+
+    info!(?commits);
 
     Ok(web::Json(commits))
 }

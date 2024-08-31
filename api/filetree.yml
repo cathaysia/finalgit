@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://github.com/OAI/OpenAPI-Specification/raw/main/schemas/v3.1/schema.json
+openapi: 3.1.0
+
+info:
+  title: GitServer API
+  version: 1.0.0
+  description: API for filetree of a repository.
+
+servers:
+  - url: http://127.0.0.1:8823
+
+paths:
+  /repo/{repo_path}/tree:
+    get:
+      summary: Get file tree of a repo.
+      parameters:
+        - in: query
+          name: repo_path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Git file tree
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/File"
+                    - $ref: "#/components/schemas/Directory"
+
+components:
+  schemas:
+    File:
+      type: object
+      properties:
+        File:
+          type: string
+          description: file name.
+
+    Directory:
+      type: object
+      properties:
+        dir:
+          type: string
+          description: directory name.
+        files:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/File"
+              - $ref: "#/components/schemas/Directory"

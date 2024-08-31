@@ -24,10 +24,13 @@ struct BranchInfo {
     kind: BranchKind,
 }
 
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Debug, Default, Copy, Clone, Hash, PartialEq, Eq, serde::Serialize, serde::Deserialize,
+)]
 enum BranchKind {
-    Remote,
+    #[default]
     Local,
+    Remote,
 }
 
 impl From<git2::BranchType> for BranchKind {
@@ -48,7 +51,7 @@ impl From<BranchKind> for git2::BranchType {
     }
 }
 
-#[get("/repo/branch/")]
+#[get("/repo/branch")]
 pub async fn get_branch_info(info: web::Query<Repo>) -> AppResult<impl Responder> {
     let repo_path = info.repo_path.as_str();
     trace!("open repo: {repo_path}");
@@ -144,7 +147,7 @@ struct CommitInfo {
 #[get("/repo/commits")]
 pub async fn get_commits(info: web::Query<Branch>) -> AppResult<impl Responder> {
     let repo = git2::Repository::open(&info.repo.repo_path)?;
-    let branch = repo.find_branch(&info.name, info.kind.unwrap().into())?;
+    let branch = repo.find_branch(&info.name, info.kind.unwrap_or_default().into())?;
     let oid = branch.get().target().unwrap();
 
     let mut walker = repo.revwalk()?;

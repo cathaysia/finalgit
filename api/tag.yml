@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://github.com/OAI/OpenAPI-Specification/raw/main/schemas/v3.1/schema.json
+openapi: 3.1.0
+
+info:
+  title: Server API
+  version: 1.0.0
+  description: API for tag of a repository.
+
+servers:
+  - url: http://127.0.0.1:8823
+
+paths:
+  /repo/{repo_path}/tag:
+    get:
+      summary: Get tags for a repository
+      parameters:
+        - in: path
+          description: The path to the repository
+          name: repo_path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TagInfo"
+    delete:
+      summary: delete a tag.
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: list
+            items:
+              $ref: string
+          required: true
+      responses:
+        "200":
+          description: Success
+
+    put:
+      summary: rename tag
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+
+  /repo/{repo_path}/tag/push:
+    put:
+      summary: Push a  tag
+      parameters:
+        - in: path
+          description: The path to the repository
+          name: repo_path
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: tags
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+
+  /repo/{repo_path}/tag/pull:
+    put:
+      summary: Pull tags
+      parameters:
+        - in: path
+          description: The path to the repository
+          name: repo_path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Success
+
+
+components:
+  schemas:
+    TagInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the tag
+        commit:
+          type: string
+          description: The commit hash associated with the tag
+      required:
+        - name
+        - commit

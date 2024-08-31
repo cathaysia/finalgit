@@ -1,6 +1,6 @@
 "use client";
 
-import { BranchInfo, TagInfo } from "@/lib/action";
+import { TagInfo } from "@/lib/action";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BranchCard from "./BranchCard";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
+import { BranchInfo } from "@/lib/api/branch";
 
 export interface GitSideBarProps {
 	className?: string;
@@ -49,20 +50,24 @@ export function GitSideBar({ className, branches, tags }: GitSideBarProps) {
 				</TabsList>
 				<TabsContent value="local">
 					{branches
-						.filter((v) => {
-							return v.kind == "Local";
+						.filter((item) => {
+							return item.kind == "Local" && item.remote && item.name;
 						})
 						.map((item) => {
-							return <BranchCard remote={item.remote} branch={item.name} />;
+							if (item.remote && item.name) {
+								return <BranchCard remote={item.remote} branch={item.name} />;
+							}
 						})}
 				</TabsContent>
 				<TabsContent value="remote">
 					{branches
-						.filter((v) => {
-							return v.kind == "Remote";
+						.filter((item) => {
+							return item.kind == "Remote";
 						})
 						.map((item) => {
-							return <BranchCard remote={item.remote} branch={item.name} />;
+							if (item.remote && item.name) {
+								return <BranchCard remote={item.remote} branch={item.name} />;
+							}
 						})}
 				</TabsContent>
 				<TabsContent value="tag">

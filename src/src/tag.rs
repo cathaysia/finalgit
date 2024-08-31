@@ -12,7 +12,7 @@ struct TagInfo {
     commit: String,
 }
 
-#[get("/repo/tags/")]
+#[get("/repo/tags")]
 pub async fn get_tags(info: web::Query<Repo>) -> AppResult<impl Responder> {
     let git = git2::Repository::open(&info.repo_path)?;
     let mut taginfos = vec![];

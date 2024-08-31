@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://github.com/OAI/OpenAPI-Specification/raw/main/schemas/v3.1/schema.json
+openapi: 3.1.0
+
+info:
+  title: Server API
+  version: 1.0.0
+  description: API for branches of a repository.
+
+servers:
+  - url: http://127.0.0.1:8823
+
+paths:
+  /repo/{repo_path}/branch:
+    get:
+      summary: Get branches of a repository
+      description: Returns a list of branches for a given repository path.
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: A successful response containing the branches.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BranchInfo"
+
+    post:
+      summary: create a local branch.
+      description: Rename a local branch.
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Success"
+
+    delete:
+      summary: Delete remote branch
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+
+    put:
+      summary: Rename a local branch.
+      description: Rename a local branch.
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: to
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "Success"
+
+components:
+  schemas:
+    BranchInfo:
+      type: object
+      properties:
+        remote:
+          type: string
+          nullable: true
+          description: The remote associated with the branch.
+        name:
+          type: string
+          description: The name of the branch.
+        kind:
+          type: string
+          enum: [Local, Remote]
+          description: Indicates whether the branch is local or remote.

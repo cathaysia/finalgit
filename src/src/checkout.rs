@@ -17,7 +17,7 @@ struct CheckParam {
     force: bool,
 }
 
-#[get("/repo/checkout/")]
+#[get("/repo/checkout")]
 pub async fn checkout(params: web::Query<CheckParam>) -> AppResult<String> {
     let repo = git2::Repository::open(&params.repo.repo_path)?;
     let oid = git2::Oid::from_str(&params.commit)?;

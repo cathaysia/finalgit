@@ -1,6 +1,7 @@
 import { CommitInfo } from "@/app/commit/page";
 import axios from "axios";
 import { Console } from "console";
+import { getRepoBranchByRepoPath } from "@/lib/api/branch";
 
 export interface BranchInfo {
 	remote: string | null;
@@ -9,16 +10,19 @@ export interface BranchInfo {
 }
 
 export async function fetchBranches() {
-	let rep = await axios.get(
-		`${process.env.NEXT_PUBLIC_GIT_SERVER}/repo/branch/`,
-		{
-			params: {
-				repo_path: `${process.env.NEXT_PUBLIC_GIT_REPO}`,
-			},
-		},
-	);
+	let rep = await getRepoBranchByRepoPath({
+		repoPath: process.env.NEXT_PUBLIC_GIT_SERVER,
+	});
+	// let rep = await axios.get(
+	// 	`${process.env.NEXT_PUBLIC_GIT_SERVER}/repo/branch/`,
+	// 	{
+	// 		params: {
+	// 			repo_path: `${process.env.NEXT_PUBLIC_GIT_REPO}`,
+	// 		},
+	// 	},
+	// );
 
-	return rep.data as BranchInfo[];
+	return rep as BranchInfo[];
 }
 
 export interface TagInfo {

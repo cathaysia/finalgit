@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://github.com/OAI/OpenAPI-Specification/raw/main/schemas/v3.1/schema.json
+openapi: 3.1.0
+
+info:
+  title: GitServer API
+  version: 1.0.0
+  description: API for changes of a repository.
+
+servers:
+  - url: http://127.0.0.1:8823
+
+paths:
+  /repo/{repo_path}/changes:
+    get:
+      summary: Get chagnes list for a repository.
+      parameters:
+        - in: path
+          name: repo_path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: A list of changes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FileChange"
+
+components:
+  schemas:
+    FileChange:
+      type: object
+      properties:
+        path:
+          type: string
+          description: file path.
+        status:
+          type: integer
+          format: int32
+          description: file status.

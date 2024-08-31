@@ -7,9 +7,9 @@
 use std::path::Path;
 
 use actix_cors::Cors;
-use actix_web::{App, HttpServer};
+use actix_web::{middleware, App, HttpServer};
 use git2::Repository;
-use gitserver::{branch, tag};
+use gitserver::{branch, diff, list, tag};
 
 const BIND_PORT: u16 = 8823;
 
@@ -26,7 +26,10 @@ async fn main() {
             .service(branch::get_commits)
             .service(tag::get_tags)
             .service(tag::remove_tag)
+            .service(diff::changes)
+            .service(list::get_tree)
             .wrap(Cors::permissive())
+            .wrap(middleware::Compress::default())
     })
     .bind(("127.0.0.1", BIND_PORT))
     .unwrap();

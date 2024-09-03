@@ -2,9 +2,13 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
-import { BranchInfo } from "../lib/branch";
+import { BranchInfo, TagInfo } from "../lib/branch";
 
 import { create } from "zustand";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
@@ -23,6 +27,8 @@ const useOpenState = create<OpenState>((set) => ({
 function Index() {
 	const { isOpened, setIsOpened } = useOpenState();
 	const [branches, setBranches] = useState<BranchInfo[]>();
+	const [tags, setTags] = useState<TagInfo[]>();
+	const { t, i18n } = useTranslation();
 
 	invoke("is_opened").then((value) => {
 		if (value) {
@@ -41,11 +47,15 @@ function Index() {
 			let value = values as BranchInfo[];
 			setBranches(value);
 		});
+		invoke("get_tag_info").then((values) => {
+			let value = values as TagInfo[];
+			setTags(value);
+		});
 	}, [isOpened]);
 
 	return (
 		<div>
-			<button
+			<Button
 				onClick={() => {
 					open({
 						directory: true,
@@ -60,14 +70,52 @@ function Index() {
 					});
 				}}
 			>
-				Open File
-			</button>
-			<ul>
-				{branches &&
-					branches.map((value) => {
-						return <li>{value.name}</li>;
-					})}
-			</ul>
+				Open Repo
+			</Button>
+			<Tabs defaultValue="local">
+				<TabsList>
+					<TabsTrigger value="local">{t("Local")}</TabsTrigger>
+					<TabsTrigger value="remote">{t("Remote")}</TabsTrigger>
+					<TabsTrigger value="tags">{t("Tag")}</TabsTrigger>
+				</TabsList>
+				<TabsContent value="local">
+					{branches &&
+						branches
+							.filter((v) => v.kind == "Local")
+							.map((value) => {
+								return (
+									<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+										<a className="pr-4 pl-4">{value.name}</a>
+										<Badge>{value.kind || "Local"}</Badge>
+									</li>
+								);
+							})}
+				</TabsContent>
+				<TabsContent value="remote">
+					{branches &&
+						branches
+							.filter((v) => v.kind == "Remote")
+							.map((value) => {
+								return (
+									<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+										<a className="pr-4 pl-4">{value.name}</a>
+										<Badge>{value.kind || "Local"}</Badge>
+									</li>
+								);
+							})}
+				</TabsContent>
+				<TabsContent value="tags">
+					{tags &&
+						tags.map((value) => {
+							return (
+								<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+									<a className="pr-4 pl-4">{value.name}</a>
+									<Badge>{value.commit.slice(0, 6)}</Badge>
+								</li>
+							);
+						})}
+				</TabsContent>
+			</Tabs>
 		</div>
 	);
 }

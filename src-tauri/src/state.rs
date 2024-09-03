@@ -1,4 +1,6 @@
+mod tag;
 use std::sync::Mutex;
+pub use tag::*;
 
 use itertools::Itertools;
 use tracing::*;

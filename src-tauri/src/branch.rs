@@ -1,6 +1,6 @@
 use tauri::State;
 
-use crate::{error::AppResult, state::AppState};
+use crate::{error::AppResult, state::AppState, TagInfo};
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Repo {
@@ -54,4 +54,9 @@ pub async fn open_repo(state: State<'_, AppState>, repo_path: &str) -> AppResult
 #[tauri::command]
 pub async fn is_opened(state: State<'_, AppState>) -> AppResult<bool> {
     Ok(state.git2.lock().unwrap().is_some())
+}
+
+#[tauri::command]
+pub async fn get_tag_info(state: State<'_, AppState>) -> AppResult<Vec<TagInfo>> {
+    state.get_tags()
 }

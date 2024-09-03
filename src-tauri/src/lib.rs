@@ -3,6 +3,7 @@
 mod branch;
 mod error;
 mod state;
+mod tag;
 
 pub use error::*;
 pub use state::*;
@@ -19,6 +20,7 @@ pub fn run() {
             branch::open_repo,
             branch::get_branch_info,
             branch::is_opened,
+            branch::get_tag_info
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

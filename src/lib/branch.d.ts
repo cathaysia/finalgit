@@ -5,3 +5,8 @@ export interface BranchInfo {
 }
 
 export type BranchKind = "Local" | "Remote";
+
+export interface TagInfo {
+	name: string;
+	commit: string;
+}

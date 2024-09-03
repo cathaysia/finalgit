@@ -1,11 +1,8 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
-import { open } from "@tauri-apps/plugin-dialog";
 import { BranchInfo, TagInfo } from "../lib/branch";
 
-import { create } from "zustand";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
@@ -16,20 +13,11 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
+import { useOpenState } from "@/lib/state";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
 });
-
-export interface OpenState {
-	isOpened: boolean;
-	setIsOpened: (isOpened: boolean) => void;
-}
-
-const useOpenState = create<OpenState>((set) => ({
-	isOpened: false,
-	setIsOpened: (isOpened: boolean) => set({ isOpened: isOpened }),
-}));
 
 function Index() {
 	const { isOpened, setIsOpened } = useOpenState();
@@ -63,23 +51,6 @@ function Index() {
 
 	return (
 		<div>
-			<Button
-				onClick={() => {
-					open({
-						directory: true,
-					}).then((dir) => {
-						dir &&
-							invoke("open_repo", {
-								repoPath: dir,
-							}).then(() => {
-								console.log(`open repo: ${dir}`);
-								setIsOpened(true);
-							});
-					});
-				}}
-			>
-				Open Repo
-			</Button>
 			<Sheet>
 				<Tabs defaultValue="local">
 					<TabsList>

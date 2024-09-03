@@ -19,3 +19,10 @@ tauri = { version = "2.0.0-rc", features = [] }
 tauri-plugin-shell = "2.0.0-rc"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+git2 = "0.19.0"
+anyhow = "1.0.86"
+thiserror = "1.0.63"
+itertools = "0.13.0"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+tauri-plugin-dialog = "2.0.0-rc.3"

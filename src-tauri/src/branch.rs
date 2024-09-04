@@ -1,6 +1,6 @@
 use tauri::State;
 
-use crate::{error::AppResult, state::AppState, TagInfo};
+use crate::{error::AppResult, state::AppState, FileTree, TagInfo};
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Repo {
@@ -86,4 +86,9 @@ pub async fn create_branch(state: State<'_, AppState>, name: &str, commit: &str)
 #[tauri::command]
 pub async fn checkout_branch(state: State<'_, AppState>, branch: &str) -> AppResult<()> {
     state.checkout_branch(branch)
+}
+
+#[tauri::command]
+pub async fn get_file_tree(state: State<'_, AppState>, commit: &str) -> AppResult<Vec<FileTree>> {
+    state.get_file_tree(commit)
 }

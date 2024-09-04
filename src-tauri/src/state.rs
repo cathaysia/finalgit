@@ -1,5 +1,7 @@
 mod branch;
+mod files;
 mod tag;
+pub use files::*;
 use std::sync::Mutex;
 pub use tag::*;
 

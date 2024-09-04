@@ -16,10 +16,16 @@ import { Route as rootRoute } from "./routes/__root";
 
 // Create Virtual Routes
 
+const FiletreeLazyImport = createFileRoute("/filetree")();
 const AboutLazyImport = createFileRoute("/about")();
 const IndexLazyImport = createFileRoute("/")();
 
 // Create/Update Routes
+
+const FiletreeLazyRoute = FiletreeLazyImport.update({
+	path: "/filetree",
+	getParentRoute: () => rootRoute,
+} as any).lazy(() => import("./routes/filetree.lazy").then((d) => d.Route));
 
 const AboutLazyRoute = AboutLazyImport.update({
 	path: "/about",
@@ -49,6 +55,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof AboutLazyImport;
 			parentRoute: typeof rootRoute;
 		};
+		"/filetree": {
+			id: "/filetree";
+			path: "/filetree";
+			fullPath: "/filetree";
+			preLoaderRoute: typeof FiletreeLazyImport;
+			parentRoute: typeof rootRoute;
+		};
 	}
 }
 
@@ -57,6 +70,7 @@ declare module "@tanstack/react-router" {
 export const routeTree = rootRoute.addChildren({
 	IndexLazyRoute,
 	AboutLazyRoute,
+	FiletreeLazyRoute,
 });
 
 /* prettier-ignore-end */
@@ -68,7 +82,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/about",
+        "/filetree"
       ]
     },
     "/": {
@@ -76,6 +91,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/about": {
       "filePath": "about.lazy.tsx"
+    },
+    "/filetree": {
+      "filePath": "filetree.lazy.tsx"
     }
   }
 }

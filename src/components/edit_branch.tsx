@@ -8,7 +8,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import {
 	Table,
@@ -24,6 +24,7 @@ import {
 	remove_branch,
 	rename_branch,
 } from "@/lib/api";
+import { useBranchState } from "@/lib/state";
 
 export interface BranchProps {
 	branch: BranchInfo;
@@ -32,6 +33,13 @@ export interface BranchProps {
 export default function EditBranch({ branch }: BranchProps) {
 	const { t, i18n } = useTranslation();
 	const [newName, setNewName] = useState<string>(branch.name);
+	let { refreshBranches } = useBranchState();
+
+	const [reqBranchRefresh, setReqBanchRe] = useState<Boolean>(false);
+
+	useEffect(() => {
+		refreshBranches();
+	}, [reqBranchRefresh]);
 
 	return (
 		<SheetContent>
@@ -68,14 +76,16 @@ export default function EditBranch({ branch }: BranchProps) {
 					placeholder={t("New branch name")}
 					onChange={(e) => {
 						setNewName(e.target.value);
+						setReqBanchRe(!reqBranchRefresh);
 					}}
 				></Input>
 				<Button
-					onClick={() =>
-						newName &&
-						newName != branch.name &&
-						create_branch(newName, branch.commit)
-					}
+					onClick={() => {
+						if (newName && newName != branch.name) {
+							create_branch(newName, branch.commit);
+							setReqBanchRe(!reqBranchRefresh);
+						}
+					}}
 				>
 					{t("Create")}
 				</Button>
@@ -87,12 +97,16 @@ export default function EditBranch({ branch }: BranchProps) {
 					placeholder={t("New branch name")}
 					onChange={(e) => {
 						setNewName(e.target.value);
+						setReqBanchRe(!reqBranchRefresh);
 					}}
 				></Input>
 				<Button
-					onClick={() =>
-						newName && newName != branch.name && rename_branch(branch, newName)
-					}
+					onClick={() => {
+						if (newName && newName != branch.name) {
+							rename_branch(branch, newName);
+							setReqBanchRe(!reqBranchRefresh);
+						}
+					}}
 				>
 					{t("Rename")}
 				</Button>
@@ -106,10 +120,20 @@ export default function EditBranch({ branch }: BranchProps) {
 				) : (
 					<></>
 				)}
-				<Button onClick={() => remove_branch(branch)}>{t("Delete")}</Button>
+				<Button
+					onClick={() => {
+						remove_branch(branch);
+						setReqBanchRe(!reqBranchRefresh);
+					}}
+				>
+					{t("Delete")}
+				</Button>
 				{branch.kind == "Local" && (
 					<Button
-						onClick={() => checkout_branch(branch.name)}
+						onClick={() => {
+							checkout_branch(branch.name);
+							setReqBanchRe(!reqBranchRefresh);
+						}}
 						disabled={branch.is_head}
 					>
 						{t("Checkout")}

@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import { Input } from "./ui/input";
 import {
 	Table,
@@ -19,6 +18,12 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
+import {
+	checkout_branch,
+	create_branch,
+	remove_branch,
+	rename_branch,
+} from "@/lib/api";
 
 export interface BranchProps {
 	branch: BranchInfo;
@@ -69,10 +74,7 @@ export default function EditBranch({ branch }: BranchProps) {
 					onClick={() =>
 						newName &&
 						newName != branch.name &&
-						invoke("create_branch", {
-							name: newName,
-							commit: branch.commit,
-						})
+						create_branch(newName, branch.commit)
 					}
 				>
 					{t("Create")}
@@ -89,12 +91,7 @@ export default function EditBranch({ branch }: BranchProps) {
 				></Input>
 				<Button
 					onClick={() =>
-						newName &&
-						newName != branch.name &&
-						invoke("rename_branch", {
-							info: branch,
-							to: newName,
-						})
+						newName && newName != branch.name && rename_branch(branch, newName)
 					}
 				>
 					{t("Rename")}
@@ -109,22 +106,11 @@ export default function EditBranch({ branch }: BranchProps) {
 				) : (
 					<></>
 				)}
-				<Button
-					onClick={() =>
-						invoke("remove_branch", {
-							info: branch,
-						})
-					}
-				>
-					{t("Delete")}
-				</Button>
-				{branch.kind == "Local" && !branch.is_head && (
+				<Button onClick={() => remove_branch(branch)}>{t("Delete")}</Button>
+				{branch.kind == "Local" && (
 					<Button
-						onClick={() =>
-							invoke("checkout_branch", {
-								branch: branch.name,
-							})
-						}
+						onClick={() => checkout_branch(branch.name)}
+						disabled={branch.is_head}
 					>
 						{t("Checkout")}
 					</Button>

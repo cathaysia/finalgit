@@ -1,5 +1,4 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 import { BranchInfo, TagInfo } from "../lib/branch";
 import EditBranch from "@/components/edit_branch";
@@ -8,10 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useOpenState } from "@/lib/state";
+import { useBranchState, useOpenState, useTagStatte } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditTag from "@/components/edit_tag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
+import { fetchBranchInfo, fetchIsOpen, fetchTagInfo } from "@/lib/api";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
@@ -19,17 +19,15 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
 	const { isOpened, setIsOpened } = useOpenState();
-	const [branches, setBranches] = useState<BranchInfo[]>();
-	const [tags, setTags] = useState<TagInfo[]>();
+	const { branches, refreshBranches } = useBranchState();
+	const { tags, refreshTags } = useTagStatte();
 	const { t, i18n } = useTranslation();
 	const [targetBranch, setTargetBranch] = useState<BranchInfo>();
 	const [targetTag, setTargetTag] = useState<TagInfo>();
 
-	invoke("is_opened").then((value) => {
-		if (value) {
-			if (!isOpened) {
-				setIsOpened(true);
-			}
+	fetchIsOpen().then((value) => {
+		if (value && !isOpened) {
+			setIsOpened(true);
 		}
 	});
 
@@ -38,14 +36,15 @@ function Index() {
 			return;
 		}
 
-		invoke("get_branch_info").then((values) => {
-			let value = values as BranchInfo[];
-			setBranches(value);
-		});
-		invoke("get_tag_info").then((values) => {
-			let value = values as TagInfo[];
-			setTags(value);
-		});
+		refreshBranches();
+	}, [isOpened]);
+
+	useEffect(() => {
+		if (!isOpened) {
+			return;
+		}
+
+		refreshTags();
 	}, [isOpened]);
 
 	return (

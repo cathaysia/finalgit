@@ -12,32 +12,35 @@ export const Route = createRootRoute({
 
 		return (
 			<>
-				<div className="p-2 flex gap-2">
-					<Button
-						className="inline"
-						onClick={() => {
-							open({
-								directory: true,
-							}).then((dir) => {
-								dir &&
-									invoke("open_repo", {
-										repoPath: dir,
-									}).then(() => {
-										console.log(`open repo: ${dir}`);
-										setIsOpened(true);
-									});
-							});
-						}}
-					>
-						Open Repo
-					</Button>
-					<Link to="/" className="[&.active]:font-bold">
-						Home
-					</Link>{" "}
-					<Link to="/about" className="[&.active]:font-bold">
-						About
-					</Link>
-					<ModeToggle />
+				<div className="pl-2 pr-2 flex items-center h-16 justify-between">
+					<div>
+						<Link to="/" className="[&.active]:font-bold">
+							Home
+						</Link>{" "}
+						<Link to="/about" className="[&.active]:font-bold">
+							About
+						</Link>
+					</div>
+					<div className="flex w-40 justify-between">
+						<Button
+							onClick={() => {
+								open({
+									directory: true,
+								}).then((dir) => {
+									dir &&
+										invoke("open_repo", {
+											repoPath: dir,
+										}).then(() => {
+											console.log(`open repo: ${dir}`);
+											setIsOpened(true);
+										});
+								});
+							}}
+						>
+							Open Repo
+						</Button>
+						<ModeToggle />
+					</div>
 				</div>
 				<hr />
 				<Outlet />

@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useOpenState } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditTag from "@/components/edit_tag";
+import { FaCodeBranch, FaTag } from "react-icons/fa";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
@@ -70,6 +71,7 @@ function Index() {
 												}}
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+													<FaCodeBranch />
 													<a className="pr-4 pl-4">
 														{value.name + (value.is_head ? "*" : "")}
 													</a>
@@ -93,6 +95,7 @@ function Index() {
 												}}
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+													<FaCodeBranch />
 													<a className="pr-4 pl-4">{value.name}</a>
 													<Badge>{value.kind || "Local"}</Badge>
 												</li>
@@ -112,6 +115,7 @@ function Index() {
 											}}
 										>
 											<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
+												<FaTag />
 												<a className="pr-4 pl-4">{value.name}</a>
 												<Badge>{value.commit.slice(0, 6)}</Badge>
 											</li>

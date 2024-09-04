@@ -70,7 +70,9 @@ function Index() {
 												}}
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
-													<a className="pr-4 pl-4">{value.name}</a>
+													<a className="pr-4 pl-4">
+														{value.name + (value.is_head ? "*" : "")}
+													</a>
 													<Badge>{value.kind || "Local"}</Badge>
 												</li>
 											</SheetTrigger>

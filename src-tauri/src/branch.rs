@@ -12,6 +12,8 @@ pub struct BranchInfo {
     pub remote: Option<String>,
     pub name: String,
     pub kind: BranchKind,
+    pub commit: String,
+    pub is_head: bool,
 }
 
 #[derive(
@@ -59,4 +61,28 @@ pub async fn is_opened(state: State<'_, AppState>) -> AppResult<bool> {
 #[tauri::command]
 pub async fn get_tag_info(state: State<'_, AppState>) -> AppResult<Vec<TagInfo>> {
     state.get_tags()
+}
+
+#[tauri::command]
+pub async fn rename_branch(
+    state: State<'_, AppState>,
+    info: BranchInfo,
+    to: &str,
+) -> AppResult<()> {
+    state.rename_branch(info, to)
+}
+
+#[tauri::command]
+pub async fn remove_branch(state: State<'_, AppState>, info: BranchInfo) -> AppResult<()> {
+    state.remove_branch(info)
+}
+
+#[tauri::command]
+pub async fn create_branch(state: State<'_, AppState>, name: &str, commit: &str) -> AppResult<()> {
+    state.create_branch(name, commit)
+}
+
+#[tauri::command]
+pub async fn checkout_branch(state: State<'_, AppState>, branch: &str) -> AppResult<()> {
+    state.checkout_branch(branch)
 }

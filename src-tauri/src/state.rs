@@ -1,3 +1,4 @@
+mod branch;
 mod tag;
 use std::sync::Mutex;
 pub use tag::*;
@@ -31,12 +32,22 @@ impl AppState {
             .flatten()
             .filter_map(|(branch, kind)| {
                 let refname = branch.name().unwrap().unwrap();
+                let commit = branch
+                    .get()
+                    .resolve()
+                    .unwrap()
+                    .target()
+                    .unwrap()
+                    .to_string();
+                let is_head = branch.is_head();
                 trace!(%refname);
                 match kind {
                     git2::BranchType::Local => Some(BranchInfo {
                         remote: None,
                         name: refname.into(),
                         kind: BranchKind::Local,
+                        commit,
+                        is_head,
                     }),
                     git2::BranchType::Remote => {
                         let (remote, branch) = match refname.split_once('/') {
@@ -50,6 +61,8 @@ impl AppState {
                             remote: remote.map(|item| item.into()),
                             name: branch.into(),
                             kind: kind.into(),
+                            commit,
+                            is_head,
                         })
                     }
                 }

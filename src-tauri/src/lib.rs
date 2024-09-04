@@ -20,7 +20,11 @@ pub fn run() {
             branch::open_repo,
             branch::get_branch_info,
             branch::is_opened,
-            branch::get_tag_info
+            branch::get_tag_info,
+            branch::rename_branch,
+            branch::remove_branch,
+            branch::create_branch,
+            branch::checkout_branch,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

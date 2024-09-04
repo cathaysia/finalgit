@@ -25,6 +25,7 @@ pub fn run() {
             branch::remove_branch,
             branch::create_branch,
             branch::checkout_branch,
+            branch::get_file_tree,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

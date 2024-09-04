@@ -1,8 +1,14 @@
-export interface File {
-	name: string;
+export interface GitFile {
+	File: string;
 }
 
-export interface Dir {
+export interface InnerDir {
 	dir: string;
-	files: (File | Dir)[];
+	files: FileTree[];
 }
+
+export interface GitDir {
+	Dir: InnerDir;
+}
+
+export type GitFileTree = GitFile | GitDir;

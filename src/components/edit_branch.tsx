@@ -47,6 +47,12 @@ export default function EditBranch({ branch }: BranchProps) {
 							<TableCell>{t("Commit")}</TableCell>
 							<TableCell>{branch.commit}</TableCell>
 						</TableRow>
+						{branch.upstream && (
+							<TableRow>
+								<TableCell>{t("Upstream")}</TableCell>
+								<TableCell>{branch.upstream}</TableCell>
+							</TableRow>
+						)}
 					</TableBody>
 				</Table>
 			</SheetDescription>

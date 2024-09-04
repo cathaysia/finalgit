@@ -4,6 +4,7 @@ export interface BranchInfo {
 	kind: BranchKind;
 	commit: string;
 	is_head: bool;
+	upstream?: string;
 }
 
 export type BranchKind = "Local" | "Remote";

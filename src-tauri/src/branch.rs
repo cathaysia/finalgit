@@ -14,6 +14,7 @@ pub struct BranchInfo {
     pub kind: BranchKind,
     pub commit: String,
     pub is_head: bool,
+    pub upstream: Option<String>,
 }
 
 #[derive(

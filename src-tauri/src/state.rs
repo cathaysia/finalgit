@@ -3,9 +3,6 @@ mod tag;
 use std::sync::Mutex;
 pub use tag::*;
 
-use itertools::Itertools;
-use tracing::*;
-
 use crate::{
     branch::{BranchInfo, BranchKind},
     error::{AppError, AppResult},
@@ -27,47 +24,52 @@ impl AppState {
         let repo = self.git2.lock().unwrap();
         let repo = repo.as_ref().ok_or(AppError::NoRepo)?;
 
-        let branches = repo
-            .branches(None)?
-            .flatten()
-            .filter_map(|(branch, kind)| {
-                let refname = branch.name().unwrap().unwrap();
-                let commit = branch
-                    .get()
-                    .resolve()
-                    .unwrap()
-                    .target()
-                    .unwrap()
-                    .to_string();
-                let is_head = branch.is_head();
-                trace!(%refname);
-                match kind {
-                    git2::BranchType::Local => Some(BranchInfo {
-                        remote: None,
-                        name: refname.into(),
-                        kind: BranchKind::Local,
-                        commit,
+        let mut branches = vec![];
+
+        for (branch, kind) in repo.branches(None)?.flatten() {
+            let branch_name = branch.name()?.unwrap();
+            let branch_head = branch.get().resolve()?.target().unwrap().to_string();
+            let is_head = branch.is_head();
+            let upstream = branch
+                .upstream()
+                .map(|item| {
+                    item.name()
+                        .ok()
+                        .map(|item| item.map(|item| item.to_string()))
+                })
+                .ok()
+                .flatten()
+                .flatten();
+
+            let branch = match kind {
+                git2::BranchType::Local => BranchInfo {
+                    remote: None,
+                    name: branch_name.into(),
+                    kind: BranchKind::Local,
+                    commit: branch_head,
+                    is_head,
+                    upstream,
+                },
+                git2::BranchType::Remote => {
+                    let (remote, branch) = match branch_name.split_once('/') {
+                        Some((remote, branch)) => (Some(remote), branch),
+                        None => unreachable!(),
+                    };
+                    if branch == "HEAD" {
+                        continue;
+                    }
+                    BranchInfo {
+                        remote: remote.map(|item| item.into()),
+                        name: branch.into(),
+                        kind: kind.into(),
+                        commit: branch_head,
                         is_head,
-                    }),
-                    git2::BranchType::Remote => {
-                        let (remote, branch) = match refname.split_once('/') {
-                            Some((remote, branch)) => (Some(remote), branch),
-                            None => unreachable!(),
-                        };
-                        if branch == "HEAD" {
-                            return None;
-                        }
-                        Some(BranchInfo {
-                            remote: remote.map(|item| item.into()),
-                            name: branch.into(),
-                            kind: kind.into(),
-                            commit,
-                            is_head,
-                        })
+                        upstream,
                     }
                 }
-            })
-            .collect_vec();
+            };
+            branches.push(branch)
+        }
 
         Ok(branches)
     }

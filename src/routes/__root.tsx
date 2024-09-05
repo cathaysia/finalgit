@@ -6,10 +6,21 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { useOpenState } from "@/lib/state";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
+import { useErrorState } from "@/lib/error";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export const Route = createRootRoute({
 	component: () => {
 		const { isOpened, setIsOpened } = useOpenState();
+		const { err, setError, clearError } = useErrorState();
+
+		useEffect(() => {
+			if (err) {
+				toast(err);
+				clearError();
+			}
+		}, [err]);
 
 		return (
 			<>
@@ -38,7 +49,7 @@ export const Route = createRootRoute({
 													setIsOpened(true);
 												})
 												.with({ status: "error" }, (err) => {
-													console.log(err);
+													setError(err.error);
 												});
 										});
 								});

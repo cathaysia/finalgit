@@ -18,6 +18,8 @@ import EditTag from "@/components/edit_tag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
 import { commands } from "@/bindings";
 import Icon from "@/components/Icon";
+import clsx from "clsx";
+import { match } from "ts-pattern";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
@@ -84,8 +86,13 @@ function Index() {
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
 													<FaCodeBranch />
-													<a className="pr-4 pl-4">
-														{value.name + (value.is_head ? "*" : "")}
+													<a
+														className={clsx(
+															"pr-4 pl-4",
+															value.is_head ? "font-bold text-slate-700" : "",
+														)}
+													>
+														{value.name}
 													</a>
 													<Badge>{value.kind || "Local"}</Badge>
 												</li>

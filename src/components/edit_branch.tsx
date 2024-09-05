@@ -22,6 +22,7 @@ import { useBranchState } from "@/lib/state";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
 import { ok } from "assert";
+import { useErrorState } from "@/lib/error";
 
 export interface BranchProps {
 	branch: BranchInfo;
@@ -31,6 +32,7 @@ export default function EditBranch({ branch }: BranchProps) {
 	const { t, i18n } = useTranslation();
 	const [newName, setNewName] = useState<string>(branch.name);
 	let { refreshBranches } = useBranchState();
+	const { setError } = useErrorState();
 
 	const [reqBranchRefresh, setReqBanchRe] = useState<Boolean>(false);
 
@@ -85,7 +87,7 @@ export default function EditBranch({ branch }: BranchProps) {
 										setReqBanchRe(!reqBranchRefresh);
 									})
 									.with({ status: "error" }, (err) => {
-										console.log(err);
+										setError(err.error);
 									});
 							});
 						}
@@ -113,7 +115,7 @@ export default function EditBranch({ branch }: BranchProps) {
 										setReqBanchRe(!reqBranchRefresh);
 									})
 									.with({ status: "error" }, (err) => {
-										console.log(err);
+										setError(err.error);
 									});
 							});
 						}
@@ -139,7 +141,7 @@ export default function EditBranch({ branch }: BranchProps) {
 									setReqBanchRe(!reqBranchRefresh);
 								})
 								.with({ status: "error" }, (err) => {
-									console.log(err);
+									setError(err.error);
 								});
 						});
 					}}
@@ -155,7 +157,7 @@ export default function EditBranch({ branch }: BranchProps) {
 										setReqBanchRe(!reqBranchRefresh);
 									})
 									.with({ status: "error" }, (err) => {
-										console.log(err);
+										setError(err.error);
 									});
 							});
 						}}

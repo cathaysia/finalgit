@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { match } from "ts-pattern";
 import { BranchInfo, TagInfo, commands } from "@/bindings";
+import { useErrorState } from "./error";
 
 export interface OpenState {
 	isOpened: boolean;

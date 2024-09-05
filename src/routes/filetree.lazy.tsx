@@ -8,6 +8,7 @@ import { FileTree } from "@/bindings";
 import Icon from "@/components/Icon";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
+import { useErrorState } from "@/lib/error";
 
 export const Route = createLazyFileRoute("/filetree")({
 	component: FileTreeComponent,
@@ -16,9 +17,11 @@ export const Route = createLazyFileRoute("/filetree")({
 function FileTreeComponent() {
 	const { isOpened } = useOpenState();
 	const { commit } = useCommitState();
+	const { setError } = useErrorState();
 
 	const [files, setFiles] = useState<FileTree[]>([]);
 
+	console.log(commit);
 	if (commit) {
 		commands.getFileTree(commit).then((v) => {
 			match(v)
@@ -26,7 +29,7 @@ function FileTreeComponent() {
 					setFiles(v.data);
 				})
 				.with({ status: "error" }, (err) => {
-					console.log(err.status);
+					setError(err.error);
 				});
 		});
 	}
@@ -39,7 +42,7 @@ function FileTreeComponent() {
 						setFiles(v.data);
 					})
 					.with({ status: "error" }, (err) => {
-						console.log(err.status);
+						setError(err.error);
 					});
 			});
 		}

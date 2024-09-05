@@ -55,3 +55,13 @@ export const useTagStatte = create<TagState>((set) => ({
 		});
 	},
 }));
+
+export interface CommitState {
+	commit: string | null;
+	setCommit: (commit: string | null) => void;
+}
+
+export const useCommitState = create<CommitState>((set) => ({
+	commit: null,
+	setCommit: (commit: string | null) => set({ commit: commit }),
+}));

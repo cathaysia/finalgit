@@ -15,7 +15,7 @@ export default function EditTag({ tag }: BranchProps) {
 	const [newName, setNewName] = useState<string>(tag.name);
 
 	return (
-		<SheetContent>
+		<SheetContent title={t("Edit Tag")}>
 			<SheetHeader>
 				<SheetTitle>
 					{`${t("Edit Tag")} ${tag.name} `}

@@ -1,5 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useOpenState } from "@/lib/state";
+import { useCommitState, useOpenState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
@@ -17,17 +17,20 @@ export const Route = createLazyFileRoute("/filetree")({
 
 function FileTreeComponent() {
 	const { isOpened } = useOpenState();
+	const { commit } = useCommitState();
 
 	const [files, setFiles] = useState<FileTree[]>([]);
 
 	useEffect(() => {
-		invoke("get_file_tree", {
-			commit: "a980365813f6909dc952f4adf96412dcde4ff709",
-		}).then((v) => {
-			let value = v as FileTree[];
-			setFiles(value);
-		});
-	}, [isOpened]);
+		if (commit) {
+			invoke("get_file_tree", {
+				commit: commit,
+			}).then((v) => {
+				let value = v as FileTree[];
+				setFiles(value);
+			});
+		}
+	}, [commit]);
 
 	return (
 		<ScrollArea className="h-screen">

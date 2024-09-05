@@ -39,7 +39,7 @@ export default function EditBranch({ branch }: BranchProps) {
 	}, [reqBranchRefresh]);
 
 	return (
-		<SheetContent>
+		<SheetContent title={t("Edit Branch")}>
 			<SheetHeader>
 				<SheetTitle>
 					{`${t("Edit branch")} ${branch.name} `}

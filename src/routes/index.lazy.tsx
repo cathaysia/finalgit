@@ -7,7 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useBranchState, useOpenState, useTagStatte } from "@/lib/state";
+import {
+	useBranchState,
+	useCommitState,
+	useOpenState,
+	useTagStatte,
+} from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditTag from "@/components/edit_tag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
@@ -24,6 +29,7 @@ function Index() {
 	const { t, i18n } = useTranslation();
 	const [targetBranch, setTargetBranch] = useState<BranchInfo>();
 	const [targetTag, setTargetTag] = useState<TagInfo>();
+	const { setCommit } = useCommitState();
 
 	commands.isOpened().then((value) => {
 		if (value && !isOpened) {
@@ -37,6 +43,11 @@ function Index() {
 		}
 
 		refreshBranches();
+		branches.forEach((item) => {
+			if (item.is_head) {
+				setCommit(item.commit);
+			}
+		});
 	}, [isOpened]);
 
 	useEffect(() => {
@@ -68,6 +79,7 @@ function Index() {
 												onClick={() => {
 													setTargetBranch(value);
 												}}
+												key={value.name}
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
 													<FaCodeBranch />
@@ -92,6 +104,7 @@ function Index() {
 													setTargetBranch(value);
 													setTargetTag(undefined);
 												}}
+												key={value.name}
 											>
 												<li className="p-4 border text-center hover:bg-slate-50 flex justify-center">
 													<FaCodeBranch />
@@ -122,10 +135,8 @@ function Index() {
 									);
 								})}
 						</TabsContent>
-						<SheetContent>
-							{targetBranch && <EditBranch branch={targetBranch} />}
-							{targetTag && <EditTag tag={targetTag} />}
-						</SheetContent>
+						{targetBranch && <EditBranch branch={targetBranch} />}
+						{targetTag && <EditTag tag={targetTag} />}
 					</ScrollArea>
 				</Tabs>
 			</Sheet>

@@ -1,12 +1,13 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCommitState, useOpenState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { FileTree } from "@/bindings";
 import Icon from "@/components/Icon";
+import { commands } from "@/bindings";
+import { match } from "ts-pattern";
 
 export const Route = createLazyFileRoute("/filetree")({
 	component: FileTreeComponent,
@@ -18,13 +19,28 @@ function FileTreeComponent() {
 
 	const [files, setFiles] = useState<FileTree[]>([]);
 
+	if (commit) {
+		commands.getFileTree(commit).then((v) => {
+			match(v)
+				.with({ status: "ok" }, (v) => {
+					setFiles(v.data);
+				})
+				.with({ status: "error" }, (err) => {
+					console.log(err.status);
+				});
+		});
+	}
+
 	useEffect(() => {
 		if (commit) {
-			invoke("get_file_tree", {
-				commit: commit,
-			}).then((v) => {
-				let value = v as FileTree[];
-				setFiles(value);
+			commands.getFileTree(commit).then((v) => {
+				match(v)
+					.with({ status: "ok" }, (v) => {
+						setFiles(v.data);
+					})
+					.with({ status: "error" }, (err) => {
+						console.log(err.status);
+					});
 			});
 		}
 	}, [commit]);
@@ -41,11 +57,12 @@ function FileTreeComponent() {
 }
 
 function generate_tree(parent: string, file: FileTree) {
-	console.log(file);
 	if ("File" in file) {
+		let key = file + "/" + file.File;
 		return (
 			<TreeItem
-				itemId={file + "/" + file.File}
+				itemId={key}
+				key={key}
 				label={
 					<a>
 						<Icon fileName={file.File} />
@@ -61,10 +78,12 @@ function generate_tree(parent: string, file: FileTree) {
 	}
 
 	let tree = file.Dir;
+	let key = file + "/" + tree.dir;
 
 	return (
 		<TreeItem
-			itemId={parent + "/" + tree.dir}
+			itemId={key}
+			key={key}
 			label={
 				<a>
 					<Icon fileName={tree.dir} isDir={true} />

@@ -46,8 +46,6 @@ export default function Icon({
 	const [icon, setIcon] = useState("");
 	let iconpath = `../../node_modules/material-icon-theme/icons/${iconname}.svg`;
 
-	console.log(iconpath);
-
 	useEffect(() => {
 		import(iconpath).then((icon) => {
 			setIcon(icon.default);

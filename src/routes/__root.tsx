@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { open } from "@tauri-apps/plugin-dialog";
-import { invoke } from "@tauri-apps/api/core";
 import { useOpenState } from "@/lib/state";
+import { commands } from "@/bindings";
+import { match } from "ts-pattern";
 
 export const Route = createRootRoute({
 	component: () => {
@@ -31,11 +32,14 @@ export const Route = createRootRoute({
 									directory: true,
 								}).then((dir) => {
 									dir &&
-										invoke("open_repo", {
-											repoPath: dir,
-										}).then(() => {
-											console.log(`open repo: ${dir}`);
-											setIsOpened(true);
+										commands.openRepo(dir).then((v) => {
+											match(v)
+												.with({ status: "ok" }, (v) => {
+													setIsOpened(true);
+												})
+												.with({ status: "error" }, (err) => {
+													console.log(err);
+												});
 										});
 								});
 							}}

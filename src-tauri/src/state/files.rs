@@ -1,12 +1,6 @@
 use std::path::Path;
 
-use crate::{AppError, AppResult, AppState};
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub enum FileTree {
-    File(String),
-    Dir { dir: String, files: Vec<FileTree> },
-}
+use crate::{AppError, AppResult, AppState, FileTree};
 
 impl AppState {
     pub fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>> {

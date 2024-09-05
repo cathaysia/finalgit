@@ -33,6 +33,7 @@ export default defineConfig(async () => ({
 	},
 	resolve: {
 		alias: {
+			"@/bindings": path.resolve(__dirname, "./src-tauri/bindings"),
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},

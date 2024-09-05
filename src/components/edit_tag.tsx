@@ -1,4 +1,4 @@
-import { BranchInfo, TagInfo } from "@/lib/branch";
+import { BranchInfo, TagInfo } from "@/bindings";
 import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 import { useTranslation } from "react-i18next";
 import { Badge } from "./ui/badge";

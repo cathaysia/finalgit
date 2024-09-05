@@ -1,10 +1,4 @@
-use crate::{AppError, AppResult, AppState};
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct TagInfo {
-    pub name: String,
-    pub commit: String,
-}
+use crate::{AppError, AppResult, AppState, TagInfo};
 
 impl AppState {
     pub fn get_tags(&self) -> AppResult<Vec<TagInfo>> {

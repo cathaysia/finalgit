@@ -20,3 +20,12 @@ impl serde::Serialize for AppError {
         serializer.serialize_str(&self.to_string())
     }
 }
+
+impl specta::Type for AppError {
+    fn inline(
+        _type_map: &mut specta::TypeMap,
+        _generics: specta::Generics,
+    ) -> specta::datatype::DataType {
+        specta::DataType::Primitive(specta::datatype::PrimitiveType::String)
+    }
+}

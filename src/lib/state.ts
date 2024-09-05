@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { BranchInfo, TagInfo } from "./branch";
-import { fetchBranchInfo, fetchTagInfo } from "./api";
+import { match } from "ts-pattern";
+import { BranchInfo, TagInfo, commands } from "@/bindings";
 
 export interface OpenState {
 	isOpened: boolean;
@@ -22,8 +22,14 @@ export const useBranchState = create<BranchState>((set) => ({
 	branches: [],
 	setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
 	refreshBranches: () => {
-		fetchBranchInfo().then((value) => {
-			set({ branches: value });
+		commands.getBranchInfo().then((value) => {
+			match(value)
+				.with({ status: "ok" }, (v) => {
+					set({ branches: v.data });
+				})
+				.with({ status: "error" }, (e) => {
+					console.log(e);
+				});
 		});
 	},
 }));
@@ -38,10 +44,14 @@ export const useTagStatte = create<TagState>((set) => ({
 	tags: [],
 	setTags: (tags: TagInfo[]) => set({ tags: tags }),
 	refreshTags: () => {
-		fetchTagInfo().then((value) => {
-			set({
-				tags: value,
-			});
+		commands.getTagInfo().then((value) => {
+			match(value)
+				.with({ status: "ok" }, (v) => {
+					set({ tags: v.data });
+				})
+				.with({ status: "error" }, (err) => {
+					console.log(err);
+				});
 		});
 	},
 }));

@@ -26,3 +26,6 @@ itertools = "0.13.0"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 tauri-plugin-dialog = "2.0.0-rc.3"
+tauri-specta = { version = "=2.0.0-rc.18", features = ["derive", "typescript"] }
+specta-typescript = "0.0.7"
+specta = { version = "=2.0.0-rc.20" }

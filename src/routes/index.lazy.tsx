@@ -1,6 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { BranchInfo, TagInfo } from "../lib/branch";
+import { BranchInfo, TagInfo } from "@/bindings";
 import EditBranch from "@/components/edit_branch";
 
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,7 @@ import { useBranchState, useOpenState, useTagStatte } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EditTag from "@/components/edit_tag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
-import { fetchBranchInfo, fetchIsOpen, fetchTagInfo } from "@/lib/api";
+import { commands } from "@/bindings";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
@@ -25,7 +25,7 @@ function Index() {
 	const [targetBranch, setTargetBranch] = useState<BranchInfo>();
 	const [targetTag, setTargetTag] = useState<TagInfo>();
 
-	fetchIsOpen().then((value) => {
+	commands.isOpened().then((value) => {
 		if (value && !isOpened) {
 			setIsOpened(true);
 		}

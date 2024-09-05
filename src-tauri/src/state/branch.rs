@@ -1,4 +1,4 @@
-use crate::{branch::BranchInfo, AppError, AppResult, AppState};
+use crate::{AppError, AppResult, AppState, BranchInfo};
 
 impl AppState {
     pub fn rename_branch(&self, info: BranchInfo, to: &str) -> AppResult<()> {

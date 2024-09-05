@@ -1,13 +1,11 @@
 mod branch;
 mod files;
 mod tag;
-pub use files::*;
 use std::sync::Mutex;
-pub use tag::*;
 
 use crate::{
-    branch::{BranchInfo, BranchKind},
     error::{AppError, AppResult},
+    BranchInfo,
 };
 
 #[derive(Default)]
@@ -47,7 +45,7 @@ impl AppState {
                 git2::BranchType::Local => BranchInfo {
                     remote: None,
                     name: branch_name.into(),
-                    kind: BranchKind::Local,
+                    kind,
                     commit: branch_head,
                     is_head,
                     upstream,
@@ -63,7 +61,7 @@ impl AppState {
                     BranchInfo {
                         remote: remote.map(|item| item.into()),
                         name: branch.into(),
-                        kind: kind.into(),
+                        kind,
                         commit: branch_head,
                         is_head,
                         upstream,

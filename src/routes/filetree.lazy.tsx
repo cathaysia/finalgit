@@ -1,5 +1,4 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GitDir, GitFileTree, GitFile } from "@/lib/files";
 import { useOpenState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
@@ -10,6 +9,7 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { FaGithub, FaMarkdown, FaRust } from "react-icons/fa";
 import { TbLicense, TbToml } from "react-icons/tb";
 import { SiAsciidoctor, SiEditorconfig, SiYaml } from "react-icons/si";
+import { FileTree } from "@/bindings";
 
 export const Route = createLazyFileRoute("/filetree")({
 	component: FileTreeComponent,
@@ -18,13 +18,13 @@ export const Route = createLazyFileRoute("/filetree")({
 function FileTreeComponent() {
 	const { isOpened } = useOpenState();
 
-	const [files, setFiles] = useState<GitFileTree[]>([]);
+	const [files, setFiles] = useState<FileTree[]>([]);
 
 	useEffect(() => {
 		invoke("get_file_tree", {
 			commit: "a980365813f6909dc952f4adf96412dcde4ff709",
 		}).then((v) => {
-			let value = v as GitFileTree[];
+			let value = v as FileTree[];
 			setFiles(value);
 		});
 	}, [isOpened]);
@@ -68,27 +68,27 @@ function get_icon_by_name(name: string) {
 	return <GoFile className="inline" />;
 }
 
-function generate_tree(parent: string, file: GitFileTree) {
+function generate_tree(parent: string, file: FileTree) {
 	console.log(file);
 	if ("File" in file) {
-		let gitfile = file as GitFile;
 		return (
 			<TreeItem
-				itemId={file + "/" + gitfile.File}
+				itemId={file + "/" + file.File}
 				label={
 					<a>
-						{get_icon_by_name(gitfile.File)}
-						{gitfile.File}
+						{get_icon_by_name(file.File)}
+						{file.File}
 					</a>
 				}
 			/>
 		);
 	}
 
-	let tree = (file as GitDir).Dir;
 	if (parent != "") {
 		parent += "/";
 	}
+
+	let tree = file.Dir;
 
 	return (
 		<TreeItem

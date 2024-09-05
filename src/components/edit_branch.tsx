@@ -1,4 +1,4 @@
-import { BranchInfo } from "@/lib/branch";
+import { BranchInfo } from "@/bindings";
 import {
 	SheetContent,
 	SheetDescription,
@@ -18,13 +18,10 @@ import {
 	TableHeader,
 	TableRow,
 } from "./ui/table";
-import {
-	checkout_branch,
-	create_branch,
-	remove_branch,
-	rename_branch,
-} from "@/lib/api";
 import { useBranchState } from "@/lib/state";
+import { commands } from "@/bindings";
+import { match } from "ts-pattern";
+import { ok } from "assert";
 
 export interface BranchProps {
 	branch: BranchInfo;
@@ -82,8 +79,15 @@ export default function EditBranch({ branch }: BranchProps) {
 				<Button
 					onClick={() => {
 						if (newName && newName != branch.name) {
-							create_branch(newName, branch.commit);
-							setReqBanchRe(!reqBranchRefresh);
+							commands.createBranch(newName, branch.commit).then((value) => {
+								match(value)
+									.with({ status: "ok" }, () => {
+										setReqBanchRe(!reqBranchRefresh);
+									})
+									.with({ status: "error" }, (err) => {
+										console.log(err);
+									});
+							});
 						}
 					}}
 				>
@@ -103,8 +107,15 @@ export default function EditBranch({ branch }: BranchProps) {
 				<Button
 					onClick={() => {
 						if (newName && newName != branch.name) {
-							rename_branch(branch, newName);
-							setReqBanchRe(!reqBranchRefresh);
+							commands.renameBranch(branch, newName).then((value) => {
+								match(value)
+									.with({ status: "ok" }, () => {
+										setReqBanchRe(!reqBranchRefresh);
+									})
+									.with({ status: "error" }, (err) => {
+										console.log(err);
+									});
+							});
 						}
 					}}
 				>
@@ -122,8 +133,15 @@ export default function EditBranch({ branch }: BranchProps) {
 				)}
 				<Button
 					onClick={() => {
-						remove_branch(branch);
-						setReqBanchRe(!reqBranchRefresh);
+						commands.removeBranch(branch).then((value) => {
+							match(value)
+								.with({ status: "ok" }, () => {
+									setReqBanchRe(!reqBranchRefresh);
+								})
+								.with({ status: "error" }, (err) => {
+									console.log(err);
+								});
+						});
 					}}
 				>
 					{t("Delete")}
@@ -131,8 +149,15 @@ export default function EditBranch({ branch }: BranchProps) {
 				{branch.kind == "Local" && (
 					<Button
 						onClick={() => {
-							checkout_branch(branch.name);
-							setReqBanchRe(!reqBranchRefresh);
+							commands.checkoutBranch(branch.name).then((value) => {
+								match(value)
+									.with({ status: "ok" }, () => {
+										setReqBanchRe(!reqBranchRefresh);
+									})
+									.with({ status: "error" }, (err) => {
+										console.log(err);
+									});
+							});
 						}}
 						disabled={branch.is_head}
 					>

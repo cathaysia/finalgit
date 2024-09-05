@@ -56,7 +56,7 @@ function FileTreeComponent() {
 
 function generate_tree(parent: string, file: FileTree) {
 	if ("File" in file) {
-		let key = file + "/" + file.File;
+		let key = parent + "/" + file.File;
 		return (
 			<TreeItem
 				itemId={key}
@@ -71,12 +71,8 @@ function generate_tree(parent: string, file: FileTree) {
 		);
 	}
 
-	if (parent != "") {
-		parent += "/";
-	}
-
 	let tree = file.Dir;
-	let key = file + "/" + tree.dir;
+	let key = parent + "/" + tree.dir;
 
 	return (
 		<TreeItem

@@ -17,6 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import EditTag from "@/components/edit_tag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
 import { commands } from "@/bindings";
+import Icon from "@/components/Icon";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,

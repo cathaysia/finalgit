@@ -3,13 +3,10 @@ import { useCommitState, useOpenState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
-import { GoFile, GoFileDirectory, GoFileDirectoryFill } from "react-icons/go";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { FaGithub, FaMarkdown, FaRust } from "react-icons/fa";
-import { TbLicense, TbToml } from "react-icons/tb";
-import { SiAsciidoctor, SiEditorconfig, SiYaml } from "react-icons/si";
 import { FileTree } from "@/bindings";
+import Icon from "@/components/Icon";
 
 export const Route = createLazyFileRoute("/filetree")({
 	component: FileTreeComponent,
@@ -43,34 +40,6 @@ function FileTreeComponent() {
 	);
 }
 
-function get_icon_by_name(name: string) {
-	if (name.endsWith(".rs")) {
-		return <FaRust className="inline" />;
-	}
-	if (name.endsWith(".toml")) {
-		return <TbToml className="inline" />;
-	}
-	if (name == "LICENSE") {
-		return <TbLicense className="inline" />;
-	}
-	if (name.endsWith(".md")) {
-		return <FaMarkdown className="inline" />;
-	}
-	if (name.endsWith(".adoc")) {
-		return <SiAsciidoctor className="inline" />;
-	}
-	if (name.endsWith(".yaml") || name.endsWith(".yml")) {
-		return <SiYaml className="inline" />;
-	}
-	if (name == ".github") {
-		return <FaGithub className="inline" />;
-	}
-	if (name == ".editorconfig") {
-		return <SiEditorconfig className="inline" />;
-	}
-	return <GoFile className="inline" />;
-}
-
 function generate_tree(parent: string, file: FileTree) {
 	console.log(file);
 	if ("File" in file) {
@@ -79,7 +48,7 @@ function generate_tree(parent: string, file: FileTree) {
 				itemId={file + "/" + file.File}
 				label={
 					<a>
-						{get_icon_by_name(file.File)}
+						<Icon fileName={file.File} />
 						{file.File}
 					</a>
 				}
@@ -98,7 +67,7 @@ function generate_tree(parent: string, file: FileTree) {
 			itemId={parent + "/" + tree.dir}
 			label={
 				<a>
-					{get_icon_by_name(tree.dir)}
+					<Icon fileName={tree.dir} isDir={true} />
 					{tree.dir}
 				</a>
 			}

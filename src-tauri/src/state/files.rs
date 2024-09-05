@@ -1,4 +1,4 @@
-use std::path::Path;
+use tracing::error;
 
 use crate::{AppError, AppResult, AppState, FileTree};
 
@@ -13,7 +13,7 @@ impl AppState {
         let tree = commit.tree()?;
         let mut files = vec![];
         for item in tree.into_iter() {
-            if let Some(item) = walk_cb(repo, Path::new(""), item) {
+            if let Some(item) = walk_cb(repo, item) {
                 files.push(item);
             }
         }
@@ -22,9 +22,7 @@ impl AppState {
     }
 }
 
-fn walk_cb(repo: &git2::Repository, base: &Path, item: git2::TreeEntry) -> Option<FileTree> {
-    let path = base.join(item.name().unwrap());
-
+fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
     match item.kind() {
         None => todo!(),
         Some(kind) => {
@@ -35,17 +33,21 @@ fn walk_cb(repo: &git2::Repository, base: &Path, item: git2::TreeEntry) -> Optio
                     let tree = tree.peel_to_tree().unwrap();
                     let mut files = vec![];
                     for item in tree.into_iter() {
-                        if let Some(item) = walk_cb(repo, &path, item) {
+                        if let Some(item) = walk_cb(repo, item) {
                             files.push(item);
                         }
                     }
+                    files.sort();
                     Some(FileTree::Dir {
-                        dir: path.to_str().unwrap().to_string(),
+                        dir: item.name().unwrap().to_string(),
                         files,
                     })
                 }
-                git2::ObjectType::Blob => Some(FileTree::File(path.to_str().unwrap().to_string())),
-                _ => None,
+                git2::ObjectType::Blob => Some(FileTree::File(item.name().unwrap().to_string())),
+                _ => {
+                    error!("unknown object: {kind:#?}");
+                    None
+                }
             }
         }
     }

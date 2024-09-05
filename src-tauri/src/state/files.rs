@@ -13,14 +13,16 @@ impl AppState {
         let tree = commit.tree()?;
         let mut files = vec![];
         for item in tree.into_iter() {
-            files.push(walk_cb(repo, Path::new(""), item));
+            if let Some(item) = walk_cb(repo, Path::new(""), item) {
+                files.push(item);
+            }
         }
         files.sort();
         Ok(files)
     }
 }
 
-fn walk_cb(repo: &git2::Repository, base: &Path, item: git2::TreeEntry) -> FileTree {
+fn walk_cb(repo: &git2::Repository, base: &Path, item: git2::TreeEntry) -> Option<FileTree> {
     let path = base.join(item.name().unwrap());
 
     match item.kind() {
@@ -33,15 +35,17 @@ fn walk_cb(repo: &git2::Repository, base: &Path, item: git2::TreeEntry) -> FileT
                     let tree = tree.peel_to_tree().unwrap();
                     let mut files = vec![];
                     for item in tree.into_iter() {
-                        files.push(walk_cb(repo, &path, item));
+                        if let Some(item) = walk_cb(repo, &path, item) {
+                            files.push(item);
+                        }
                     }
-                    FileTree::Dir {
+                    Some(FileTree::Dir {
                         dir: path.to_str().unwrap().to_string(),
                         files,
-                    }
+                    })
                 }
-                git2::ObjectType::Blob => FileTree::File(path.to_str().unwrap().to_string()),
-                _ => todo!(),
+                git2::ObjectType::Blob => Some(FileTree::File(path.to_str().unwrap().to_string())),
+                _ => None,
             }
         }
     }

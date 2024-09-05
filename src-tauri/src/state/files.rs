@@ -15,6 +15,7 @@ impl AppState {
         for item in tree.into_iter() {
             files.push(walk_cb(repo, Path::new(""), item));
         }
+        files.sort();
         Ok(files)
     }
 }

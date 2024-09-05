@@ -5,7 +5,7 @@ impl AppState {
         let repo = self.git2.lock().unwrap();
         let repo = repo.as_ref().ok_or(AppError::NoRepo)?;
 
-        let mut branch = repo.find_branch(&info.name, info.kind.into())?;
+        let mut branch = repo.find_branch(&info.name, info.kind)?;
         let _ = branch.rename(to, true)?;
         Ok(())
     }
@@ -14,7 +14,7 @@ impl AppState {
         let repo = self.git2.lock().unwrap();
         let repo = repo.as_ref().ok_or(AppError::NoRepo)?;
 
-        let mut branch = repo.find_branch(&info.name, info.kind.into())?;
+        let mut branch = repo.find_branch(&info.name, info.kind)?;
         branch.delete()?;
 
         Ok(())

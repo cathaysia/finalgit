@@ -19,10 +19,13 @@ function FileContent() {
 		setFileContent(v);
 	}, [content]);
 
+	const file_type = get_file_type(file_name);
+
 	return (
 		<div>
 			<Editor
 				value={fileContent}
+				defaultLanguage={file_type}
 				width="100vw"
 				height="100vh"
 				options={{
@@ -34,4 +37,20 @@ function FileContent() {
 			/>
 		</div>
 	);
+}
+
+function get_file_type(file_name: string) {
+	const spec = file_name.split(".");
+	const ext = spec[spec.length - 1];
+	const EXT_MAP = {
+		md: "markdown",
+		toml: "toml",
+		rs: "rust",
+	};
+
+	if (EXT_MAP[ext]) {
+		return EXT_MAP[ext];
+	}
+
+	return null;
 }

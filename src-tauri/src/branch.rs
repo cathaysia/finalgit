@@ -1,6 +1,6 @@
 use tauri::State;
 
-use crate::{error::AppResult, state::AppState, BranchInfo, FileTree, TagInfo};
+use crate::{error::AppResult, state::AppState, BranchInfo, FileStatus, FileTree, TagInfo};
 
 #[tauri::command]
 #[specta::specta]
@@ -64,4 +64,10 @@ pub fn get_file_content(
     path: &str,
 ) -> AppResult<Vec<u8>> {
     state.get_file_content(commit, path)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_current_status(state: State<'_, AppState>) -> AppResult<Vec<FileStatus>> {
+    state.get_current_status()
 }

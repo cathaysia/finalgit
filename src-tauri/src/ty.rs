@@ -103,3 +103,9 @@ enum BranchTypeRef {
     Local,
     Remote,
 }
+
+#[derive(Debug, serde::Serialize, Clone, PartialEq, Eq, serde::Deserialize, Type)]
+pub struct FileStatus {
+    pub path: String,
+    pub status: u32,
+}

@@ -1,10 +1,32 @@
+use crate::FileStatus;
 use std::path::Path;
 
+use itertools::Itertools;
 use tracing::*;
 
 use crate::{AppError, AppResult, AppState, FileTree};
 
 impl AppState {
+    pub fn get_current_status(&self) -> AppResult<Vec<FileStatus>> {
+        let repo = self.git2.lock().unwrap();
+        let repo = repo.as_ref().ok_or(AppError::NoRepo)?;
+
+        let status = repo
+            .statuses(None)?
+            .into_iter()
+            .map(|item| {
+                let path = item.path().unwrap();
+                let status = item.status().bits();
+
+                FileStatus {
+                    path: path.into(),
+                    status,
+                }
+            })
+            .collect_vec();
+
+        Ok(status)
+    }
     pub fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>> {
         let repo = self.git2.lock().unwrap();
         let repo = repo.as_ref().ok_or(AppError::NoRepo)?;

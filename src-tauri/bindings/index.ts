@@ -113,6 +113,14 @@ export const commands = {
 			else return { status: "error", error: e as any };
 		}
 	},
+	async getCurrentStatus(): Promise<Result<FileStatus[], string>> {
+		try {
+			return { status: "ok", data: await TAURI_INVOKE("get_current_status") };
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
 };
 
 /** user-defined events **/
@@ -130,6 +138,7 @@ export type BranchInfo = {
 	upstream: string | null;
 };
 export type BranchTypeRef = "Local" | "Remote";
+export type FileStatus = { path: string; status: number };
 export type FileTree =
 	| { File: { filename: string; mode: number } }
 	| { Dir: { dir: string; files: FileTree[]; mode: number } };

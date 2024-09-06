@@ -29,6 +29,7 @@ pub fn run() {
             branch::checkout_branch,
             branch::get_file_tree,
             branch::get_file_content,
+            branch::get_current_status,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -66,6 +67,7 @@ mod test {
                 branch::checkout_branch,
                 branch::get_file_tree,
                 branch::get_file_content,
+                branch::get_current_status,
             ]);
 
         builder

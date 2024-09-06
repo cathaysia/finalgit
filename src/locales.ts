@@ -1,10 +1,11 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import * as zh_CN from "./i18n/zh_CN.json";
+import * as en from "./locales/en/translation.json";
+import * as cn from "./locales/cn/translation.json";
 
 const resources = {
-	zh_CN: {
-		translation: zh_CN,
+	cn: {
+		translation: cn,
 	},
 };
 

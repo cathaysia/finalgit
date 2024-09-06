@@ -31,11 +31,11 @@ export const Route = createRootRoute({
 			<>
 				<div className="pl-2 pr-2 flex items-center h-16 justify-between">
 					<div>
-						<Nav to="/" text="Home" />
-						<Nav to="/filetree" text="File" />
-						<Nav to="/file_content" text="Content" />
-						<Nav to="/status" text="Status" />
-						<Nav to="/about" text="About" />
+						<Nav to="/" text={t("Home")} />
+						<Nav to="/filetree" text={t("File")} />
+						<Nav to="/file_content" text={t("Content")} />
+						<Nav to="/status" text={t("Status")} />
+						<Nav to="/about" text={t("About")} />
 					</div>
 					<div className="flex w-40 justify-between">
 						<Button

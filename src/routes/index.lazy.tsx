@@ -20,24 +20,38 @@ import { commands } from "@/bindings";
 import Icon from "@/components/Icon";
 import clsx from "clsx";
 import { match } from "ts-pattern";
+import { useErrorState } from "@/lib/error";
 
 export const Route = createLazyFileRoute("/")({
 	component: Index,
 });
 
 function Index() {
-	const { isOpened, setIsOpened } = useOpenState();
-	const { branches, refreshBranches } = useBranchState();
-	const { tags, refreshTags } = useTagStatte();
+	const [isOpened, setIsOpened] = useOpenState((s) => [
+		s.isOpened,
+		s.setIsOpened,
+	]);
+	const [branches, setBranches] = useBranchState((s) => [
+		s.branches,
+		s.setBranches,
+	]);
+	const [tags, refreshTags] = useTagStatte((s) => [s.tags, s.refreshTags]);
 	const { t, i18n } = useTranslation();
 	const [targetBranch, setTargetBranch] = useState<BranchInfo>();
 	const [targetTag, setTargetTag] = useState<TagInfo>();
-	const { setCommit } = useCommitState();
+	const setCommit = useCommitState((s) => s.setCommit);
+	const setError = useErrorState((s) => s.setError);
 
 	commands.isOpened().then((value) => {
-		if (value && !isOpened) {
-			setIsOpened(true);
-		}
+		match(value)
+			.with({ status: "ok" }, (v) => {
+				if (v.data && !isOpened) {
+					setIsOpened(true);
+				}
+			})
+			.with({ status: "error" }, (err) => {
+				setError(err.error);
+			});
 	});
 
 	useEffect(() => {
@@ -45,11 +59,20 @@ function Index() {
 			return;
 		}
 
-		refreshBranches();
-		branches.forEach((item) => {
-			if (item.is_head) {
-				setCommit(item.commit);
-			}
+		commands.getBranchInfo().then((value) => {
+			match(value)
+				.with({ status: "ok" }, (v) => {
+					v.data.forEach((item) => {
+						if (item.is_head) {
+							console.log(`set head commit to ${item.commit}`);
+							setCommit(item.commit);
+						}
+					});
+					setBranches(v.data);
+				})
+				.with({ status: "error" }, (err) => {
+					setError(err.error);
+				});
 		});
 	}, [isOpened]);
 

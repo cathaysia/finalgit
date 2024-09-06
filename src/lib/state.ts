@@ -19,24 +19,12 @@ export const useOpenState = create<OpenState>()(
 export interface BranchState {
 	branches: BranchInfo[];
 	setBranches: (branches: BranchInfo[]) => void;
-	refreshBranches: () => void;
 }
 
 export const useBranchState = create<BranchState>()(
 	devtools((set) => ({
 		branches: [],
 		setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
-		refreshBranches: () => {
-			commands.getBranchInfo().then((value) => {
-				match(value)
-					.with({ status: "ok" }, (v) => {
-						set({ branches: v.data });
-					})
-					.with({ status: "error" }, (err) => {
-						console.log(err.error);
-					});
-			});
-		},
 	})),
 );
 

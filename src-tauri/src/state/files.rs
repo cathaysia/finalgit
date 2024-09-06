@@ -1,4 +1,4 @@
-use tracing::error;
+use tracing::*;
 
 use crate::{AppError, AppResult, AppState, FileTree};
 
@@ -45,7 +45,7 @@ fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
                 }
                 git2::ObjectType::Blob => Some(FileTree::File(item.name().unwrap().to_string())),
                 _ => {
-                    error!("unknown object: {kind:#?}");
+                    debug!("unknown object: {kind:#?}");
                     None
                 }
             }

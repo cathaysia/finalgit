@@ -9,28 +9,22 @@ import Icon from "@/components/Icon";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createLazyFileRoute("/filetree")({
 	component: FileTreeComponent,
 });
 
 function FileTreeComponent() {
-	const { isOpened } = useOpenState();
-	const { commit } = useCommitState();
-	const { setError } = useErrorState();
-	const [isLoading, setIsLoading] = useState(false);
-
+	const commit = useCommitState((s) => s.commit);
+	const setError = useErrorState((s) => s.setError);
 	const [files, setFiles] = useState<FileTree[]>([]);
 
 	useEffect(() => {
 		if (commit) {
-			setIsLoading(true);
 			commands.getFileTree(commit).then((v) => {
 				match(v)
 					.with({ status: "ok" }, (v) => {
 						setFiles(v.data);
-						setIsLoading(false);
 					})
 					.with({ status: "error" }, (err) => {
 						setError(err.error);
@@ -38,10 +32,6 @@ function FileTreeComponent() {
 			});
 		}
 	}, [commit]);
-
-	if (isLoading) {
-		return <Skeleton className="w-full h-full" />;
-	}
 
 	return (
 		<ScrollArea className="h-screen">

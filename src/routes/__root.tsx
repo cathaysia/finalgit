@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 export const Route = createRootRoute({
 	component: () => {
-		const { isOpened, setIsOpened } = useOpenState();
+		const setIsOpened = useOpenState((s) => s.setIsOpened);
 		const { err, setError, clearError } = useErrorState();
 
 		useEffect(() => {

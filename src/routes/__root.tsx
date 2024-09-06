@@ -9,6 +9,8 @@ import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Nav } from "@/components/Nav";
+import { FaHome } from "react-icons/fa";
 
 export const Route = createRootRoute({
 	component: () => {
@@ -26,21 +28,11 @@ export const Route = createRootRoute({
 			<>
 				<div className="pl-2 pr-2 flex items-center h-16 justify-between">
 					<div>
-						<Link to="/" className="[&.active]:font-bold">
-							Home
-						</Link>{" "}
-						<Link to="/filetree" className="[&.active]:font-bold">
-							Files
-						</Link>
-						<Link to="/file_content" className="[&.active]:font-bold">
-							FileContent
-						</Link>
-						<Link to="/status" className="[&.active]:font-bold">
-							Status
-						</Link>
-						<Link to="/about" className="[&.active]:font-bold">
-							About
-						</Link>
+						<Nav to="/" text="Home" />
+						<Nav to="/filetree" text="File" />
+						<Nav to="/file_content" text="Content" />
+						<Nav to="/status" text="Status" />
+						<Nav to="/about" text="About" />
 					</div>
 					<div className="flex w-40 justify-between">
 						<Button

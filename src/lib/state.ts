@@ -63,3 +63,15 @@ export const useCommitState = create<CommitState>()(
 		setCommit: (commit: string | null) => set({ commit: commit }),
 	})),
 );
+
+export interface FileContentState {
+	content: number[];
+	setContent: (content: number[]) => void;
+}
+
+export const useFileContentState = create<FileContentState>()(
+	devtools((set) => ({
+		content: [],
+		setContent: (content: number[]) => set({ content: content }),
+	})),
+);

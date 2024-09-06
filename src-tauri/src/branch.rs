@@ -55,3 +55,13 @@ pub fn checkout_branch(state: State<'_, AppState>, branch: &str) -> AppResult<()
 pub fn get_file_tree(state: State<'_, AppState>, commit: &str) -> AppResult<Vec<FileTree>> {
     state.get_file_tree(commit)
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_file_content(
+    state: State<'_, AppState>,
+    commit: &str,
+    path: &str,
+) -> AppResult<Vec<u8>> {
+    state.get_file_content(commit, path)
+}

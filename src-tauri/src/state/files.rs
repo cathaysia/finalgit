@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use tracing::*;
 
 use crate::{AppError, AppResult, AppState, FileTree};
@@ -20,6 +22,19 @@ impl AppState {
         files.sort();
         Ok(files)
     }
+
+    pub fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>> {
+        let repo = self.git2.lock().unwrap();
+        let repo = repo.as_ref().ok_or(AppError::NoRepo)?;
+
+        let commit = git2::Oid::from_str(commit)?;
+        let commit = repo.find_commit(commit)?;
+        let tree = commit.tree()?;
+        let entry = tree.get_path(Path::new(path))?;
+        let entry = repo.find_blob(entry.id())?;
+
+        Ok(entry.content().to_vec())
+    }
 }
 
 fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
@@ -41,9 +56,13 @@ fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
                     Some(FileTree::Dir {
                         dir: item.name().unwrap().to_string(),
                         files,
+                        mode: item.filemode(),
                     })
                 }
-                git2::ObjectType::Blob => Some(FileTree::File(item.name().unwrap().to_string())),
+                git2::ObjectType::Blob => Some(FileTree::File {
+                    filename: item.name().unwrap().to_string(),
+                    mode: item.filemode(),
+                }),
                 _ => {
                     debug!("unknown object: {kind:#?}");
                     None

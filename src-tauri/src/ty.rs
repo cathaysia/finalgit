@@ -4,8 +4,15 @@ use specta::Type;
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
 pub enum FileTree {
-    File(String),
-    Dir { dir: String, files: Vec<FileTree> },
+    File {
+        filename: String,
+        mode: i32,
+    },
+    Dir {
+        dir: String,
+        files: Vec<FileTree>,
+        mode: i32,
+    },
 }
 
 impl PartialOrd for FileTree {
@@ -17,12 +24,50 @@ impl PartialOrd for FileTree {
 impl Ord for FileTree {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         match (self, other) {
-            (FileTree::File(lhs), FileTree::File(rhs)) => lhs.cmp(rhs),
-            (FileTree::File(_), FileTree::Dir { dir: _, files: _ }) => Ordering::Greater,
-            (FileTree::Dir { dir: _, files: _ }, FileTree::File(_)) => Ordering::Less,
-            (FileTree::Dir { dir: lhs, files: _ }, FileTree::Dir { dir: rhs, files: _ }) => {
-                lhs.cmp(rhs)
-            }
+            (
+                FileTree::File {
+                    filename: lhs,
+                    mode: _,
+                },
+                FileTree::File {
+                    filename: rhs,
+                    mode: _,
+                },
+            ) => lhs.cmp(rhs),
+            (
+                FileTree::File {
+                    filename: _,
+                    mode: _,
+                },
+                FileTree::Dir {
+                    dir: _,
+                    files: _,
+                    mode: _,
+                },
+            ) => Ordering::Greater,
+            (
+                FileTree::Dir {
+                    dir: _,
+                    files: _,
+                    mode: _,
+                },
+                FileTree::File {
+                    filename: _,
+                    mode: _,
+                },
+            ) => Ordering::Less,
+            (
+                FileTree::Dir {
+                    dir: lhs,
+                    files: _,
+                    mode: _,
+                },
+                FileTree::Dir {
+                    dir: rhs,
+                    files: _,
+                    mode: _,
+                },
+            ) => lhs.cmp(rhs),
         }
     }
 }

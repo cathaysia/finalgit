@@ -99,6 +99,20 @@ export const commands = {
 			else return { status: "error", error: e as any };
 		}
 	},
+	async getFileContent(
+		commit: string,
+		path: string,
+	): Promise<Result<number[], string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("get_file_content", { commit, path }),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
 };
 
 /** user-defined events **/
@@ -117,8 +131,8 @@ export type BranchInfo = {
 };
 export type BranchTypeRef = "Local" | "Remote";
 export type FileTree =
-	| { File: string }
-	| { Dir: { dir: string; files: FileTree[] } };
+	| { File: { filename: string; mode: number } }
+	| { Dir: { dir: string; files: FileTree[]; mode: number } };
 export type TagInfo = { name: string; commit: string };
 
 /** tauri-specta globals **/

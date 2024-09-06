@@ -1,5 +1,5 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCommitState, useOpenState } from "@/lib/state";
+import { useCommitState, useFileContentState, useOpenState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
@@ -18,6 +18,7 @@ function FileTreeComponent() {
 	const commit = useCommitState((s) => s.commit);
 	const setError = useErrorState((s) => s.setError);
 	const [files, setFiles] = useState<FileTree[]>([]);
+	const setFileContent = useFileContentState((s) => s.setContent);
 
 	useEffect(() => {
 		if (commit) {
@@ -33,30 +34,55 @@ function FileTreeComponent() {
 		}
 	}, [commit]);
 
+	function on_clicked(path: string) {
+		if (commit) {
+			if (path.startsWith("/")) {
+				path = path.substring(1);
+			}
+			commands.getFileContent(commit, path).then((v) => {
+				match(v)
+					.with({ status: "ok" }, (v) => {
+						setFileContent(v.data);
+					})
+					.with({ status: "error" }, (err) => {
+						console.log(err.error);
+					});
+			});
+		}
+	}
+
 	return (
 		<ScrollArea className="h-screen">
 			<SimpleTreeView>
 				{files.map((v) => {
-					return generate_tree("", v);
+					return generate_tree("", v, on_clicked);
 				})}
 			</SimpleTreeView>
 		</ScrollArea>
 	);
 }
 
-function generate_tree(parent: string, file: FileTree) {
+function generate_tree(
+	parent: string,
+	file: FileTree,
+	callback: (path: string) => void,
+) {
 	if ("File" in file) {
-		let key = parent + "/" + file.File;
+		let entry = file.File;
+		let key = parent + "/" + entry.filename;
 		return (
 			<TreeItem
 				itemId={key}
 				key={key}
 				label={
 					<a>
-						<Icon fileName={file.File} />
-						{file.File}
+						<Icon fileName={entry.filename} />
+						{entry.filename}
 					</a>
 				}
+				onClick={() => {
+					callback(key);
+				}}
 			/>
 		);
 	}
@@ -77,7 +103,7 @@ function generate_tree(parent: string, file: FileTree) {
 		>
 			<div>
 				{tree.files.map((v) => {
-					return generate_tree(parent + tree.dir, v);
+					return generate_tree(parent + tree.dir, v, callback);
 				})}
 			</div>
 		</TreeItem>

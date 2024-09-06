@@ -31,13 +31,21 @@ export interface BranchProps {
 export default function EditBranch({ branch }: BranchProps) {
 	const { t, i18n } = useTranslation();
 	const [newName, setNewName] = useState<string>(branch.name);
-	let { refreshBranches } = useBranchState();
+	const setBranches = useBranchState((s) => s.setBranches);
 	const { setError } = useErrorState();
 
 	const [reqBranchRefresh, setReqBanchRe] = useState<Boolean>(false);
 
 	useEffect(() => {
-		refreshBranches();
+		commands.getBranchInfo().then((value) => {
+			match(value)
+				.with({ status: "ok" }, (v) => {
+					setBranches(v.data);
+				})
+				.with({ status: "error" }, (err) => {
+					setError(err.error);
+				});
+		});
 	}, [reqBranchRefresh]);
 
 	return (

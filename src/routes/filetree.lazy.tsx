@@ -45,7 +45,7 @@ function FileTreeComponent() {
 						setFileContent(path, v.data);
 					})
 					.with({ status: "error" }, (err) => {
-						console.log(err.error);
+						setError(err.error);
 					});
 			});
 		}
@@ -103,7 +103,7 @@ function generate_tree(
 		>
 			<div>
 				{tree.files.map((v) => {
-					return generate_tree(parent + tree.dir, v, callback);
+					return generate_tree(key, v, callback);
 				})}
 			</div>
 		</TreeItem>

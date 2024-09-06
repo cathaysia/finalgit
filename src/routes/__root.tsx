@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { open } from "@tauri-apps/plugin-dialog";
-import { useOpenState } from "@/lib/state";
+import { useCommitState, useOpenState } from "@/lib/state";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
@@ -11,11 +11,14 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { Nav } from "@/components/Nav";
 import { FaHome } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export const Route = createRootRoute({
 	component: () => {
 		const setIsOpened = useOpenState((s) => s.setIsOpened);
 		const { err, setError, clearError } = useErrorState();
+		const commit = useCommitState((s) => s.commit);
+		const { t, i18n } = useTranslation();
 
 		useEffect(() => {
 			if (err) {
@@ -52,8 +55,9 @@ export const Route = createRootRoute({
 										});
 								});
 							}}
+							title={t("Open Repo")}
 						>
-							Open Repo
+							{commit ? commit.slice(0, 6) : t("Open Repo")}
 						</Button>
 						<ModeToggle />
 					</div>

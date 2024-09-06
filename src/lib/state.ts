@@ -28,8 +28,8 @@ export const useBranchState = create<BranchState>((set) => ({
 				.with({ status: "ok" }, (v) => {
 					set({ branches: v.data });
 				})
-				.with({ status: "error" }, (e) => {
-					console.log(e);
+				.with({ status: "error" }, (err) => {
+					console.log(err.error);
 				});
 		});
 	},
@@ -51,7 +51,7 @@ export const useTagStatte = create<TagState>((set) => ({
 					set({ tags: v.data });
 				})
 				.with({ status: "error" }, (err) => {
-					console.log(err);
+					console.log(err.error);
 				});
 		});
 	},

@@ -66,12 +66,15 @@ export const useCommitState = create<CommitState>()(
 
 export interface FileContentState {
 	content: number[];
-	setContent: (content: number[]) => void;
+	file_name: string;
+	setContent: (file_name: string, content: number[]) => void;
 }
 
 export const useFileContentState = create<FileContentState>()(
 	devtools((set) => ({
 		content: [],
-		setContent: (content: number[]) => set({ content: content }),
+		file_name: "",
+		setContent: (file_name: string, content: number[]) =>
+			set({ content: content, file_name: file_name }),
 	})),
 );

@@ -42,7 +42,7 @@ function FileTreeComponent() {
 			commands.getFileContent(commit, path).then((v) => {
 				match(v)
 					.with({ status: "ok" }, (v) => {
-						setFileContent(v.data);
+						setFileContent(path, v.data);
 					})
 					.with({ status: "error" }, (err) => {
 						console.log(err.error);

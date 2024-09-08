@@ -2,6 +2,8 @@ import { useFileContentState } from "@/lib/state";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
+import languageMap from "@/lib/languageMap";
+import { basename } from "path";
 
 export const Route = createLazyFileRoute("/file_content")({
 	component: FileContent,
@@ -19,13 +21,13 @@ function FileContent() {
 		setFileContent(v);
 	}, [content]);
 
-	const file_type = get_file_type(file_name);
+	let file_type = get_file_type(file_name);
 
 	return (
 		<div>
 			<Editor
 				value={fileContent}
-				defaultLanguage={file_type}
+				defaultLanguage={file_type || undefined}
 				width="100vw"
 				height="100vh"
 				options={{
@@ -40,16 +42,34 @@ function FileContent() {
 }
 
 function get_file_type(file_name: string) {
-	const spec = file_name.split(".");
-	const ext = spec[spec.length - 1];
-	const EXT_MAP = {
+	const base_name = file_name.split("/").at(-1);
+	if (!base_name) {
+		return null;
+	}
+	if (languageMap.fileNames[base_name]) {
+		return languageMap.fileNames[base_name];
+	}
+	const idx = base_name.indexOf(".");
+	const ext = base_name.slice(idx);
+	if (languageMap.fileExtensions[ext]) {
+		return languageMap.fileExtensions[ext];
+	}
+	const lastExt = base_name.split(".").at(-1);
+	if (!lastExt) {
+		return null;
+	}
+	if (lastExt && languageMap.fileExtensions[lastExt]) {
+		return languageMap.fileExtensions[lastExt];
+	}
+
+	const EXT_MAP: Record<string, string> = {
 		md: "markdown",
 		toml: "toml",
 		rs: "rust",
 	};
 
-	if (EXT_MAP[ext]) {
-		return EXT_MAP[ext];
+	if (EXT_MAP[lastExt]) {
+		return EXT_MAP[lastExt];
 	}
 
 	return null;

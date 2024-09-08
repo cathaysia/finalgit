@@ -38,6 +38,13 @@ export default function EditTag({ tag }: BranchProps) {
 				>
 					{t("Rename")}
 				</Button>
+				<Button
+					onClick={() =>
+						newName && console.log(`rename from ${tag.name} to ${newName}`)
+					}
+				>
+					{t("Delete")}
+				</Button>
 			</div>
 			<div>
 				<Button>{t("Push")}</Button>

@@ -45,7 +45,7 @@ function CommitList() {
 	}, [branch]);
 
 	return (
-		<ScrollArea className="w-full h-svh">
+		<ScrollArea className="w-screen h-screen">
 			<Accordion collapsible type="single">
 				{commit.map((item) => {
 					const time = new Date(item.time);

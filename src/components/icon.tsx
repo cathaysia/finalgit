@@ -1,13 +1,8 @@
 import { Manifest } from "material-icon-theme";
 import * as Dist from "material-icon-theme/dist/material-icons.json";
-import languageMap from "@/language-map.json";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
-const languageMapTyped = languageMap as {
-	fileExtensions: Record<string, string>;
-	fileNames: Record<string, string>;
-};
+import languageMap from "@/lib/languageMap";
 
 const manifest = Dist as Manifest;
 
@@ -77,13 +72,12 @@ function lookForMatch(
 			if (manifest.languageIds?.[ext]) return manifest.languageIds?.[ext];
 		}
 
-		if (languageMapTyped.fileNames[fileName])
-			return languageMapTyped.fileNames[fileName];
-		if (languageMapTyped.fileNames[lowerFileName])
-			return languageMapTyped.fileNames[lowerFileName];
+		if (languageMap.fileNames[fileName]) return languageMap.fileNames[fileName];
+		if (languageMap.fileNames[lowerFileName])
+			return languageMap.fileNames[lowerFileName];
 		for (const ext of fileExtensions) {
-			if (languageMapTyped.fileExtensions[ext])
-				return languageMapTyped.fileExtensions[ext];
+			if (languageMap.fileExtensions[ext])
+				return languageMap.fileExtensions[ext];
 		}
 
 		return "file";

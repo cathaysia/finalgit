@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { FileTree } from "@/bindings";
-import Icon from "@/components/Icon";
+import Icon from "@/components/icon";
 import { commands } from "@/bindings";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";

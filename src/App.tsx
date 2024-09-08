@@ -1,6 +1,6 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { ThemeProvider } from "./components/theme-provider";
+import { ThemeProvider } from "./components/themeProvider";
 
 const router = createRouter({ routeTree });
 

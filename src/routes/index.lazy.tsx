@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BranchInfo, TagInfo } from "@/bindings";
-import EditBranch from "@/components/edit_branch";
+import EditBranch from "@/components/editBranch";
 
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,10 +14,10 @@ import {
 	useTagStatte,
 } from "@/lib/state";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import EditTag from "@/components/edit_tag";
+import EditTag from "@/components/editTag";
 import { FaCodeBranch, FaTag } from "react-icons/fa";
 import { commands } from "@/bindings";
-import Icon from "@/components/Icon";
+import Icon from "@/components/icon";
 import clsx from "clsx";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";

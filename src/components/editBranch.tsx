@@ -85,7 +85,7 @@ export default function EditBranch({ branch }: BranchProps) {
 						setNewName(e.target.value);
 						setReqBanchRe(!reqBranchRefresh);
 					}}
-				></Input>
+				/>
 				<Button
 					onClick={() => {
 						if (newName && newName != branch.name) {
@@ -103,17 +103,6 @@ export default function EditBranch({ branch }: BranchProps) {
 				>
 					{t("Create")}
 				</Button>
-			</div>
-			<div className="flex w-full max-w-sm items-center space-x-2">
-				<Input
-					type="text"
-					value={newName}
-					placeholder={t("New branch name")}
-					onChange={(e) => {
-						setNewName(e.target.value);
-						setReqBanchRe(!reqBranchRefresh);
-					}}
-				></Input>
 				<Button
 					onClick={() => {
 						if (newName && newName != branch.name) {
@@ -132,7 +121,7 @@ export default function EditBranch({ branch }: BranchProps) {
 					{t("Rename")}
 				</Button>
 			</div>
-			<div>
+			<div className="flex justify-between">
 				{branch.remote == null ? (
 					<>
 						<Button>{t("Push")}</Button>
@@ -153,6 +142,7 @@ export default function EditBranch({ branch }: BranchProps) {
 								});
 						});
 					}}
+					disabled={branch.is_head}
 				>
 					{t("Delete")}
 				</Button>

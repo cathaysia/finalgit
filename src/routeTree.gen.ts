@@ -13,6 +13,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as CommitImport } from "./routes/commit";
 
 // Create Virtual Routes
 
@@ -44,6 +45,11 @@ const AboutLazyRoute = AboutLazyImport.update({
 	getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/about.lazy").then((d) => d.Route));
 
+const CommitRoute = CommitImport.update({
+	path: "/commit",
+	getParentRoute: () => rootRoute,
+} as any);
+
 const IndexLazyRoute = IndexLazyImport.update({
 	path: "/",
 	getParentRoute: () => rootRoute,
@@ -58,6 +64,13 @@ declare module "@tanstack/react-router" {
 			path: "/";
 			fullPath: "/";
 			preLoaderRoute: typeof IndexLazyImport;
+			parentRoute: typeof rootRoute;
+		};
+		"/commit": {
+			id: "/commit";
+			path: "/commit";
+			fullPath: "/commit";
+			preLoaderRoute: typeof CommitImport;
 			parentRoute: typeof rootRoute;
 		};
 		"/about": {
@@ -95,6 +108,7 @@ declare module "@tanstack/react-router" {
 
 export const routeTree = rootRoute.addChildren({
 	IndexLazyRoute,
+	CommitRoute,
 	AboutLazyRoute,
 	FilecontentLazyRoute,
 	FiletreeLazyRoute,
@@ -110,6 +124,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/commit",
         "/about",
         "/file_content",
         "/filetree",
@@ -118,6 +133,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/commit": {
+      "filePath": "commit.tsx"
     },
     "/about": {
       "filePath": "about.lazy.tsx"

@@ -23,6 +23,7 @@ import { commands } from "@/bindings";
 import { match } from "ts-pattern";
 import { ok } from "assert";
 import { useErrorState } from "@/lib/error";
+import { Link } from "@tanstack/react-router";
 
 export interface BranchProps {
 	branch: BranchInfo;
@@ -164,6 +165,17 @@ export default function EditBranch({ branch }: BranchProps) {
 						{t("Checkout")}
 					</Button>
 				)}
+				<Button>
+					<Link
+						to="/commit"
+						search={{
+							branch: branch.name,
+							kind: branch.kind,
+						}}
+					>
+						{t("commit")}
+					</Link>
+				</Button>
 			</div>
 		</SheetContent>
 	);

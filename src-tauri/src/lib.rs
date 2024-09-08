@@ -30,6 +30,7 @@ pub fn run() {
             branch::get_file_tree,
             branch::get_file_content,
             branch::get_current_status,
+            branch::get_commits,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -68,6 +69,7 @@ mod test {
                 branch::get_file_tree,
                 branch::get_file_content,
                 branch::get_current_status,
+                branch::get_commits,
             ]);
 
         builder

@@ -121,6 +121,20 @@ export const commands = {
 			else return { status: "error", error: e as any };
 		}
 	},
+	async getCommits(
+		branch: string,
+		kind: BranchType,
+	): Promise<Result<CommitInfo[], string>> {
+		try {
+			return {
+				status: "ok",
+				data: await TAURI_INVOKE("get_commits", { branch, kind }),
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: "error", error: e as any };
+		}
+	},
 };
 
 /** user-defined events **/
@@ -129,15 +143,24 @@ export const commands = {
 
 /** user-defined types **/
 
+export type Author = { name: string; email: string };
 export type BranchInfo = {
 	remote: string | null;
 	name: string;
-	kind: BranchTypeRef;
+	kind: BranchType;
 	commit: string;
 	is_head: boolean;
 	upstream: string | null;
 };
-export type BranchTypeRef = "Local" | "Remote";
+export type BranchType = "Local" | "Remote";
+export type CommitInfo = {
+	hash: string;
+	author: Author;
+	commiter: Author;
+	message: string;
+	summary: string;
+	time: number;
+};
 export type FileStatus = { path: string; status: number };
 export type FileTree =
 	| { File: { filename: string; mode: number } }

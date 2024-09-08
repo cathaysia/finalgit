@@ -82,8 +82,8 @@ pub struct TagInfo {
 pub struct BranchInfo {
     pub remote: Option<String>,
     pub name: String,
-    #[serde(with = "BranchType")]
-    #[specta(type=BranchTypeRef)]
+    #[serde(with = "BranchTypeSerde")]
+    #[specta(type=BranchType)]
     pub kind: git2::BranchType,
     pub commit: String,
     pub is_head: bool,
@@ -92,20 +92,45 @@ pub struct BranchInfo {
 
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(remote = "git2::BranchType")]
-enum BranchType {
+enum BranchTypeSerde {
     #[default]
     Local,
     Remote,
 }
 
-#[derive(Type)]
-enum BranchTypeRef {
+#[derive(Debug, Copy, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
+pub enum BranchType {
     Local,
     Remote,
+}
+
+impl From<BranchType> for git2::BranchType {
+    fn from(value: BranchType) -> Self {
+        match value {
+            BranchType::Local => Self::Local,
+            BranchType::Remote => Self::Remote,
+        }
+    }
 }
 
 #[derive(Debug, serde::Serialize, Clone, PartialEq, Eq, serde::Deserialize, Type)]
 pub struct FileStatus {
     pub path: String,
     pub status: u32,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
+pub struct Author {
+    pub name: String,
+    pub email: String,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
+pub struct CommitInfo {
+    pub hash: String,
+    pub author: Author,
+    pub commiter: Author,
+    pub message: String,
+    pub summary: String,
+    pub time: u32,
 }

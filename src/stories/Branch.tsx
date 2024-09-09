@@ -39,7 +39,7 @@ export default function Branch({
 	return (
 		<div
 			className={cn(
-				"w-full flex justify-between rounded-md border px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
+				"w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
 				is_head && "border-green-600",
 				className,
 			)}

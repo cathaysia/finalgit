@@ -87,8 +87,11 @@ export default function Branch({
 						</DropdownMenuContent>
 					</DropdownMenu>
 				) : (
-					<div>
+					<div className="flex gap-2">
 						<Button onClick={() => setIsRenaming(false)}>{t("Enter")}</Button>
+						<Button onClick={() => setIsRenaming(false)} variant={"outline"}>
+							{t("Cancel")}
+						</Button>
 					</div>
 				)}
 			</div>

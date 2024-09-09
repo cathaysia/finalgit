@@ -20,6 +20,8 @@ export interface BranchProps {
 	is_local?: boolean;
 	upstream?: string;
 	className?: string;
+	on_rename?: (name: string) => void;
+	on_delete?: () => void;
 }
 
 export default function Branch({
@@ -28,9 +30,11 @@ export default function Branch({
 	is_local = true,
 	upstream,
 	className,
+	on_rename,
+	on_delete,
 }: BranchProps) {
 	const { t, i18n } = useTranslation();
-	const [isRenaming, setIsRenaming] = useState<boolean>(false);
+	const [newName, setNewName] = useState<string>();
 
 	return (
 		<div
@@ -40,7 +44,7 @@ export default function Branch({
 				className,
 			)}
 		>
-			{!isRenaming ? (
+			{!newName ? (
 				<p className="text-sm font-medium leading-none items-center flex gap-2">
 					<FaCodeBranch className="inline-bloc" />
 					<span>{branch}</span>
@@ -52,16 +56,22 @@ export default function Branch({
 					<Input
 						type="text"
 						autoFocus
+						value={newName}
+						onChange={(v) => setNewName(v.target.value)}
 						onKeyUp={(e) => {
-							if (e.key == "Escape") {
-								setIsRenaming(false);
+							if (newName && e.key == "Escape") {
+								setNewName(undefined);
+							}
+							if (newName && e.key == "Enter") {
+								on_rename && on_rename(newName);
+								setNewName(undefined);
 							}
 						}}
 					/>
 				</div>
 			)}
 			<div>
-				{!isRenaming ? (
+				{!newName ? (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant={"ghost"} size="sm">
@@ -70,7 +80,7 @@ export default function Branch({
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
 							<DropdownMenuGroup>
-								<DropdownMenuItem onClick={() => setIsRenaming(true)}>
+								<DropdownMenuItem onClick={() => setNewName(branch)}>
 									{t("Rename")}
 								</DropdownMenuItem>
 								{!is_head && (
@@ -80,7 +90,12 @@ export default function Branch({
 								<DropdownMenuItem>{t("Set upstream")}</DropdownMenuItem>
 								<DropdownMenuItem>{t("Pull")}</DropdownMenuItem>
 								<DropdownMenuItem>{t("Push")}</DropdownMenuItem>
-								<DropdownMenuItem className="text-red-600">
+								<DropdownMenuItem
+									className="text-red-600"
+									onClick={() => {
+										on_delete && on_delete();
+									}}
+								>
 									{t("Delete")}
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
@@ -88,8 +103,14 @@ export default function Branch({
 					</DropdownMenu>
 				) : (
 					<div className="flex gap-2">
-						<Button onClick={() => setIsRenaming(false)}>{t("Enter")}</Button>
-						<Button onClick={() => setIsRenaming(false)} variant={"outline"}>
+						<Button
+							onClick={() => {
+								on_rename && on_rename(newName);
+							}}
+						>
+							{t("Enter")}
+						</Button>
+						<Button onClick={() => setNewName(undefined)} variant={"outline"}>
 							{t("Cancel")}
 						</Button>
 					</div>

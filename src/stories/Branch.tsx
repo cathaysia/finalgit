@@ -30,7 +30,7 @@ export default function Branch({
 	className,
 }: BranchProps) {
 	const { t, i18n } = useTranslation();
-	const [isRenaming, setIsRenaming] = useState<boolean>(true);
+	const [isRenaming, setIsRenaming] = useState<boolean>(false);
 
 	return (
 		<div

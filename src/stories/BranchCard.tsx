@@ -14,6 +14,7 @@ import {
 import Branch from "./Branch";
 import { cn } from "@/lib/utils";
 import BranchList from "./BranchList";
+import { TagList } from "./TagList";
 
 export interface BranchCardProps {
 	branches: BranchInfo[];
@@ -26,6 +27,13 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 	const [isBranch, setIsBranch] = useState<boolean>(true);
 
 	const filteredBranches = branches.filter((item) => {
+		if (!filter) {
+			return true;
+		}
+
+		return item.name.includes(filter);
+	});
+	const filteredTags = tags.filter((item) => {
 		if (!filter) {
 			return true;
 		}
@@ -77,9 +85,14 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 			</div>
 			<div>
 				<TabsContent value="branch" className="w-full flex flex-col">
-					<BranchList branches={filteredBranches} />
+					<BranchList
+						branches={filteredBranches}
+						filter={filter || undefined}
+					/>
 				</TabsContent>
-				<TabsContent value="tag"></TabsContent>
+				<TabsContent value="tags">
+					<TagList tags={filteredTags} filter={filter || undefined} />
+				</TabsContent>
 			</div>
 		</Tabs>
 	);

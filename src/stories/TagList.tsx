@@ -1,27 +1,22 @@
-import { BranchInfo } from "@/bindings";
-import React from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Branch from "./Branch";
+import { TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import React from "react";
+import { Tag } from "./Tag";
 
-export interface BranchListProps {
-	branches: BranchInfo[];
+export interface TagListProps {
+	tags: TagInfo[];
 	filter?: string;
 	className?: string;
 }
 
-export default function BranchList({
-	branches,
-	filter,
-	className,
-}: BranchListProps) {
+export function TagList({ tags, filter, className }: TagListProps) {
 	const parentRef = React.useRef();
 
 	const rowVirtualizer = useVirtualizer({
-		count: branches.length,
+		count: tags.length,
 		getScrollElement: () => parentRef.current || null,
-		estimateSize: () => 65,
+		estimateSize: () => 60,
 	});
 
 	return (
@@ -39,7 +34,7 @@ export default function BranchList({
 				className="w-full relative"
 			>
 				{rowVirtualizer.getVirtualItems().map((virtualItem) => {
-					const item = branches[virtualItem.index];
+					const item = tags[virtualItem.index];
 
 					return (
 						<div
@@ -50,7 +45,7 @@ export default function BranchList({
 								transform: `translateY(${virtualItem.start}px)`,
 							}}
 						>
-							<Branch info={item} filter={filter} />
+							<Tag info={item} filter={filter} />
 						</div>
 					);
 				})}

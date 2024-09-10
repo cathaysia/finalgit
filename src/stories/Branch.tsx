@@ -17,6 +17,7 @@ import { BranchInfo } from "@/bindings";
 
 export interface BranchProps {
 	info: BranchInfo;
+	filter?: string;
 	className?: string;
 	on_rename?: (name: string) => void;
 	on_delete?: () => void;
@@ -24,6 +25,7 @@ export interface BranchProps {
 
 export default function Branch({
 	info,
+	filter,
 	className,
 	on_rename,
 	on_delete,
@@ -45,8 +47,18 @@ export default function Branch({
 		>
 			{!newName ? (
 				<span className="text-sm font-medium leading-none items-center flex gap-2">
-					<FaCodeBranch className="inline-bloc" />
-					<span>{branch}</span>
+					<FaCodeBranch className="inline-block" />
+					{(() => {
+						console.log(filter);
+						if (!filter) {
+							return <span>{branch}</span>;
+						}
+						let v = branch.replace(
+							filter,
+							`<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
+						);
+						return <span dangerouslySetInnerHTML={{ __html: v }}></span>;
+					})()}
 					<Badge>{is_local ? t("Local") : t("Remote")}</Badge>
 					{upstream && <Badge>{upstream}</Badge>}
 				</span>

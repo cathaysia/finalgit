@@ -2,6 +2,8 @@
 	"About": "关于",
 	"Add to stage": "暂存",
 	"Branch Name": "分支名",
+	"Branches": "分支",
+	"Cancel": "取消",
 	"Checkout": "检出",
 	"commit": "提交",
 	"Commit": "Commit",
@@ -28,8 +30,9 @@
 	"Remote": "远程",
 	"Rename": "重命名",
 	"Set upstream": "设置上游",
-	"stash": "",
+	"stash": "暂存",
 	"Status": "状态",
 	"Tag": "标签",
+	"Tags": "标签",
 	"Upstream": "上游"
 }

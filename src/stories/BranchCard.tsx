@@ -60,11 +60,14 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 					</TabsTrigger>
 				</TabsList>
 				{filter == null ? (
-					<FaFilter
+					<Button
 						onClick={() => {
 							setFilter("");
 						}}
-					/>
+						variant={"ghost"}
+					>
+						<FaFilter />
+					</Button>
 				) : (
 					<>
 						<Input

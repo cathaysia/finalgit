@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import Branch from "./Branch";
 import { cn } from "@/lib/utils";
+import BranchList from "./BranchList";
 
 export interface BranchCardProps {
 	branches: BranchInfo[];
@@ -23,6 +24,14 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 	const { t, i18n } = useTranslation();
 	const [filter, setFilter] = useState<string | null>(null);
 	const [isBranch, setIsBranch] = useState<boolean>(true);
+
+	const filteredBranches = branches.filter((item) => {
+		if (!filter) {
+			return true;
+		}
+
+		return item.name.includes(filter);
+	});
 
 	return (
 		<Tabs defaultValue="branch" className="border">
@@ -68,24 +77,7 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 			</div>
 			<div>
 				<TabsContent value="branch" className="w-full flex flex-col">
-					{branches
-						.filter((item) => {
-							if (!filter) {
-								return true;
-							}
-
-							return item.name.includes(filter);
-						})
-						.map((item) => {
-							return (
-								<Branch
-									branch={item.name}
-									is_head={item.is_head}
-									is_local={item.kind == "Local"}
-									upstream={item.upstream || undefined}
-								></Branch>
-							);
-						})}
+					<BranchList branches={filteredBranches} />
 				</TabsContent>
 				<TabsContent value="tag"></TabsContent>
 			</div>

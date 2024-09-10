@@ -27,6 +27,7 @@
 		"@radix-ui/react-slot": "^1.1.0",
 		"@radix-ui/react-tabs": "^1.1.0",
 		"@tanstack/react-router": "^1.52.4",
+		"@tanstack/react-virtual": "^3.10.7",
 		"@tauri-apps/api": ">=2.0.0-rc.0",
 		"@tauri-apps/plugin-dialog": "2.0.0-rc.1",
 		"@tauri-apps/plugin-shell": ">=2.0.0-rc.0",

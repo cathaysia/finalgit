@@ -13,28 +13,27 @@ import { FaCodeBranch, FaInfo, FaInfoCircle } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { BranchInfo } from "@/bindings";
 
 export interface BranchProps {
-	branch: string;
-	is_head?: boolean;
-	is_local?: boolean;
-	upstream?: string;
+	info: BranchInfo;
 	className?: string;
 	on_rename?: (name: string) => void;
 	on_delete?: () => void;
 }
 
 export default function Branch({
-	branch,
-	is_head = false,
-	is_local = true,
-	upstream,
+	info,
 	className,
 	on_rename,
 	on_delete,
 }: BranchProps) {
 	const { t, i18n } = useTranslation();
 	const [newName, setNewName] = useState<string>();
+	const is_head = info.is_head;
+	const branch = info.name;
+	const upstream = info.remote;
+	const is_local = info.kind == "Local";
 
 	return (
 		<div
@@ -45,12 +44,12 @@ export default function Branch({
 			)}
 		>
 			{!newName ? (
-				<p className="text-sm font-medium leading-none items-center flex gap-2">
+				<span className="text-sm font-medium leading-none items-center flex gap-2">
 					<FaCodeBranch className="inline-bloc" />
 					<span>{branch}</span>
 					<Badge>{is_local ? t("Local") : t("Remote")}</Badge>
 					{upstream && <Badge>{upstream}</Badge>}
-				</p>
+				</span>
 			) : (
 				<div className="w-full">
 					<Input

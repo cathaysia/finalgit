@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import WorkspacePanel from "./workspacePanel";
+import { Default as ChangeCardStories } from "./ChangeCard.stories.tsx";
 
 const meta = {
 	component: WorkspacePanel,
@@ -14,6 +15,6 @@ export const Default: Story = {
 	args: {
 		branchName: "master",
 		upstream: "origin/master",
-		changeSet: [],
+		changeSet: ChangeCardStories.args.changeSet,
 	},
 };

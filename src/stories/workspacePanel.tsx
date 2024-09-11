@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import ChangeCard from "./ChangeCard";
 
 export interface WorkspacePanelProps
 	extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -49,11 +50,7 @@ export default function WorkspacePanel({
 						</Avatar>
 					</div>
 				</div>
-				<div>
-					{changeSet.map((item) => {
-						return <div>{item.path}</div>;
-					})}
-				</div>
+				<ChangeCard changeSet={changeSet} />
 				<Button className="w-full">{t("Start commit")}</Button>
 			</div>
 		</div>

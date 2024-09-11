@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import WorkspacePanel from "./workspace_panel";
+import WorkspacePanel from "./workspacePanel";
 
 const meta = {
 	component: WorkspacePanel,

@@ -19,9 +19,14 @@ import { TagList } from "./TagList";
 export interface BranchCardProps {
 	branches: BranchInfo[];
 	tags: TagInfo[];
+	className?: string;
 }
 
-export default function BranchCard({ branches, tags }: BranchCardProps) {
+export default function BranchCard({
+	branches,
+	tags,
+	className,
+}: BranchCardProps) {
 	const { t, i18n } = useTranslation();
 	const [filter, setFilter] = useState<string | null>(null);
 	const [isBranch, setIsBranch] = useState<boolean>(true);
@@ -42,7 +47,7 @@ export default function BranchCard({ branches, tags }: BranchCardProps) {
 	});
 
 	return (
-		<Tabs defaultValue="branch" className="border">
+		<Tabs defaultValue="branch" className={cn("border", className)}>
 			<div className="w-full flex justify-between px-4 py-3 items-center gap-2">
 				<TabsList
 					className={cn(

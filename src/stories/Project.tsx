@@ -27,15 +27,15 @@ export default function Project({
 }: ProjectProps) {
 	const { t, i18n } = useTranslation();
 	return (
-		<div className={cn("w-full", className)}>
+		<>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button className="w-52 flex justify-between">
+					<Button className={cn("w-52 flex justify-between", className)}>
 						<span>{current}</span>
 						<BsChevronExpand />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-52">
+				<DropdownMenuContent className={cn("w-52", className)}>
 					<DropdownMenuGroup>
 						{projects.map((item) => {
 							return (
@@ -62,6 +62,6 @@ export default function Project({
 					</DropdownMenuGroup>
 				</DropdownMenuContent>
 			</DropdownMenu>
-		</div>
+		</>
 	);
 }

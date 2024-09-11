@@ -6,8 +6,8 @@ import "./locales.ts";
 import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<React.StrictMode>
-		<App />
-		<Toaster />
-	</React.StrictMode>,
+    <React.StrictMode>
+        <App />
+        <Toaster />
+    </React.StrictMode>,
 );

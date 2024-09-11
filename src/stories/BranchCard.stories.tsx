@@ -5,7 +5,7 @@ import { Default as TagListStories } from "./TagList.stories.tsx";
 import BranchCard from "./BranchCard";
 
 const meta = {
-	component: BranchCard,
+    component: BranchCard,
 } satisfies Meta<typeof BranchCard>;
 
 export default meta;
@@ -13,8 +13,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {
-		branches: BranchListStories.args.branches,
-		tags: TagListStories.args.tags,
-	},
+    args: {
+        branches: BranchListStories.args.branches,
+        tags: TagListStories.args.tags,
+    },
 };

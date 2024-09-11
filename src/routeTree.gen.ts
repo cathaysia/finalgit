@@ -26,93 +26,93 @@ const IndexLazyImport = createFileRoute("/")();
 // Create/Update Routes
 
 const StatusLazyRoute = StatusLazyImport.update({
-	path: "/status",
-	getParentRoute: () => rootRoute,
+    path: "/status",
+    getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/status.lazy").then((d) => d.Route));
 
 const FiletreeLazyRoute = FiletreeLazyImport.update({
-	path: "/filetree",
-	getParentRoute: () => rootRoute,
+    path: "/filetree",
+    getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/filetree.lazy").then((d) => d.Route));
 
 const FilecontentLazyRoute = FilecontentLazyImport.update({
-	path: "/file_content",
-	getParentRoute: () => rootRoute,
+    path: "/file_content",
+    getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/file_content.lazy").then((d) => d.Route));
 
 const AboutLazyRoute = AboutLazyImport.update({
-	path: "/about",
-	getParentRoute: () => rootRoute,
+    path: "/about",
+    getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/about.lazy").then((d) => d.Route));
 
 const CommitRoute = CommitImport.update({
-	path: "/commit",
-	getParentRoute: () => rootRoute,
+    path: "/commit",
+    getParentRoute: () => rootRoute,
 } as any);
 
 const IndexLazyRoute = IndexLazyImport.update({
-	path: "/",
-	getParentRoute: () => rootRoute,
+    path: "/",
+    getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
 
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexLazyImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/commit": {
-			id: "/commit";
-			path: "/commit";
-			fullPath: "/commit";
-			preLoaderRoute: typeof CommitImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/about": {
-			id: "/about";
-			path: "/about";
-			fullPath: "/about";
-			preLoaderRoute: typeof AboutLazyImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/file_content": {
-			id: "/file_content";
-			path: "/file_content";
-			fullPath: "/file_content";
-			preLoaderRoute: typeof FilecontentLazyImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/filetree": {
-			id: "/filetree";
-			path: "/filetree";
-			fullPath: "/filetree";
-			preLoaderRoute: typeof FiletreeLazyImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/status": {
-			id: "/status";
-			path: "/status";
-			fullPath: "/status";
-			preLoaderRoute: typeof StatusLazyImport;
-			parentRoute: typeof rootRoute;
-		};
-	}
+    interface FileRoutesByPath {
+        "/": {
+            id: "/";
+            path: "/";
+            fullPath: "/";
+            preLoaderRoute: typeof IndexLazyImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/commit": {
+            id: "/commit";
+            path: "/commit";
+            fullPath: "/commit";
+            preLoaderRoute: typeof CommitImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/about": {
+            id: "/about";
+            path: "/about";
+            fullPath: "/about";
+            preLoaderRoute: typeof AboutLazyImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/file_content": {
+            id: "/file_content";
+            path: "/file_content";
+            fullPath: "/file_content";
+            preLoaderRoute: typeof FilecontentLazyImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/filetree": {
+            id: "/filetree";
+            path: "/filetree";
+            fullPath: "/filetree";
+            preLoaderRoute: typeof FiletreeLazyImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/status": {
+            id: "/status";
+            path: "/status";
+            fullPath: "/status";
+            preLoaderRoute: typeof StatusLazyImport;
+            parentRoute: typeof rootRoute;
+        };
+    }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-	IndexLazyRoute,
-	CommitRoute,
-	AboutLazyRoute,
-	FilecontentLazyRoute,
-	FiletreeLazyRoute,
-	StatusLazyRoute,
+    IndexLazyRoute,
+    CommitRoute,
+    AboutLazyRoute,
+    FilecontentLazyRoute,
+    FiletreeLazyRoute,
+    StatusLazyRoute,
 });
 
 /* prettier-ignore-end */

@@ -41,9 +41,10 @@ export default function Branch({
     const branch = info.name;
     const upstream = info.remote;
     const is_local = info.kind === "Local";
-    const repo_path = useAppState((s) => s.repo_path);
+    const [repo_path, changes] = useAppState((s) => [s.repo_path, s.changes]);
     const setError = useErrorState((s) => s.setError);
     const [refreshBranch] = useRefreshRequest((s) => [s.refreshBranch]);
+    const is_dirty = changes.length != 0;
 
     function checkout(branch: string) {
         if (repo_path) {
@@ -133,6 +134,7 @@ export default function Branch({
                                 </DropdownMenuItem>
                                 {!is_head && (
                                     <DropdownMenuItem
+                                        disabled={is_dirty}
                                         onClick={() => {
                                             checkout(branch);
                                         }}
@@ -141,6 +143,11 @@ export default function Branch({
                                                 "text-yellow-500 hover:text-yellow-500",
                                         )}
                                         title={(() => {
+                                            if (is_dirty) {
+                                                return t(
+                                                    "branch.disable_dirty",
+                                                );
+                                            }
                                             if (!is_local) {
                                                 return t(
                                                     "branch.checkout_remote",

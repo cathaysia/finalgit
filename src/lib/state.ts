@@ -1,4 +1,4 @@
-import type { BranchInfo, TagInfo, } from "@/bindings";
+import type { BranchInfo, FileStatus, TagInfo } from "@/bindings";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -6,19 +6,23 @@ export interface AppState {
     repo_path?: string | null;
     branches: BranchInfo[];
     tags: TagInfo[];
+    changes: FileStatus[];
     setRepoPath: (isOpened: string) => void;
     setBranches: (branches: BranchInfo[]) => void;
     setTags: (tags: TagInfo[]) => void;
+    setChanges: (changes: FileStatus[]) => void;
 }
 
 export const useAppState = create<AppState>()(
     devtools((set) => ({
         repo_path: null,
         branches: [],
+        changes: [],
         tags: [],
         setRepoPath: (repo_path: string) => set({ repo_path: repo_path }),
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
+        setChanges: (changes: FileStatus[]) => set({ changes: changes }),
     })),
 );
 

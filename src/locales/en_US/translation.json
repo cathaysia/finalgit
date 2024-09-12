@@ -1,12 +1,13 @@
 {
-    "About": "About",
     "branch": {
         "apply": "Apply",
         "branch_name": "Branch Name",
         "branches": "Branches",
         "checkout": "Checkout",
+        "checkout_remote": "Checkout into local branch",
         "delete": "Delete",
         "details": "Details",
+        "disable_dirty": "Workspace is dirty. Commit or Stash first.",
         "edit_branch": "Edit Branch",
         "local": "Local",
         "new_branch_name": "New Branch Name",
@@ -32,37 +33,27 @@
         "generate_message": "Generate Message",
         "start_commit": "Start Commit"
     },
-    "Content": "Content",
     "Create": "Create",
     "Delete": "Delete",
-    "File": "File",
-    "Home": "Home",
-    "Local": "Local",
     "project": {
         "add_local_repository": "add local repository",
         "clone_repository": "clone repository"
     },
     "Pull": "Pull",
     "Push": "Push",
-    "Remote": "Remote",
     "Rename": "Rename",
-    "Status": "Status",
     "tag": {
         "delete": "delete",
         "edit_tag": "edit tag",
         "new_tag_name": "new tag name"
     },
-    "Tag": "Tag",
-    "Upstream": "Upstream",
-    "worksapce": {
-        "generate_patch": "Generate patch",
-        "open_repo": "Open Repo"
+    "tags": {
+        "create_branch": "Create branch from tag"
     },
+    "Upstream": "Upstream",
     "workspace": {
-        "add_to_stage": "Add to stage",
         "changed_files": "Changed files",
         "create_pr": "Create PR",
-        "diff": "Diff",
         "discard": "Discard",
         "discard_all": "Discard all",
         "generate_patch": "Generate patch",

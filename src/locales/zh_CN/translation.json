@@ -1,12 +1,13 @@
 {
-    "About": "关于",
     "branch": {
         "apply": "branch.apply",
         "branch_name": "branch.branch_name",
         "branches": "branch.branches",
         "checkout": "branch.checkout",
+        "checkout_remote": "branch.checkout_remote",
         "delete": "branch.delete",
         "details": "branch.details",
+        "disable_dirty": "branch.disable_dirty",
         "edit_branch": "branch.edit_branch",
         "local": "branch.local",
         "new_branch_name": "branch.new_branch_name",
@@ -32,37 +33,27 @@
         "generate_message": "commiter.generate_message",
         "start_commit": "commiter.start_commit"
     },
-    "Content": "文件内容",
     "Create": "创建",
     "Delete": "删除",
-    "File": "文件",
-    "Home": "主页",
-    "Local": "本地分支",
     "project": {
         "add_local_repository": "project.add_local_repository",
         "clone_repository": "project.clone_repository"
     },
     "Pull": "拉取",
     "Push": "推送",
-    "Remote": "远程",
     "Rename": "重命名",
-    "Status": "状态",
     "tag": {
         "delete": "tag.delete",
         "edit_tag": "tag.edit_tag",
         "new_tag_name": "tag.new_tag_name"
     },
-    "Tag": "标签",
-    "Upstream": "上游",
-    "worksapce": {
-        "generate_patch": "worksapce.generate_patch",
-        "open_repo": "worksapce.open_repo"
+    "tags": {
+        "create_branch": "tags.create_branch"
     },
+    "Upstream": "上游",
     "workspace": {
-        "add_to_stage": "workspace.add_to_stage",
         "changed_files": "workspace.changed_files",
         "create_pr": "workspace.create_pr",
-        "diff": "workspace.diff",
         "discard": "workspace.discard",
         "discard_all": "workspace.discard_all",
         "generate_patch": "workspace.generate_patch",

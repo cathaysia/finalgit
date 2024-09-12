@@ -1,26 +1,53 @@
-import type { BranchInfo, FileStatus, TagInfo } from "@/bindings";
+import { commands, type BranchInfo, type TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
 import ControlPanel from "./ControlPanel";
 import WorkspacePanel from "./WorkspacePanel";
+import { useAppState } from "@/lib/state";
+import { useEffect } from "react";
+import { useErrorState } from "@/lib/error";
+import { match } from "ts-pattern";
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     project_name: string;
     branches: BranchInfo[];
     tags: TagInfo[];
-    changeSet: FileStatus[];
-    branchName: string;
 }
 
 export default function MainPanel({
     className,
     project_name,
-    branches,
     tags,
-    changeSet,
-    branchName,
     ...props
 }: MainPanelProps) {
+    const [repo_path, branches, changes, setChanges] = useAppState((s) => [
+        s.repo_path,
+        s.branches,
+        s.changes,
+        s.setChanges,
+    ]);
+
+    const setError = useErrorState((s) => s.setError);
+
+    const item = branches.find((item) => item.is_head);
+    let branchName = "";
+    if (item) {
+        branchName = item.name;
+    }
+    useEffect(() => {
+        if (repo_path) {
+            commands.getCurrentStatus(repo_path).then((v) => {
+                match(v)
+                    .with({ status: "ok" }, (v) => {
+                        setChanges(v.data);
+                    })
+                    .with({ status: "error" }, (err) => {
+                        setError(err.error);
+                    });
+            });
+        }
+    }, [repo_path]);
+
     return (
         <div
             className={cn(
@@ -29,12 +56,8 @@ export default function MainPanel({
             )}
             {...props}
         >
-            <ControlPanel
-                project_name={project_name}
-                branches={branches}
-                tags={tags}
-            />
-            <WorkspacePanel branchName={branchName} changeSet={changeSet} />
+            <ControlPanel />
+            <WorkspacePanel branchName={branchName} changeSet={changes} />
         </div>
     );
 }

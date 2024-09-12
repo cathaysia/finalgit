@@ -65,6 +65,7 @@
         "diff": "workspace.diff",
         "discard": "workspace.discard",
         "discard_all": "workspace.discard_all",
+        "generate_patch": "workspace.generate_patch",
         "set_as_default": "workspace.set_as_default",
         "stash": "workspace.stash"
     },

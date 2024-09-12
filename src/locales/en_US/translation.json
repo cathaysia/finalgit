@@ -65,6 +65,7 @@
         "diff": "Diff",
         "discard": "Discard",
         "discard_all": "Discard all",
+        "generate_patch": "Generate patch",
         "set_as_default": "Set as default",
         "stash": "Stash"
     },

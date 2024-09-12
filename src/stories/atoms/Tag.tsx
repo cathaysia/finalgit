@@ -56,6 +56,14 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
                             <MdDelete className="text-red-600 mr-2 h-4 w-4" />
                             <span>{t("tag.delete")}</span>
                         </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <div className="w-4 h-4 mr-2" />
+                            <span>{t("branch.checkout")}</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <div className="w-4 h-4 mr-2" />
+                            <span>{t("tags.create_branch")}</span>
+                        </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>

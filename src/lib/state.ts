@@ -1,7 +1,39 @@
-import { type BranchInfo, type TagInfo, commands } from "@/bindings";
-import { match } from "ts-pattern";
+import type { BranchInfo, TagInfo, } from "@/bindings";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
+export interface AppState {
+    repo_path?: string | null;
+    branches: BranchInfo[];
+    tags: TagInfo[];
+    setRepoPath: (isOpened: string) => void;
+    setBranches: (branches: BranchInfo[]) => void;
+    setTags: (tags: TagInfo[]) => void;
+}
+
+export const useAppState = create<AppState>()(
+    devtools((set) => ({
+        repo_path: null,
+        branches: [],
+        tags: [],
+        setRepoPath: (repo_path: string) => set({ repo_path: repo_path }),
+        setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
+        setTags: (tags: TagInfo[]) => set({ tags: tags }),
+    })),
+);
+
+export interface RefreshRequest {
+    branchListener: boolean;
+    refreshBranch: () => void;
+}
+
+export const useRefreshRequest = create<RefreshRequest>()(
+    devtools((set) => ({
+        branchListener: false,
+        refreshBranch: () =>
+            set((s) => ({ branchListener: !s.branchListener })),
+    })),
+);
 
 export interface OpenState {
     isOpened: boolean;
@@ -32,24 +64,6 @@ export interface TagState {
     setTags: (tags: TagInfo[]) => void;
     refreshTags: () => void;
 }
-
-export const useTagStatte = create<TagState>()(
-    devtools((set) => ({
-        tags: [],
-        setTags: (tags: TagInfo[]) => set({ tags: tags }),
-        refreshTags: () => {
-            commands.getTagInfo().then((value) => {
-                match(value)
-                    .with({ status: "ok" }, (v) => {
-                        set({ tags: v.data });
-                    })
-                    .with({ status: "error" }, (err) => {
-                        console.log(err.error);
-                    });
-            });
-        },
-    })),
-);
 
 export interface CommitState {
     commit: string | null;

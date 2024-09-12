@@ -1,4 +1,4 @@
-import type { BranchInfo } from "@/bindings";
+import { commands, type BranchInfo } from "@/bindings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,12 +9,15 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { useErrorState } from "@/lib/error";
+import { useAppState, useRefreshRequest } from "@/lib/state";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaCodeBranch } from "react-icons/fa";
+import { match } from "ts-pattern";
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
@@ -38,6 +41,33 @@ export default function Branch({
     const branch = info.name;
     const upstream = info.remote;
     const is_local = info.kind === "Local";
+    const repo_path = useAppState((s) => s.repo_path);
+    const setError = useErrorState((s) => s.setError);
+    const [refreshBranch] = useRefreshRequest((s) => [s.refreshBranch]);
+
+    function checkout(branch: string) {
+        if (repo_path) {
+            commands.checkoutBranch(repo_path, branch).then((v) => {
+                match(v)
+                    .with(
+                        {
+                            status: "ok",
+                        },
+                        () => {
+                            refreshBranch();
+                        },
+                    )
+                    .with(
+                        {
+                            status: "error",
+                        },
+                        (err) => {
+                            setError(err.error);
+                        },
+                    );
+            });
+        }
+    }
 
     return (
         <div
@@ -102,7 +132,22 @@ export default function Branch({
                                     {t("branch.rename")}
                                 </DropdownMenuItem>
                                 {!is_head && (
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => {
+                                            checkout(branch);
+                                        }}
+                                        className={cn(
+                                            !is_local &&
+                                                "text-yellow-500 hover:text-yellow-500",
+                                        )}
+                                        title={(() => {
+                                            if (!is_local) {
+                                                return t(
+                                                    "branch.checkout_remote",
+                                                );
+                                            }
+                                        })()}
+                                    >
                                         {t("branch.checkout")}
                                     </DropdownMenuItem>
                                 )}

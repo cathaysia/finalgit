@@ -51,7 +51,10 @@ export default function BranchPanel({
     });
 
     return (
-        <Tabs defaultValue="branch" className={cn("border", className)}>
+        <Tabs
+            defaultValue="branch"
+            className={cn("border focus:bg-red-50", className)}
+        >
             <div className="flex justify-between px-4 py-3 gap-2">
                 <TabsList
                     className={cn(

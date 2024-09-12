@@ -2,12 +2,13 @@
 
 mod branch;
 mod error;
-mod state;
+mod ext;
 mod tag;
 mod ty;
+mod utils;
 
 pub use error::*;
-pub use state::*;
+pub use ext::*;
 pub use ty::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -15,13 +16,11 @@ pub fn run() {
     setup_log();
 
     tauri::Builder::default()
-        .manage(AppState::default())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             branch::open_repo,
             branch::get_branch_info,
-            branch::is_opened,
             branch::get_tag_info,
             branch::rename_branch,
             branch::remove_branch,
@@ -60,7 +59,6 @@ mod test {
             tauri_specta::Builder::<tauri::Wry>::new().commands(tauri_specta::collect_commands![
                 branch::open_repo,
                 branch::get_branch_info,
-                branch::is_opened,
                 branch::get_tag_info,
                 branch::rename_branch,
                 branch::remove_branch,

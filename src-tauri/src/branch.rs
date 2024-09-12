@@ -1,86 +1,73 @@
-use tauri::State;
+use crate::ext::RepoExt;
+use crate::utils;
 
-use crate::{
-    error::AppResult, state::AppState, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree,
-    TagInfo,
-};
+use crate::{error::AppResult, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree, TagInfo};
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_branch_info(state: State<'_, AppState>) -> AppResult<Vec<BranchInfo>> {
-    state.get_branches()
+pub fn get_branch_info(repo_path: &str) -> AppResult<Vec<BranchInfo>> {
+    let repo = utils::open_repo(repo_path)?;
+    repo.get_branches()
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn open_repo(state: State<'_, AppState>, repo_path: &str) -> AppResult<()> {
-    state.open(repo_path)
+pub fn open_repo(repo_path: &str) -> AppResult<()> {
+    let _ = utils::open_repo(repo_path)?;
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn is_opened(state: State<'_, AppState>) -> AppResult<bool> {
-    Ok(state.git2.lock().unwrap().is_some())
+pub fn get_tag_info(repo_path: &str) -> AppResult<Vec<TagInfo>> {
+    let repo = utils::open_repo(repo_path)?;
+    repo.get_tags()
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_tag_info(state: State<'_, AppState>) -> AppResult<Vec<TagInfo>> {
-    state.get_tags()
+pub fn rename_branch(repo_path: &str, info: BranchInfo, to: &str) -> AppResult<()> {
+    utils::open_repo(repo_path)?.rename_branch(info, to)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn rename_branch(state: State<'_, AppState>, info: BranchInfo, to: &str) -> AppResult<()> {
-    state.rename_branch(info, to)
+pub fn remove_branch(repo_path: &str, info: BranchInfo) -> AppResult<()> {
+    utils::open_repo(repo_path)?.remove_branch(info)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn remove_branch(state: State<'_, AppState>, info: BranchInfo) -> AppResult<()> {
-    state.remove_branch(info)
+pub fn create_branch(repo_path: &str, name: &str, commit: &str) -> AppResult<()> {
+    utils::open_repo(repo_path)?.create_branch(name, commit)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_branch(state: State<'_, AppState>, name: &str, commit: &str) -> AppResult<()> {
-    state.create_branch(name, commit)
+pub fn checkout_branch(repo_path: &str, branch: &str) -> AppResult<()> {
+    utils::open_repo(repo_path)?.checkout_branch(branch)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn checkout_branch(state: State<'_, AppState>, branch: &str) -> AppResult<()> {
-    state.checkout_branch(branch)
+pub fn get_file_tree(repo_path: &str, commit: &str) -> AppResult<Vec<FileTree>> {
+    utils::open_repo(repo_path)?.get_file_tree(commit)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_file_tree(state: State<'_, AppState>, commit: &str) -> AppResult<Vec<FileTree>> {
-    state.get_file_tree(commit)
+pub fn get_file_content(repo_path: &str, commit: &str, path: &str) -> AppResult<Vec<u8>> {
+    utils::open_repo(repo_path)?.get_file_content(commit, path)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_file_content(
-    state: State<'_, AppState>,
-    commit: &str,
-    path: &str,
-) -> AppResult<Vec<u8>> {
-    state.get_file_content(commit, path)
+pub fn get_current_status(repo_path: &str) -> AppResult<Vec<FileStatus>> {
+    utils::open_repo(repo_path)?.get_current_status()
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_current_status(state: State<'_, AppState>) -> AppResult<Vec<FileStatus>> {
-    state.get_current_status()
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn get_commits(
-    state: State<'_, AppState>,
-    branch: &str,
-    kind: BranchType,
-) -> AppResult<Vec<CommitInfo>> {
-    state.get_commits(branch, kind.into())
+pub fn get_commits(repo_path: &str, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
+    utils::open_repo(repo_path)?.get_commits(branch, kind.into())
 }

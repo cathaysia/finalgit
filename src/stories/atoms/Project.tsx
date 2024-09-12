@@ -17,42 +17,47 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { match } from "ts-pattern";
 import { commands } from "@/bindings";
 import { useErrorState } from "@/lib/error";
+import { useAppState } from "@/lib/state";
 
 export interface ProjectProps {
-    current?: string;
     projects?: string[];
     className?: string;
 }
 
-export default function Project({
-    current,
-    projects = [],
-    className,
-}: ProjectProps) {
+export default function Project({ projects = [], className }: ProjectProps) {
     const { t } = useTranslation();
     const setError = useErrorState((s) => s.setError);
+    const [repo_path, setRepoPath] = useAppState((s) => [
+        s.repo_path,
+        s.setRepoPath,
+    ]);
 
-    if (!current) {
+    function open_repo() {
+        open({
+            directory: true,
+        }).then((value) => {
+            value &&
+                commands.openRepo(value).then((res) => {
+                    match(res)
+                        .with({ status: "ok" }, () => {
+                            setRepoPath(value);
+                        })
+                        .with({ status: "error" }, (err) => {
+                            setError(err.error);
+                        });
+                });
+        });
+    }
+
+    if (!repo_path) {
         return (
-            <Button
-                className="w-full"
-                onClick={() => {
-                    open({
-                        directory: true,
-                    }).then((value) => {
-                        value &&
-                            commands.openRepo(value).then((res) => {
-                                match(res).with({ status: "error" }, (err) => {
-                                    setError(err.error);
-                                });
-                            });
-                    });
-                }}
-            >
+            <Button className="w-full" onClick={open_repo}>
                 {t("project.add_local_repository")}
             </Button>
         );
     }
+    const current = repo_path.split("/").at(-1);
+
     return (
         <>
             <DropdownMenu>
@@ -83,7 +88,10 @@ export default function Project({
                             );
                         })}
                         {projects.length !== 0 && <DropdownMenuSeparator />}
-                        <DropdownMenuItem className="flex justify-between">
+                        <DropdownMenuItem
+                            className="flex justify-between"
+                            onClick={open_repo}
+                        >
                             <span>{t("project.add_local_repository")}</span>
                             <IoIosAdd className="w-4 h-4 ml-2" />
                         </DropdownMenuItem>

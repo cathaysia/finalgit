@@ -60,7 +60,7 @@ export default function BranchCard({
 
     return (
         <Tabs defaultValue="branch" className={cn("border", className)}>
-            <div className="w-full flex justify-between px-4 py-3 items-center gap-2">
+            <div className="flex justify-between px-4 py-3">
                 <TabsList
                     className={cn(
                         "hidden sm:flex sm:gap-2 sm:items-center",
@@ -106,17 +106,15 @@ export default function BranchCard({
                     </>
                 )}
             </div>
-            <div>
-                <TabsContent value="branch" className="w-full flex flex-col">
-                    <BranchList
-                        branches={filteredBranches}
-                        filter={filter || undefined}
-                    />
-                </TabsContent>
-                <TabsContent value="tags">
-                    <TagList tags={filteredTags} filter={filter || undefined} />
-                </TabsContent>
-            </div>
+            <TabsContent value="branch">
+                <BranchList
+                    branches={filteredBranches}
+                    filter={filter || undefined}
+                />
+            </TabsContent>
+            <TabsContent value="tags">
+                <TagList tags={filteredTags} filter={filter || undefined} />
+            </TabsContent>
         </Tabs>
     );
 }

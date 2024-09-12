@@ -25,18 +25,19 @@ export default function MainPanel({
     const { t, i18n } = useTranslation();
 
     return (
-        <div className={cn("flex h-screen w-full gap-2", className)} {...props}>
+        <div
+            className={cn(
+                "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mb-4 h-screen max-h-screen",
+                className,
+            )}
+            {...props}
+        >
             <ControlPanel
                 project_name={project_name}
                 branches={branches}
                 tags={tags}
-                className="w-1/4"
             />
-            <WorkspacePanel
-                branchName={branchName}
-                changeSet={changeSet}
-                className="w-1/4"
-            />
+            <WorkspacePanel branchName={branchName} changeSet={changeSet} />
         </div>
     );
 }

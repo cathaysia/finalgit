@@ -27,7 +27,7 @@ export default function WorkspacePanel({
     const { t, i18n } = useTranslation();
 
     return (
-        <div className={cn(className)} {...props}>
+        <div className={cn("flex flex-col gap-2", className)} {...props}>
             <div className="p-4 border rounded-xl shadow">
                 <div className="pb-2">
                     <div className="pb-2">{branchName}</div>
@@ -41,17 +41,14 @@ export default function WorkspacePanel({
                     </div>
                 </div>
             </div>
-            <div className="p-2"></div>
-            <div className="p-4 border rounded-xl shadow flex flex-col gap-2">
+            <div className="p-4 border rounded-xl shadow flex flex-col gap-2 grow">
                 <div>
-                    <div>
-                        <span>{t("workspace.changed_files")} </span>
-                        <Avatar className="bg-gray-50 inline-block w-6 h-6">
-                            <AvatarFallback>{changeSet.length}</AvatarFallback>
-                        </Avatar>
-                    </div>
+                    <span>{t("workspace.changed_files")} </span>
+                    <Avatar className="bg-gray-50 inline-block w-6 h-6">
+                        <AvatarFallback>{changeSet.length}</AvatarFallback>
+                    </Avatar>
                 </div>
-                <ChangeCard changeSet={changeSet} />
+                <ChangeCard changeSet={changeSet} className="grow" />
                 <Separator />
                 <Commiter />
             </div>

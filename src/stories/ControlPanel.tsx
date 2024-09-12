@@ -23,16 +23,14 @@ export default function ControlPanel({
     const { t, i18n } = useTranslation();
     return (
         <div
-            className={cn(
-                "border h-screen flex flex-col items-center p-4 gap-4",
-                className,
-            )}
+            className={cn("border w-full flex flex-col p-4 gap-4", className)}
             {...props}
         >
             <Project current={project_name} />
             <Button variant={"secondary"} className="w-full h-12">
                 {t("Workspace")}
             </Button>
+
             <BranchCard
                 branches={branches}
                 tags={tags}

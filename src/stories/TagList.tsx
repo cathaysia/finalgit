@@ -21,7 +21,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
     return (
         <div
             ref={parentRef}
-            className={cn("max-h-screen", className)}
+            className={cn(className)}
             style={{
                 overflow: "auto",
             }}

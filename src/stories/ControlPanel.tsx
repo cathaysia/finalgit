@@ -8,7 +8,7 @@ import Project from "./Project";
 
 export interface ControlPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
-    project_name: string;
+    project_name?: string;
     branches: BranchInfo[];
     tags: TagInfo[];
 }

@@ -15,7 +15,7 @@ import { IoIosAdd } from "react-icons/io";
 import { MdAddToPhotos } from "react-icons/md";
 
 export interface ProjectProps {
-    current: string;
+    current?: string;
     projects?: string[];
     className?: string;
 }
@@ -25,7 +25,15 @@ export default function Project({
     projects = [],
     className,
 }: ProjectProps) {
-    const t = useTranslation().t;
+    const { t } = useTranslation();
+
+    if (!current) {
+        return (
+            <Button className="w-full">
+                {t("project.add_local_repository")}
+            </Button>
+        );
+    }
     return (
         <>
             <DropdownMenu>

@@ -2,7 +2,7 @@ import type { TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
-import { Tag } from "./Tag";
+import { Tag } from "@/stories/atoms/Tag";
 
 export interface TagListProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     tags: TagInfo[];

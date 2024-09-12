@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Default as BranchListStories } from "./BranchList.stories.tsx";
-import { Default as ChangeCardStories } from "./ChangeCard.stories.tsx";
+import { Default as BranchListStories } from "@/stories/lists/BranchList.stories.tsx";
+import { Default as ChangeCardStories } from "@/stories/atoms/ChangeCard.stories.tsx";
 import MainPanel from "./MainPanel";
-import { Default as TagListStories } from "./TagList.stories.tsx";
+import { Default as TagListStories } from "@/stories/lists/TagList.stories.tsx";
 
 const meta = {
     component: MainPanel,

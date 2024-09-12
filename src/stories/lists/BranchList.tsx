@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
-import Branch from "./Branch";
+import Branch from "@/stories/atoms/Branch";
 
 export interface BranchListProps
     extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {

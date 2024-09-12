@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type React from "react";
 import { useTranslation } from "react-i18next";
-import ChangeCard from "./ChangeCard";
-import Commiter from "./Commiter";
+import ChangeCard from "@/stories/atoms/ChangeCard";
+import Commiter from "@/stories/atoms/Commiter";
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {

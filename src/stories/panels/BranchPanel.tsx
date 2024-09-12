@@ -7,8 +7,8 @@ import { useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "react-i18next";
 import { FaCodeBranch, FaFilter, FaTag } from "react-icons/fa";
-import BranchList from "./BranchList";
-import { TagList } from "./TagList";
+import BranchList from "@/stories/lists/BranchList";
+import { TagList } from "@/stories/lists/TagList";
 
 export interface BranchCardProps {
     branches: BranchInfo[];

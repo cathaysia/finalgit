@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import BranchPanel from "./BranchPanel";
-import Project from "./Project";
+import Project from "@/stories/atoms/Project";
 
 export interface ControlPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {

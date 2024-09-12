@@ -10,8 +10,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-import { Default as BranchListStories } from "./BranchList.stories.tsx";
-import { Default as TagListStories } from "./TagList.stories.tsx";
+import { Default as BranchListStories } from "@/stories/lists/BranchList.stories.tsx";
+import { Default as TagListStories } from "@/stories/lists/TagList.stories.tsx";
 
 export const Default: Story = {
     args: {

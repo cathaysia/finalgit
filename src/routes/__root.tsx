@@ -1,4 +1,4 @@
-import MainPanel from "@/stories/MainPanel";
+import MainPanel from "@/stories/panels/MainPanel";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 

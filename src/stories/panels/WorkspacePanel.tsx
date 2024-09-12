@@ -41,7 +41,7 @@ export default function WorkspacePanel({
                 </div>
             </div>
             <div className="p-4 border rounded-xl shadow flex flex-col gap-2 grow">
-                <div>
+                <div className="flex items-center gap-2">
                     <span>{t("workspace.changed_files")} </span>
                     <Avatar className="bg-gray-50 inline-block w-6 h-6">
                         <AvatarFallback>{changeSet.length}</AvatarFallback>

@@ -1,4 +1,4 @@
-import { TagInfo } from "@/bindings";
+import type { TagInfo } from "@/bindings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import React from "react";
+import type React from "react";
 import { useTranslation } from "react-i18next";
 import { FaTag } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -21,7 +20,7 @@ export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     filter?: string;
 }
 export function Tag({ info, filter, className, ...props }: TagProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     return (
         <div
             className={cn(
@@ -37,13 +36,11 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
                     if (!filter) {
                         return <span>{info.name}</span>;
                     }
-                    let v = info.name.replace(
+                    const v = info.name.replace(
                         filter,
                         `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
                     );
-                    return (
-                        <span dangerouslySetInnerHTML={{ __html: v }}></span>
-                    );
+                    return <span dangerouslySetInnerHTML={{ __html: v }} />;
                 })()}
                 <Badge>{info.commit.slice(0, 6)}</Badge>
             </span>

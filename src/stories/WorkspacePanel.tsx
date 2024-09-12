@@ -1,11 +1,10 @@
-import { FileStatus } from "@/bindings";
+import type { FileStatus } from "@/bindings";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import React from "react";
+import type React from "react";
 import { useTranslation } from "react-i18next";
 import ChangeCard from "./ChangeCard";
 import Commiter from "./Commiter";
@@ -24,7 +23,7 @@ export default function WorkspacePanel({
     changeSet,
     ...props
 }: WorkspacePanelProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <div className={cn("flex flex-col gap-2", className)} {...props}>

@@ -1,20 +1,20 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { FileStatus, commands } from "@/bindings";
-import { useOpenState } from "@/lib/state";
-import { match } from "ts-pattern";
-import { useErrorState } from "@/lib/error";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import clsx from "clsx";
-import { Badge } from "@/components/ui/badge";
+import { type FileStatus, commands } from "@/bindings";
 import {
     Accordion,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AccordionContent } from "@radix-ui/react-accordion";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useErrorState } from "@/lib/error";
+import { useOpenState } from "@/lib/state";
+import { AccordionContent } from "@radix-ui/react-accordion";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { match } from "ts-pattern";
 
 export const Route = createLazyFileRoute("/status")({
     component: StatusComponent,
@@ -50,7 +50,7 @@ function StatusComponent() {
                         return !(item.status & GIT_STATUS_IGNORED);
                     })
                     .map((item) => {
-                        let badge = generate_badge(item.status);
+                        const badge = generate_badge(item.status);
                         return (
                             <AccordionItem key={item.path} value={item.path}>
                                 <AccordionTrigger

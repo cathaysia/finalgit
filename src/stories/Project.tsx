@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { BsChevronExpand } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import { IoIosAdd } from "react-icons/io";
 import { MdAddToPhotos } from "react-icons/md";
-import { BsChevronExpand } from "react-icons/bs";
 
 export interface ProjectProps {
     current: string;
@@ -25,7 +25,7 @@ export default function Project({
     projects = [],
     className,
 }: ProjectProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     return (
         <>
             <DropdownMenu>
@@ -42,19 +42,20 @@ export default function Project({
                         {projects.map((item) => {
                             return (
                                 <DropdownMenuItem
+                                    key={item}
                                     className={cn(
                                         "flex justify-between",
-                                        item == current && "bg-slate-200",
+                                        item === current && "bg-slate-200",
                                     )}
                                 >
                                     <span>{item}</span>
-                                    {item == current && (
+                                    {item === current && (
                                         <FaCheck className="w-4 h-4 ml-2" />
                                     )}
                                 </DropdownMenuItem>
                             );
                         })}
-                        {projects.length != 0 && <DropdownMenuSeparator />}
+                        {projects.length !== 0 && <DropdownMenuSeparator />}
                         <DropdownMenuItem className="flex justify-between">
                             <span>{t("project.add_local_repository")}</span>
                             <IoIosAdd className="w-4 h-4 ml-2" />

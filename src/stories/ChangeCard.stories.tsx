@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import ChangeCard from "./ChangeCard";
 import GitFileStatus from "@/lib/file_status";
+import ChangeCard from "./ChangeCard";
 
 const meta = {
     component: ChangeCard,

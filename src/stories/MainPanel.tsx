@@ -1,8 +1,7 @@
+import type { BranchInfo, FileStatus, TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
 import ControlPanel from "./ControlPanel";
 import WorkspacePanel from "./WorkspacePanel";
-import { BranchInfo, FileStatus, TagInfo } from "@/bindings";
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -22,8 +21,6 @@ export default function MainPanel({
     branchName,
     ...props
 }: MainPanelProps) {
-    const { t, i18n } = useTranslation();
-
     return (
         <div
             className={cn(

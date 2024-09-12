@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import clsx from "clsx";
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
 export interface NavProps {
     to: string;

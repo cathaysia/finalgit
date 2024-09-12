@@ -1,31 +1,30 @@
+import { commands } from "@/bindings";
+import { Nav } from "@/components/Nav";
 import { ModeToggle } from "@/components/modeToggle";
 import { Button } from "@/components/ui/button";
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { useErrorState } from "@/lib/error";
+import { useCommitState, useOpenState } from "@/lib/state";
+import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { open } from "@tauri-apps/plugin-dialog";
-import { useCommitState, useOpenState } from "@/lib/state";
-import { commands } from "@/bindings";
-import { match } from "ts-pattern";
-import { useErrorState } from "@/lib/error";
 import { useEffect } from "react";
-import { toast } from "sonner";
-import { Nav } from "@/components/Nav";
-import { FaHome } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { match } from "ts-pattern";
 
 export const Route = createRootRoute({
     component: () => {
         const setIsOpened = useOpenState((s) => s.setIsOpened);
         const { err, setError, clearError } = useErrorState();
         const commit = useCommitState((s) => s.commit);
-        const { t, i18n } = useTranslation();
+        const t = useTranslation().t;
 
         useEffect(() => {
             if (err) {
                 toast(err);
                 clearError();
             }
-        }, [err]);
+        }, [err, clearError]);
 
         return (
             <>
@@ -46,7 +45,7 @@ export const Route = createRootRoute({
                                     dir &&
                                         commands.openRepo(dir).then((v) => {
                                             match(v)
-                                                .with({ status: "ok" }, (v) => {
+                                                .with({ status: "ok" }, (_) => {
                                                     setIsOpened(true);
                                                 })
                                                 .with(

@@ -1,9 +1,9 @@
-import { FileStatus } from "@/bindings";
-import { cn } from "@/lib/utils";
-import React from "react";
-import GitFileStatus from "@/lib/file_status";
-import { useTranslation } from "react-i18next";
+import type { FileStatus } from "@/bindings";
 import { Checkbox } from "@/components/ui/checkbox";
+import GitFileStatus from "@/lib/file_status";
+import { cn } from "@/lib/utils";
+import type React from "react";
+import { useTranslation } from "react-i18next";
 
 export interface ChangeCardProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -11,7 +11,7 @@ export interface ChangeCardProps
 }
 
 export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
 
     return (
         <div className={cn("flex flex-col gap-1", className)}>
@@ -19,6 +19,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                 return (
                     <div
                         className="flex justify-between"
+                        key={item.path}
                         title={
                             ((item.status & GitFileStatus.WT_MODIFIED ||
                                 item.status & GitFileStatus.INDEX_MODIFIED) &&
@@ -44,12 +45,14 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                         item.status &
                                             GitFileStatus.INDEX_RENAMED ||
                                         item.status &
-                                            GitFileStatus.INDEX_TYPECHANGE) != 0
+                                            GitFileStatus.INDEX_TYPECHANGE) !==
+                                    0
                                 }
                             />
                             {item.path}
                         </span>
                         <div
+                            key={item.path}
                             className={cn(
                                 "w-3 h-3 rounded-lg",
                                 (item.status & GitFileStatus.WT_MODIFIED ||
@@ -64,7 +67,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                     item.status & GitFileStatus.INDEX_NEW) &&
                                     "bg-green-600",
                             )}
-                        ></div>
+                        />
                     </div>
                 );
             })}

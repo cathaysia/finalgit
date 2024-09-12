@@ -1,3 +1,4 @@
+import type { BranchInfo } from "@/bindings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,13 +8,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useTranslation } from "react-i18next";
-import { FaCodeBranch, FaInfo, FaInfoCircle } from "react-icons/fa";
-import { cn } from "@/lib/utils";
-import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { BranchInfo } from "@/bindings";
+import { cn } from "@/lib/utils";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import type React from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FaCodeBranch } from "react-icons/fa";
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
@@ -31,12 +32,12 @@ export default function Branch({
     className,
     ...props
 }: BranchProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     const [newName, setNewName] = useState<string>();
     const is_head = info.is_head;
     const branch = info.name;
     const upstream = info.remote;
-    const is_local = info.kind == "Local";
+    const is_local = info.kind === "Local";
 
     return (
         <div
@@ -55,15 +56,11 @@ export default function Branch({
                         if (!filter) {
                             return <span>{branch}</span>;
                         }
-                        let v = branch.replace(
+                        const v = branch.replace(
                             filter,
                             `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
                         );
-                        return (
-                            <span
-                                dangerouslySetInnerHTML={{ __html: v }}
-                            ></span>
-                        );
+                        return <span dangerouslySetInnerHTML={{ __html: v }} />;
                     })()}
                     <Badge>
                         {is_local ? t("branch.local") : t("branch.remote")}
@@ -78,11 +75,11 @@ export default function Branch({
                         value={newName}
                         onChange={(v) => setNewName(v.target.value)}
                         onKeyUp={(e) => {
-                            if (newName && e.key == "Escape") {
+                            if (newName && e.key === "Escape") {
                                 setNewName(undefined);
                             }
-                            if (newName && e.key == "Enter") {
-                                on_rename && on_rename(newName);
+                            if (newName && e.key === "Enter") {
+                                on_rename?.(newName);
                                 setNewName(undefined);
                             }
                         }}
@@ -124,7 +121,7 @@ export default function Branch({
                                 <DropdownMenuItem
                                     className="text-red-600"
                                     onClick={() => {
-                                        on_delete && on_delete();
+                                        on_delete?.();
                                     }}
                                 >
                                     {t("branch.delete")}
@@ -136,7 +133,7 @@ export default function Branch({
                     <div className="flex gap-2">
                         <Button
                             onClick={() => {
-                                on_rename && on_rename(newName);
+                                on_rename?.(newName);
                             }}
                         >
                             {t("branch.apply")}

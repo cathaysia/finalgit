@@ -1,17 +1,17 @@
-import { BranchInfo, TagInfo } from "@/bindings";
-import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
+import type { TagInfo } from "@/bindings";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "./ui/badge";
-import { Input } from "./ui/input";
-import { useState } from "react";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { SheetContent, SheetHeader, SheetTitle } from "./ui/sheet";
 
 export interface BranchProps {
     tag: TagInfo;
 }
 
 export default function EditTag({ tag }: BranchProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [newName, setNewName] = useState<string>(tag.name);
 
     return (
@@ -30,7 +30,7 @@ export default function EditTag({ tag }: BranchProps) {
                     onChange={(e) => {
                         setNewName(e.target.value);
                     }}
-                ></Input>
+                />
                 <Button
                     onClick={() =>
                         newName &&

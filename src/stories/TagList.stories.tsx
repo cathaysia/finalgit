@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import type { TagInfo } from "@/bindings";
 import { TagList } from "./TagList";
-import { TagInfo } from "@/bindings";
 
 const meta = {
     component: TagList,
@@ -22,7 +22,7 @@ function createRandomString(length: number) {
     return result;
 }
 
-const tags: TagInfo[] = [...Array(1000).keys()].map((item) => {
+const tags: TagInfo[] = [...Array(1000).keys()].map((_item) => {
     return {
         name: createRandomString(10),
         commit: createRandomString(40).toLowerCase(),

@@ -1,19 +1,12 @@
-import { BranchInfo, TagInfo } from "@/bindings";
+import type { BranchInfo, TagInfo } from "@/bindings";
 import { Button } from "@/components/ui/button";
-import { useHotkeys } from "react-hotkeys-hook";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Children, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import {
-    FaArrowLeft,
-    FaArrowRight,
-    FaCodeBranch,
-    FaFilter,
-    FaTag,
-} from "react-icons/fa";
-import Branch from "./Branch";
 import { cn } from "@/lib/utils";
+import { useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useTranslation } from "react-i18next";
+import { FaCodeBranch, FaFilter, FaTag } from "react-icons/fa";
 import BranchList from "./BranchList";
 import { TagList } from "./TagList";
 
@@ -28,10 +21,9 @@ export default function BranchPanel({
     tags,
     className,
 }: BranchCardProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     const [filter, setFilter] = useState<string>("");
     const [isSearching, setIsSearching] = useState(false);
-    const [isBranch, setIsBranch] = useState<boolean>(true);
     const searchBar = useRef<HTMLInputElement>(null);
 
     useHotkeys(
@@ -60,7 +52,7 @@ export default function BranchPanel({
 
     return (
         <Tabs defaultValue="branch" className={cn("border", className)}>
-            <div className="flex justify-between px-4 py-3">
+            <div className="flex justify-between px-4 py-3 gap-2">
                 <TabsList
                     className={cn(
                         "hidden sm:flex sm:gap-2 sm:items-center",
@@ -95,7 +87,7 @@ export default function BranchPanel({
                             ref={searchBar}
                             autoFocus
                             onKeyUp={(e) => {
-                                if (e.key == "Escape") {
+                                if (e.key === "Escape") {
                                     setIsSearching(false);
                                 }
                             }}

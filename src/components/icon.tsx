@@ -1,8 +1,8 @@
-import { Manifest } from "material-icon-theme";
+import languageMap from "@/lib/languageMap";
+import { cn } from "@/lib/utils";
+import type { Manifest } from "material-icon-theme";
 import * as Dist from "material-icon-theme/dist/material-icons.json";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import languageMap from "@/lib/languageMap";
 
 const manifest = Dist as Manifest;
 
@@ -29,7 +29,7 @@ export default function Icon({
                 fileExtensions.push(lowerFileName.slice(i + 1));
         }
     }
-    let iconname = lookForMatch(
+    const iconname = lookForMatch(
         fileName,
         lowerFileName,
         fileExtensions,
@@ -40,7 +40,7 @@ export default function Icon({
     );
 
     const [icon, setIcon] = useState("");
-    let iconpath = `../../node_modules/material-icon-theme/icons/${iconname}.svg`;
+    const iconpath = `../../node_modules/material-icon-theme/icons/${iconname}.svg`;
 
     useEffect(() => {
         import(iconpath).then((icon) => {
@@ -48,7 +48,13 @@ export default function Icon({
         });
     }, []);
 
-    return <img className={cn("w-4 h-4 inline", className)} src={icon}></img>;
+    return (
+        <img
+            alt={iconname}
+            className={cn("w-4 h-4 inline", className)}
+            src={icon}
+        />
+    );
 }
 
 function lookForMatch(

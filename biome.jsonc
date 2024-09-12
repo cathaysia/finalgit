@@ -1,7 +1,30 @@
 {
     "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+    "organizeImports": {
+        "enabled": true
+    },
     "formatter": {
         "indentStyle": "space",
         "indentWidth": 4
+    },
+    "linter": {
+        "rules": {
+            "correctness": {
+                "noUnusedImports": "warn",
+                "noUnusedVariables": "warn",
+                "useExhaustiveDependencies": "off"
+            },
+            "style": {
+                "useConst": "warn"
+            },
+            "complexity": {
+                "noForEach": "off"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "off"
+            }
+        },
+        "include": ["src/**/*", ".storybook/*", "index.html"],
+        "ignore": ["src/routeTree.gen.ts", "src/routes/*"]
     }
 }

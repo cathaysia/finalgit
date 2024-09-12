@@ -1,41 +1,33 @@
-import { BranchInfo } from "@/bindings";
+import type { BranchInfo } from "@/bindings";
+import { commands } from "@/bindings";
+import { useErrorState } from "@/lib/error";
+import { useBranchState } from "@/lib/state";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { match } from "ts-pattern";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
     SheetContent,
     SheetDescription,
     SheetHeader,
     SheetTitle,
 } from "./ui/sheet";
-import { useTranslation } from "react-i18next";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
-import { Input } from "./ui/input";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "./ui/table";
-import { useBranchState } from "@/lib/state";
-import { commands } from "@/bindings";
-import { match } from "ts-pattern";
-import { ok } from "assert";
-import { useErrorState } from "@/lib/error";
-import { Link } from "@tanstack/react-router";
+import { Table, TableBody, TableCell, TableRow } from "./ui/table";
 
 export interface BranchProps {
     branch: BranchInfo;
 }
 
 export default function EditBranch({ branch }: BranchProps) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [newName, setNewName] = useState<string>(branch.name);
     const setBranches = useBranchState((s) => s.setBranches);
     const { setError } = useErrorState();
 
-    const [reqBranchRefresh, setReqBanchRe] = useState<Boolean>(false);
+    const [reqBranchRefresh, setReqBanchRe] = useState<boolean>(false);
 
     useEffect(() => {
         commands.getBranchInfo().then((value) => {
@@ -89,7 +81,7 @@ export default function EditBranch({ branch }: BranchProps) {
                 />
                 <Button
                     onClick={() => {
-                        if (newName && newName != branch.name) {
+                        if (newName && newName !== branch.name) {
                             commands
                                 .createBranch(newName, branch.commit)
                                 .then((value) => {
@@ -108,7 +100,7 @@ export default function EditBranch({ branch }: BranchProps) {
                 </Button>
                 <Button
                     onClick={() => {
-                        if (newName && newName != branch.name) {
+                        if (newName && newName !== branch.name) {
                             commands
                                 .renameBranch(branch, newName)
                                 .then((value) => {
@@ -151,7 +143,7 @@ export default function EditBranch({ branch }: BranchProps) {
                 >
                     {t("Delete")}
                 </Button>
-                {branch.kind == "Local" && (
+                {branch.kind === "Local" && (
                     <Button
                         onClick={() => {
                             commands

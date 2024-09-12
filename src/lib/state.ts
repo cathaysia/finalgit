@@ -1,7 +1,6 @@
-import { create } from "zustand";
+import { type BranchInfo, type TagInfo, commands } from "@/bindings";
 import { match } from "ts-pattern";
-import { BranchInfo, TagInfo, commands } from "@/bindings";
-import { useErrorState } from "./error";
+import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface OpenState {

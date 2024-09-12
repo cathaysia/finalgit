@@ -1,12 +1,13 @@
-import { BranchInfo } from "@/bindings";
-import React from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Branch from "./Branch";
+import type { BranchInfo } from "@/bindings";
+import { ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import React from "react";
+import Branch from "./Branch";
 
 export interface BranchListProps
-    extends React.HtmlHTMLAttributes<HTMLDivElement> {
+    extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
     branches: BranchInfo[];
     filter?: string;
 }
@@ -26,37 +27,40 @@ export default function BranchList({
     });
 
     return (
-        <div
-            ref={parentRef}
-            className={cn("max-h-screen", className)}
-            style={{
-                overflow: "auto",
-            }}
+        <ScrollAreaPrimitive.Root
+            className={cn("relative overflow-hidden", className)}
             {...props}
         >
-            <div
-                style={{
-                    height: `${rowVirtualizer.getTotalSize()}px`,
-                }}
-                className="w-full relative"
+            <ScrollAreaPrimitive.Viewport
+                ref={parentRef}
+                className="h-full w-full rounded-[inherit] max-h-screen"
             >
-                {rowVirtualizer.getVirtualItems().map((virtualItem) => {
-                    const item = branches[virtualItem.index];
+                <div
+                    style={{
+                        height: `${rowVirtualizer.getTotalSize()}px`,
+                    }}
+                    className="w-full relative"
+                >
+                    {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                        const item = branches[virtualItem.index];
 
-                    return (
-                        <div
-                            key={virtualItem.key}
-                            className="absolute top-0 left-0 w-full"
-                            style={{
-                                height: `${virtualItem.size}px`,
-                                transform: `translateY(${virtualItem.start}px)`,
-                            }}
-                        >
-                            <Branch info={item} filter={filter} />
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
+                        return (
+                            <div
+                                key={virtualItem.key}
+                                className="absolute top-0 left-0 w-full"
+                                style={{
+                                    height: `${virtualItem.size}px`,
+                                    transform: `translateY(${virtualItem.start}px)`,
+                                }}
+                            >
+                                <Branch info={item} filter={filter} />
+                            </div>
+                        );
+                    })}
+                </div>
+            </ScrollAreaPrimitive.Viewport>
+            <ScrollBar />
+            <ScrollAreaPrimitive.Corner />
+        </ScrollAreaPrimitive.Root>
     );
 }

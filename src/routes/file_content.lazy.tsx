@@ -1,9 +1,8 @@
+import languageMap from "@/lib/languageMap";
 import { useFileContentState } from "@/lib/state";
+import Editor from "@monaco-editor/react";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import Editor from "@monaco-editor/react";
-import languageMap from "@/lib/languageMap";
-import { basename } from "path";
 
 export const Route = createLazyFileRoute("/file_content")({
     component: FileContent,
@@ -21,7 +20,7 @@ function FileContent() {
         setFileContent(v);
     }, [content]);
 
-    let file_type = get_file_type(file_name);
+    const file_type = get_file_type(file_name);
 
     return (
         <div>

@@ -1,14 +1,14 @@
+import type { FileTree } from "@/bindings";
+import { commands } from "@/bindings";
+import Icon from "@/components/icon";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCommitState, useFileContentState, useOpenState } from "@/lib/state";
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useErrorState } from "@/lib/error";
+import { useCommitState, useFileContentState } from "@/lib/state";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { FileTree } from "@/bindings";
-import Icon from "@/components/icon";
-import { commands } from "@/bindings";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { match } from "ts-pattern";
-import { useErrorState } from "@/lib/error";
 
 export const Route = createLazyFileRoute("/filetree")({
     component: FileTreeComponent,
@@ -32,17 +32,18 @@ function FileTreeComponent() {
                     });
             });
         }
-    }, [commit]);
+    }, [commit, setError]);
 
     function on_clicked(path: string) {
         if (commit) {
+            let stripped_path = path;
             if (path.startsWith("/")) {
-                path = path.substring(1);
+                stripped_path = path.substring(1);
             }
-            commands.getFileContent(commit, path).then((v) => {
+            commands.getFileContent(commit, stripped_path).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {
-                        setFileContent(path, v.data);
+                        setFileContent(stripped_path, v.data);
                     })
                     .with({ status: "error" }, (err) => {
                         setError(err.error);
@@ -68,17 +69,17 @@ function generate_tree(
     callback: (path: string) => void,
 ) {
     if ("File" in file) {
-        let entry = file.File;
-        let key = parent + "/" + entry.filename;
+        const entry = file.File;
+        const key = `${parent}/${entry.filename}`;
         return (
             <TreeItem
                 itemId={key}
                 key={key}
                 label={
-                    <a>
+                    <span>
                         <Icon fileName={entry.filename} />
                         {entry.filename}
-                    </a>
+                    </span>
                 }
                 onClick={() => {
                     callback(key);
@@ -87,18 +88,18 @@ function generate_tree(
         );
     }
 
-    let tree = file.Dir;
-    let key = parent + "/" + tree.dir;
+    const tree = file.Dir;
+    const key = `${parent}/${tree.dir}`;
 
     return (
         <TreeItem
             itemId={key}
             key={key}
             label={
-                <a>
+                <span>
                     <Icon fileName={tree.dir} isDir={true} />
                     {tree.dir}
-                </a>
+                </span>
             }
         >
             <div>

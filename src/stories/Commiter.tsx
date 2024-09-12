@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaMagic } from "react-icons/fa";
 import { VscDiff } from "react-icons/vsc";
 import { VscGitStash } from "react-icons/vsc";
 
-import { VscDiscard } from "react-icons/vsc";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,12 +15,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { VscDiscard } from "react-icons/vsc";
 
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
 export default function Commiter({ className, ...props }: CommiterProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     const [isCommiting, setIsCommiting] = useState(false);
 
     if (!isCommiting) {
@@ -60,7 +60,7 @@ export default function Commiter({ className, ...props }: CommiterProps) {
     return (
         <div className={cn("flex flex-col gap-2", className)} {...props}>
             <div className="flex flex-col gap-2">
-                <Textarea placeholder={t("commiter.commit_summary")}></Textarea>
+                <Textarea placeholder={t("commiter.commit_summary")} />
                 <Button>
                     <FaMagic className="w-4 h-4 mr-2" />
                     {t("commiter.generate_message")}

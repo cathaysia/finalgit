@@ -1,4 +1,4 @@
-import { TagInfo } from "@/bindings";
+import type { TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";

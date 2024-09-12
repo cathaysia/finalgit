@@ -1,10 +1,10 @@
-import { BranchInfo, TagInfo } from "@/bindings";
-import BranchPanel from "./BranchPanel";
-import Project from "./Project";
-import { useTranslation } from "react-i18next";
+import type { BranchInfo, TagInfo } from "@/bindings";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import React from "react";
+import type React from "react";
+import { useTranslation } from "react-i18next";
+import BranchPanel from "./BranchPanel";
+import Project from "./Project";
 
 export interface ControlPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -20,7 +20,7 @@ export default function ControlPanel({
     className,
     ...props
 }: ControlPanelProps) {
-    const { t, i18n } = useTranslation();
+    const t = useTranslation().t;
     return (
         <div
             className={cn("border w-full flex flex-col p-4 gap-4", className)}

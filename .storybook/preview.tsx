@@ -1,5 +1,5 @@
-import type { Preview } from "@storybook/react";
 import { withThemeByClassName } from "@storybook/addon-themes";
+import type { Preview } from "@storybook/react";
 import "@/main.css";
 import { withI18next } from "./i18n.tsx";
 

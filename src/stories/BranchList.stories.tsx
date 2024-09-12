@@ -1,5 +1,5 @@
+import type { BranchInfo } from "@/bindings";
 import type { Meta, StoryObj } from "@storybook/react";
-import { BranchInfo } from "@/bindings";
 
 import BranchList from "./BranchList";
 
@@ -22,7 +22,7 @@ function createRandomString(length: number) {
     return result;
 }
 
-const branches: BranchInfo[] = [...Array(1000).keys()].map((item) => {
+const branches: BranchInfo[] = [...Array(1000).keys()].map((_) => {
     return {
         remote: null,
         name: createRandomString(10),

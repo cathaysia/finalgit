@@ -1,16 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { BranchType, commands, CommitInfo } from "@/bindings";
-import { useEffect, useState } from "react";
-import { match } from "ts-pattern";
-import { useErrorState } from "@/lib/error";
-import { Badge } from "@/components/ui/badge";
+import { type BranchType, type CommitInfo, commands } from "@/bindings";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useErrorState } from "@/lib/error";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { match } from "ts-pattern";
 
 interface SearchProps {
     branch: string;
@@ -42,7 +42,7 @@ function CommitList() {
                     setError(v.error);
                 });
         });
-    }, [branch]);
+    }, [branch, kind, setError]);
 
     return (
         <ScrollArea className="w-screen h-screen">
@@ -51,10 +51,10 @@ function CommitList() {
                     const time = new Date(item.time);
                     const datetime = `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
                     return (
-                        <AccordionItem value={item.hash}>
+                        <AccordionItem value={item.hash} key={item.hash}>
                             <AccordionTrigger>
                                 <Badge>{item.hash.slice(0, 6)}</Badge>
-                                <a>{item.summary}</a>
+                                <span>{item.summary}</span>
                                 <Badge title={item.author.email}>
                                     {item.author.name}
                                 </Badge>

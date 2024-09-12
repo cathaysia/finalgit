@@ -16,12 +16,11 @@ import { useTranslation } from "react-i18next";
 import { FaTag } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
-export interface TagProps {
+export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: TagInfo;
     filter?: string;
-    className?: string;
 }
-export function Tag({ info, filter, className }: TagProps) {
+export function Tag({ info, filter, className, ...props }: TagProps) {
     const { t, i18n } = useTranslation();
     return (
         <div
@@ -29,6 +28,7 @@ export function Tag({ info, filter, className }: TagProps) {
                 "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
                 className,
             )}
+            {...props}
         >
             <span className="text-sm font-medium leading-none items-center flex gap-2">
                 <FaTag className="inline-block" />

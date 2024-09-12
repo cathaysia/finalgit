@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { BranchInfo } from "@/bindings";
 
-export interface BranchProps {
+export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
     filter?: string;
     className?: string;
@@ -26,9 +26,10 @@ export interface BranchProps {
 export default function Branch({
     info,
     filter,
-    className,
     on_rename,
     on_delete,
+    className,
+    ...props
 }: BranchProps) {
     const { t, i18n } = useTranslation();
     const [newName, setNewName] = useState<string>();
@@ -44,6 +45,7 @@ export default function Branch({
                 is_head && "border-green-600",
                 className,
             )}
+            {...props}
         >
             {!newName ? (
                 <span className="text-sm font-medium leading-none items-center flex gap-2">

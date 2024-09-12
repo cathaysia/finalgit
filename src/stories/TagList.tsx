@@ -4,13 +4,12 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
 import { Tag } from "./Tag";
 
-export interface TagListProps {
+export interface TagListProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     tags: TagInfo[];
     filter?: string;
-    className?: string;
 }
 
-export function TagList({ tags, filter, className }: TagListProps) {
+export function TagList({ tags, filter, className, ...props }: TagListProps) {
     const parentRef = React.useRef<HTMLDivElement>(null);
 
     const rowVirtualizer = useVirtualizer({
@@ -26,6 +25,7 @@ export function TagList({ tags, filter, className }: TagListProps) {
             style={{
                 overflow: "auto",
             }}
+            {...props}
         >
             <div
                 style={{

@@ -5,16 +5,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Branch from "./Branch";
 import { cn } from "@/lib/utils";
 
-export interface BranchListProps {
+export interface BranchListProps
+    extends React.HtmlHTMLAttributes<HTMLDivElement> {
     branches: BranchInfo[];
     filter?: string;
-    className?: string;
 }
 
 export default function BranchList({
     branches,
     filter,
     className,
+    ...props
 }: BranchListProps) {
     const parentRef = React.useRef<HTMLDivElement>(null);
 
@@ -31,6 +32,7 @@ export default function BranchList({
             style={{
                 overflow: "auto",
             }}
+            {...props}
         >
             <div
                 style={{

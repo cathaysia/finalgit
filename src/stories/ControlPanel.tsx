@@ -17,15 +17,15 @@ export default function ControlPanel({
 }: ControlPanelProps) {
     const { t, i18n } = useTranslation();
     return (
-        <div className="w-72 border h-screen flex flex-col items-center p-4 gap-4">
-            <Project current={project_name} className="w-64" />
+        <div className="border h-screen flex flex-col items-center p-4 gap-4">
+            <Project current={project_name} />
             <Button variant={"secondary"} className="w-full h-12">
                 {t("Workspace")}
             </Button>
             <BranchCard
                 branches={branches}
                 tags={tags}
-                className="border-none"
+                className="border-none w-full"
             />
         </div>
     );

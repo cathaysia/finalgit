@@ -31,13 +31,13 @@ export default function Project({
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button
-                        className={cn("w-52 flex justify-between", className)}
+                        className={cn("w-full flex justify-between", className)}
                     >
                         <span>{current}</span>
                         <BsChevronExpand />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className={cn("w-52", className)}>
+                <DropdownMenuContent className={cn("w-full", className)}>
                     <DropdownMenuGroup>
                         {projects.map((item) => {
                             return (
@@ -48,18 +48,20 @@ export default function Project({
                                     )}
                                 >
                                     <span>{item}</span>
-                                    {item == current && <FaCheck />}
+                                    {item == current && (
+                                        <FaCheck className="w-4 h-4 ml-2" />
+                                    )}
                                 </DropdownMenuItem>
                             );
                         })}
                         {projects.length != 0 && <DropdownMenuSeparator />}
                         <DropdownMenuItem className="flex justify-between">
                             <span>{t("project.add_local_repository")}</span>
-                            <IoIosAdd />
+                            <IoIosAdd className="w-4 h-4 ml-2" />
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex justify-between">
                             <span>{t("project.clone_repository")}</span>
-                            <MdAddToPhotos />
+                            <MdAddToPhotos className="w-4 h-4 ml-2" />
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>

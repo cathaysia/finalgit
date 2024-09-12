@@ -52,10 +52,12 @@
     },
     "Upstream": "上游",
     "workspace": {
+        "change_list": "workspace.change_list",
         "changed_files": "workspace.changed_files",
         "create_pr": "workspace.create_pr",
         "discard": "workspace.discard",
         "discard_all": "workspace.discard_all",
+        "file_tree": "workspace.file_tree",
         "generate_patch": "workspace.generate_patch",
         "set_as_default": "workspace.set_as_default",
         "stash": "workspace.stash"

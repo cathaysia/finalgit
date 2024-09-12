@@ -20,12 +20,15 @@ export default function MainPanel({
     tags,
     ...props
 }: MainPanelProps) {
-    const [repo_path, branches, changes, setChanges] = useAppState((s) => [
-        s.repo_path,
-        s.branches,
-        s.changes,
-        s.setChanges,
-    ]);
+    const [repo_path, branches, changes, setChanges, files, setFiles] =
+        useAppState((s) => [
+            s.repo_path,
+            s.branches,
+            s.changes,
+            s.setChanges,
+            s.files,
+            s.setFiles,
+        ]);
 
     const setError = useErrorState((s) => s.setError);
 
@@ -48,6 +51,21 @@ export default function MainPanel({
         }
     }, [repo_path]);
 
+    useEffect(() => {
+        const head = branches.find((item) => item.is_head);
+        if (repo_path && head) {
+            commands.getFileTree(repo_path, head.commit).then((v) => {
+                match(v)
+                    .with({ status: "ok" }, (v) => {
+                        setFiles(v.data);
+                    })
+                    .with({ status: "error" }, (err) => {
+                        setError(err.error);
+                    });
+            });
+        }
+    }, [branches]);
+
     return (
         <div
             className={cn(
@@ -57,7 +75,11 @@ export default function MainPanel({
             {...props}
         >
             <ControlPanel />
-            <WorkspacePanel branchName={branchName} changeSet={changes} />
+            <WorkspacePanel
+                branchName={branchName}
+                changeSet={changes}
+                files={files}
+            />
         </div>
     );
 }

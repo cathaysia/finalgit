@@ -1,4 +1,5 @@
-import type { FileStatus } from "@/bindings";
+import type { FileStatus, FileTree } from "@/bindings";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,11 +9,13 @@ import type React from "react";
 import { useTranslation } from "react-i18next";
 import ChangeCard from "@/stories/atoms/ChangeCard";
 import Commiter from "@/stories/atoms/Commiter";
+import FilePanel from "./FilePanel";
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     branchName: string;
     upstream?: string;
+    files: FileTree[];
     changeSet: FileStatus[];
 }
 
@@ -21,6 +24,7 @@ export default function WorkspacePanel({
     branchName,
     upstream,
     changeSet,
+    files,
     ...props
 }: WorkspacePanelProps) {
     const { t } = useTranslation();
@@ -47,9 +51,32 @@ export default function WorkspacePanel({
                         <AvatarFallback>{changeSet.length}</AvatarFallback>
                     </Avatar>
                 </div>
-                <ChangeCard changeSet={changeSet} className="grow" />
-                <Separator />
-                <Commiter />
+                <div className="flex flex-col grow gap-2">
+                    <Tabs defaultValue="changes">
+                        <TabsList>
+                            <TabsTrigger value="changes">
+                                {t("workspace.change_list")}
+                            </TabsTrigger>
+                            <TabsTrigger value="files">
+                                {t("workspace.file_tree")}
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent
+                            value="changes"
+                            className="flex flex-col gap-2"
+                        >
+                            <ChangeCard
+                                changeSet={changeSet}
+                                className="grow"
+                            />
+                            <Separator />
+                            <Commiter />
+                        </TabsContent>
+                        <TabsContent value="files">
+                            <FilePanel files={files} />
+                        </TabsContent>
+                    </Tabs>
+                </div>
             </div>
         </div>
     );

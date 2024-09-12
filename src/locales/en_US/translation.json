@@ -52,10 +52,12 @@
     },
     "Upstream": "Upstream",
     "workspace": {
+        "change_list": "Changes",
         "changed_files": "Changed files",
         "create_pr": "Create PR",
         "discard": "Discard",
         "discard_all": "Discard all",
+        "file_tree": "File Tree",
         "generate_patch": "Generate patch",
         "set_as_default": "Set as default",
         "stash": "Stash"

@@ -146,14 +146,18 @@ impl RepoExt for git2::Repository {
         let status = self
             .statuses(None)?
             .into_iter()
-            .map(|item| {
+            .filter_map(|item| {
                 let path = item.path().unwrap();
-                let status = item.status().bits();
+                let status = item.status();
 
-                FileStatus {
-                    path: path.into(),
-                    status,
+                if status.contains(git2::Status::IGNORED) {
+                    return None;
                 }
+
+                Some(FileStatus {
+                    path: path.into(),
+                    status: status.bits(),
+                })
             })
             .collect_vec();
 

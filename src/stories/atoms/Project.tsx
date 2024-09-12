@@ -13,6 +13,10 @@ import { BsChevronExpand } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import { IoIosAdd } from "react-icons/io";
 import { MdAddToPhotos } from "react-icons/md";
+import { open } from "@tauri-apps/plugin-dialog";
+import { match } from "ts-pattern";
+import { commands } from "@/bindings";
+import { useErrorState } from "@/lib/error";
 
 export interface ProjectProps {
     current?: string;
@@ -26,10 +30,25 @@ export default function Project({
     className,
 }: ProjectProps) {
     const { t } = useTranslation();
+    const setError = useErrorState((s) => s.setError);
 
     if (!current) {
         return (
-            <Button className="w-full">
+            <Button
+                className="w-full"
+                onClick={() => {
+                    open({
+                        directory: true,
+                    }).then((value) => {
+                        value &&
+                            commands.openRepo(value).then((res) => {
+                                match(res).with({ status: "error" }, (err) => {
+                                    setError(err.error);
+                                });
+                            });
+                    });
+                }}
+            >
                 {t("project.add_local_repository")}
             </Button>
         );

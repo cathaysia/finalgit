@@ -23,7 +23,7 @@ export interface BranchCardProps {
     className?: string;
 }
 
-export default function BranchCard({
+export default function BranchPanel({
     branches,
     tags,
     className,

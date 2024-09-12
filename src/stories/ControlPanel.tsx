@@ -1,5 +1,5 @@
 import { BranchInfo, TagInfo } from "@/bindings";
-import BranchCard from "./BranchCard";
+import BranchPanel from "./BranchPanel";
 import Project from "./Project";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ export default function ControlPanel({
                 {t("Workspace")}
             </Button>
 
-            <BranchCard
+            <BranchPanel
                 branches={branches}
                 tags={tags}
                 className="border-none w-full"

@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { Default as BranchListStories } from "./BranchList.stories.tsx";
 import { Default as TagListStories } from "./TagList.stories.tsx";
-import BranchCard from "./BranchCard";
+import BranchPanel from "./BranchPanel.tsx";
 
 const meta = {
-    component: BranchCard,
-} satisfies Meta<typeof BranchCard>;
+    component: BranchPanel,
+} satisfies Meta<typeof BranchPanel>;
 
 export default meta;
 

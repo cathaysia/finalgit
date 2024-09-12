@@ -16,7 +16,7 @@ export default function Commiter({ className, ...props }: CommiterProps) {
         return (
             <div className={cn(className)}>
                 <Button className="w-full" onClick={() => setIsCommiting(true)}>
-                    {t("Start commit")}
+                    {t("commiter.start_commit")}
                 </Button>
             </div>
         );
@@ -25,14 +25,14 @@ export default function Commiter({ className, ...props }: CommiterProps) {
     return (
         <div className={cn("flex flex-col gap-2", className)} {...props}>
             <div className="flex flex-col gap-2">
-                <Textarea placeholder={t("Commit summary")}></Textarea>
+                <Textarea placeholder={t("commiter.commit_summary")}></Textarea>
                 <Button>
                     <FaMagic className="w-4 h-4 mr-2" />
-                    {t("Generate message")}
+                    {t("commiter.generate_message")}
                 </Button>
             </div>
             <div className="flex gap-2">
-                <Button className="w-4/5">{t("Commit")}</Button>
+                <Button className="w-4/5">{t("commiter.commit")}</Button>
                 <Button
                     className="w-1/5"
                     variant={"outline"}

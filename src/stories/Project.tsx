@@ -54,11 +54,11 @@ export default function Project({
                         })}
                         {projects.length != 0 && <DropdownMenuSeparator />}
                         <DropdownMenuItem className="flex justify-between">
-                            <span>{t("Add local repository")}</span>
+                            <span>{t("project.add_local_repository")}</span>
                             <IoIosAdd />
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex justify-between">
-                            <span>{t("Clone repository")}</span>
+                            <span>{t("project.clone_repository")}</span>
                             <MdAddToPhotos />
                         </DropdownMenuItem>
                     </DropdownMenuGroup>

@@ -63,7 +63,9 @@ export default function Branch({
                             ></span>
                         );
                     })()}
-                    <Badge>{is_local ? t("Local") : t("Remote")}</Badge>
+                    <Badge>
+                        {is_local ? t("branch.local") : t("branch.remote")}
+                    </Badge>
                     {upstream && <Badge>{upstream}</Badge>}
                 </span>
             ) : (
@@ -98,28 +100,32 @@ export default function Branch({
                                 <DropdownMenuItem
                                     onClick={() => setNewName(branch)}
                                 >
-                                    {t("Rename")}
+                                    {t("branch.rename")}
                                 </DropdownMenuItem>
                                 {!is_head && (
                                     <DropdownMenuItem>
-                                        {t("Checkout")}
+                                        {t("branch.checkout")}
                                     </DropdownMenuItem>
                                 )}
                                 <DropdownMenuItem>
-                                    {t("Details")}
+                                    {t("branch.details")}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    {t("Set upstream")}
+                                    {t("branch.set_upstream")}
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>{t("Pull")}</DropdownMenuItem>
-                                <DropdownMenuItem>{t("Push")}</DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    {t("branch.pull")}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    {t("branch.push")}
+                                </DropdownMenuItem>
                                 <DropdownMenuItem
                                     className="text-red-600"
                                     onClick={() => {
                                         on_delete && on_delete();
                                     }}
                                 >
-                                    {t("Delete")}
+                                    {t("branch.delete")}
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
@@ -131,7 +137,7 @@ export default function Branch({
                                 on_rename && on_rename(newName);
                             }}
                         >
-                            {t("Enter")}
+                            {t("branch.apply")}
                         </Button>
                         <Button
                             onClick={() => setNewName(undefined)}

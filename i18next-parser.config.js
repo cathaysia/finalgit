@@ -1,9 +1,9 @@
 export default {
     lineEnding: "auto",
-    locales: ["zh_CN"],
+    locales: ["en_US", "zh_CN"],
     output: "src/locales/$LOCALE/$NAMESPACE.json",
     input: ["src/**/*.{js,ts,jsx,tsx}"],
     sort: true,
-    keepRemoved: true,
+    keepRemoved: false,
     defaultValue: (locale, namesapce, key) => key,
 };

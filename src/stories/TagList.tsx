@@ -11,7 +11,7 @@ export interface TagListProps {
 }
 
 export function TagList({ tags, filter, className }: TagListProps) {
-    const parentRef = React.useRef();
+    const parentRef = React.useRef<HTMLDivElement>(null);
 
     const rowVirtualizer = useVirtualizer({
         count: tags.length,

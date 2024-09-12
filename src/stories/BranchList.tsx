@@ -16,7 +16,7 @@ export default function BranchList({
     filter,
     className,
 }: BranchListProps) {
-    const parentRef = React.useRef();
+    const parentRef = React.useRef<HTMLDivElement>(null);
 
     const rowVirtualizer = useVirtualizer({
         count: branches.length,

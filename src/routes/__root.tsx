@@ -58,9 +58,11 @@ export const Route = createRootRoute({
                                         });
                                 });
                             }}
-                            title={t("Open Repo")}
+                            title={t("worksapce.open_repo")}
                         >
-                            {commit ? commit.slice(0, 6) : t("Open Repo")}
+                            {commit
+                                ? commit.slice(0, 6)
+                                : t("worksapce.open_repo")}
                         </Button>
                         <ModeToggle />
                     </div>

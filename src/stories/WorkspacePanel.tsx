@@ -36,8 +36,8 @@ export default function WorkspacePanel({
                 <Separator />
                 <div className="pt-2">
                     <div className="flex justify-between">
-                        <Button>{t("Set as default")}</Button>
-                        <Button>{t("Create PR")}</Button>
+                        <Button>{t("workspace.set_as_default")}</Button>
+                        <Button>{t("workspace.create_pr")}</Button>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ export default function WorkspacePanel({
             <div className="p-4 border rounded-xl shadow flex flex-col gap-2">
                 <div>
                     <div>
-                        <span>{t("Changed files")} </span>
+                        <span>{t("workspace.changed_files")} </span>
                         <Avatar className="bg-gray-50 inline-block w-6 h-6">
                             <AvatarFallback>{changeSet.length}</AvatarFallback>
                         </Avatar>

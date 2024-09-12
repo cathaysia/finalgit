@@ -22,13 +22,13 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                         title={
                             ((item.status & GitFileStatus.WT_MODIFIED ||
                                 item.status & GitFileStatus.INDEX_MODIFIED) &&
-                                t("modified")) ||
+                                t("change.modified")) ||
                             ((item.status & GitFileStatus.WT_DELETED ||
                                 item.status & GitFileStatus.INDEX_DELETED) &&
-                                t("deleted")) ||
+                                t("change.deleted")) ||
                             ((item.status & GitFileStatus.WT_NEW ||
                                 item.status & GitFileStatus.INDEX_NEW) &&
-                                t("new file")) ||
+                                t("change.new_file")) ||
                             undefined
                         }
                     >

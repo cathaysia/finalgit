@@ -1,0 +1,72 @@
+{
+    "About": "About",
+    "branch": {
+        "apply": "Apply",
+        "branch_name": "Branch Name",
+        "branches": "Branches",
+        "checkout": "Checkout",
+        "delete": "Delete",
+        "details": "Details",
+        "edit_branch": "Edit Branch",
+        "local": "Local",
+        "new_branch_name": "New Branch Name",
+        "pull": "Pull",
+        "push": "Push",
+        "remote": "Remote",
+        "rename": "Rename",
+        "set_upstream": "Set Upstream",
+        "tags": "Tags"
+    },
+    "Cancel": "Cancel",
+    "change": {
+        "deleted": "deleted",
+        "modified": "modified",
+        "new_file": "new_file"
+    },
+    "Checkout": "Checkout",
+    "commit": "commit",
+    "Commit": "Commit",
+    "commiter": {
+        "commit": "Commit",
+        "commit_summary": "Commit Summary",
+        "generate_message": "Generate Message",
+        "start_commit": "Start Commit"
+    },
+    "Content": "Content",
+    "Create": "Create",
+    "Delete": "Delete",
+    "File": "File",
+    "Home": "Home",
+    "Local": "Local",
+    "project": {
+        "add_local_repository": "add local repository",
+        "clone_repository": "clone repository"
+    },
+    "Pull": "Pull",
+    "Push": "Push",
+    "Remote": "Remote",
+    "Rename": "Rename",
+    "Status": "Status",
+    "tag": {
+        "delete": "delete",
+        "edit_tag": "edit tag",
+        "new_tag_name": "new tag name"
+    },
+    "Tag": "Tag",
+    "Upstream": "Upstream",
+    "worksapce": {
+        "generate_patch": "Generate patch",
+        "open_repo": "Open Repo"
+    },
+    "workspace": {
+        "add_to_stage": "Add to stage",
+        "changed_files": "Changed files",
+        "create_pr": "Create PR",
+        "diff": "Diff",
+        "discard": "Discard",
+        "discard_all": "Discard all",
+        "set_as_default": "Set as default",
+        "stash": "Stash"
+    },
+    "Workspace": "Workspace"
+}

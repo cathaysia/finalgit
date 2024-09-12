@@ -15,10 +15,10 @@ export default function EditTag({ tag }: BranchProps) {
     const [newName, setNewName] = useState<string>(tag.name);
 
     return (
-        <SheetContent title={t("Edit Tag")}>
+        <SheetContent title={t("tag.edit_tag")}>
             <SheetHeader>
                 <SheetTitle>
-                    {`${t("Edit Tag")} ${tag.name} `}
+                    {`${t("tag.edit_tag")} ${tag.name} `}
                     <Badge>{tag.commit.slice(0, 6)}</Badge>
                 </SheetTitle>
             </SheetHeader>
@@ -26,7 +26,7 @@ export default function EditTag({ tag }: BranchProps) {
                 <Input
                     type="text"
                     value={newName}
-                    placeholder={t("New tag name")}
+                    placeholder={t("tag.new_tag_name")}
                     onChange={(e) => {
                         setNewName(e.target.value);
                     }}

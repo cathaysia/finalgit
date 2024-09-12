@@ -40,9 +40,9 @@ function StatusComponent() {
     return (
         <ScrollArea className="w-screen h-screen ">
             <div>
-                <Button>{t("generate patch")}</Button>
-                <Button>{t("discard all")}</Button>
-                <Button>{t("stash")}</Button>
+                <Button>{t("worksapce.generate_patch")}</Button>
+                <Button>{t("workspace.discard_all")}</Button>
+                <Button>{t("workspace.stash")}</Button>
             </div>
             <Accordion collapsible type="single">
                 {status
@@ -72,9 +72,11 @@ function StatusComponent() {
                                     {item.path} {badge}
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                    <Button>{t("Discard")}</Button>
-                                    <Button>{t("Add to stage")}</Button>
-                                    <Button>{t("Diff")}</Button>
+                                    <Button>{t("workspace.discard")}</Button>
+                                    <Button>
+                                        {t("workspace.add_to_stage")}
+                                    </Button>
+                                    <Button>{t("workspace.diff")}</Button>
                                 </AccordionContent>
                             </AccordionItem>
                         );

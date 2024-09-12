@@ -57,7 +57,7 @@ export function Tag({ info, filter, className }: TagProps) {
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
                             <MdDelete className="text-red-600 mr-2 h-4 w-4" />
-                            <span>{t("Delete")}</span>
+                            <span>{t("tag.delete")}</span>
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>

@@ -50,10 +50,10 @@ export default function EditBranch({ branch }: BranchProps) {
     }, [reqBranchRefresh]);
 
     return (
-        <SheetContent title={t("Edit Branch")}>
+        <SheetContent title={t("branch.edit_branch")}>
             <SheetHeader>
                 <SheetTitle>
-                    {`${t("Edit branch")} ${branch.name} `}
+                    {`${t("branch.edit_branch")} ${branch.name} `}
                     <Badge>{t(branch.kind || "Local")}</Badge>
                 </SheetTitle>
             </SheetHeader>
@@ -61,7 +61,7 @@ export default function EditBranch({ branch }: BranchProps) {
                 <Table>
                     <TableBody>
                         <TableRow>
-                            <TableCell>{t("Branch Name")}</TableCell>
+                            <TableCell>{t("branch.branch_name")}</TableCell>
                             <TableCell>{branch.name}</TableCell>
                         </TableRow>
                         <TableRow>
@@ -81,7 +81,7 @@ export default function EditBranch({ branch }: BranchProps) {
                 <Input
                     type="text"
                     value={newName}
-                    placeholder={t("New branch name")}
+                    placeholder={t("branch.new_branch_name")}
                     onChange={(e) => {
                         setNewName(e.target.value);
                         setReqBanchRe(!reqBranchRefresh);

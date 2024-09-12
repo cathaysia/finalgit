@@ -69,11 +69,11 @@ export default function BranchCard({
                 >
                     <TabsTrigger value="branch">
                         <FaCodeBranch />
-                        {t("Branches")}
+                        {t("branch.branches")}
                     </TabsTrigger>
                     <TabsTrigger value="tags">
                         <FaTag />
-                        {t("Tags")}
+                        {t("branch.tags")}
                     </TabsTrigger>
                 </TabsList>
                 {!isSearching ? (

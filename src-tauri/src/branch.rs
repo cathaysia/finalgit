@@ -99,3 +99,15 @@ pub fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
 
     Ok(())
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn add_files(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
+    utils::open_repo(repo_path)?.add_files(&files)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn remove_files(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
+    utils::open_repo(repo_path)?.remove_files(&files)
+}

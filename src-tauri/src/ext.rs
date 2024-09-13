@@ -21,6 +21,8 @@ pub trait RepoExt {
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>>;
     fn get_tags(&self) -> AppResult<Vec<TagInfo>>;
+    fn add_files(&self, files: &[&str]) -> AppResult<()>;
+    fn remove_files(&self, files: &[&str]) -> AppResult<()>;
 }
 
 impl RepoExt for git2::Repository {
@@ -202,6 +204,22 @@ impl RepoExt for git2::Repository {
         })?;
 
         Ok(taginfos)
+    }
+
+    fn add_files(&self, files: &[&str]) -> AppResult<()> {
+        let mut index = self.index()?;
+        for item in files {
+            index.add_path(std::path::Path::new(item))?
+        }
+        Ok(())
+    }
+
+    fn remove_files(&self, files: &[&str]) -> AppResult<()> {
+        let mut index = self.index()?;
+        for item in files {
+            index.remove_path(std::path::Path::new(item))?
+        }
+        Ok(())
     }
 }
 

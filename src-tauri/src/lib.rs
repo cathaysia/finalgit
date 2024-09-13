@@ -31,6 +31,8 @@ pub fn run() {
             branch::get_current_status,
             branch::get_commits,
             branch::checkout_remote,
+            branch::add_files,
+            branch::remove_files,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -70,6 +72,8 @@ mod test {
                 branch::get_current_status,
                 branch::get_commits,
                 branch::checkout_remote,
+                branch::add_files,
+                branch::remove_files,
             ]);
 
         builder

@@ -46,27 +46,43 @@ export default function Branch({
     const [refreshBranch] = useRefreshRequest((s) => [s.refreshBranch]);
     const is_dirty = changes.length !== 0;
 
-    function checkout(branch: string) {
-        if (repo_path) {
-            commands.checkoutBranch(repo_path, branch).then((v) => {
+    function removeBranch() {
+        if (is_local && repo_path) {
+            commands.removeBranch(repo_path, info).then((v) => {
                 match(v)
-                    .with(
-                        {
-                            status: "ok",
-                        },
-                        () => {
-                            refreshBranch();
-                        },
-                    )
-                    .with(
-                        {
-                            status: "error",
-                        },
-                        (err) => {
-                            setError(err.error);
-                        },
-                    );
+                    .with({ status: "ok" }, () => {
+                        refreshBranch();
+                    })
+                    .with({ status: "error" }, (err) => {
+                        setError(err.error);
+                    });
             });
+        }
+    }
+
+    function checkout() {
+        if (repo_path) {
+            if (is_local) {
+                commands.checkoutBranch(repo_path, info.name).then((v) => {
+                    match(v)
+                        .with({ status: "ok" }, () => {
+                            refreshBranch();
+                        })
+                        .with({ status: "error" }, (err) => {
+                            setError(err.error);
+                        });
+                });
+            } else {
+                commands.checkoutRemote(repo_path, info.name).then((v) => {
+                    match(v)
+                        .with({ status: "ok" }, () => {
+                            refreshBranch();
+                        })
+                        .with({ status: "error" }, (err) => {
+                            setError(err.error);
+                        });
+                });
+            }
         }
     }
 
@@ -134,7 +150,7 @@ export default function Branch({
                                 <DropdownMenuItem
                                     disabled={is_dirty}
                                     onClick={() => {
-                                        checkout(branchName);
+                                        checkout();
                                     }}
                                     className={cn(
                                         !is_local &&
@@ -167,7 +183,7 @@ export default function Branch({
                             <DropdownMenuItem
                                 className="text-red-600"
                                 onClick={() => {
-                                    on_delete?.();
+                                    removeBranch();
                                 }}
                             >
                                 {t("branch.delete")}

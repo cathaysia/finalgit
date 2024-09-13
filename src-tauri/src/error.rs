@@ -8,6 +8,10 @@ pub enum AppError {
     Io(#[from] std::io::Error),
     #[error("no opend repo")]
     NoRepo,
+    #[error("spawn git failed: {0}")]
+    Spawn(String),
+    #[error("Utf8 error: {0}")]
+    Utf8(#[from] std::str::Utf8Error),
 }
 
 pub type AppResult<T> = Result<T, AppError>;

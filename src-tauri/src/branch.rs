@@ -1,5 +1,9 @@
+use std::process::Stdio;
+
+use tracing::info;
+
 use crate::ext::RepoExt;
-use crate::utils;
+use crate::{utils, AppError};
 
 use crate::{error::AppResult, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree, TagInfo};
 
@@ -70,4 +74,28 @@ pub fn get_current_status(repo_path: &str) -> AppResult<Vec<FileStatus>> {
 #[specta::specta]
 pub fn get_commits(repo_path: &str, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
     utils::open_repo(repo_path)?.get_commits(branch, kind.into())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
+    info!("checkout remote {branch}");
+    let _ = utils::open_repo(repo_path)?;
+    let output = std::process::Command::new("git")
+        .stdout(Stdio::null())
+        .stderr(Stdio::piped())
+        .env("GIT_TERMINAL_PROMPT", "0")
+        .arg("checkout")
+        .arg(branch)
+        .arg("--force")
+        .current_dir(repo_path)
+        .spawn()?
+        .wait_with_output()?;
+
+    if output.status.code().unwrap() != 0 {
+        let err = std::str::from_utf8(&output.stderr)?;
+        return Err(AppError::Spawn(err.to_string()));
+    }
+
+    Ok(())
 }

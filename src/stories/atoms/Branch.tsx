@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { FaCodeBranch } from "react-icons/fa";
 import { match } from "ts-pattern";
 import BranchRename from "./BranchRename";
+import { Label } from "@/components/ui/label";
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
@@ -119,13 +120,13 @@ export default function Branch({
                 <FaCodeBranch className="inline-block" />
                 {(() => {
                     if (!filter) {
-                        return <span>{branchName}</span>;
+                        return <Label>{branchName}</Label>;
                     }
                     const v = branchName.replace(
                         filter,
                         `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
                     );
-                    return <span dangerouslySetInnerHTML={{ __html: v }} />;
+                    return <Label dangerouslySetInnerHTML={{ __html: v }} />;
                 })()}
                 <Badge>
                     {is_local ? t("branch.local") : t("branch.remote")}

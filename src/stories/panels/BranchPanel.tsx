@@ -56,8 +56,8 @@ export default function BranchPanel({
             className={cn("border focus:bg-red-50", className)}
         >
             <div className="flex gap-2 flex-col px-2">
-                <div className="flex justify-between">
-                    <TabsList className={cn("flex gap-2 items-center")}>
+                <div className="flex justify-between items-center gap-2">
+                    <TabsList className={cn("w-full grid grid-cols-2 mt-2")}>
                         <TabsTrigger value="branch">
                             <FaCodeBranch />
                             {t("branch.branches")}
@@ -67,20 +67,22 @@ export default function BranchPanel({
                             {t("branch.tags")}
                         </TabsTrigger>
                     </TabsList>
-                    {isSearching ? (
-                        <Button onClick={() => setIsSearching(false)}>
-                            {t("Cancel")}
-                        </Button>
-                    ) : (
-                        <Button
-                            onClick={() => {
-                                setIsSearching(true);
-                            }}
-                            variant={"ghost"}
-                        >
-                            <FaFilter />
-                        </Button>
-                    )}
+                    <div className="mt-2">
+                        {isSearching ? (
+                            <Button onClick={() => setIsSearching(false)}>
+                                {t("Cancel")}
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => {
+                                    setIsSearching(true);
+                                }}
+                                variant={"ghost"}
+                            >
+                                <FaFilter />
+                            </Button>
+                        )}
+                    </div>
                 </div>
                 {isSearching && (
                     <Input

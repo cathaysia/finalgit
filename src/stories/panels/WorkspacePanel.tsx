@@ -39,7 +39,9 @@ export default function WorkspacePanel({
                 <Separator />
                 <div className="pt-2">
                     <div className="flex justify-between">
-                        <Button>{t("workspace.set_as_default")}</Button>
+                        <Button disabled={true}>
+                            {t("workspace.set_as_default")}
+                        </Button>
                         <Button>{t("workspace.create_pr")}</Button>
                     </div>
                 </div>

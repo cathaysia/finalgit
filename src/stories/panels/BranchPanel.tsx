@@ -36,7 +36,7 @@ export default function BranchPanel({
     );
 
     const filteredBranches = branches.filter((item) => {
-        if (!filter) {
+        if (!isSearching) {
             return true;
         }
 
@@ -103,11 +103,14 @@ export default function BranchPanel({
             <TabsContent value="branch">
                 <BranchList
                     branches={filteredBranches}
-                    filter={filter || undefined}
+                    filter={isSearching ? filter : undefined}
                 />
             </TabsContent>
             <TabsContent value="tags">
-                <TagList tags={filteredTags} filter={filter || undefined} />
+                <TagList
+                    tags={filteredTags}
+                    filter={isSearching ? filter : undefined}
+                />
             </TabsContent>
         </Tabs>
     );

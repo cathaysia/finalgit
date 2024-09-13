@@ -1,5 +1,3 @@
-# Tauri + React + Typescript
+# FinalGit
 
-- [x] https://v2.tauri.app/start/
-- [x] https://ui.shadcn.com/
-- [x] https://tanstack.com/router/latest/
+A fool Git Client.

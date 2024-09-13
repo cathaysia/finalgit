@@ -65,7 +65,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
                     <Button
                         className={cn("w-full flex justify-between", className)}
                     >
-                        <span>{current}</span>
+                        {current}
                         <BsChevronExpand />
                     </Button>
                 </DropdownMenuTrigger>

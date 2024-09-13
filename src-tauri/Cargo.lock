@@ -1012,6 +1012,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "finalgit"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "git2",
+ "itertools",
+ "serde",
+ "serde_json",
+ "specta",
+ "specta-typescript",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-shell",
+ "tauri-specta",
+ "thiserror",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "flate2"
 version = "1.0.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1371,27 +1392,6 @@ dependencies = [
  "openssl-probe",
  "openssl-sys",
  "url",
-]
-
-[[package]]
-name = "gitui"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "git2",
- "itertools",
- "serde",
- "serde_json",
- "specta",
- "specta-typescript",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-shell",
- "tauri-specta",
- "thiserror",
- "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]

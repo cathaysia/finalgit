@@ -47,7 +47,7 @@ export default function BranchList({
                         return (
                             <div
                                 key={virtualItem.key}
-                                className="absolute top-0 left-0 w-full"
+                                className={"absolute top-0 left-0 w-full"}
                                 style={{
                                     height: `${virtualItem.size}px`,
                                     transform: `translateY(${virtualItem.start}px)`,

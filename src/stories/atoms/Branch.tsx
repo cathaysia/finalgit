@@ -19,6 +19,7 @@ import { FaCodeBranch } from "react-icons/fa";
 import { match } from "ts-pattern";
 import BranchRename from "./BranchRename";
 import { Label } from "@/components/ui/label";
+import { DEFAULT_STYLE } from "@/lib/style";
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
@@ -92,6 +93,7 @@ export default function Branch({
             <div
                 className={cn(
                     "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
+                    DEFAULT_STYLE,
                     is_head && "border-green-600",
                     className,
                 )}
@@ -111,7 +113,8 @@ export default function Branch({
         <div
             className={cn(
                 "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
-                is_head && "border-green-600",
+                DEFAULT_STYLE,
+                is_head && "border-green-600 dark:border-green-600",
                 className,
             )}
             {...props}

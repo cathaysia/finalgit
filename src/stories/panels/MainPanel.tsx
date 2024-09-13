@@ -69,7 +69,7 @@ export default function MainPanel({
     return (
         <div
             className={cn(
-                "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mb-4 h-screen max-h-screen",
+                "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-screen p-2",
                 className,
             )}
             {...props}

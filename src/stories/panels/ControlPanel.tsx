@@ -1,4 +1,4 @@
-import { commands, } from "@/bindings";
+import { commands } from "@/bindings";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type React from "react";
@@ -53,8 +53,11 @@ export default function ControlPanel({
     }, [repo_path]);
 
     return (
-        <div
-            className={cn("border w-full flex flex-col p-4 gap-4", className)}
+        <aside
+            className={cn(
+                "w-full flex flex-col max-h-full overflow-hidden gap-4",
+                className,
+            )}
             {...props}
         >
             <Project />
@@ -67,6 +70,6 @@ export default function ControlPanel({
                 tags={tags}
                 className="border-none w-full"
             />
-        </div>
+        </aside>
     );
 }

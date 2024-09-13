@@ -45,15 +45,9 @@ export default function WorkspacePanel({
                 </div>
             </div>
             <div className="p-4 border rounded-xl shadow flex flex-col gap-2 grow">
-                <div className="flex items-center gap-2">
-                    <span>{t("workspace.changed_files")} </span>
-                    <Avatar className="bg-gray-50 inline-block w-6 h-6">
-                        <AvatarFallback>{changeSet.length}</AvatarFallback>
-                    </Avatar>
-                </div>
                 <div className="flex flex-col grow gap-2">
                     <Tabs defaultValue="changes">
-                        <TabsList>
+                        <TabsList className="w-full">
                             <TabsTrigger value="changes">
                                 {t("workspace.change_list")}
                             </TabsTrigger>
@@ -65,6 +59,14 @@ export default function WorkspacePanel({
                             value="changes"
                             className="flex flex-col gap-2"
                         >
+                            <div className="flex items-center gap-2">
+                                <span>{t("workspace.changed_files")} </span>
+                                <Avatar className="bg-gray-50 inline-block w-6 h-6">
+                                    <AvatarFallback>
+                                        {changeSet.length}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </div>
                             <ChangeCard
                                 changeSet={changeSet}
                                 className="grow"

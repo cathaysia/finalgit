@@ -55,50 +55,47 @@ export default function BranchPanel({
             defaultValue="branch"
             className={cn("border focus:bg-red-50", className)}
         >
-            <div className="flex justify-between px-4 py-3 gap-2">
-                <TabsList
-                    className={cn(
-                        "hidden sm:flex sm:gap-2 sm:items-center",
-                        filter == null && "flex",
-                    )}
-                >
-                    <TabsTrigger value="branch">
-                        <FaCodeBranch />
-                        {t("branch.branches")}
-                    </TabsTrigger>
-                    <TabsTrigger value="tags">
-                        <FaTag />
-                        {t("branch.tags")}
-                    </TabsTrigger>
-                </TabsList>
-                {!isSearching ? (
-                    <Button
-                        onClick={() => {
-                            setIsSearching(true);
-                        }}
-                        variant={"ghost"}
-                    >
-                        <FaFilter />
-                    </Button>
-                ) : (
-                    <>
-                        <Input
-                            value={filter || ""}
-                            onChange={(e) => {
-                                setFilter(e.target.value);
-                            }}
-                            ref={searchBar}
-                            autoFocus
-                            onKeyUp={(e) => {
-                                if (e.key === "Escape") {
-                                    setIsSearching(false);
-                                }
-                            }}
-                        />
+            <div className="flex gap-2 flex-col px-2">
+                <div className="flex justify-between">
+                    <TabsList className={cn("flex gap-2 items-center")}>
+                        <TabsTrigger value="branch">
+                            <FaCodeBranch />
+                            {t("branch.branches")}
+                        </TabsTrigger>
+                        <TabsTrigger value="tags">
+                            <FaTag />
+                            {t("branch.tags")}
+                        </TabsTrigger>
+                    </TabsList>
+                    {isSearching ? (
                         <Button onClick={() => setIsSearching(false)}>
                             {t("Cancel")}
                         </Button>
-                    </>
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                setIsSearching(true);
+                            }}
+                            variant={"ghost"}
+                        >
+                            <FaFilter />
+                        </Button>
+                    )}
+                </div>
+                {isSearching && (
+                    <Input
+                        value={filter || ""}
+                        onChange={(e) => {
+                            setFilter(e.target.value);
+                        }}
+                        ref={searchBar}
+                        autoFocus
+                        onKeyUp={(e) => {
+                            if (e.key === "Escape") {
+                                setIsSearching(false);
+                            }
+                        }}
+                    />
                 )}
             </div>
             <TabsContent value="branch">

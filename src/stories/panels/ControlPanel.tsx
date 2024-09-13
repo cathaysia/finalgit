@@ -1,4 +1,7 @@
 import { commands } from "@/bindings";
+import {
+    getCurrentWindow,
+} from "@tauri-apps/api/window";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type React from "react";
@@ -6,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import BranchPanel from "./BranchPanel";
 import Project from "@/stories/atoms/Project";
 import { useAppState, useRefreshRequest } from "@/lib/state";
-import { useEffect } from "react";
+import { useEffect, } from "react";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 
@@ -60,6 +63,26 @@ export default function ControlPanel({
             )}
             {...props}
         >
+            <div data-tauri-drag-region={true} className="flex gap-2">
+                <div
+                    className="h-4 w-4 bg-red-600 rounded-lg"
+                    onClick={() => {
+                        getCurrentWindow().close();
+                    }}
+                />
+                <div
+                    className="h-4 w-4 bg-yellow-600 rounded-lg"
+                    onClick={() => {
+                        getCurrentWindow().toggleMaximize();
+                    }}
+                />
+                <div
+                    className="h-4 w-4 bg-green-600 rounded-lg"
+                    onClick={() => {
+                        getCurrentWindow().minimize();
+                    }}
+                />
+            </div>
             <Project />
             <Button variant={"secondary"} className="w-full h-12">
                 {t("Workspace")}

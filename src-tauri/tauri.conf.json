@@ -1,4 +1,5 @@
 {
+    "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-cli/schema.json",
     "productName": "finalgit",
     "version": "0.1.0",
     "identifier": "com.finalgit.app",
@@ -13,7 +14,8 @@
             {
                 "title": "FinalGit",
                 "width": 1400,
-                "height": 800
+                "height": 800,
+                "decorations": false
             }
         ],
         "security": {

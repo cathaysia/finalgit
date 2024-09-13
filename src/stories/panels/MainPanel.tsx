@@ -72,6 +72,7 @@ export default function MainPanel({
                 "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-screen p-2",
                 className,
             )}
+            data-tauri-drag-region={true}
             {...props}
         >
             <ControlPanel />

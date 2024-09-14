@@ -1,5 +1,6 @@
 import type { FileStatus } from "@/bindings";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import GitFileStatus from "@/lib/file_status";
 import { cn } from "@/lib/utils";
 import type React from "react";
@@ -36,6 +37,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                         <span>
                             <Checkbox
                                 className="w-4 h-4 mr-2"
+                                key={item.path}
                                 checked={
                                     (item.status & GitFileStatus.INDEX_NEW ||
                                         item.status &
@@ -49,7 +51,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                     0
                                 }
                             />
-                            {item.path}
+                            <Label htmlFor={item.path}>{item.path}</Label>
                         </span>
                         <div
                             key={item.path}

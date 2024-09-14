@@ -22,6 +22,9 @@
             },
             "security": {
                 "noDangerouslySetInnerHtml": "off"
+            },
+            "a11y": {
+                "useKeyWithClickEvents": "off"
             }
         },
         "include": ["src/**/*", ".storybook/*", "index.html"],

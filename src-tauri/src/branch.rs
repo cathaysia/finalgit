@@ -1,6 +1,6 @@
 use std::process::Stdio;
 
-use tracing::info;
+use log::info;
 
 use crate::ext::RepoExt;
 use crate::{utils, AppError};

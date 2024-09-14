@@ -15,7 +15,8 @@
                 "title": "FinalGit",
                 "width": 1400,
                 "height": 800,
-                "decorations": false
+                "decorations": false,
+                "shadow": true
             }
         ],
         "security": {

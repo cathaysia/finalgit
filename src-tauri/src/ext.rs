@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use itertools::Itertools;
-use tracing::debug;
+use log::debug;
 
 use crate::{AppResult, Author, BranchInfo, CommitInfo, FileStatus, FileTree, TagInfo};
 

@@ -16,5 +16,6 @@ export const Default: Story = {
         branchName: "master",
         upstream: "origin/master",
         changeSet: ChangeCardStories.args.changeSet,
+        files: [],
     },
 };

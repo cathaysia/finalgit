@@ -12,7 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        current: "create_react_project",
         projects: [
             "create_react_project",
             "create_nextjs_project",

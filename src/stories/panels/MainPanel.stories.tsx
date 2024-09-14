@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Default as BranchListStories } from "@/stories/lists/BranchList.stories.tsx";
-import { Default as ChangeCardStories } from "@/stories/atoms/ChangeCard.stories.tsx";
 import MainPanel from "./MainPanel";
 import { Default as TagListStories } from "@/stories/lists/TagList.stories.tsx";
 
@@ -18,7 +17,5 @@ export const Default: Story = {
         project_name: "project_name",
         branches: BranchListStories.args.branches,
         tags: TagListStories.args.tags,
-        changeSet: ChangeCardStories.args.changeSet,
-        branchName: "branchName",
     },
 };

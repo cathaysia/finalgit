@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { useChangeState } from "@/lib/state";
 import { useTranslation } from "react-i18next";
 import { FaMagic } from "react-icons/fa";
 import { VscDiff } from "react-icons/vsc";
@@ -25,26 +26,29 @@ import { useErrorState } from "@/lib/error";
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     files?: string[];
-    isCommiting: boolean;
-    on_commit_complete?: () => void;
 }
 
-export default function Commiter({
-    className,
-    files,
-    isCommiting,
-    on_commit_complete,
-    ...props
-}: CommiterProps) {
+export default function Commiter({ className, ...props }: CommiterProps) {
+    const [isCommiting, setIsCommiting] = useState(false);
     const t = useTranslation().t;
     const repo_path = useAppState((s) => s.repo_path);
     const setError = useErrorState((s) => s.setError);
     const refreshStage = useRefreshRequest((s) => s.refreshStage);
 
+    const [changeState, selectAll] = useChangeState((s) => [
+        s.changes,
+        s.selectAll,
+    ]);
+
+    const v = Array.from(changeState).map(([key, value]) => ({ key, value }));
+    const files = v
+        .filter((item) => item.value.checked)
+        .map((item) => item.key);
+
     useHotkeys(
         "Escape",
         () => {
-            on_commit_complete?.();
+            setIsCommiting(false);
         },
         {
             preventDefault: true,
@@ -56,7 +60,15 @@ export default function Commiter({
     if (!isCommiting) {
         return (
             <div className={cn("flex gap-2", className)}>
-                <Button type="submit" className="w-full">
+                <Button
+                    className="w-full"
+                    onClick={() => {
+                        if (files.length === 0) {
+                            selectAll();
+                        }
+                        setIsCommiting(true);
+                    }}
+                >
                     {t("commiter.start_commit")}
                 </Button>
                 <DropdownMenu>
@@ -96,7 +108,7 @@ export default function Commiter({
                     onChange={(e) => setCommitMsg(e.target.value)}
                     onKeyUp={(e) => {
                         if (e.key === "Escape") {
-                            on_commit_complete?.();
+                            setIsCommiting(false);
                         }
                     }}
                 />
@@ -121,7 +133,9 @@ export default function Commiter({
                                                     .with(
                                                         { status: "ok" },
                                                         () => {
-                                                            on_commit_complete?.();
+                                                            setIsCommiting(
+                                                                false,
+                                                            );
                                                             refreshStage();
                                                         },
                                                     )
@@ -145,7 +159,7 @@ export default function Commiter({
                 <Button
                     className="w-1/5"
                     variant={"outline"}
-                    onClick={() => on_commit_complete?.()}
+                    onClick={() => setIsCommiting(false)}
                 >
                     {t("Cancel")}
                 </Button>

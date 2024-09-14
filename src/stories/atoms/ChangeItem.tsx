@@ -1,9 +1,10 @@
 import type { FileStatus } from "@/bindings";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
 import GitFileStatus from "@/lib/file_status";
 import { DEFAULT_STYLE } from "@/lib/style";
 import { cn } from "@/lib/utils";
+import type React from "react";
 import { useTranslation } from "react-i18next";
 
 type CheckedState = boolean | "indeterminate";
@@ -34,16 +35,14 @@ export default function ChangeItem({
     }
 
     return (
-        <FormItem className={cn("flex justify-between", className)} {...props}>
+        <div className={cn("flex justify-between", className)} {...props}>
             <div className="flex gap-2">
-                <FormControl>
-                    <Checkbox
-                        defaultChecked={is_indexed(item)}
-                        checked={checked}
-                        onCheckedChange={onCheckedChange}
-                    />
-                </FormControl>
-                <FormLabel
+                <Checkbox
+                    defaultChecked={is_indexed(item)}
+                    checked={checked}
+                    onCheckedChange={onCheckedChange}
+                />
+                <Label
                     className={DEFAULT_STYLE}
                     title={
                         ((item.status & GitFileStatus.WT_MODIFIED ||
@@ -59,7 +58,7 @@ export default function ChangeItem({
                     }
                 >
                     {item.path}
-                </FormLabel>
+                </Label>
             </div>
             <div
                 key={item.path}
@@ -76,6 +75,6 @@ export default function ChangeItem({
                         "bg-green-600",
                 )}
             />
-        </FormItem>
+        </div>
     );
 }

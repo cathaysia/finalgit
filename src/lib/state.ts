@@ -46,3 +46,75 @@ export const useRefreshRequest = create<RefreshRequest>()(
         refreshStage: () => set((s) => ({ stageListener: !s.stageListener })),
     })),
 );
+
+export interface ChangeItem {
+    checked: boolean;
+    status: number;
+}
+
+export interface ChangeState {
+    changes: Map<string, ChangeItem>;
+    selectChange: (file_name: string) => void;
+    excludeChange: (file_name: string) => void;
+    clearChanges: () => void;
+    selectAll: () => void;
+    excludeAll: () => void;
+    extend: (state: FileStatus[]) => void;
+}
+
+export const useChangeState = create<ChangeState>()(
+    devtools((set) => ({
+        changes: new Map(),
+        selectChange: (file_name: string) =>
+            set((s) => {
+                const v = s.changes;
+                const b = v.get(file_name);
+                if (b) {
+                    b.checked = true;
+                    v.set(file_name, b);
+                }
+                return { changes: v };
+            }),
+        excludeChange: (file_name: string) =>
+            set((s) => {
+                const v = s.changes;
+                const b = v.get(file_name);
+                if (b) {
+                    b.checked = false;
+                    v.set(file_name, b);
+                }
+                return { changes: v };
+            }),
+        clearChanges: () => set(() => ({ changes: new Map() })),
+        extend: (state: FileStatus[]) =>
+            set((s) => {
+                const res = s.changes;
+                state.forEach((val) => {
+                    if (res.has(val.path)) {
+                        return;
+                    }
+                    res.set(val.path, {
+                        checked: false,
+                        status: val.status,
+                    });
+                });
+                return {};
+            }),
+        selectAll: () =>
+            set((s) => {
+                const res = s.changes;
+                res.forEach((item) => {
+                    item.checked = true;
+                });
+                return { changes: res };
+            }),
+        excludeAll: () =>
+            set((s) => {
+                const res = s.changes;
+                res.forEach((item) => {
+                    item.checked = false;
+                });
+                return { changes: res };
+            }),
+    })),
+);

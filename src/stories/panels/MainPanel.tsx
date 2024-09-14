@@ -2,7 +2,7 @@ import { commands, type BranchInfo, type TagInfo } from "@/bindings";
 import { cn } from "@/lib/utils";
 import ControlPanel from "./ControlPanel";
 import WorkspacePanel from "./WorkspacePanel";
-import { useAppState } from "@/lib/state";
+import { useAppState, useRefreshRequest } from "@/lib/state";
 import { useEffect } from "react";
 import { useErrorState } from "@/lib/error";
 import { match } from "ts-pattern";
@@ -31,6 +31,7 @@ export default function MainPanel({
         ]);
 
     const setError = useErrorState((s) => s.setError);
+    const [stageListener] = useRefreshRequest((s) => [s.stageListener]);
 
     const item = branches.find((item) => item.is_head);
     let branchName = "";
@@ -49,7 +50,7 @@ export default function MainPanel({
                     });
             });
         }
-    }, [repo_path]);
+    }, [repo_path, stageListener]);
 
     useEffect(() => {
         const head = branches.find((item) => item.is_head);

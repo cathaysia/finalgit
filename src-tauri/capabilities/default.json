@@ -13,6 +13,8 @@
         "core:window:allow-toggle-maximize",
         "core:window:allow-start-dragging",
         "store:default",
-        "fs:default"
+        "fs:default",
+        "log:default",
+        "core:event:default"
     ]
 }

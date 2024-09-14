@@ -14,7 +14,7 @@ use tauri_plugin_log::{Target, TargetKind};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let max_log = std::env::var("DDS_LOG").unwrap_or("OFF".to_string());
+    let max_log = std::env::var("RUST_LOG").unwrap_or("OFF".to_string());
     let log_level = match max_log.to_uppercase().as_str() {
         "TRACE" => log::LevelFilter::Trace,
         "DEBUG" => log::LevelFilter::Debug,
@@ -30,7 +30,10 @@ pub fn run() {
         .plugin(
             tauri_plugin_log::Builder::new()
                 .level(log_level)
-                .targets([Target::new(TargetKind::Stdout)])
+                .targets([
+                    Target::new(TargetKind::Stdout),
+                    Target::new(TargetKind::Webview),
+                ])
                 .build(),
         )
         .plugin(tauri_plugin_shell::init())
@@ -52,6 +55,7 @@ pub fn run() {
             branch::checkout_remote,
             branch::add_files,
             branch::remove_files,
+            branch::create_commit,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -79,6 +83,7 @@ mod test {
                 branch::checkout_remote,
                 branch::add_files,
                 branch::remove_files,
+                branch::create_commit,
             ]);
 
         builder

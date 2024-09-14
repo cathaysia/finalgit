@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import ChangeCard from "@/stories/atoms/ChangeCard";
-import Commiter from "@/stories/atoms/Commiter";
 import { DEFAULT_STYLE } from "@/lib/style";
 
 export interface WorkspacePanelProps
@@ -58,8 +57,6 @@ export default function WorkspacePanel({
                     </Avatar>
                 </div>
                 <ChangeCard changeSet={changeSet} className="grow" />
-                <Separator />
-                <Commiter />
             </div>
         </div>
     );

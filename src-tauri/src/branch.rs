@@ -111,3 +111,9 @@ pub fn add_files(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
 pub fn remove_files(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
     utils::open_repo(repo_path)?.remove_files(&files)
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn create_commit(repo_path: &str, msg: String) -> AppResult<()> {
+    utils::open_repo(repo_path)?.create_commit(&msg)
+}

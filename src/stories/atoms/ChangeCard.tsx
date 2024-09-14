@@ -1,78 +1,96 @@
 import type { FileStatus } from "@/bindings";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import GitFileStatus from "@/lib/file_status";
 import { cn } from "@/lib/utils";
 import type React from "react";
-import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormField } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import Commiter from "./Commiter";
+import { useState } from "react";
+import { debug } from "@tauri-apps/plugin-log";
+import ChangeItem from "./ChangeItem";
 
 export interface ChangeCardProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     changeSet: FileStatus[];
 }
 
+const formSchema = z.object({
+    files: z.array(z.string()).refine((value) => value.some((item) => item)),
+});
+
 export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
-    const t = useTranslation().t;
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            files: [],
+        },
+    });
+
+    const [commitFiles, setCommitFiels] = useState<string[]>([]);
+    const [isCommiting, setIsCommiting] = useState(false);
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        let v = values.files;
+        if (values.files.length === 0) {
+            v = changeSet.map((item) => item.path);
+        }
+        debug(`set commit files: ${v}`);
+        setIsCommiting(true);
+        setCommitFiels(v);
+    }
 
     return (
-        <div className={cn("flex flex-col gap-1", className)}>
-            {changeSet.map((item) => {
-                return (
-                    <div
-                        className="flex justify-between"
-                        key={item.path}
-                        title={
-                            ((item.status & GitFileStatus.WT_MODIFIED ||
-                                item.status & GitFileStatus.INDEX_MODIFIED) &&
-                                t("change.modified")) ||
-                            ((item.status & GitFileStatus.WT_DELETED ||
-                                item.status & GitFileStatus.INDEX_DELETED) &&
-                                t("change.deleted")) ||
-                            ((item.status & GitFileStatus.WT_NEW ||
-                                item.status & GitFileStatus.INDEX_NEW) &&
-                                t("change.new_file")) ||
-                            undefined
-                        }
-                    >
-                        <span>
-                            <Checkbox
-                                className="w-4 h-4 mr-2"
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className={cn("flex flex-col gap-2", className)}
+            >
+                <div className="grow">
+                    {changeSet.map((item) => {
+                        return (
+                            <FormField
+                                control={form.control}
+                                name="files"
                                 key={item.path}
-                                checked={
-                                    (item.status & GitFileStatus.INDEX_NEW ||
-                                        item.status &
-                                            GitFileStatus.INDEX_MODIFIED ||
-                                        item.status &
-                                            GitFileStatus.INDEX_DELETED ||
-                                        item.status &
-                                            GitFileStatus.INDEX_RENAMED ||
-                                        item.status &
-                                            GitFileStatus.INDEX_TYPECHANGE) !==
-                                    0
-                                }
+                                render={({ field }) => {
+                                    return (
+                                        <ChangeItem
+                                            item={item}
+                                            checked={field.value?.includes(
+                                                item.path,
+                                            )}
+                                            onCheckedChange={(checked) => {
+                                                return checked
+                                                    ? field.onChange([
+                                                          ...field.value,
+                                                          item.path,
+                                                      ])
+                                                    : field.onChange(
+                                                          field.value?.filter(
+                                                              (value) =>
+                                                                  value !==
+                                                                  item.path,
+                                                          ),
+                                                      );
+                                            }}
+                                        />
+                                    );
+                                }}
                             />
-                            <Label htmlFor={item.path}>{item.path}</Label>
-                        </span>
-                        <div
-                            key={item.path}
-                            className={cn(
-                                "w-3 h-3 rounded-lg",
-                                (item.status & GitFileStatus.WT_MODIFIED ||
-                                    item.status &
-                                        GitFileStatus.INDEX_MODIFIED) &&
-                                    "bg-yellow-600",
-                                (item.status & GitFileStatus.WT_DELETED ||
-                                    item.status &
-                                        GitFileStatus.INDEX_DELETED) &&
-                                    "bg-red-600",
-                                (item.status & GitFileStatus.WT_NEW ||
-                                    item.status & GitFileStatus.INDEX_NEW) &&
-                                    "bg-green-600",
-                            )}
-                        />
-                    </div>
-                );
-            })}
-        </div>
+                        );
+                    })}
+                </div>
+                <Separator />
+                <Commiter
+                    files={commitFiles}
+                    isCommiting={isCommiting}
+                    on_commit_complete={() => {
+                        setIsCommiting(false);
+                    }}
+                />
+            </form>
+        </Form>
     );
 }

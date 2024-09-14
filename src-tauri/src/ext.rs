@@ -1,9 +1,9 @@
-use std::path::Path;
+use std::{path::Path, process::Stdio};
 
 use itertools::Itertools;
 use log::debug;
 
-use crate::{AppResult, Author, BranchInfo, CommitInfo, FileStatus, FileTree, TagInfo};
+use crate::{AppError, AppResult, Author, BranchInfo, CommitInfo, FileStatus, FileTree, TagInfo};
 
 pub trait RepoExt {
     fn get_branches(&self) -> AppResult<Vec<BranchInfo>>;
@@ -23,6 +23,7 @@ pub trait RepoExt {
     fn get_tags(&self) -> AppResult<Vec<TagInfo>>;
     fn add_files(&self, files: &[&str]) -> AppResult<()>;
     fn remove_files(&self, files: &[&str]) -> AppResult<()>;
+    fn create_commit(&self, msg: &str) -> AppResult<()>;
 }
 
 impl RepoExt for git2::Repository {
@@ -211,6 +212,7 @@ impl RepoExt for git2::Repository {
         for item in files {
             index.add_path(std::path::Path::new(item))?
         }
+        index.write()?;
         Ok(())
     }
 
@@ -218,6 +220,28 @@ impl RepoExt for git2::Repository {
         let mut index = self.index()?;
         for item in files {
             index.remove_path(std::path::Path::new(item))?
+        }
+        index.write()?;
+        Ok(())
+    }
+
+    fn create_commit(&self, msg: &str) -> AppResult<()> {
+        let path = self.path().parent().unwrap();
+
+        let output = std::process::Command::new("git")
+            .stdout(Stdio::null())
+            .stderr(Stdio::piped())
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .arg("commit")
+            .arg("-m")
+            .arg(msg)
+            .current_dir(path)
+            .spawn()?
+            .wait_with_output()?;
+
+        if output.status.code().unwrap() != 0 {
+            let err = std::str::from_utf8(&output.stderr)?;
+            return Err(AppError::Spawn(err.to_string()));
         }
         Ok(())
     }

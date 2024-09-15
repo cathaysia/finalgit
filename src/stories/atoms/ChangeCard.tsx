@@ -1,11 +1,12 @@
-import type { FileStatus } from "@/bindings";
+import { commands, type FileStatus } from "@/bindings";
 import { cn } from "@/lib/utils";
 import type React from "react";
 import { Separator } from "@/components/ui/separator";
 import Commiter from "./Commiter";
-import { useMemo } from "react";
-import { useChangeState } from "@/lib/state";
+import { useAppState, useRefreshRequest } from "@/lib/state";
 import ChangeItem from "./ChangeItem";
+import { match } from "ts-pattern";
+import { useErrorState } from "@/lib/error";
 
 export interface ChangeCardProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -13,44 +14,60 @@ export interface ChangeCardProps
 }
 
 export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
-    const [
-        changeState,
-        clearChangeStatus,
-        extendChangeState,
-        selectChange,
-        excludeChange,
-    ] = useChangeState((s) => [
-        s.changes,
-        s.clearChanges,
-        s.extend,
-        s.selectChange,
-        s.excludeChange,
-    ]);
-
-    useMemo(() => {
-        clearChangeStatus();
-        extendChangeState(changeSet);
-    }, [changeSet]);
-
-    const v = Array.from(changeState).map(([key, value]) => ({ key, value }));
+    const repo_path = useAppState((s) => s.repo_path);
+    const refreshStage = useRefreshRequest((s) => s.refreshStage);
+    const setError = useErrorState((s) => s.setError);
 
     return (
         <div className={cn("flex flex-col gap-2", className)}>
             <div className="grow flex flex-col gap-2">
-                {v.map((item) => {
+                {changeSet.map((item) => {
                     return (
                         <ChangeItem
-                            key={item.key}
+                            key={item.path}
                             item={{
-                                path: item.key,
-                                status: item.value.status,
+                                path: item.path,
+                                status: item.status,
                             }}
-                            checked={item.value.checked}
                             onCheckedChange={(e) => {
                                 if (e === true) {
-                                    selectChange(item.key);
+                                    repo_path &&
+                                        commands
+                                            .addFiles(repo_path, [item.path])
+                                            .then((v) => {
+                                                match(v)
+                                                    .with(
+                                                        { status: "ok" },
+                                                        () => {
+                                                            refreshStage();
+                                                        },
+                                                    )
+                                                    .with(
+                                                        { status: "error" },
+                                                        (err) => {
+                                                            setError(err.error);
+                                                        },
+                                                    );
+                                            });
                                 } else if (e === false) {
-                                    excludeChange(item.key);
+                                    repo_path &&
+                                        commands
+                                            .removeFiles(repo_path, [item.path])
+                                            .then((v) => {
+                                                match(v)
+                                                    .with(
+                                                        { status: "ok" },
+                                                        () => {
+                                                            refreshStage();
+                                                        },
+                                                    )
+                                                    .with(
+                                                        { status: "error" },
+                                                        (err) => {
+                                                            setError(err.error);
+                                                        },
+                                                    );
+                                            });
                                 }
                             }}
                         />
@@ -58,7 +75,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                 })}
             </div>
             <Separator />
-            <Commiter />
+            <Commiter changeSet={changeSet} />
         </div>
     );
 }

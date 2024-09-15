@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useChangeState } from "@/lib/state";
 import { useTranslation } from "react-i18next";
 import { FaMagic } from "react-icons/fa";
 import { VscDiff } from "react-icons/vsc";
@@ -18,32 +17,28 @@ import {
 import { VscDiscard } from "react-icons/vsc";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useState } from "react";
-import { commands } from "@/bindings";
+import { commands, type FileStatus } from "@/bindings";
 import { useAppState, useRefreshRequest } from "@/lib/state";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
+import GitFileStatus from "@/lib/file_status";
 
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     files?: string[];
+    changeSet: FileStatus[];
 }
 
-export default function Commiter({ className, ...props }: CommiterProps) {
+export default function Commiter({
+    className,
+    changeSet,
+    ...props
+}: CommiterProps) {
     const [isCommiting, setIsCommiting] = useState(false);
     const t = useTranslation().t;
     const repo_path = useAppState((s) => s.repo_path);
     const setError = useErrorState((s) => s.setError);
     const refreshStage = useRefreshRequest((s) => s.refreshStage);
-
-    const [changeState, selectAll] = useChangeState((s) => [
-        s.changes,
-        s.selectAll,
-    ]);
-
-    const v = Array.from(changeState).map(([key, value]) => ({ key, value }));
-    const files = v
-        .filter((item) => item.value.checked)
-        .map((item) => item.key);
 
     useHotkeys(
         "Escape",
@@ -62,9 +57,27 @@ export default function Commiter({ className, ...props }: CommiterProps) {
             <div className={cn("flex gap-2", className)}>
                 <Button
                     className="w-full"
+                    disabled={changeSet.length === 0}
                     onClick={() => {
-                        if (files.length === 0) {
-                            selectAll();
+                        if (!repo_path) {
+                            return;
+                        }
+                        const has_indexed = changeSet
+                            .map((item) =>
+                                GitFileStatus.is_indexed(item.status),
+                            )
+                            .reduce((l, r) => l && r);
+                        if (!has_indexed) {
+                            const allfiles = changeSet.map((item) => item.path);
+                            commands.addFiles(repo_path, allfiles).then((v) => {
+                                match(v)
+                                    .with({ status: "ok" }, () => {
+                                        refreshStage();
+                                    })
+                                    .with({ status: "error" }, (err) => {
+                                        setError(err.error);
+                                    });
+                            });
                         }
                         setIsCommiting(true);
                     }}
@@ -122,35 +135,19 @@ export default function Commiter({ className, ...props }: CommiterProps) {
                     className="w-4/5"
                     disabled={commitMsg.trim().length === 0}
                     onClick={() => {
-                        if (repo_path && files) {
-                            commands.addFiles(repo_path, files).then((v) => {
-                                match(v)
-                                    .with({ status: "ok" }, () => {
-                                        commands
-                                            .createCommit(repo_path, commitMsg)
-                                            .then((v) => {
-                                                match(v)
-                                                    .with(
-                                                        { status: "ok" },
-                                                        () => {
-                                                            setIsCommiting(
-                                                                false,
-                                                            );
-                                                            refreshStage();
-                                                        },
-                                                    )
-                                                    .with(
-                                                        { status: "error" },
-                                                        (err) => {
-                                                            setError(err.error);
-                                                        },
-                                                    );
-                                            });
-                                    })
-                                    .with({ status: "error" }, (err) => {
-                                        setError(err.error);
-                                    });
-                            });
+                        if (repo_path) {
+                            commands
+                                .createCommit(repo_path, commitMsg)
+                                .then((v) => {
+                                    match(v)
+                                        .with({ status: "ok" }, () => {
+                                            setIsCommiting(false);
+                                            refreshStage();
+                                        })
+                                        .with({ status: "error" }, (err) => {
+                                            setError(err.error);
+                                        });
+                                });
                         }
                     }}
                 >

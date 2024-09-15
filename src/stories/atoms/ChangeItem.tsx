@@ -18,11 +18,11 @@ export interface ChangeItemProps
 export default function ChangeItem({
     className,
     item,
-    checked,
     onCheckedChange,
     ...props
 }: ChangeItemProps) {
     const { t } = useTranslation();
+    console.log(item);
 
     function is_indexed(item: FileStatus) {
         return (
@@ -34,12 +34,22 @@ export default function ChangeItem({
         );
     }
 
+    function get_checked_status(status: number) {
+        const is_indexed = GitFileStatus.is_indexed(status);
+        const is_wt = GitFileStatus.is_wt(status);
+        if (is_indexed && is_wt) {
+            return "indeterminate";
+        }
+
+        return is_indexed;
+    }
+
     return (
         <div className={cn("flex justify-between", className)} {...props}>
             <div className="flex gap-2">
                 <Checkbox
                     defaultChecked={is_indexed(item)}
-                    checked={checked}
+                    checked={get_checked_status(item.status)}
                     onCheckedChange={onCheckedChange}
                 />
                 <Label

@@ -18,4 +18,26 @@ enum GitFileStatus {
     CONFLICTED = 1 << 15,
 }
 
+namespace GitFileStatus {
+    export function is_indexed(status: number) {
+        return (
+            (status & GitFileStatus.INDEX_NEW ||
+                status & GitFileStatus.INDEX_MODIFIED ||
+                status & GitFileStatus.INDEX_DELETED ||
+                status & GitFileStatus.INDEX_TYPECHANGE) != 0
+        );
+    }
+
+    export function is_wt(status: number) {
+        return (
+            (status & GitFileStatus.WT_NEW ||
+                status & GitFileStatus.WT_MODIFIED ||
+                status & GitFileStatus.WT_DELETED ||
+                status & GitFileStatus.WT_TYPECHANGE ||
+                status & GitFileStatus.WT_RENAMED ||
+                status & GitFileStatus.WT_UNREADABLE) != 0
+        );
+    }
+}
+
 export default GitFileStatus;

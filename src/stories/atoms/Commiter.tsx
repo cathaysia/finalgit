@@ -69,15 +69,17 @@ export default function Commiter({
                             .reduce((l, r) => l && r);
                         if (!has_indexed) {
                             const allfiles = changeSet.map((item) => item.path);
-                            commands.addFiles(repo_path, allfiles).then((v) => {
-                                match(v)
-                                    .with({ status: "ok" }, () => {
-                                        refreshStage();
-                                    })
-                                    .with({ status: "error" }, (err) => {
-                                        setError(err.error);
-                                    });
-                            });
+                            commands
+                                .addToStage(repo_path, allfiles)
+                                .then((v) => {
+                                    match(v)
+                                        .with({ status: "ok" }, () => {
+                                            refreshStage();
+                                        })
+                                        .with({ status: "error" }, (err) => {
+                                            setError(err.error);
+                                        });
+                                });
                         }
                         setIsCommiting(true);
                     }}

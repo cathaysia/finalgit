@@ -53,8 +53,8 @@ pub fn run() {
             branch::get_current_status,
             branch::get_commits,
             branch::checkout_remote,
-            branch::add_files,
-            branch::remove_files,
+            branch::add_to_stage,
+            branch::remove_from_stage,
             branch::create_commit,
         ])
         .run(tauri::generate_context!())
@@ -81,8 +81,8 @@ mod test {
                 branch::get_current_status,
                 branch::get_commits,
                 branch::checkout_remote,
-                branch::add_files,
-                branch::remove_files,
+                branch::add_to_stage,
+                branch::remove_from_stage,
                 branch::create_commit,
             ]);
 

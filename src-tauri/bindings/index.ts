@@ -189,28 +189,31 @@ export const commands = {
             else return { status: "error", error: e as any };
         }
     },
-    async addFiles(
+    async addToStage(
         repoPath: string,
         files: string[],
     ): Promise<Result<null, string>> {
         try {
             return {
                 status: "ok",
-                data: await TAURI_INVOKE("add_files", { repoPath, files }),
+                data: await TAURI_INVOKE("add_to_stage", { repoPath, files }),
             };
         } catch (e) {
             if (e instanceof Error) throw e;
             else return { status: "error", error: e as any };
         }
     },
-    async removeFiles(
+    async removeFromStage(
         repoPath: string,
         files: string[],
     ): Promise<Result<null, string>> {
         try {
             return {
                 status: "ok",
-                data: await TAURI_INVOKE("remove_files", { repoPath, files }),
+                data: await TAURI_INVOKE("remove_from_stage", {
+                    repoPath,
+                    files,
+                }),
             };
         } catch (e) {
             if (e instanceof Error) throw e;

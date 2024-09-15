@@ -1,5 +1,6 @@
 use std::{path::Path, process::Stdio};
 
+use git2::ObjectType;
 use itertools::Itertools;
 use log::debug;
 
@@ -21,8 +22,8 @@ pub trait RepoExt {
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>>;
     fn get_tags(&self) -> AppResult<Vec<TagInfo>>;
-    fn add_files(&self, files: &[&str]) -> AppResult<()>;
-    fn remove_files(&self, files: &[&str]) -> AppResult<()>;
+    fn add_to_stage(&self, files: &[&str]) -> AppResult<()>;
+    fn remove_from_stage(&self, files: &[&str]) -> AppResult<()>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
 }
 
@@ -207,7 +208,7 @@ impl RepoExt for git2::Repository {
         Ok(taginfos)
     }
 
-    fn add_files(&self, files: &[&str]) -> AppResult<()> {
+    fn add_to_stage(&self, files: &[&str]) -> AppResult<()> {
         let mut index = self.index()?;
         for item in files {
             index.add_path(std::path::Path::new(item))?
@@ -216,12 +217,10 @@ impl RepoExt for git2::Repository {
         Ok(())
     }
 
-    fn remove_files(&self, files: &[&str]) -> AppResult<()> {
-        let mut index = self.index()?;
-        for item in files {
-            index.remove_path(std::path::Path::new(item))?
-        }
-        index.write()?;
+    fn remove_from_stage(&self, files: &[&str]) -> AppResult<()> {
+        let head = self.head()?.target().ok_or(AppError::NoRepo)?;
+        let obj = self.find_object(head, Some(ObjectType::Commit))?;
+        self.reset_default(Some(&obj), files)?;
         Ok(())
     }
 

@@ -56,6 +56,7 @@ pub fn run() {
             branch::add_to_stage,
             branch::remove_from_stage,
             branch::create_commit,
+            branch::create_patch,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -84,6 +85,7 @@ mod test {
                 branch::add_to_stage,
                 branch::remove_from_stage,
                 branch::create_commit,
+                branch::create_patch,
             ]);
 
         builder

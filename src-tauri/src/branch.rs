@@ -117,3 +117,9 @@ pub fn remove_from_stage(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
 pub fn create_commit(repo_path: &str, msg: String) -> AppResult<()> {
     utils::open_repo(repo_path)?.create_commit(&msg)
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn create_patch(repo_path: &str) -> AppResult<String> {
+    utils::open_repo(repo_path)?.create_patch()
+}

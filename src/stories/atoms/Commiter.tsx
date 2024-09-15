@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { FaMagic } from "react-icons/fa";
 import { VscDiff } from "react-icons/vsc";
 import { VscGitStash } from "react-icons/vsc";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 
 import {
     DropdownMenu,
@@ -22,6 +24,7 @@ import { useAppState, useRefreshRequest } from "@/lib/state";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 import GitFileStatus from "@/lib/file_status";
+import { debug } from "@tauri-apps/plugin-log";
 
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -35,6 +38,7 @@ export default function Commiter({
     ...props
 }: CommiterProps) {
     const [isCommiting, setIsCommiting] = useState(false);
+    const [patchPath, setPatchPath] = useState("");
     const t = useTranslation().t;
     const repo_path = useAppState((s) => s.repo_path);
     const setError = useErrorState((s) => s.setError);
@@ -94,7 +98,43 @@ export default function Commiter({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    const path =
+                                        repo_path && `${repo_path}/patch.patch`;
+                                    save({
+                                        title: t("workspace.patch_save_path"),
+                                        defaultPath: repo_path,
+                                        canCreateDirectories: true,
+                                    }).then((path) => {
+                                        if (path === null || !repo_path) {
+                                            return;
+                                        }
+                                        commands
+                                            .createPatch(repo_path)
+                                            .then((v) => {
+                                                match(v)
+                                                    .with(
+                                                        { status: "ok" },
+                                                        (v) => {
+                                                            writeTextFile(
+                                                                path,
+                                                                v.data,
+                                                            );
+                                                            // TODO: handle error
+                                                        },
+                                                    )
+                                                    .with(
+                                                        { status: "error" },
+                                                        (err) => {
+                                                            setError(err.error);
+                                                        },
+                                                    );
+                                            });
+                                        debug(`save patch file to ${path}`);
+                                    });
+                                }}
+                            >
                                 <VscDiff className="w-4 h-4 mr-2" />
                                 {t("workspace.generate_patch")}
                             </DropdownMenuItem>

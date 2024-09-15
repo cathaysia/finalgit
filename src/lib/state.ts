@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export interface AppState {
-    repo_path?: string | null;
+    repo_path?: string;
     branches: BranchInfo[];
     tags: TagInfo[];
     changes: FileStatus[];
@@ -17,7 +17,7 @@ export interface AppState {
 
 export const useAppState = create<AppState>()(
     devtools((set) => ({
-        repo_path: null,
+        repo_path: undefined,
         branches: [],
         changes: [],
         tags: [],

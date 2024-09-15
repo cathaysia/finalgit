@@ -234,6 +234,17 @@ export const commands = {
             else return { status: "error", error: e as any };
         }
     },
+    async createPatch(repoPath: string): Promise<Result<string, string>> {
+        try {
+            return {
+                status: "ok",
+                data: await TAURI_INVOKE("create_patch", { repoPath }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: "error", error: e as any };
+        }
+    },
 };
 
 /** user-defined events **/

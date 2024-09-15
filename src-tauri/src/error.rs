@@ -12,6 +12,8 @@ pub enum AppError {
     Spawn(String),
     #[error("Utf8 error: {0}")]
     Utf8(#[from] std::str::Utf8Error),
+    #[error("Utf8 error: {0}")]
+    StringUtf8(#[from] std::string::FromUtf8Error),
 }
 
 pub type AppResult<T> = Result<T, AppError>;

@@ -25,6 +25,7 @@ pub trait RepoExt {
     fn add_to_stage(&self, files: &[&str]) -> AppResult<()>;
     fn remove_from_stage(&self, files: &[&str]) -> AppResult<()>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
+    fn create_patch(&self) -> AppResult<String>;
 }
 
 impl RepoExt for git2::Repository {
@@ -243,6 +244,27 @@ impl RepoExt for git2::Repository {
             return Err(AppError::Spawn(err.to_string()));
         }
         Ok(())
+    }
+
+    fn create_patch(&self) -> AppResult<String> {
+        let path = self.path().parent().unwrap();
+
+        let output = std::process::Command::new("git")
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .arg("diff")
+            .arg("HEAD")
+            .current_dir(path)
+            .spawn()?
+            .wait_with_output()?;
+
+        if output.status.code().unwrap() != 0 {
+            let err = std::str::from_utf8(&output.stderr)?;
+            return Err(AppError::Spawn(err.to_string()));
+        }
+        let out = String::from_utf8(output.stdout)?;
+        Ok(out)
     }
 }
 

@@ -25,6 +25,8 @@ import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 import GitFileStatus from "@/lib/file_status";
 import { debug } from "@tauri-apps/plugin-log";
+import { generate_commit } from "@/lib/ai";
+import { Loader2 } from "lucide-react";
 
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -43,6 +45,7 @@ export default function Commiter({
     const repo_path = useAppState((s) => s.repo_path);
     const setError = useErrorState((s) => s.setError);
     const refreshStage = useRefreshRequest((s) => s.refreshStage);
+    const [isLoading, setIsLoading] = useState(false);
 
     useHotkeys(
         "Escape",
@@ -167,9 +170,41 @@ export default function Commiter({
                         }
                     }}
                 />
-                <Button>
-                    <FaMagic className="w-4 h-4 mr-2" />
-                    {t("commiter.generate_message")}
+                <Button
+                    onClick={() => {
+                        if (!repo_path) {
+                            return;
+                        }
+                        setIsLoading(true);
+                        commands.createPatch(repo_path).then((v) => {
+                            match(v)
+                                .with({ status: "ok" }, (v) => {
+                                    generate_commit(v.data).then((v) => {
+                                        const lines = v.split("\n");
+                                        if (lines.length != 0) {
+                                            setCommitMsg(lines[0]);
+                                        }
+                                        setIsLoading(false);
+                                    });
+                                })
+                                .with({ status: "error" }, (err) => {
+                                    setError(err.error);
+                                });
+                        });
+                    }}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {t("commiter.generating")}
+                        </>
+                    ) : (
+                        <>
+                            <FaMagic className="w-4 h-4 mr-2" />
+                            {t("commiter.generate_message")}
+                        </>
+                    )}
                 </Button>
             </div>
             <div className="flex gap-2">

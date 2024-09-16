@@ -31,18 +31,25 @@ export const useAppState = create<AppState>()(
 );
 
 export interface RefreshRequest {
-    branchListener: boolean;
-    stageListener: boolean;
+    branchListener: number;
+    stageListener: number;
     refreshBranch: () => void;
     refreshStage: () => void;
+    setBranchListener: (time: number) => void;
+    setStageListener: (time: number) => void;
 }
 
 export const useRefreshRequest = create<RefreshRequest>()(
     devtools((set) => ({
-        branchListener: false,
-        stageListener: false,
+        branchListener: 0,
+        stageListener: 0,
         refreshBranch: () =>
-            set((s) => ({ branchListener: !s.branchListener })),
-        refreshStage: () => set((s) => ({ stageListener: !s.stageListener })),
+            set((s) => ({ branchListener: s.branchListener + 1 })),
+        refreshStage: () =>
+            set((s) => ({ stageListener: s.stageListener + 1 })),
+        setBranchListener: (time: number) =>
+            set(() => ({ branchListener: time })),
+        setStageListener: (time: number) =>
+            set(() => ({ stageListener: time })),
     })),
 );

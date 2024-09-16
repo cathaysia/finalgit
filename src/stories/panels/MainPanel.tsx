@@ -6,6 +6,7 @@ import { useAppState, useRefreshRequest } from "@/lib/state";
 import { useEffect } from "react";
 import { useErrorState } from "@/lib/error";
 import { match } from "ts-pattern";
+import { debug } from "@tauri-apps/plugin-log";
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -40,6 +41,7 @@ export default function MainPanel({
     }
     useEffect(() => {
         if (repo_path) {
+            debug("refresh stage");
             commands.getCurrentStatus(repo_path).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {
@@ -55,6 +57,7 @@ export default function MainPanel({
     useEffect(() => {
         const head = branches.find((item) => item.is_head);
         if (repo_path && head) {
+            debug("refresh branch");
             commands.getFileTree(repo_path, head.commit).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {

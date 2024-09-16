@@ -22,7 +22,6 @@ export default function ChangeItem({
     ...props
 }: ChangeItemProps) {
     const { t } = useTranslation();
-    console.log(item);
 
     function is_indexed(item: FileStatus) {
         return (

@@ -245,6 +245,17 @@ export const commands = {
             else return { status: "error", error: e as any };
         }
     },
+    async getHeadModifyTime(repoPath: string): Promise<Result<number, string>> {
+        try {
+            return {
+                status: "ok",
+                data: await TAURI_INVOKE("get_head_modify_time", { repoPath }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: "error", error: e as any };
+        }
+    },
 };
 
 /** user-defined events **/

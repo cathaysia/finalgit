@@ -8,6 +8,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DEFAULT_STYLE } from "@/lib/style";
 import { cn } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type React from "react";
@@ -26,6 +27,7 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
             className={cn(
                 "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
                 className,
+                DEFAULT_STYLE,
             )}
             {...props}
         >

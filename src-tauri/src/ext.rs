@@ -1,6 +1,6 @@
 use std::{path::Path, process::Stdio};
 
-use git2::ObjectType;
+use git2::{ObjectType, Sort};
 use itertools::Itertools;
 use log::debug;
 
@@ -26,6 +26,7 @@ pub trait RepoExt {
     fn remove_from_stage(&self, files: &[&str]) -> AppResult<()>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
     fn create_patch(&self) -> AppResult<String>;
+    fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
 }
 
 impl RepoExt for git2::Repository {
@@ -265,6 +266,36 @@ impl RepoExt for git2::Repository {
         }
         let out = String::from_utf8(output.stdout)?;
         Ok(out)
+    }
+
+    fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
+        let commit = self.find_commit_by_prefix(commit)?;
+        let mut revwalk = self.revwalk()?;
+        revwalk.push(commit.id())?;
+        revwalk.set_sorting(Sort::TIME)?;
+
+        let mut res = vec![];
+        for item in revwalk {
+            let item = item?;
+            let commit = self.find_commit(item)?;
+
+            res.push(CommitInfo {
+                hash: commit.id().to_string(),
+                author: Author {
+                    name: commit.author().name().unwrap().to_string(),
+                    email: commit.author().email().unwrap().to_string(),
+                },
+                commiter: Author {
+                    name: commit.committer().name().unwrap().to_string(),
+                    email: commit.committer().email().unwrap().to_string(),
+                },
+                message: commit.message().unwrap().to_string(),
+                summary: commit.summary().unwrap().to_string(),
+                time: commit.time().seconds() as u32,
+            });
+        }
+
+        Ok(res)
     }
 }
 

@@ -123,3 +123,9 @@ pub fn create_commit(repo_path: &str, msg: String) -> AppResult<()> {
 pub fn create_patch(repo_path: &str) -> AppResult<String> {
     utils::open_repo(repo_path)?.create_patch()
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_history(repo_path: &str, commit: &str) -> AppResult<Vec<CommitInfo>> {
+    utils::open_repo(repo_path)?.get_history(commit)
+}

@@ -58,6 +58,7 @@ pub fn run() {
             branch::create_commit,
             branch::create_patch,
             utils::get_head_modify_time,
+            branch::get_history,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -88,6 +89,7 @@ mod test {
                 branch::create_commit,
                 branch::create_patch,
                 utils::get_head_modify_time,
+                branch::get_history,
             ]);
 
         builder

@@ -1,12 +1,18 @@
-import { commands, type BranchInfo, type TagInfo } from "@/bindings";
+import {
+    commands,
+    type CommitInfo,
+    type BranchInfo,
+    type TagInfo,
+} from "@/bindings";
 import { cn } from "@/lib/utils";
 import ControlPanel from "./ControlPanel";
 import WorkspacePanel from "./WorkspacePanel";
 import { useAppState, useRefreshRequest } from "@/lib/state";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useErrorState } from "@/lib/error";
 import { match } from "ts-pattern";
 import { debug } from "@tauri-apps/plugin-log";
+import GitHistory from "../lists/GitHistory";
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -33,6 +39,7 @@ export default function MainPanel({
 
     const setError = useErrorState((s) => s.setError);
     const [stageListener] = useRefreshRequest((s) => [s.stageListener]);
+    const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
 
     const item = branches.find((item) => item.is_head);
     let branchName = "";
@@ -67,6 +74,15 @@ export default function MainPanel({
                         setError(err.error);
                     });
             });
+            commands.getHistory(repo_path, head.commit).then((v) => {
+                match(v)
+                    .with({ status: "ok" }, (v) => {
+                        setCurrentHisotry(v.data);
+                    })
+                    .with({ status: "error" }, (err) => {
+                        setError(err.error);
+                    });
+            });
         }
     }, [branches]);
 
@@ -85,6 +101,7 @@ export default function MainPanel({
                 changeSet={changes}
                 files={files}
             />
+            <GitHistory history={currentHistory} />
         </div>
     );
 }

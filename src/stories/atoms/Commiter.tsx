@@ -40,7 +40,6 @@ export default function Commiter({
     ...props
 }: CommiterProps) {
     const [isCommiting, setIsCommiting] = useState(false);
-    const [patchPath, setPatchPath] = useState("");
     const t = useTranslation().t;
     const repo_path = useAppState((s) => s.repo_path);
     const setError = useErrorState((s) => s.setError);
@@ -65,7 +64,7 @@ export default function Commiter({
                 <Button
                     className="w-full"
                     disabled={changeSet.length === 0}
-                    onClick={() => {
+                    onClick={async () => {
                         if (!repo_path) {
                             return;
                         }
@@ -76,16 +75,16 @@ export default function Commiter({
                             .reduce((l, r) => l && r);
                         if (!has_indexed) {
                             const allfiles = changeSet.map((item) => item.path);
-                            commands
-                                .addToStage(repo_path, allfiles)
-                                .then((v) => {
-                                    match(v)
-                                        .with({ status: "ok" }, () => {
-                                            refreshStage();
-                                        })
-                                        .with({ status: "error" }, (err) => {
-                                            setError(err.error);
-                                        });
+                            const res = await commands.addToStage(
+                                repo_path,
+                                allfiles,
+                            );
+                            match(res)
+                                .with({ status: "ok" }, () => {
+                                    refreshStage();
+                                })
+                                .with({ status: "error" }, (err) => {
+                                    setError(err.error);
                                 });
                         }
                         setIsCommiting(true);
@@ -102,40 +101,25 @@ export default function Commiter({
                     <DropdownMenuContent>
                         <DropdownMenuGroup>
                             <DropdownMenuItem
-                                onClick={() => {
-                                    const path =
-                                        repo_path && `${repo_path}/patch.patch`;
-                                    save({
+                                onClick={async () => {
+                                    const path = await save({
                                         title: t("workspace.patch_save_path"),
                                         defaultPath: repo_path,
                                         canCreateDirectories: true,
-                                    }).then((path) => {
-                                        if (path === null || !repo_path) {
-                                            return;
-                                        }
-                                        commands
-                                            .createPatch(repo_path)
-                                            .then((v) => {
-                                                match(v)
-                                                    .with(
-                                                        { status: "ok" },
-                                                        (v) => {
-                                                            writeTextFile(
-                                                                path,
-                                                                v.data,
-                                                            );
-                                                            // TODO: handle error
-                                                        },
-                                                    )
-                                                    .with(
-                                                        { status: "error" },
-                                                        (err) => {
-                                                            setError(err.error);
-                                                        },
-                                                    );
-                                            });
-                                        debug(`save patch file to ${path}`);
                                     });
+                                    if (path === null || !repo_path) {
+                                        return;
+                                    }
+                                    const res =
+                                        await commands.createPatch(repo_path);
+                                    match(res)
+                                        .with({ status: "ok" }, async (v) => {
+                                            await writeTextFile(path, v.data);
+                                        })
+                                        .with({ status: "error" }, (err) => {
+                                            setError(err.error);
+                                        });
+                                    debug(`save patch file to ${path}`);
                                 }}
                             >
                                 <VscDiff className="w-4 h-4 mr-2" />
@@ -171,26 +155,25 @@ export default function Commiter({
                     }}
                 />
                 <Button
-                    onClick={() => {
+                    onClick={async () => {
                         if (!repo_path) {
                             return;
                         }
                         setIsLoading(true);
-                        commands.createPatch(repo_path).then((v) => {
-                            match(v)
-                                .with({ status: "ok" }, (v) => {
-                                    generate_commit(v.data).then((v) => {
-                                        const lines = v.split("\n");
-                                        if (lines.length != 0) {
-                                            setCommitMsg(lines[0]);
-                                        }
-                                        setIsLoading(false);
-                                    });
-                                })
-                                .with({ status: "error" }, (err) => {
-                                    setError(err.error);
+                        const res = await commands.createPatch(repo_path);
+                        match(res)
+                            .with({ status: "ok" }, (v) => {
+                                generate_commit(v.data).then((v) => {
+                                    const lines = v.split("\n");
+                                    if (lines.length !== 0) {
+                                        setCommitMsg(lines[0]);
+                                    }
+                                    setIsLoading(false);
                                 });
-                        });
+                            })
+                            .with({ status: "error" }, (err) => {
+                                setError(err.error);
+                            });
                     }}
                     disabled={isLoading}
                 >
@@ -211,19 +194,19 @@ export default function Commiter({
                 <Button
                     className="w-4/5"
                     disabled={commitMsg.trim().length === 0}
-                    onClick={() => {
+                    onClick={async () => {
                         if (repo_path) {
-                            commands
-                                .createCommit(repo_path, commitMsg)
-                                .then((v) => {
-                                    match(v)
-                                        .with({ status: "ok" }, () => {
-                                            setIsCommiting(false);
-                                            refreshStage();
-                                        })
-                                        .with({ status: "error" }, (err) => {
-                                            setError(err.error);
-                                        });
+                            const v = await commands.createCommit(
+                                repo_path,
+                                commitMsg,
+                            );
+                            match(v)
+                                .with({ status: "ok" }, () => {
+                                    setIsCommiting(false);
+                                    refreshStage();
+                                })
+                                .with({ status: "error" }, (err) => {
+                                    setError(err.error);
                                 });
                         }
                     }}

@@ -33,16 +33,16 @@ function stringAvatar(name: string) {
     };
 }
 
-export interface GravatarProps
+export interface UserAvatarProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     user_name: string[];
 }
 
-export default function Gravatar({
+export default function UserAvatar({
     className,
     user_name,
     ...props
-}: GravatarProps) {
+}: UserAvatarProps) {
     if (user_name.length === 1) {
         return (
             <Avatar

@@ -1,9 +1,20 @@
 import type { CommitInfo } from "@/bindings";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { DEFAULT_STYLE } from "@/lib/style";
 import { cn } from "@/lib/utils";
-import Gravatar from "@/stories/atoms/Gravatar";
+import UserAvatar from "@/stories/atoms/UserAvatar";
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
+import { Button } from "@/components/ui/button";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { useTranslation } from "react-i18next";
 
 export interface CommitProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     filter?: string;
@@ -17,6 +28,7 @@ export default function Commit({
     ...props
 }: CommitProps) {
     const branchName = commit.summary.slice(0, 50);
+    const { t } = useTranslation();
     const names = [commit.author.name];
 
     if (commit.author.name !== commit.commiter.name) {
@@ -24,10 +36,14 @@ export default function Commit({
     }
     return (
         <div
-            className={cn("border h-56 py-4 px-2", DEFAULT_STYLE, className)}
+            className={cn(
+                "border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between",
+                DEFAULT_STYLE,
+                className,
+            )}
             {...props}
         >
-            <div className="text-sm font-medium leading-none items-center flex gap-2 overflow-ellipsis overflow-x-hidden text-nowrap">
+            <div className="flex items-center gap-2">
                 {(() => {
                     if (!filter) {
                         return <Label>{branchName}</Label>;
@@ -38,9 +54,33 @@ export default function Commit({
                     );
                     return <Label dangerouslySetInnerHTML={{ __html: v }} />;
                 })()}
-                <Badge>{commit.hash.slice(0, 6)}</Badge>
-                <Gravatar user_name={names} />
+                <Badge
+                    title={commit.hash}
+                    onClick={async () => {
+                        const _ = await writeText(commit.hash);
+                    }}
+                >
+                    {commit.hash.slice(0, 6)}
+                </Badge>
+                <UserAvatar user_name={names} />
             </div>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant={"ghost"} size="sm">
+                        <DotsHorizontalIcon />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            {t("commit.details")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                            {t("commit.delete")}
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 }

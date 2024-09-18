@@ -17,6 +17,7 @@
         "fs:allow-app-write",
         "fs:allow-app-write-recursive",
         "log:default",
-        "core:event:default"
+        "core:event:default",
+        "clipboard-manager:default"
     ]
 }

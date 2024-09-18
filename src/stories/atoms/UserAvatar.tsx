@@ -1,6 +1,6 @@
 import { stringToColor } from "@/lib/stringColor";
 import { cn } from "@/lib/utils";
-import { Avatar, Stack } from "@mui/material";
+import { Avatar, AvatarGroup } from "@mui/material";
 
 function stringAvatar(name: string) {
     let tag = null;
@@ -33,8 +33,7 @@ function stringAvatar(name: string) {
     };
 }
 
-export interface UserAvatarProps
-    extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface UserAvatarProps extends React.ComponentProps<typeof Avatar> {
     user_name: string[];
 }
 
@@ -47,19 +46,25 @@ export default function UserAvatar({
         return (
             <Avatar
                 className={cn(className)}
-                {...props}
                 {...stringAvatar(user_name[0])}
+                {...props}
             />
         );
     }
 
     return (
-        <Stack direction="row" spacing={2}>
+        <AvatarGroup>
             {user_name.map((item) => {
                 return (
-                    <Avatar key={item} {...stringAvatar(item)} title={item} />
+                    <Avatar
+                        key={item}
+                        {...stringAvatar(item)}
+                        title={item}
+                        alt={item}
+                        {...props}
+                    />
                 );
             })}
-        </Stack>
+        </AvatarGroup>
     );
 }

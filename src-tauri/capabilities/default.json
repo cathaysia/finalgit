@@ -18,6 +18,8 @@
         "fs:allow-app-write-recursive",
         "log:default",
         "core:event:default",
-        "clipboard-manager:default"
+        "clipboard-manager:default",
+        "clipboard-manager:allow-write-text",
+        "clipboard-manager:allow-write-html"
     ]
 }

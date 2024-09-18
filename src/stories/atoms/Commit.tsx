@@ -14,6 +14,7 @@ import UserAvatar from "@/stories/atoms/UserAvatar";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import NOTIFY from "@/lib/notify";
 import { useTranslation } from "react-i18next";
 
 export interface CommitProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -58,6 +59,11 @@ export default function Commit({
                     title={commit.hash}
                     onClick={async () => {
                         const _ = await writeText(commit.hash);
+                        NOTIFY.info(
+                            t("commit.copy_to_clipboard", {
+                                val: commit.hash,
+                            }),
+                        );
                     }}
                 >
                     {commit.hash.slice(0, 6)}

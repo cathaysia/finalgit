@@ -1,16 +1,13 @@
 {
     "branch": {
         "apply": "Apply",
-        "branch_name": "Branch Name",
         "branches": "Branches",
         "checkout": "Checkout",
         "checkout_remote": "Checkout into local branch",
         "delete": "Delete",
         "details": "Details",
         "disable_dirty": "Workspace is dirty. Commit or Stash first.",
-        "edit_branch": "Edit Branch",
         "local": "Local",
-        "new_branch_name": "New Branch Name",
         "pull": "Pull",
         "push": "Push",
         "remote": "Remote",
@@ -24,41 +21,35 @@
         "modified": "modified",
         "new_file": "new_file"
     },
-    "Checkout": "Checkout",
-    "commit": "commit",
-    "Commit": "Commit",
+    "commit": {
+        "copy_to_clipboard": "Copy {{ val }}",
+        "delete": "commit.delete",
+        "details": "commit.details"
+    },
     "commiter": {
         "commit": "Commit",
         "commit_summary": "Commit Summary",
         "generate_message": "Generate Message",
+        "generating": "commiter.generating",
         "start_commit": "Start Commit"
     },
-    "Create": "Create",
-    "Delete": "Delete",
     "project": {
         "add_local_repository": "add local repository",
         "clone_repository": "clone repository"
     },
-    "Pull": "Pull",
-    "Push": "Push",
-    "Rename": "Rename",
     "tag": {
-        "delete": "delete",
-        "edit_tag": "edit tag",
-        "new_tag_name": "new tag name"
+        "delete": "delete"
     },
     "tags": {
         "create_branch": "Create branch from tag"
     },
-    "Upstream": "Upstream",
     "workspace": {
-        "change_list": "Changes",
         "changed_files": "Changed files",
         "create_pr": "Create PR",
         "discard": "Discard",
         "discard_all": "Discard all",
-        "file_tree": "File Tree",
         "generate_patch": "Generate patch",
+        "patch_save_path": "workspace.patch_save_path",
         "set_as_default": "Set as default",
         "stash": "Stash"
     },

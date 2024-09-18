@@ -1,16 +1,13 @@
 {
     "branch": {
         "apply": "branch.apply",
-        "branch_name": "branch.branch_name",
         "branches": "branch.branches",
         "checkout": "branch.checkout",
         "checkout_remote": "branch.checkout_remote",
         "delete": "branch.delete",
         "details": "branch.details",
         "disable_dirty": "branch.disable_dirty",
-        "edit_branch": "branch.edit_branch",
         "local": "branch.local",
-        "new_branch_name": "branch.new_branch_name",
         "pull": "branch.pull",
         "push": "branch.push",
         "remote": "branch.remote",
@@ -24,41 +21,35 @@
         "modified": "change.modified",
         "new_file": "change.new_file"
     },
-    "Checkout": "检出",
-    "commit": "提交",
-    "Commit": "提交",
+    "commit": {
+        "copy_to_clipboard": "commit.copy_to_clipboard",
+        "delete": "commit.delete",
+        "details": "commit.details"
+    },
     "commiter": {
         "commit": "commiter.commit",
         "commit_summary": "commiter.commit_summary",
         "generate_message": "commiter.generate_message",
+        "generating": "commiter.generating",
         "start_commit": "commiter.start_commit"
     },
-    "Create": "创建",
-    "Delete": "删除",
     "project": {
         "add_local_repository": "project.add_local_repository",
         "clone_repository": "project.clone_repository"
     },
-    "Pull": "拉取",
-    "Push": "推送",
-    "Rename": "重命名",
     "tag": {
-        "delete": "tag.delete",
-        "edit_tag": "tag.edit_tag",
-        "new_tag_name": "tag.new_tag_name"
+        "delete": "tag.delete"
     },
     "tags": {
         "create_branch": "tags.create_branch"
     },
-    "Upstream": "上游",
     "workspace": {
-        "change_list": "workspace.change_list",
         "changed_files": "workspace.changed_files",
         "create_pr": "workspace.create_pr",
         "discard": "workspace.discard",
         "discard_all": "workspace.discard_all",
-        "file_tree": "workspace.file_tree",
         "generate_patch": "workspace.generate_patch",
+        "patch_save_path": "workspace.patch_save_path",
         "set_as_default": "workspace.set_as_default",
         "stash": "workspace.stash"
     },

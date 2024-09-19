@@ -81,6 +81,14 @@ export default function Commit({
                         <DropdownMenuItem>
                             {t("commit.details")}
                         </DropdownMenuItem>
+                        <DropdownMenuItem>{t("commit.copy")}</DropdownMenuItem>
+                        <DropdownMenuItem>{t("commit.cut")}</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            {t("commit.insert_before")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            {t("commit.insert_after")}
+                        </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                             {t("commit.delete")}
                         </DropdownMenuItem>

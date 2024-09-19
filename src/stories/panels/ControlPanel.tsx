@@ -1,5 +1,4 @@
 import { commands } from "@/bindings";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type React from "react";
@@ -10,6 +9,7 @@ import { useAppState, useRefreshRequest } from "@/lib/state";
 import { useEffect } from "react";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
+import ControlBar from "../atoms/ControlBar";
 
 export interface ControlPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -61,26 +61,7 @@ export default function ControlPanel({
             )}
             {...props}
         >
-            <div data-tauri-drag-region={true} className="flex gap-2">
-                <div
-                    className="h-3 w-3 bg-red-600 rounded-lg"
-                    onClick={() => {
-                        getCurrentWindow().close();
-                    }}
-                />
-                <div
-                    className="h-3 w-3 bg-yellow-600 rounded-lg"
-                    onClick={() => {
-                        getCurrentWindow().minimize();
-                    }}
-                />
-                <div
-                    className="h-3 w-3 bg-green-600 rounded-lg"
-                    onClick={() => {
-                        getCurrentWindow().toggleMaximize();
-                    }}
-                />
-            </div>
+            <ControlBar />
             <Project />
             <Button variant={"secondary"} className="w-full h-12">
                 {t("Workspace")}

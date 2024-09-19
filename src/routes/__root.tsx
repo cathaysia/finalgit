@@ -1,4 +1,3 @@
-import MainPanel from "@/stories/panels/MainPanel";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { commands } from "@/bindings";
@@ -57,8 +56,6 @@ function rootRoute() {
 
     return (
         <>
-            <MainPanel project_name={""} branches={[]} tags={[]} />
-            <hr />
             <Outlet />
             <TanStackRouterDevtools />
         </>

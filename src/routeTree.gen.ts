@@ -10,19 +10,62 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
+import { Route as rootRoute } from './routes/__root'
+import { Route as SettingsImport } from './routes/settings'
+import { Route as IndexImport } from './routes/index'
+import { Route as SettingsAiImport } from './routes/settings/ai'
 
 // Create/Update Routes
 
+const SettingsRoute = SettingsImport.update({
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SettingsAiRoute = SettingsAiImport.update({
+  path: '/ai',
+  getParentRoute: () => SettingsRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-    interface FileRoutesByPath {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/settings/ai': {
+      id: '/settings/ai'
+      path: '/ai'
+      fullPath: '/settings/ai'
+      preLoaderRoute: typeof SettingsAiImport
+      parentRoute: typeof SettingsImport
+    }
+  }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({});
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  SettingsRoute: SettingsRoute.addChildren({ SettingsAiRoute }),
+})
 
 /* prettier-ignore-end */
 
@@ -31,7 +74,23 @@ export const routeTree = rootRoute.addChildren({});
   "routes": {
     "__root__": {
       "filePath": "__root.tsx",
-      "children": []
+      "children": [
+        "/",
+        "/settings"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/settings": {
+      "filePath": "settings.tsx",
+      "children": [
+        "/settings/ai"
+      ]
+    },
+    "/settings/ai": {
+      "filePath": "settings/ai.tsx",
+      "parent": "/settings"
     }
   }
 }

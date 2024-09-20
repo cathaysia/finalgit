@@ -270,6 +270,52 @@ export const commands = {
             else return { status: "error", error: e as any };
         }
     },
+    async getConfig(
+        repoPath: string,
+        key: string,
+    ): Promise<Result<string, string>> {
+        try {
+            return {
+                status: "ok",
+                data: await TAURI_INVOKE("get_config", { repoPath, key }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: "error", error: e as any };
+        }
+    },
+    async setConfig(
+        repoPath: string,
+        key: string,
+        value: string,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: "ok",
+                data: await TAURI_INVOKE("set_config", {
+                    repoPath,
+                    key,
+                    value,
+                }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: "error", error: e as any };
+        }
+    },
+    async getConfiges(
+        repoPath: string,
+    ): Promise<Result<{ [key in string]: string }, string>> {
+        try {
+            return {
+                status: "ok",
+                data: await TAURI_INVOKE("get_configes", { repoPath }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: "error", error: e as any };
+        }
+    },
 };
 
 /** user-defined events **/

@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::process::Stdio;
 
 use log::info;
@@ -128,4 +129,22 @@ pub fn create_patch(repo_path: &str) -> AppResult<String> {
 #[specta::specta]
 pub fn get_history(repo_path: &str, commit: &str) -> AppResult<Vec<CommitInfo>> {
     utils::open_repo(repo_path)?.get_history(commit)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_config(repo_path: &str, key: &str) -> AppResult<String> {
+    utils::open_repo(repo_path)?.get_config(key)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn set_config(repo_path: &str, key: &str, value: &str) -> AppResult<()> {
+    utils::open_repo(repo_path)?.set_config(key, value)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_configes(repo_path: &str) -> AppResult<HashMap<String, String>> {
+    utils::open_repo(repo_path)?.get_configes()
 }

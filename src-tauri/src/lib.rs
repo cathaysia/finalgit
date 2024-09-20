@@ -59,6 +59,9 @@ pub fn run() {
             branch::create_patch,
             utils::get_head_modify_time,
             branch::get_history,
+            branch::get_config,
+            branch::set_config,
+            branch::get_configes,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -90,6 +93,9 @@ mod test {
                 branch::create_patch,
                 utils::get_head_modify_time,
                 branch::get_history,
+                branch::get_config,
+                branch::set_config,
+                branch::get_configes,
             ]);
 
         builder

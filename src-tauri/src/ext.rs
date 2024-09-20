@@ -1,4 +1,4 @@
-use std::{path::Path, process::Stdio};
+use std::{collections::HashMap, path::Path, process::Stdio};
 
 use git2::{ObjectType, Sort};
 use itertools::Itertools;
@@ -27,6 +27,14 @@ pub trait RepoExt {
     fn create_commit(&self, msg: &str) -> AppResult<()>;
     fn create_patch(&self) -> AppResult<String>;
     fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
+    fn get_config(&self, key: &str) -> AppResult<String>;
+    fn set_config(&self, key: &str, value: &str) -> AppResult<()>;
+    fn get_configes(&self) -> AppResult<HashMap<String, String>>;
+
+    fn exec_git<I, S>(&self, args: I) -> AppResult<std::process::Output>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<std::ffi::OsStr>;
 }
 
 impl RepoExt for git2::Repository {
@@ -227,43 +235,14 @@ impl RepoExt for git2::Repository {
     }
 
     fn create_commit(&self, msg: &str) -> AppResult<()> {
-        let path = self.path().parent().unwrap();
+        let _ = self.exec_git(["commit", "-m", msg])?;
 
-        let output = std::process::Command::new("git")
-            .stdout(Stdio::null())
-            .stderr(Stdio::piped())
-            .env("GIT_TERMINAL_PROMPT", "0")
-            .arg("commit")
-            .arg("-m")
-            .arg(msg)
-            .current_dir(path)
-            .spawn()?
-            .wait_with_output()?;
-
-        if output.status.code().unwrap() != 0 {
-            let err = std::str::from_utf8(&output.stderr)?;
-            return Err(AppError::Spawn(err.to_string()));
-        }
         Ok(())
     }
 
     fn create_patch(&self) -> AppResult<String> {
-        let path = self.path().parent().unwrap();
+        let output = self.exec_git(["diff", "HEAD"])?;
 
-        let output = std::process::Command::new("git")
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .env("GIT_TERMINAL_PROMPT", "0")
-            .arg("diff")
-            .arg("HEAD")
-            .current_dir(path)
-            .spawn()?
-            .wait_with_output()?;
-
-        if output.status.code().unwrap() != 0 {
-            let err = std::str::from_utf8(&output.stderr)?;
-            return Err(AppError::Spawn(err.to_string()));
-        }
         let out = String::from_utf8(output.stdout)?;
         Ok(out)
     }
@@ -293,6 +272,57 @@ impl RepoExt for git2::Repository {
                 summary: commit.summary().unwrap().to_string(),
                 time: commit.time().seconds() as u32,
             });
+        }
+
+        Ok(res)
+    }
+    fn get_config(&self, key: &str) -> AppResult<String> {
+        let output = self.exec_git(["config", "--local", "--get", key])?;
+        let out = String::from_utf8(output.stdout)?;
+        Ok(out)
+    }
+    fn set_config(&self, key: &str, value: &str) -> AppResult<()> {
+        let _ = self.exec_git(["config", "--local", key, value])?;
+
+        Ok(())
+    }
+
+    fn exec_git<I, S>(&self, args: I) -> AppResult<std::process::Output>
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<std::ffi::OsStr>,
+    {
+        let path = self.path().parent().unwrap();
+
+        let output = std::process::Command::new("git")
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .args(args)
+            .current_dir(path)
+            .spawn()?
+            .wait_with_output()?;
+
+        if output.status.code().unwrap() != 0 {
+            let err = std::str::from_utf8(&output.stderr)?;
+            return Err(AppError::Spawn(err.to_string()));
+        }
+
+        Ok(output)
+    }
+
+    fn get_configes(&self) -> AppResult<HashMap<String, String>> {
+        let output = self.exec_git(["config", "-l"])?;
+        let output = String::from_utf8(output.stdout)?;
+        let mut res = HashMap::<String, String>::default();
+
+        for line in output.lines() {
+            let sp = line.split(':').collect_vec();
+            if sp.len() != 2 {
+                continue;
+            }
+
+            res.insert(sp[0].to_string(), sp[1].to_string());
         }
 
         Ok(res)

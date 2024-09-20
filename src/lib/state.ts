@@ -8,11 +8,13 @@ export interface AppState {
     tags: TagInfo[];
     changes: FileStatus[];
     files: FileTree[];
+    ollama_endpoint: string;
     setRepoPath: (isOpened: string) => void;
     setBranches: (branches: BranchInfo[]) => void;
     setTags: (tags: TagInfo[]) => void;
     setChanges: (changes: FileStatus[]) => void;
     setFiles: (files: FileTree[]) => void;
+    setOllamaEndpoint: (endpoint: string) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -22,11 +24,14 @@ export const useAppState = create<AppState>()(
         changes: [],
         tags: [],
         files: [],
+        ollama_endpoint: "http://127.0.0.1:11434",
         setRepoPath: (repo_path: string) => set({ repo_path: repo_path }),
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
         setChanges: (changes: FileStatus[]) => set({ changes: changes }),
         setFiles: (files: FileTree[]) => set({ files: files }),
+        setOllamaEndpoint: (endpoint: string) =>
+            set({ ollama_endpoint: endpoint }),
     })),
 );
 

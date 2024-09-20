@@ -18,8 +18,16 @@ export default function Panel({ className, ...props }: PanelProps) {
             text: <MdHome />,
         },
         {
+            to: "/settings/profile",
+            text: t("settings.profile"),
+        },
+        {
+            to: "/settings/git",
+            text: t("settings.git"),
+        },
+        {
             to: "/settings/ai",
-            text: t("Ai"),
+            text: t("settings.ai"),
         },
     ];
     return (

@@ -24,7 +24,7 @@ namespace GitFileStatus {
             (status & GitFileStatus.INDEX_NEW ||
                 status & GitFileStatus.INDEX_MODIFIED ||
                 status & GitFileStatus.INDEX_DELETED ||
-                status & GitFileStatus.INDEX_TYPECHANGE) != 0
+                status & GitFileStatus.INDEX_TYPECHANGE) !== 0
         );
     }
 
@@ -35,7 +35,7 @@ namespace GitFileStatus {
                 status & GitFileStatus.WT_DELETED ||
                 status & GitFileStatus.WT_TYPECHANGE ||
                 status & GitFileStatus.WT_RENAMED ||
-                status & GitFileStatus.WT_UNREADABLE) != 0
+                status & GitFileStatus.WT_UNREADABLE) !== 0
         );
     }
 }

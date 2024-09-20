@@ -10,62 +10,92 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as SettingsImport } from './routes/settings'
-import { Route as IndexImport } from './routes/index'
-import { Route as SettingsAiImport } from './routes/settings/ai'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as SettingsImport } from "./routes/settings";
+import { Route as IndexImport } from "./routes/index";
+import { Route as SettingsProfileImport } from "./routes/settings/profile";
+import { Route as SettingsGitImport } from "./routes/settings/git";
+import { Route as SettingsAiImport } from "./routes/settings/ai";
 
 // Create/Update Routes
 
 const SettingsRoute = SettingsImport.update({
-  path: '/settings',
-  getParentRoute: () => rootRoute,
-} as any)
+    path: "/settings",
+    getParentRoute: () => rootRoute,
+} as any);
 
 const IndexRoute = IndexImport.update({
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
+    path: "/",
+    getParentRoute: () => rootRoute,
+} as any);
+
+const SettingsProfileRoute = SettingsProfileImport.update({
+    path: "/profile",
+    getParentRoute: () => SettingsRoute,
+} as any);
+
+const SettingsGitRoute = SettingsGitImport.update({
+    path: "/git",
+    getParentRoute: () => SettingsRoute,
+} as any);
 
 const SettingsAiRoute = SettingsAiImport.update({
-  path: '/ai',
-  getParentRoute: () => SettingsRoute,
-} as any)
+    path: "/ai",
+    getParentRoute: () => SettingsRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+declare module "@tanstack/react-router" {
+    interface FileRoutesByPath {
+        "/": {
+            id: "/";
+            path: "/";
+            fullPath: "/";
+            preLoaderRoute: typeof IndexImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/settings": {
+            id: "/settings";
+            path: "/settings";
+            fullPath: "/settings";
+            preLoaderRoute: typeof SettingsImport;
+            parentRoute: typeof rootRoute;
+        };
+        "/settings/ai": {
+            id: "/settings/ai";
+            path: "/ai";
+            fullPath: "/settings/ai";
+            preLoaderRoute: typeof SettingsAiImport;
+            parentRoute: typeof SettingsImport;
+        };
+        "/settings/git": {
+            id: "/settings/git";
+            path: "/git";
+            fullPath: "/settings/git";
+            preLoaderRoute: typeof SettingsGitImport;
+            parentRoute: typeof SettingsImport;
+        };
+        "/settings/profile": {
+            id: "/settings/profile";
+            path: "/profile";
+            fullPath: "/settings/profile";
+            preLoaderRoute: typeof SettingsProfileImport;
+            parentRoute: typeof SettingsImport;
+        };
     }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsImport
-      parentRoute: typeof rootRoute
-    }
-    '/settings/ai': {
-      id: '/settings/ai'
-      path: '/ai'
-      fullPath: '/settings/ai'
-      preLoaderRoute: typeof SettingsAiImport
-      parentRoute: typeof SettingsImport
-    }
-  }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  SettingsRoute: SettingsRoute.addChildren({ SettingsAiRoute }),
-})
+    IndexRoute,
+    SettingsRoute: SettingsRoute.addChildren({
+        SettingsAiRoute,
+        SettingsGitRoute,
+        SettingsProfileRoute,
+    }),
+});
 
 /* prettier-ignore-end */
 
@@ -85,11 +115,21 @@ export const routeTree = rootRoute.addChildren({
     "/settings": {
       "filePath": "settings.tsx",
       "children": [
-        "/settings/ai"
+        "/settings/ai",
+        "/settings/git",
+        "/settings/profile"
       ]
     },
     "/settings/ai": {
       "filePath": "settings/ai.tsx",
+      "parent": "/settings"
+    },
+    "/settings/git": {
+      "filePath": "settings/git.tsx",
+      "parent": "/settings"
+    },
+    "/settings/profile": {
+      "filePath": "settings/profile.tsx",
       "parent": "/settings"
     }
   }

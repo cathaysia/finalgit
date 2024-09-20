@@ -27,7 +27,7 @@ export default function ControlPanel({
 
     useEffect(() => {
         if (repo_path) {
-            commands.getBranchInfo(repo_path).then((v) => {
+            commands?.getBranchInfo(repo_path).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (val) => {
                         setBranches(val.data);
@@ -41,7 +41,7 @@ export default function ControlPanel({
 
     useEffect(() => {
         if (repo_path) {
-            commands.getTagInfo(repo_path).then((v) => {
+            commands?.getTagInfo(repo_path).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (val) => {
                         setTags(val.data);

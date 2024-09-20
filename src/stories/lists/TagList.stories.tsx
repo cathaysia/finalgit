@@ -22,12 +22,13 @@ function createRandomString(length: number) {
     return result;
 }
 
-const tags: TagInfo[] = [...Array(1000).keys()].map((_item) => {
-    return {
+const tags: TagInfo[] = [];
+for (const _ in Array(1000)) {
+    tags.push({
         name: createRandomString(10),
         commit: createRandomString(40).toLowerCase(),
-    };
-});
+    });
+}
 
 export const Default: Story = {
     args: {

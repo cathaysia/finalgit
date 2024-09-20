@@ -1,4 +1,5 @@
-import { useTheme } from "@/components/themeProvider";
+"use client";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";

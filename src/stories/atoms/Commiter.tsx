@@ -75,7 +75,7 @@ export default function Commiter({
                             .reduce((l, r) => l && r);
                         if (!has_indexed) {
                             const allfiles = changeSet.map((item) => item.path);
-                            const res = await commands.addToStage(
+                            const res = await commands?.addToStage(
                                 repo_path,
                                 allfiles,
                             );
@@ -111,7 +111,7 @@ export default function Commiter({
                                         return;
                                     }
                                     const res =
-                                        await commands.createPatch(repo_path);
+                                        await commands?.createPatch(repo_path);
                                     match(res)
                                         .with({ status: "ok" }, async (v) => {
                                             await writeTextFile(path, v.data);
@@ -160,7 +160,7 @@ export default function Commiter({
                             return;
                         }
                         setIsLoading(true);
-                        const res = await commands.createPatch(repo_path);
+                        const res = await commands?.createPatch(repo_path);
                         match(res)
                             .with({ status: "ok" }, (v) => {
                                 generate_commit(v.data).then((v) => {
@@ -196,7 +196,7 @@ export default function Commiter({
                     disabled={commitMsg.trim().length === 0}
                     onClick={async () => {
                         if (repo_path) {
-                            const v = await commands.createCommit(
+                            const v = await commands?.createCommit(
                                 repo_path,
                                 commitMsg,
                             );

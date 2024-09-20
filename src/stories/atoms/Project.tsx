@@ -37,7 +37,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
             directory: true,
         }).then((value) => {
             value &&
-                commands.openRepo(value).then((res) => {
+                commands?.openRepo(value).then((res) => {
                     match(res)
                         .with({ status: "ok" }, () => {
                             setRepoPath(value);

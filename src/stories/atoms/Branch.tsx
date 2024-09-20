@@ -50,7 +50,7 @@ export default function Branch({
 
     function removeBranch() {
         if (is_local && repo_path) {
-            commands.removeBranch(repo_path, info).then((v) => {
+            commands?.removeBranch(repo_path, info).then((v) => {
                 match(v)
                     .with({ status: "ok" }, () => {
                         refreshBranch();
@@ -65,7 +65,7 @@ export default function Branch({
     function checkout() {
         if (repo_path) {
             if (is_local) {
-                commands.checkoutBranch(repo_path, info.name).then((v) => {
+                commands?.checkoutBranch(repo_path, info.name).then((v) => {
                     match(v)
                         .with({ status: "ok" }, () => {
                             refreshBranch();
@@ -75,7 +75,7 @@ export default function Branch({
                         });
                 });
             } else {
-                commands.checkoutRemote(repo_path, info.name).then((v) => {
+                commands?.checkoutRemote(repo_path, info.name).then((v) => {
                     match(v)
                         .with({ status: "ok" }, () => {
                             refreshBranch();

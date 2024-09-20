@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import i18n from "../src/locales.ts";
+import i18n from "@/locales.ts";
 
 export function withI18next(Story, context) {
     const { locale } = context.globals;

@@ -18,7 +18,7 @@ export default function Panel({ className, ...props }: PanelProps) {
             text: <MdHome />,
         },
         {
-            to: "/settings/profile",
+            to: "/settings",
             text: t("settings.profile"),
         },
         {
@@ -36,7 +36,7 @@ export default function Panel({ className, ...props }: PanelProps) {
                 return (
                     <Nav
                         key={item.to}
-                        to={item.to}
+                        href={item.to}
                         className="w-full h-16 border-b border-neutral-200 dark:border-slate-800 rounded-none"
                     >
                         {item.text}

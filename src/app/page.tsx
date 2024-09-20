@@ -1,26 +1,27 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+"use client";
+
+import { attachConsole } from "@tauri-apps/plugin-log";
+
+import MainPanel from "@/stories/panels/MainPanel";
 import { useQuery } from "@tanstack/react-query";
 import { commands } from "@/bindings";
 import { useAppState, useRefreshRequest } from "@/lib/state";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 import { trace } from "@tauri-apps/plugin-log";
-import React from "react";
+import ErrorSonner from "@/stories/ErrorSonner";
 
-export const Route = createRootRoute({
-    component: rootRoute,
-});
+export default function Home() {
+    return (
+        <div>
+            <App />
+            <ErrorSonner />
+        </div>
+    );
+}
 
-const TanStackRouterDevtools =
-    process.env.NODE_ENV === "production"
-        ? () => null
-        : React.lazy(() =>
-              import("@tanstack/router-devtools").then((res) => ({
-                  default: res.TanStackRouterDevtools,
-              })),
-          );
-
-function rootRoute() {
+function App() {
+    typeof window !== "undefined" && attachConsole();
     const repo_path = useAppState((s) => s.repo_path);
     const [setBranchListener, setStageListener] = useRefreshRequest((s) => [
         s.setBranchListener,
@@ -34,7 +35,7 @@ function rootRoute() {
             if (!repo_path) {
                 return 0;
             }
-            const res = await commands.getHeadModifyTime(repo_path);
+            const res = await commands?.getHeadModifyTime(repo_path);
             match(res)
                 .with({ status: "ok" }, (v) => {
                     setBranchListener(v.data);
@@ -53,11 +54,5 @@ function rootRoute() {
         refetchOnWindowFocus: "always",
         refetchOnReconnect: true,
     });
-
-    return (
-        <>
-            <Outlet />
-            <TanStackRouterDevtools />
-        </>
-    );
+    return <MainPanel project_name={""} branches={[]} tags={[]} />;
 }

@@ -22,16 +22,18 @@ function createRandomString(length: number) {
     return result;
 }
 
-const branches: BranchInfo[] = [...Array(1000).keys()].map((_) => {
-    return {
+const branches: BranchInfo[] = [];
+
+for (const _ in Array(1000)) {
+    branches.push({
         remote: null,
         name: createRandomString(10),
         commit: createRandomString(40),
         kind: Math.random() % 1 ? "Local" : "Remote",
         is_head: false,
         upstream: null,
-    };
-});
+    });
+}
 
 export const Default: Story = {
     args: {

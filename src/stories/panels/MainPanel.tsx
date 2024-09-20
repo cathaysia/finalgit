@@ -49,7 +49,7 @@ export default function MainPanel({
     useEffect(() => {
         if (repo_path) {
             debug("refresh stage");
-            commands.getCurrentStatus(repo_path).then((v) => {
+            commands?.getCurrentStatus(repo_path).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {
                         setChanges(v.data);
@@ -65,7 +65,7 @@ export default function MainPanel({
         const head = branches.find((item) => item.is_head);
         if (repo_path && head) {
             debug("refresh branch");
-            commands.getFileTree(repo_path, head.commit).then((v) => {
+            commands?.getFileTree(repo_path, head.commit).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {
                         setFiles(v.data);
@@ -74,7 +74,7 @@ export default function MainPanel({
                         setError(err.error);
                     });
             });
-            commands.getHistory(repo_path, head.commit).then((v) => {
+            commands?.getHistory(repo_path, head.commit).then((v) => {
                 match(v)
                     .with({ status: "ok" }, (v) => {
                         setCurrentHisotry(v.data);

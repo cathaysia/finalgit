@@ -1,15 +1,11 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import ThemeCard from "@/stories/settings/ThemeCard";
-import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-export const Route = createFileRoute("/settings/profile")({
-    component: ProfileComponent,
-});
-
-function ProfileComponent() {
+export default function ProfileComponent() {
     const { t } = useTranslation();
     return (
         <div className="flex flex-col gap-4 items-center grow m-2">

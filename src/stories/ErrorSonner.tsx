@@ -1,3 +1,4 @@
+"use client";
 import { Toaster } from "@/components/ui/sonner";
 import { useErrorState } from "@/lib/error";
 import { useEffect } from "react";

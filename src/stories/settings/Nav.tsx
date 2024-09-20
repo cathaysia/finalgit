@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 
 export interface NavProps extends React.ComponentProps<typeof Link> {}
 

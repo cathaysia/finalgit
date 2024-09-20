@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Default as ChangeCardStories } from "@/stories/atoms/ChangeCard.stories.tsx";
-import WorkspacePanel from "./WorkspacePanel.tsx";
+import { Default as ChangeCardStories } from "@/stories/atoms/ChangeCard.stories";
+import WorkspacePanel from "./WorkspacePanel";
 
 const meta = {
     component: WorkspacePanel,

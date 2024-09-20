@@ -13,7 +13,7 @@ export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     branchName: string;
     upstream?: string;
-    files: FileTree[];
+    files?: FileTree[];
     changeSet: FileStatus[];
 }
 
@@ -22,7 +22,6 @@ export default function WorkspacePanel({
     branchName,
     upstream,
     changeSet,
-    files,
     ...props
 }: WorkspacePanelProps) {
     const { t } = useTranslation();

@@ -1,31 +1,33 @@
 {
     "compilerOptions": {
         "target": "ES2020",
-        "useDefineForClassFields": true,
-        "lib": ["ES2020", "DOM", "DOM.Iterable"],
-        "module": "ESNext",
+        "module": "ES2020",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": true,
         "skipLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./src/*", "./src-tauri/*"]
-        },
-        /* Bundler mode */
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
         "moduleResolution": "bundler",
-        "allowImportingTsExtensions": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        /* Linting */
-        "strict": true,
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-        "noFallthroughCasesInSwitch": true
-    },
-    "include": ["src"],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "paths": {
+            "@/*": ["./src/*", "./src-tauri/*", "./*"]
         }
-    ]
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "dist/types/**/*.ts"
+    ],
+    "exclude": ["node_modules"]
 }

@@ -33,7 +33,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                 if (e === true) {
                                     repo_path &&
                                         commands
-                                            .addToStage(repo_path, [item.path])
+                                            ?.addToStage(repo_path, [item.path])
                                             .then((v) => {
                                                 match(v)
                                                     .with(
@@ -52,7 +52,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                 } else if (e === false) {
                                     repo_path &&
                                         commands
-                                            .removeFromStage(repo_path, [
+                                            ?.removeFromStage(repo_path, [
                                                 item.path,
                                             ])
                                             .then((v) => {

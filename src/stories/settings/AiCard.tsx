@@ -8,8 +8,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useAppState } from "@/lib/state";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import CardContent from "@mui/material/CardContent/CardContent";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AiCard() {
     const { t } = useTranslation();

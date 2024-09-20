@@ -11,7 +11,7 @@ export default function ThemeCard({ className, ...props }: ThemeCardProps) {
     const { setTheme } = useTheme();
 
     return (
-        <Card className={cn("w-1/2", className)} {...props}>
+        <Card className={cn(className)} {...props}>
             <CardHeader>
                 <CardTitle>Theme</CardTitle>
             </CardHeader>

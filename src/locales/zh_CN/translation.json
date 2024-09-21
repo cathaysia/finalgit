@@ -1,4 +1,7 @@
 {
+    "ai": {
+        "prompt": "ai.prompt"
+    },
     "branch": {
         "apply": "branch.apply",
         "branches": "branch.branches",
@@ -21,10 +24,19 @@
         "modified": "change.modified",
         "new_file": "change.new_file"
     },
+    "changes": {
+        "add": "changes.add",
+        "diff": "changes.diff",
+        "discard": "changes.discard"
+    },
     "commit": {
+        "copy": "commit.copy",
         "copy_to_clipboard": "commit.copy_to_clipboard",
+        "cut": "commit.cut",
         "delete": "commit.delete",
-        "details": "commit.details"
+        "details": "commit.details",
+        "insert_after": "commit.insert_after",
+        "insert_before": "commit.insert_before"
     },
     "commiter": {
         "commit": "commiter.commit",
@@ -33,9 +45,41 @@
         "generating": "commiter.generating",
         "start_commit": "commiter.start_commit"
     },
+    "controlbar": {
+        "preference": "controlbar.preference"
+    },
+    "ollama": {
+        "endpoint": "ollama.endpoint",
+        "model": "ollama.model"
+    },
+    "Ollama": "Ollama",
+    "profile": {
+        "ai_provider": "profile.ai_provider",
+        "behaviour": "profile.behaviour",
+        "git": {
+            "core": "profile.git.core",
+            "defaultBranch": "profile.git.defaultBranch",
+            "email": "profile.git.email",
+            "ff": "profile.git.ff",
+            "gpg_sign": "profile.git.gpg_sign",
+            "noff": "profile.git.noff",
+            "norebase": "profile.git.norebase",
+            "pull": "profile.git.pull",
+            "rebase": "profile.git.rebase",
+            "signingKey": "profile.git.signingKey",
+            "user": "profile.git.user",
+            "username": "profile.git.username"
+        },
+        "stash_before_checkout": "profile.stash_before_checkout"
+    },
     "project": {
         "add_local_repository": "project.add_local_repository",
         "clone_repository": "project.clone_repository"
+    },
+    "settings": {
+        "ai": "settings.ai",
+        "git": "settings.git",
+        "profile": "settings.profile"
     },
     "tag": {
         "delete": "tag.delete"

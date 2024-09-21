@@ -20,7 +20,7 @@ import { VscDiscard } from "react-icons/vsc";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useState } from "react";
 import { commands, type FileStatus } from "@/bindings";
-import { useAppState, useRefreshRequest } from "@/lib/state";
+import { useAiState, useAppState, useRefreshRequest } from "@/lib/state";
 import { match } from "ts-pattern";
 import { useErrorState } from "@/lib/error";
 import GitFileStatus from "@/lib/file_status";
@@ -45,7 +45,10 @@ export default function Commiter({
     const setError = useErrorState((s) => s.setError);
     const refreshStage = useRefreshRequest((s) => s.refreshStage);
     const [isLoading, setIsLoading] = useState(false);
-    const prompt = useAppState((s) => s.ai_prompt);
+    const [prompt, currentModel] = useAiState((s) => [
+        s.prompt,
+        s.current_ollama_model,
+    ]);
 
     useHotkeys(
         "Escape",
@@ -164,13 +167,18 @@ export default function Commiter({
                         const res = await commands?.createPatch(repo_path);
                         match(res)
                             .with({ status: "ok" }, (v) => {
-                                generate_commit(v.data, prompt).then((v) => {
-                                    const lines = v.split("\n");
-                                    if (lines.length !== 0) {
-                                        setCommitMsg(lines[0]);
-                                    }
-                                    setIsLoading(false);
-                                });
+                                currentModel &&
+                                    generate_commit(
+                                        v.data,
+                                        prompt,
+                                        currentModel,
+                                    ).then((v) => {
+                                        const lines = v.split("\n");
+                                        if (lines.length !== 0) {
+                                            setCommitMsg(lines[0]);
+                                        }
+                                        setIsLoading(false);
+                                    });
                             })
                             .with({ status: "error" }, (err) => {
                                 setError(err.error);

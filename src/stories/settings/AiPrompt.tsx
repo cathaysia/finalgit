@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useAppState } from "@/lib/state";
+import { useAiState } from "@/lib/state";
 
 import { useTranslation } from "react-i18next";
 
 export default function () {
     const { t } = useTranslation();
-    const [prompt, setPrompt] = useAppState((s) => [s.ai_prompt, s.setPrompt]);
+    const [prompt, setPrompt] = useAiState((s) => [s.prompt, s.setPrompt]);
     return (
         <Card className="w-full">
             <CardHeader>

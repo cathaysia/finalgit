@@ -1,4 +1,7 @@
 {
+    "ai": {
+        "prompt": "Prompt"
+    },
     "branch": {
         "apply": "Apply",
         "branches": "Branches",
@@ -21,10 +24,19 @@
         "modified": "modified",
         "new_file": "new_file"
     },
+    "changes": {
+        "add": "Add",
+        "diff": "Diff",
+        "discard": "Discard"
+    },
     "commit": {
+        "copy": "Copy",
         "copy_to_clipboard": "Copy {{ val }}",
-        "delete": "commit.delete",
-        "details": "commit.details"
+        "cut": "Cut",
+        "delete": "Delete",
+        "details": "Details",
+        "insert_after": "Insert After",
+        "insert_before": "Insert Before"
     },
     "commiter": {
         "commit": "Commit",
@@ -33,9 +45,41 @@
         "generating": "commiter.generating",
         "start_commit": "Start Commit"
     },
+    "controlbar": {
+        "preference": "controlbar.preference"
+    },
+    "ollama": {
+        "endpoint": "ollama.endpoint",
+        "model": "ollama.model"
+    },
+    "Ollama": "Ollama",
+    "profile": {
+        "ai_provider": "profile.ai_provider",
+        "behaviour": "profile.behaviour",
+        "git": {
+            "core": "Core",
+            "defaultBranch": "profile.git.defaultBranch",
+            "email": "profile.git.email",
+            "ff": "profile.git.ff",
+            "gpg_sign": "profile.git.gpg_sign",
+            "noff": "profile.git.noff",
+            "norebase": "profile.git.norebase",
+            "pull": "profile.git.pull",
+            "rebase": "profile.git.rebase",
+            "signingKey": "profile.git.signingKey",
+            "user": "profile.git.user",
+            "username": "profile.git.username"
+        },
+        "stash_before_checkout": "profile.stash_before_checkout"
+    },
     "project": {
         "add_local_repository": "add local repository",
         "clone_repository": "clone repository"
+    },
+    "settings": {
+        "ai": "AI",
+        "git": "GIT",
+        "profile": "PROFILE"
     },
     "tag": {
         "delete": "delete"

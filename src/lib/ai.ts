@@ -1,13 +1,34 @@
 import { createOllama } from "ollama-ai-provider";
 import { generateText } from "ai";
 
-const ollama = createOllama();
+const Ollama = createOllama();
 
-export async function generate_commit(diff: string, prompt: string) {
-    const llama = ollama("llama3.1:latest");
+export async function generate_commit(
+    diff: string,
+    prompt: string,
+    model: string,
+) {
+    const llama = Ollama(model);
     const value = await generateText({
         model: llama,
         prompt: prompt.replace("%{diff}", diff),
     });
     return value.text;
+}
+
+export namespace ollama {
+    interface QueryModel {
+        name: string;
+        model: string;
+    }
+
+    interface QueryModelResult {
+        models: QueryModel[];
+    }
+
+    export async function queryModels(api: string) {
+        const res = await fetch(`${api}/api/tags`);
+        const text = await res.text();
+        return JSON.parse(text) as QueryModelResult;
+    }
 }

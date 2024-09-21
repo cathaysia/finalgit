@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Default as ChangeCardStories } from "@/stories/atoms/ChangeCard.stories";
-import WorkspacePanel from "./WorkspacePanel";
+import { Default as ChangeCardStories } from '@/stories/atoms/ChangeCard.stories';
+import WorkspacePanel from './WorkspacePanel';
 
 const meta = {
     component: WorkspacePanel,
@@ -13,8 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        branchName: "master",
-        upstream: "origin/master",
+        branchName: 'master',
+        upstream: 'origin/master',
         changeSet: ChangeCardStories.args.changeSet,
         files: [],
     },

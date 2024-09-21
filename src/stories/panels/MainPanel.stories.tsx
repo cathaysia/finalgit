@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Default as BranchListStories } from "@/stories/lists/BranchList.stories";
-import { Default as TagListStories } from "@/stories/lists/TagList.stories";
-import MainPanel from "./MainPanel";
+import { Default as BranchListStories } from '@/stories/lists/BranchList.stories';
+import { Default as TagListStories } from '@/stories/lists/TagList.stories';
+import MainPanel from './MainPanel';
 
 const meta = {
     component: MainPanel,
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        project_name: "project_name",
+        projectName: 'project_name',
         branches: BranchListStories.args.branches,
         tags: TagListStories.args.tags,
     },

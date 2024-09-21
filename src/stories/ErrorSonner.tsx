@@ -1,9 +1,9 @@
-"use client";
-import { Toaster } from "@/components/ui/sonner";
-import { useErrorState } from "@/lib/error";
-import { useEffect } from "react";
-import { toast } from "sonner";
-import { error } from "@tauri-apps/plugin-log";
+'use client';
+import { Toaster } from '@/components/ui/sonner';
+import { useErrorState } from '@/lib/error';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { error } from '@tauri-apps/plugin-log';
 
 export default function SonnerError() {
     const { err, clearError } = useErrorState();

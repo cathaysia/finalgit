@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { getCurrentWindow } from "@tauri-apps/api/window";
-import Link from "next/link";
-import { useTranslation } from "react-i18next";
-import { MdSettings } from "react-icons/md";
+import { cn } from '@/lib/utils';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+import { MdSettings } from 'react-icons/md';
 
 export interface ControlBarProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -12,7 +12,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
     return (
         <div
             data-tauri-drag-region={true}
-            className={cn("flex justify-between w-full", className)}
+            className={cn('flex justify-between w-full', className)}
             {...props}
         >
             <div className="flex gap-2 items-center">
@@ -38,7 +38,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
             <Link href="/settings">
                 <MdSettings
                     className="mr-2"
-                    title={t("controlbar.preference")}
+                    title={t('controlbar.preference')}
                 />
             </Link>
         </div>

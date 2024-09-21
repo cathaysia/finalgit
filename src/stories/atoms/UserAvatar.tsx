@@ -1,23 +1,23 @@
-import { stringToColor } from "@/lib/stringColor";
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarGroup } from "@mui/material";
+import { stringToColor } from '@/lib/stringColor';
+import { cn } from '@/lib/utils';
+import { Avatar, AvatarGroup } from '@mui/material';
 
 function stringAvatar(name: string) {
     let tag = null;
     if (tag == null) {
-        const sp = name.split(" ");
+        const sp = name.split(' ');
         if (sp[0] && sp[1]) {
             tag = `${sp[0][0]}${sp[1][0]}`.toUpperCase();
         }
     }
     if (tag == null) {
-        const sp = name.split("-");
+        const sp = name.split('-');
         if (sp[0] && sp[1]) {
             tag = `${sp[0][0]}${sp[1][0]}`.toUpperCase();
         }
     }
     if (tag == null) {
-        const sp = name.split(".");
+        const sp = name.split('.');
         if (sp[0] && sp[1]) {
             tag = `${sp[0][0]}${sp[1][0]}`.toUpperCase();
         }
@@ -34,19 +34,19 @@ function stringAvatar(name: string) {
 }
 
 export interface UserAvatarProps extends React.ComponentProps<typeof Avatar> {
-    user_name: string[];
+    userName: string[];
 }
 
 export default function UserAvatar({
     className,
-    user_name,
+    userName,
     ...props
 }: UserAvatarProps) {
-    if (user_name.length === 1) {
+    if (userName.length === 1) {
         return (
             <Avatar
                 className={cn(className)}
-                {...stringAvatar(user_name[0])}
+                {...stringAvatar(userName[0])}
                 {...props}
             />
         );
@@ -54,7 +54,7 @@ export default function UserAvatar({
 
     return (
         <AvatarGroup>
-            {user_name.map((item) => {
+            {userName.map(item => {
                 return (
                     <Avatar
                         key={item}

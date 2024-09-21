@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import GitFileStatus from "@/lib/file_status";
-import ChangeCard from "./ChangeCard";
+import GitFileStatus from '@/lib/file_status';
+import ChangeCard from './ChangeCard';
 
 const meta = {
     component: ChangeCard,
@@ -15,16 +15,16 @@ export const Default: Story = {
     args: {
         changeSet: [
             {
-                path: "build-language.ts",
-                status: GitFileStatus.INDEX_MODIFIED,
+                path: 'build-language.ts',
+                status: GitFileStatus.IndexModified,
             },
             {
-                path: "README.md",
-                status: GitFileStatus.INDEX_NEW,
+                path: 'README.md',
+                status: GitFileStatus.IndexNew,
             },
             {
-                path: "README.adoc",
-                status: GitFileStatus.WT_DELETED,
+                path: 'README.adoc',
+                status: GitFileStatus.WtDeleted,
             },
         ],
     },

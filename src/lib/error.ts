@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export interface ErrorState {
     err: string | null;
@@ -6,7 +6,7 @@ export interface ErrorState {
     clearError: () => void;
 }
 
-export const useErrorState = create<ErrorState>((set) => ({
+export const useErrorState = create<ErrorState>(set => ({
     err: null,
     setError: (err: string) => set({ err: err }),
     clearError: () => set({ err: null }),

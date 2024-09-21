@@ -1,12 +1,12 @@
-import { commands, type FileStatus } from "@/bindings";
-import { cn } from "@/lib/utils";
-import type React from "react";
-import { Separator } from "@/components/ui/separator";
-import Commiter from "./Commiter";
-import { useAppState, useRefreshRequest } from "@/lib/state";
-import ChangeItem from "./ChangeItem";
-import { match } from "ts-pattern";
-import { useErrorState } from "@/lib/error";
+import { commands, type FileStatus } from '@/bindings';
+import { cn } from '@/lib/utils';
+import type React from 'react';
+import { Separator } from '@/components/ui/separator';
+import Commiter from './Commiter';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import ChangeItem from './ChangeItem';
+import { match } from 'ts-pattern';
+import { useErrorState } from '@/lib/error';
 
 export interface ChangeCardProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -14,14 +14,14 @@ export interface ChangeCardProps
 }
 
 export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
-    const repo_path = useAppState((s) => s.repo_path);
-    const refreshStage = useRefreshRequest((s) => s.refreshStage);
-    const setError = useErrorState((s) => s.setError);
+    const repoPath = useAppState(s => s.repoPath);
+    const refreshStage = useRefreshRequest(s => s.refreshStage);
+    const setError = useErrorState(s => s.setError);
 
     return (
-        <div className={cn("flex flex-col gap-2", className)}>
+        <div className={cn('flex flex-col gap-2', className)}>
             <div className="grow flex flex-col gap-2">
-                {changeSet.map((item) => {
+                {changeSet.map(item => {
                     return (
                         <ChangeItem
                             key={item.path}
@@ -29,43 +29,43 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                                 path: item.path,
                                 status: item.status,
                             }}
-                            onCheckedChange={(e) => {
+                            onCheckedChange={e => {
                                 if (e === true) {
-                                    repo_path &&
+                                    repoPath &&
                                         commands
-                                            ?.addToStage(repo_path, [item.path])
-                                            .then((v) => {
+                                            ?.addToStage(repoPath, [item.path])
+                                            .then(v => {
                                                 match(v)
                                                     .with(
-                                                        { status: "ok" },
+                                                        { status: 'ok' },
                                                         () => {
                                                             refreshStage();
                                                         },
                                                     )
                                                     .with(
-                                                        { status: "error" },
-                                                        (err) => {
+                                                        { status: 'error' },
+                                                        err => {
                                                             setError(err.error);
                                                         },
                                                     );
                                             });
                                 } else if (e === false) {
-                                    repo_path &&
+                                    repoPath &&
                                         commands
-                                            ?.removeFromStage(repo_path, [
+                                            ?.removeFromStage(repoPath, [
                                                 item.path,
                                             ])
-                                            .then((v) => {
+                                            .then(v => {
                                                 match(v)
                                                     .with(
-                                                        { status: "ok" },
+                                                        { status: 'ok' },
                                                         () => {
                                                             refreshStage();
                                                         },
                                                     )
                                                     .with(
-                                                        { status: "error" },
-                                                        (err) => {
+                                                        { status: 'error' },
+                                                        err => {
                                                             setError(err.error);
                                                         },
                                                     );

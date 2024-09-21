@@ -1,15 +1,15 @@
-import { withThemeByClassName } from "@storybook/addon-themes";
-import type { Preview } from "@storybook/react";
-import { withI18next } from "./i18n.tsx";
-import "@/app/global.css";
+import { withThemeByClassName } from '@storybook/addon-themes';
+import type { Preview } from '@storybook/react';
+import { withI18next } from './i18n.tsx';
+import '@/app/global.css';
 
 export const decorators = [
     withThemeByClassName({
         themes: {
-            light: "light",
-            dark: "dark",
+            light: 'light',
+            dark: 'dark',
         },
-        defaultTheme: "light",
+        defaultTheme: 'light',
     }),
     withI18next,
 ];
@@ -26,13 +26,13 @@ const preview: Preview = {
 
 export const globalTypes = {
     locale: {
-        name: "Locale",
-        description: "Internationalization locale",
+        name: 'Locale',
+        description: 'Internationalization locale',
         toolbar: {
-            icon: "globe",
+            icon: 'globe',
             items: [
-                { value: "en_US", title: "English" },
-                { value: "zh_CN", title: "简体中文" },
+                { value: 'en_US', title: 'English' },
+                { value: 'zh_CN', title: '简体中文' },
             ],
             showName: true,
         },

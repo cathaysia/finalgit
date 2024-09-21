@@ -1,21 +1,21 @@
-import type { CommitInfo } from "@/bindings";
+import type { CommitInfo } from '@/bindings';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { DEFAULT_STYLE } from "@/lib/style";
-import { cn } from "@/lib/utils";
-import UserAvatar from "@/stories/atoms/UserAvatar";
-import { writeText } from "@tauri-apps/plugin-clipboard-manager";
-import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import NOTIFY from "@/lib/notify";
-import { useTranslation } from "react-i18next";
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { DEFAULT_STYLE } from '@/lib/style';
+import { cn } from '@/lib/utils';
+import UserAvatar from '@/stories/atoms/UserAvatar';
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { Button } from '@/components/ui/button';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import NOTIFY from '@/lib/notify';
+import { useTranslation } from 'react-i18next';
 
 export interface CommitProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     filter?: string;
@@ -38,7 +38,7 @@ export default function Commit({
     return (
         <div
             className={cn(
-                "border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between",
+                'border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between',
                 DEFAULT_STYLE,
                 className,
             )}
@@ -60,7 +60,7 @@ export default function Commit({
                     onClick={async () => {
                         const _ = await writeText(commit.hash);
                         NOTIFY.info(
-                            t("commit.copy_to_clipboard", {
+                            t('commit.copy_to_clipboard', {
                                 val: commit.hash,
                             }),
                         );
@@ -68,29 +68,29 @@ export default function Commit({
                 >
                     {commit.hash.slice(0, 6)}
                 </Badge>
-                <UserAvatar user_name={names} />
+                <UserAvatar userName={names} />
             </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant={"ghost"} size="sm">
+                    <Button variant={'ghost'} size="sm">
                         <DotsHorizontalIcon />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
-                            {t("commit.details")}
+                            {t('commit.details')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem>{t("commit.copy")}</DropdownMenuItem>
-                        <DropdownMenuItem>{t("commit.cut")}</DropdownMenuItem>
+                        <DropdownMenuItem>{t('commit.copy')}</DropdownMenuItem>
+                        <DropdownMenuItem>{t('commit.cut')}</DropdownMenuItem>
                         <DropdownMenuItem>
-                            {t("commit.insert_before")}
+                            {t('commit.insert_before')}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            {t("commit.insert_after")}
+                            {t('commit.insert_after')}
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
-                            {t("commit.delete")}
+                            {t('commit.delete')}
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>

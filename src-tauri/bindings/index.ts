@@ -3,18 +3,18 @@
 /** user-defined commands **/
 
 export const commands =
-    typeof window === "undefined"
+    typeof window === 'undefined'
         ? undefined
         : {
               async openRepo(repoPath: string): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("open_repo", { repoPath }),
+                          status: 'ok',
+                          data: await TAURI_INVOKE('open_repo', { repoPath }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getBranchInfo(
@@ -22,14 +22,14 @@ export const commands =
               ): Promise<Result<BranchInfo[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_branch_info", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_branch_info', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getTagInfo(
@@ -37,14 +37,14 @@ export const commands =
               ): Promise<Result<TagInfo[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_tag_info", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_tag_info', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async renameBranch(
@@ -54,8 +54,8 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("rename_branch", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('rename_branch', {
                               repoPath,
                               info,
                               to,
@@ -63,7 +63,7 @@ export const commands =
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async removeBranch(
@@ -72,15 +72,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("remove_branch", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('remove_branch', {
                               repoPath,
                               info,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async createBranch(
@@ -90,8 +90,8 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("create_branch", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('create_branch', {
                               repoPath,
                               name,
                               commit,
@@ -99,7 +99,7 @@ export const commands =
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async checkoutBranch(
@@ -108,15 +108,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("checkout_branch", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('checkout_branch', {
                               repoPath,
                               branch,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getFileTree(
@@ -125,15 +125,15 @@ export const commands =
               ): Promise<Result<FileTree[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_file_tree", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_file_tree', {
                               repoPath,
                               commit,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getFileContent(
@@ -143,8 +143,8 @@ export const commands =
               ): Promise<Result<number[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_file_content", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_file_content', {
                               repoPath,
                               commit,
                               path,
@@ -152,7 +152,7 @@ export const commands =
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getCurrentStatus(
@@ -160,14 +160,14 @@ export const commands =
               ): Promise<Result<FileStatus[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_current_status", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_current_status', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getCommits(
@@ -177,8 +177,8 @@ export const commands =
               ): Promise<Result<CommitInfo[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_commits", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_commits', {
                               repoPath,
                               branch,
                               kind,
@@ -186,7 +186,7 @@ export const commands =
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async checkoutRemote(
@@ -195,15 +195,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("checkout_remote", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('checkout_remote', {
                               repoPath,
                               branch,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async addToStage(
@@ -212,15 +212,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("add_to_stage", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('add_to_stage', {
                               repoPath,
                               files,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async removeFromStage(
@@ -229,15 +229,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("remove_from_stage", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('remove_from_stage', {
                               repoPath,
                               files,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async createCommit(
@@ -246,15 +246,15 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("create_commit", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('create_commit', {
                               repoPath,
                               msg,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async createPatch(
@@ -262,14 +262,14 @@ export const commands =
               ): Promise<Result<string, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("create_patch", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('create_patch', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getHeadModifyTime(
@@ -277,14 +277,14 @@ export const commands =
               ): Promise<Result<number, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_head_modify_time", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_head_modify_time', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getHistory(
@@ -293,15 +293,15 @@ export const commands =
               ): Promise<Result<CommitInfo[], string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_history", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_history', {
                               repoPath,
                               commit,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getConfig(
@@ -310,15 +310,15 @@ export const commands =
               ): Promise<Result<string, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_config", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_config', {
                               repoPath,
                               key,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async setConfig(
@@ -328,8 +328,8 @@ export const commands =
               ): Promise<Result<null, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("set_config", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('set_config', {
                               repoPath,
                               key,
                               value,
@@ -337,7 +337,7 @@ export const commands =
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
               async getConfiges(
@@ -345,14 +345,14 @@ export const commands =
               ): Promise<Result<{ [key in string]: string }, string>> {
                   try {
                       return {
-                          status: "ok",
-                          data: await TAURI_INVOKE("get_configes", {
+                          status: 'ok',
+                          data: await TAURI_INVOKE('get_configes', {
                               repoPath,
                           }),
                       };
                   } catch (e) {
                       if (e instanceof Error) throw e;
-                      else return { status: "error", error: e as any };
+                      else return { status: 'error', error: e as any };
                   }
               },
           };
@@ -372,7 +372,7 @@ export type BranchInfo = {
     is_head: boolean;
     upstream: string | null;
 };
-export type BranchType = "Local" | "Remote";
+export type BranchType = 'Local' | 'Remote';
 export type CommitInfo = {
     hash: string;
     author: Author;
@@ -392,9 +392,9 @@ export type TagInfo = { name: string; commit: string };
 import {
     invoke as TAURI_INVOKE,
     Channel as TAURI_CHANNEL,
-} from "@tauri-apps/api/core";
-import * as TAURI_API_EVENT from "@tauri-apps/api/event";
-import { type WebviewWindow as __WebviewWindow__ } from "@tauri-apps/api/webviewWindow";
+} from '@tauri-apps/api/core';
+import * as TAURI_API_EVENT from '@tauri-apps/api/event';
+import { type WebviewWindow as __WebviewWindow__ } from '@tauri-apps/api/webviewWindow';
 
 type __EventObj__<T> = {
     listen: (
@@ -409,8 +409,8 @@ type __EventObj__<T> = {
 };
 
 export type Result<T, E> =
-    | { status: "ok"; data: T }
-    | { status: "error"; error: E };
+    | { status: 'ok'; data: T }
+    | { status: 'error'; error: E };
 
 function __makeEvents__<T extends Record<string, any>>(
     mappings: Record<keyof T, string>,
@@ -433,13 +433,13 @@ function __makeEvents__<T extends Record<string, any>>(
                     }),
                     get: (_, command: keyof __EventObj__<any>) => {
                         switch (command) {
-                            case "listen":
+                            case 'listen':
                                 return (arg: any) =>
                                     TAURI_API_EVENT.listen(name, arg);
-                            case "once":
+                            case 'once':
                                 return (arg: any) =>
                                     TAURI_API_EVENT.once(name, arg);
-                            case "emit":
+                            case 'emit':
                                 return (arg: any) =>
                                     TAURI_API_EVENT.emit(name, arg);
                         }

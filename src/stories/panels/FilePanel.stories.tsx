@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import FilePanel from "./FilePanel";
+import FilePanel from './FilePanel';
 
 const meta = {
     component: FilePanel,
@@ -16,18 +16,18 @@ export const Default: Story = {
             {
                 Dir: {
                     mode: 755,
-                    dir: "src",
+                    dir: 'src',
                     files: [
                         {
                             File: {
                                 mode: 755,
-                                filename: "index.tsx",
+                                filename: 'index.tsx',
                             },
                         },
                         {
                             File: {
                                 mode: 755,
-                                filename: "main.tsx",
+                                filename: 'main.tsx',
                             },
                         },
                     ],
@@ -36,10 +36,10 @@ export const Default: Story = {
             {
                 File: {
                     mode: 600,
-                    filename: "README.md",
+                    filename: 'README.md',
                 },
             },
         ],
-        on_clicked: () => {},
+        onClicked: () => {},
     },
 };

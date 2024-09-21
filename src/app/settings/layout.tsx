@@ -1,5 +1,5 @@
-"use client";
-import Panel from "@/stories/settings/Panel";
+'use client';
+import Panel from '@/stories/settings/Panel';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (

@@ -1,101 +1,101 @@
 {
-    "ai": {
-        "prompt": "ai.prompt"
+  "ai": {
+    "prompt": "ai.prompt"
+  },
+  "branch": {
+    "apply": "branch.apply",
+    "branches": "branch.branches",
+    "checkout": "branch.checkout",
+    "checkout_remote": "branch.checkout_remote",
+    "delete": "branch.delete",
+    "details": "branch.details",
+    "disable_dirty": "branch.disable_dirty",
+    "local": "branch.local",
+    "pull": "branch.pull",
+    "push": "branch.push",
+    "remote": "branch.remote",
+    "rename": "branch.rename",
+    "set_upstream": "branch.set_upstream",
+    "tags": "branch.tags"
+  },
+  "Cancel": "取消",
+  "change": {
+    "deleted": "change.deleted",
+    "modified": "change.modified",
+    "new_file": "change.new_file"
+  },
+  "changes": {
+    "add": "changes.add",
+    "diff": "changes.diff",
+    "discard": "changes.discard"
+  },
+  "commit": {
+    "copy": "commit.copy",
+    "copy_to_clipboard": "commit.copy_to_clipboard",
+    "cut": "commit.cut",
+    "delete": "commit.delete",
+    "details": "commit.details",
+    "insert_after": "commit.insert_after",
+    "insert_before": "commit.insert_before"
+  },
+  "commiter": {
+    "commit": "commiter.commit",
+    "commit_summary": "commiter.commit_summary",
+    "generate_message": "commiter.generate_message",
+    "generating": "commiter.generating",
+    "start_commit": "commiter.start_commit"
+  },
+  "controlbar": {
+    "preference": "controlbar.preference"
+  },
+  "ollama": {
+    "endpoint": "ollama.endpoint",
+    "model": "ollama.model"
+  },
+  "Ollama": "Ollama",
+  "profile": {
+    "ai_provider": "profile.ai_provider",
+    "behaviour": "profile.behaviour",
+    "git": {
+      "core": "profile.git.core",
+      "defaultBranch": "profile.git.defaultBranch",
+      "email": "profile.git.email",
+      "ff": "profile.git.ff",
+      "gpg_sign": "profile.git.gpg_sign",
+      "noff": "profile.git.noff",
+      "norebase": "profile.git.norebase",
+      "pull": "profile.git.pull",
+      "rebase": "profile.git.rebase",
+      "signingKey": "profile.git.signingKey",
+      "user": "profile.git.user",
+      "username": "profile.git.username"
     },
-    "branch": {
-        "apply": "branch.apply",
-        "branches": "branch.branches",
-        "checkout": "branch.checkout",
-        "checkout_remote": "branch.checkout_remote",
-        "delete": "branch.delete",
-        "details": "branch.details",
-        "disable_dirty": "branch.disable_dirty",
-        "local": "branch.local",
-        "pull": "branch.pull",
-        "push": "branch.push",
-        "remote": "branch.remote",
-        "rename": "branch.rename",
-        "set_upstream": "branch.set_upstream",
-        "tags": "branch.tags"
-    },
-    "Cancel": "取消",
-    "change": {
-        "deleted": "change.deleted",
-        "modified": "change.modified",
-        "new_file": "change.new_file"
-    },
-    "changes": {
-        "add": "changes.add",
-        "diff": "changes.diff",
-        "discard": "changes.discard"
-    },
-    "commit": {
-        "copy": "commit.copy",
-        "copy_to_clipboard": "commit.copy_to_clipboard",
-        "cut": "commit.cut",
-        "delete": "commit.delete",
-        "details": "commit.details",
-        "insert_after": "commit.insert_after",
-        "insert_before": "commit.insert_before"
-    },
-    "commiter": {
-        "commit": "commiter.commit",
-        "commit_summary": "commiter.commit_summary",
-        "generate_message": "commiter.generate_message",
-        "generating": "commiter.generating",
-        "start_commit": "commiter.start_commit"
-    },
-    "controlbar": {
-        "preference": "controlbar.preference"
-    },
-    "ollama": {
-        "endpoint": "ollama.endpoint",
-        "model": "ollama.model"
-    },
-    "Ollama": "Ollama",
-    "profile": {
-        "ai_provider": "profile.ai_provider",
-        "behaviour": "profile.behaviour",
-        "git": {
-            "core": "profile.git.core",
-            "defaultBranch": "profile.git.defaultBranch",
-            "email": "profile.git.email",
-            "ff": "profile.git.ff",
-            "gpg_sign": "profile.git.gpg_sign",
-            "noff": "profile.git.noff",
-            "norebase": "profile.git.norebase",
-            "pull": "profile.git.pull",
-            "rebase": "profile.git.rebase",
-            "signingKey": "profile.git.signingKey",
-            "user": "profile.git.user",
-            "username": "profile.git.username"
-        },
-        "stash_before_checkout": "profile.stash_before_checkout"
-    },
-    "project": {
-        "add_local_repository": "project.add_local_repository",
-        "clone_repository": "project.clone_repository"
-    },
-    "settings": {
-        "ai": "settings.ai",
-        "git": "settings.git",
-        "profile": "settings.profile"
-    },
-    "tag": {
-        "delete": "tag.delete"
-    },
-    "tags": {
-        "create_branch": "tags.create_branch"
-    },
-    "workspace": {
-        "changed_files": "workspace.changed_files",
-        "create_pr": "workspace.create_pr",
-        "discard": "workspace.discard",
-        "discard_all": "workspace.discard_all",
-        "generate_patch": "workspace.generate_patch",
-        "patch_save_path": "workspace.patch_save_path",
-        "set_as_default": "workspace.set_as_default",
-        "stash": "workspace.stash"
-    },
-    "Workspace": "工作区"
+    "stash_before_checkout": "profile.stash_before_checkout"
+  },
+  "project": {
+    "add_local_repository": "project.add_local_repository",
+    "clone_repository": "project.clone_repository"
+  },
+  "settings": {
+    "ai": "settings.ai",
+    "git": "settings.git",
+    "profile": "settings.profile"
+  },
+  "tag": {
+    "delete": "tag.delete"
+  },
+  "tags": {
+    "create_branch": "tags.create_branch"
+  },
+  "workspace": {
+    "changed_files": "workspace.changed_files",
+    "create_pr": "workspace.create_pr",
+    "discard": "workspace.discard",
+    "discard_all": "workspace.discard_all",
+    "generate_patch": "workspace.generate_patch",
+    "patch_save_path": "workspace.patch_save_path",
+    "set_as_default": "workspace.set_as_default",
+    "stash": "workspace.stash"
+  },
+  "Workspace": "工作区"
 }

@@ -1,9 +1,9 @@
-import { createOllama } from "ollama-ai-provider";
-import { generateText } from "ai";
+import { createOllama } from 'ollama-ai-provider';
+import { generateText } from 'ai';
 
 const Ollama = createOllama();
 
-export async function generate_commit(
+export async function generateCommit(
     diff: string,
     prompt: string,
     model: string,
@@ -11,7 +11,7 @@ export async function generate_commit(
     const llama = Ollama(model);
     const value = await generateText({
         model: llama,
-        prompt: prompt.replace("%{diff}", diff),
+        prompt: prompt.replace('%{diff}', diff),
     });
     return value.text;
 }

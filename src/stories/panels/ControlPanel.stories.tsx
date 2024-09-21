@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import ControlPanel from "./ControlPanel";
+import ControlPanel from './ControlPanel';
 
 const meta = {
     component: ControlPanel,

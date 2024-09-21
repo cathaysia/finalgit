@@ -1,61 +1,61 @@
-import { commands, type BranchInfo } from "@/bindings";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { commands, type BranchInfo } from '@/bindings';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useErrorState } from "@/lib/error";
-import { useAppState, useRefreshRequest } from "@/lib/state";
-import { cn } from "@/lib/utils";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type React from "react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FaCodeBranch } from "react-icons/fa";
-import { match } from "ts-pattern";
-import BranchRename from "./BranchRename";
-import { Label } from "@/components/ui/label";
-import { DEFAULT_STYLE } from "@/lib/style";
+} from '@/components/ui/dropdown-menu';
+import { useErrorState } from '@/lib/error';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { cn } from '@/lib/utils';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import type React from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaCodeBranch } from 'react-icons/fa';
+import { match } from 'ts-pattern';
+import BranchRename from './BranchRename';
+import { Label } from '@/components/ui/label';
+import { DEFAULT_STYLE } from '@/lib/style';
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
     filter?: string;
     className?: string;
-    on_rename?: (name: string) => void;
-    on_delete?: () => void;
+    onRename?: (name: string) => void;
+    onDelete?: () => void;
 }
 
 export default function Branch({
     info,
     filter,
-    on_rename,
-    on_delete,
+    onRename,
+    onDelete,
     className,
     ...props
 }: BranchProps) {
     const t = useTranslation().t;
     const [newName, setNewName] = useState<string>();
-    const is_head = info.is_head;
+    const isHead = info.is_head;
     const branchName = info.name;
     const upstream = info.remote;
-    const is_local = info.kind === "Local";
-    const [repo_path, changes] = useAppState((s) => [s.repo_path, s.changes]);
-    const setError = useErrorState((s) => s.setError);
-    const [refreshBranch] = useRefreshRequest((s) => [s.refreshBranch]);
-    const is_dirty = changes.length !== 0;
+    const isLocal = info.kind === 'Local';
+    const [repoPath, changes] = useAppState(s => [s.repoPath, s.changes]);
+    const setError = useErrorState(s => s.setError);
+    const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
+    const isDirty = changes.length !== 0;
 
     function removeBranch() {
-        if (is_local && repo_path) {
-            commands?.removeBranch(repo_path, info).then((v) => {
+        if (isLocal && repoPath) {
+            commands?.removeBranch(repoPath, info).then(v => {
                 match(v)
-                    .with({ status: "ok" }, () => {
+                    .with({ status: 'ok' }, () => {
                         refreshBranch();
                     })
-                    .with({ status: "error" }, (err) => {
+                    .with({ status: 'error' }, err => {
                         setError(err.error);
                     });
             });
@@ -63,24 +63,24 @@ export default function Branch({
     }
 
     function checkout() {
-        if (repo_path) {
-            if (is_local) {
-                commands?.checkoutBranch(repo_path, info.name).then((v) => {
+        if (repoPath) {
+            if (isLocal) {
+                commands?.checkoutBranch(repoPath, info.name).then(v => {
                     match(v)
-                        .with({ status: "ok" }, () => {
+                        .with({ status: 'ok' }, () => {
                             refreshBranch();
                         })
-                        .with({ status: "error" }, (err) => {
+                        .with({ status: 'error' }, err => {
                             setError(err.error);
                         });
                 });
             } else {
-                commands?.checkoutRemote(repo_path, info.name).then((v) => {
+                commands?.checkoutRemote(repoPath, info.name).then(v => {
                     match(v)
-                        .with({ status: "ok" }, () => {
+                        .with({ status: 'ok' }, () => {
                             refreshBranch();
                         })
-                        .with({ status: "error" }, (err) => {
+                        .with({ status: 'error' }, err => {
                             setError(err.error);
                         });
                 });
@@ -92,16 +92,16 @@ export default function Branch({
         return (
             <div
                 className={cn(
-                    "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
+                    'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
                     DEFAULT_STYLE,
-                    is_head && "border-green-600",
+                    isHead && 'border-green-600',
                     className,
                 )}
                 {...props}
             >
                 <BranchRename
                     defaultValue={newName}
-                    on_cancel={() => {
+                    onCancel={() => {
                         setNewName(undefined);
                     }}
                 />
@@ -112,9 +112,9 @@ export default function Branch({
     return (
         <div
             className={cn(
-                "w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2",
+                'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
                 DEFAULT_STYLE,
-                is_head && "border-green-600 dark:border-green-600",
+                isHead && 'border-green-600 dark:border-green-600',
                 className,
             )}
             {...props}
@@ -132,14 +132,14 @@ export default function Branch({
                     return <Label dangerouslySetInnerHTML={{ __html: v }} />;
                 })()}
                 <Badge>
-                    {is_local ? t("branch.local") : t("branch.remote")}
+                    {isLocal ? t('branch.local') : t('branch.remote')}
                 </Badge>
                 {upstream && <Badge>{upstream}</Badge>}
             </div>
             <div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant={"ghost"} size="sm">
+                        <Button variant={'ghost'} size="sm">
                             <DotsHorizontalIcon />
                         </Button>
                     </DropdownMenuTrigger>
@@ -148,41 +148,41 @@ export default function Branch({
                             <DropdownMenuItem
                                 onClick={() => setNewName(branchName)}
                             >
-                                {t("branch.rename")}
+                                {t('branch.rename')}
                             </DropdownMenuItem>
-                            {!is_head && (
+                            {!isHead && (
                                 <DropdownMenuItem
-                                    disabled={is_dirty}
+                                    disabled={isDirty}
                                     onClick={() => {
                                         checkout();
                                     }}
                                     className={cn(
-                                        !is_local &&
-                                            "text-yellow-500 hover:text-yellow-500",
+                                        !isLocal &&
+                                            'text-yellow-500 hover:text-yellow-500',
                                     )}
                                     title={(() => {
-                                        if (is_dirty) {
-                                            return t("branch.disable_dirty");
+                                        if (isDirty) {
+                                            return t('branch.disable_dirty');
                                         }
-                                        if (!is_local) {
-                                            return t("branch.checkout_remote");
+                                        if (!isLocal) {
+                                            return t('branch.checkout_remote');
                                         }
                                     })()}
                                 >
-                                    {t("branch.checkout")}
+                                    {t('branch.checkout')}
                                 </DropdownMenuItem>
                             )}
                             <DropdownMenuItem>
-                                {t("branch.details")}
+                                {t('branch.details')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                {t("branch.set_upstream")}
+                                {t('branch.set_upstream')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                {t("branch.pull")}
+                                {t('branch.pull')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                {t("branch.push")}
+                                {t('branch.push')}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 className="text-red-600"
@@ -190,7 +190,7 @@ export default function Branch({
                                     removeBranch();
                                 }}
                             >
-                                {t("branch.delete")}
+                                {t('branch.delete')}
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>

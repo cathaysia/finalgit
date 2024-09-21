@@ -1,101 +1,101 @@
 {
-    "ai": {
-        "prompt": "Prompt"
+  "ai": {
+    "prompt": "Prompt"
+  },
+  "branch": {
+    "apply": "Apply",
+    "branches": "Branches",
+    "checkout": "Checkout",
+    "checkout_remote": "Checkout into local branch",
+    "delete": "Delete",
+    "details": "Details",
+    "disable_dirty": "Workspace is dirty. Commit or Stash first.",
+    "local": "Local",
+    "pull": "Pull",
+    "push": "Push",
+    "remote": "Remote",
+    "rename": "Rename",
+    "set_upstream": "Set Upstream",
+    "tags": "Tags"
+  },
+  "Cancel": "Cancel",
+  "change": {
+    "deleted": "deleted",
+    "modified": "modified",
+    "new_file": "new_file"
+  },
+  "changes": {
+    "add": "Add",
+    "diff": "Diff",
+    "discard": "Discard"
+  },
+  "commit": {
+    "copy": "Copy",
+    "copy_to_clipboard": "Copy {{ val }}",
+    "cut": "Cut",
+    "delete": "Delete",
+    "details": "Details",
+    "insert_after": "Insert After",
+    "insert_before": "Insert Before"
+  },
+  "commiter": {
+    "commit": "Commit",
+    "commit_summary": "Commit Summary",
+    "generate_message": "Generate Message",
+    "generating": "commiter.generating",
+    "start_commit": "Start Commit"
+  },
+  "controlbar": {
+    "preference": "controlbar.preference"
+  },
+  "ollama": {
+    "endpoint": "ollama.endpoint",
+    "model": "ollama.model"
+  },
+  "Ollama": "Ollama",
+  "profile": {
+    "ai_provider": "profile.ai_provider",
+    "behaviour": "profile.behaviour",
+    "git": {
+      "core": "Core",
+      "defaultBranch": "profile.git.defaultBranch",
+      "email": "profile.git.email",
+      "ff": "profile.git.ff",
+      "gpg_sign": "profile.git.gpg_sign",
+      "noff": "profile.git.noff",
+      "norebase": "profile.git.norebase",
+      "pull": "profile.git.pull",
+      "rebase": "profile.git.rebase",
+      "signingKey": "profile.git.signingKey",
+      "user": "profile.git.user",
+      "username": "profile.git.username"
     },
-    "branch": {
-        "apply": "Apply",
-        "branches": "Branches",
-        "checkout": "Checkout",
-        "checkout_remote": "Checkout into local branch",
-        "delete": "Delete",
-        "details": "Details",
-        "disable_dirty": "Workspace is dirty. Commit or Stash first.",
-        "local": "Local",
-        "pull": "Pull",
-        "push": "Push",
-        "remote": "Remote",
-        "rename": "Rename",
-        "set_upstream": "Set Upstream",
-        "tags": "Tags"
-    },
-    "Cancel": "Cancel",
-    "change": {
-        "deleted": "deleted",
-        "modified": "modified",
-        "new_file": "new_file"
-    },
-    "changes": {
-        "add": "Add",
-        "diff": "Diff",
-        "discard": "Discard"
-    },
-    "commit": {
-        "copy": "Copy",
-        "copy_to_clipboard": "Copy {{ val }}",
-        "cut": "Cut",
-        "delete": "Delete",
-        "details": "Details",
-        "insert_after": "Insert After",
-        "insert_before": "Insert Before"
-    },
-    "commiter": {
-        "commit": "Commit",
-        "commit_summary": "Commit Summary",
-        "generate_message": "Generate Message",
-        "generating": "commiter.generating",
-        "start_commit": "Start Commit"
-    },
-    "controlbar": {
-        "preference": "controlbar.preference"
-    },
-    "ollama": {
-        "endpoint": "ollama.endpoint",
-        "model": "ollama.model"
-    },
-    "Ollama": "Ollama",
-    "profile": {
-        "ai_provider": "profile.ai_provider",
-        "behaviour": "profile.behaviour",
-        "git": {
-            "core": "Core",
-            "defaultBranch": "profile.git.defaultBranch",
-            "email": "profile.git.email",
-            "ff": "profile.git.ff",
-            "gpg_sign": "profile.git.gpg_sign",
-            "noff": "profile.git.noff",
-            "norebase": "profile.git.norebase",
-            "pull": "profile.git.pull",
-            "rebase": "profile.git.rebase",
-            "signingKey": "profile.git.signingKey",
-            "user": "profile.git.user",
-            "username": "profile.git.username"
-        },
-        "stash_before_checkout": "profile.stash_before_checkout"
-    },
-    "project": {
-        "add_local_repository": "add local repository",
-        "clone_repository": "clone repository"
-    },
-    "settings": {
-        "ai": "AI",
-        "git": "GIT",
-        "profile": "PROFILE"
-    },
-    "tag": {
-        "delete": "delete"
-    },
-    "tags": {
-        "create_branch": "Create branch from tag"
-    },
-    "workspace": {
-        "changed_files": "Changed files",
-        "create_pr": "Create PR",
-        "discard": "Discard",
-        "discard_all": "Discard all",
-        "generate_patch": "Generate patch",
-        "patch_save_path": "workspace.patch_save_path",
-        "set_as_default": "Set as default",
-        "stash": "Stash"
-    },
-    "Workspace": "Workspace"
+    "stash_before_checkout": "profile.stash_before_checkout"
+  },
+  "project": {
+    "add_local_repository": "add local repository",
+    "clone_repository": "clone repository"
+  },
+  "settings": {
+    "ai": "AI",
+    "git": "GIT",
+    "profile": "PROFILE"
+  },
+  "tag": {
+    "delete": "delete"
+  },
+  "tags": {
+    "create_branch": "Create branch from tag"
+  },
+  "workspace": {
+    "changed_files": "Changed files",
+    "create_pr": "Create PR",
+    "discard": "Discard",
+    "discard_all": "Discard all",
+    "generate_patch": "Generate patch",
+    "patch_save_path": "workspace.patch_save_path",
+    "set_as_default": "Set as default",
+    "stash": "Stash"
+  },
+  "Workspace": "Workspace"
 }

@@ -1,6 +1,6 @@
-import { toast } from "sonner";
-import { MdError, MdWarning } from "react-icons/md";
-import { DEFAULT_STYLE } from "./style";
+import { toast } from 'sonner';
+import { MdError, MdWarning } from 'react-icons/md';
+import { DEFAULT_STYLE } from './style';
 
 enum NotifyLevel {
     Info = 0,
@@ -8,7 +8,7 @@ enum NotifyLevel {
     Error = 2,
 }
 
-function to_string(level: NotifyLevel, msg: string) {
+function notifyLevelToString(level: NotifyLevel, msg: string) {
     if (level === NotifyLevel.Info) {
         return (
             <div className="text-green-50">
@@ -38,7 +38,7 @@ function to_string(level: NotifyLevel, msg: string) {
 }
 
 function notify(level: NotifyLevel, msg: string) {
-    toast(to_string(level, msg));
+    toast(notifyLevelToString(level, msg));
 }
 
 const NOTIFY = {

@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
-import Nav from "./Nav";
-import { MdHome } from "react-icons/md";
-import { DEFAULT_STYLE } from "@/lib/style";
+import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import Nav from './Nav';
+import { MdHome } from 'react-icons/md';
+import { DEFAULT_STYLE } from '@/lib/style';
 
 export interface PanelProps extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
@@ -15,33 +15,33 @@ export default function Panel({ className, ...props }: PanelProps) {
     const { t } = useTranslation();
     const navs: NavItemProps[] = [
         {
-            to: "/",
+            to: '/',
             text: <MdHome />,
         },
         {
-            to: "/settings",
-            text: t("settings.profile"),
+            to: '/settings',
+            text: t('settings.profile'),
         },
         {
-            to: "/settings/git",
-            text: t("settings.git"),
+            to: '/settings/git',
+            text: t('settings.git'),
         },
         {
-            to: "/settings/ai",
-            text: t("settings.ai"),
+            to: '/settings/ai',
+            text: t('settings.ai'),
         },
     ];
     return (
         <div
-            className={cn("border rounded-xl shadow", DEFAULT_STYLE, className)}
+            className={cn('border rounded-xl shadow', DEFAULT_STYLE, className)}
             {...props}
         >
-            {navs.map((item) => {
+            {navs.map(item => {
                 return (
                     <Nav
                         key={item.to}
                         href={item.to}
-                        className={cn("w-full h-16 border-b")}
+                        className={cn('w-full h-16 border-b')}
                     >
                         {item.text}
                     </Nav>

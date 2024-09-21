@@ -1,6 +1,6 @@
-import type { BranchInfo, FileStatus, FileTree, TagInfo } from "@/bindings";
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import type { BranchInfo, FileStatus, FileTree, TagInfo } from '@/bindings';
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.
 Only respond with the commit message. Don't give any notes.
@@ -19,7 +19,7 @@ Here is my git diff:
 `;
 
 export interface AppState {
-    repo_path?: string;
+    repoPath?: string;
     branches: BranchInfo[];
     tags: TagInfo[];
     changes: FileStatus[];
@@ -32,13 +32,13 @@ export interface AppState {
 }
 
 export const useAppState = create<AppState>()(
-    devtools((set) => ({
-        repo_path: undefined,
+    devtools(set => ({
+        repoPath: undefined,
         branches: [],
         changes: [],
         tags: [],
         files: [],
-        setRepoPath: (repo_path: string) => set({ repo_path: repo_path }),
+        setRepoPath: (repoPath: string) => set({ repoPath: repoPath }),
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
         setChanges: (changes: FileStatus[]) => set({ changes: changes }),
@@ -56,13 +56,12 @@ export interface RefreshRequest {
 }
 
 export const useRefreshRequest = create<RefreshRequest>()(
-    devtools((set) => ({
+    devtools(set => ({
         branchListener: 0,
         stageListener: 0,
         refreshBranch: () =>
-            set((s) => ({ branchListener: s.branchListener + 1 })),
-        refreshStage: () =>
-            set((s) => ({ stageListener: s.stageListener + 1 })),
+            set(s => ({ branchListener: s.branchListener + 1 })),
+        refreshStage: () => set(s => ({ stageListener: s.stageListener + 1 })),
         setBranchListener: (time: number) =>
             set(() => ({ branchListener: time })),
         setStageListener: (time: number) =>
@@ -72,9 +71,9 @@ export const useRefreshRequest = create<RefreshRequest>()(
 
 export interface AiStateProps {
     prompt: string;
-    ollama_endpoint: string;
-    ollama_model: string[];
-    current_ollama_model: string | undefined;
+    ollamaEndpoint: string;
+    ollamaModel: string[];
+    ollamaCurrentModel: string | undefined;
     setPrompt: (prompt: string) => void;
     setOllamaEndpoint: (endpoint: string) => void;
     setOllamaModels: (models: string[]) => void;
@@ -82,21 +81,21 @@ export interface AiStateProps {
 }
 
 export const useAiState = create<AiStateProps>()(
-    devtools((set) => ({
+    devtools(set => ({
         prompt: SHORT_DEFAULT_COMMIT_TEMPLATE,
-        ollama_endpoint: "http://127.0.0.1:11434",
-        ollama_model: [],
-        current_ollama_model: undefined,
+        ollamaEndpoint: 'http://127.0.0.1:11434',
+        ollamaModel: [],
+        ollamaCurrentModel: undefined,
         setPrompt: (prompt: string) => set({ prompt: prompt }),
         setOllamaEndpoint: (endpoint: string) =>
-            set({ ollama_endpoint: endpoint }),
+            set({ ollamaEndpoint: endpoint }),
         setOllamaModels: (models: string[]) =>
             set({
-                ollama_model: models,
+                ollamaModel: models,
             }),
         setOllamaModel: (model: string) =>
             set({
-                current_ollama_model: model,
+                ollamaCurrentModel: model,
             }),
     })),
 );

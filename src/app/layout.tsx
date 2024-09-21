@@ -1,9 +1,10 @@
-"use client";
-import "@/app/global.css";
-import "@/locales";
-import { ThemeProvider } from "next-themes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+'use client';
+import '@/app/global.css';
+import '@/locales';
+import { ThemeProvider } from 'next-themes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ErrorSonner from '@/stories/ErrorSonner';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ export default function RootLayout({
                 >
                     <QueryClientProvider client={queryClient}>
                         <div>{children}</div>
+                        <ErrorSonner />
                         <ReactQueryDevtools initialIsOpen={false} />
                     </QueryClientProvider>
                 </ThemeProvider>

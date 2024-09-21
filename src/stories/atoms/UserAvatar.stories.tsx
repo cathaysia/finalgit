@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import UserAvatar from "./UserAvatar";
+import UserAvatar from './UserAvatar';
 
 const meta = {
     component: UserAvatar,
@@ -12,6 +12,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        user_name: ["Bob", "Alice"],
+        userName: ['Bob', 'Alice'],
     },
 };

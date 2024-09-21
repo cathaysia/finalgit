@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import Project from "./Project";
+import Project from './Project';
 
 const meta = {
     component: Project,
@@ -13,9 +13,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         projects: [
-            "create_react_project",
-            "create_nextjs_project",
-            "create_vuejs_project",
+            'create_react_project',
+            'create_nextjs_project',
+            'create_vuejs_project',
         ],
     },
 };

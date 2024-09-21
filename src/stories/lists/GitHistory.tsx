@@ -1,11 +1,11 @@
-import type { CommitInfo } from "@/bindings";
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { cn } from "@/lib/utils";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { useRef } from "react";
-import { ScrollBar } from "@/components/ui/scroll-area";
-import Commit from "../atoms/Commit";
-import { DEFAULT_STYLE } from "@/lib/style";
+import type { CommitInfo } from '@/bindings';
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { cn } from '@/lib/utils';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef } from 'react';
+import { ScrollBar } from '@/components/ui/scroll-area';
+import Commit from '../atoms/Commit';
+import { DEFAULT_STYLE } from '@/lib/style';
 
 export interface GitHistoryProps
     extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -27,7 +27,7 @@ export default function GitHistory({
     return (
         <ScrollAreaPrimitive.Root
             className={cn(
-                "relative overflow-hidden rounded-lg border",
+                'relative overflow-hidden rounded-lg border',
                 DEFAULT_STYLE,
                 className,
             )}
@@ -43,13 +43,13 @@ export default function GitHistory({
                     }}
                     className="w-full relative"
                 >
-                    {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                    {rowVirtualizer.getVirtualItems().map(virtualItem => {
                         const item = history[virtualItem.index];
 
                         return (
                             <div
                                 key={virtualItem.key}
-                                className={"absolute top-0 left-0 w-full"}
+                                className={'absolute top-0 left-0 w-full'}
                                 style={{
                                     height: `${virtualItem.size}px`,
                                     transform: `translateY(${virtualItem.start}px)`,

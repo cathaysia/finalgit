@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import type { TagInfo } from "@/bindings";
-import { TagList } from "./TagList";
+import type { TagInfo } from '@/bindings';
+import { TagList } from './TagList';
 
 const meta = {
     component: TagList,
@@ -13,8 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 function createRandomString(length: number) {
     const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
 
     for (let i = 0; i < length; i++) {
         result += chars.charAt(Math.floor(Math.random() * chars.length));

@@ -3,33 +3,33 @@ import {
     type CommitInfo,
     type BranchInfo,
     type TagInfo,
-} from "@/bindings";
-import { cn } from "@/lib/utils";
-import ControlPanel from "./ControlPanel";
-import WorkspacePanel from "./WorkspacePanel";
-import { useAppState, useRefreshRequest } from "@/lib/state";
-import { useEffect, useState } from "react";
-import { useErrorState } from "@/lib/error";
-import { match } from "ts-pattern";
-import { debug } from "@tauri-apps/plugin-log";
-import GitHistory from "../lists/GitHistory";
+} from '@/bindings';
+import { cn } from '@/lib/utils';
+import ControlPanel from './ControlPanel';
+import WorkspacePanel from './WorkspacePanel';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { useEffect, useState } from 'react';
+import { useErrorState } from '@/lib/error';
+import { match } from 'ts-pattern';
+import { debug } from '@tauri-apps/plugin-log';
+import GitHistory from '../lists/GitHistory';
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
-    project_name: string;
+    projectName: string;
     branches: BranchInfo[];
     tags: TagInfo[];
 }
 
 export default function MainPanel({
     className,
-    project_name,
+    projectName,
     tags,
     ...props
 }: MainPanelProps) {
-    const [repo_path, branches, changes, setChanges, files, setFiles] =
-        useAppState((s) => [
-            s.repo_path,
+    const [repoPath, branches, changes, setChanges, files, setFiles] =
+        useAppState(s => [
+            s.repoPath,
             s.branches,
             s.changes,
             s.setChanges,
@@ -37,49 +37,49 @@ export default function MainPanel({
             s.setFiles,
         ]);
 
-    const setError = useErrorState((s) => s.setError);
-    const [stageListener] = useRefreshRequest((s) => [s.stageListener]);
+    const setError = useErrorState(s => s.setError);
+    const [stageListener] = useRefreshRequest(s => [s.stageListener]);
     const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
 
-    const item = branches.find((item) => item.is_head);
-    let branchName = "";
+    const item = branches.find(item => item.is_head);
+    let branchName = '';
     if (item) {
         branchName = item.name;
     }
     useEffect(() => {
-        if (repo_path) {
-            debug("refresh stage");
-            commands?.getCurrentStatus(repo_path).then((v) => {
+        if (repoPath) {
+            debug('refresh stage');
+            commands?.getCurrentStatus(repoPath).then(v => {
                 match(v)
-                    .with({ status: "ok" }, (v) => {
+                    .with({ status: 'ok' }, v => {
                         setChanges(v.data);
                     })
-                    .with({ status: "error" }, (err) => {
+                    .with({ status: 'error' }, err => {
                         setError(err.error);
                     });
             });
         }
-    }, [repo_path, stageListener]);
+    }, [repoPath, stageListener]);
 
     useEffect(() => {
-        const head = branches.find((item) => item.is_head);
-        if (repo_path && head) {
-            debug("refresh branch");
-            commands?.getFileTree(repo_path, head.commit).then((v) => {
+        const head = branches.find(item => item.is_head);
+        if (repoPath && head) {
+            debug('refresh branch');
+            commands?.getFileTree(repoPath, head.commit).then(v => {
                 match(v)
-                    .with({ status: "ok" }, (v) => {
+                    .with({ status: 'ok' }, v => {
                         setFiles(v.data);
                     })
-                    .with({ status: "error" }, (err) => {
+                    .with({ status: 'error' }, err => {
                         setError(err.error);
                     });
             });
-            commands?.getHistory(repo_path, head.commit).then((v) => {
+            commands?.getHistory(repoPath, head.commit).then(v => {
                 match(v)
-                    .with({ status: "ok" }, (v) => {
+                    .with({ status: 'ok' }, v => {
                         setCurrentHisotry(v.data);
                     })
-                    .with({ status: "error" }, (err) => {
+                    .with({ status: 'error' }, err => {
                         setError(err.error);
                     });
             });
@@ -89,7 +89,7 @@ export default function MainPanel({
     return (
         <div
             className={cn(
-                "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-screen p-2",
+                'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-screen p-2',
                 className,
             )}
             data-tauri-drag-region={true}

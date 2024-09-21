@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "export",
+    output: 'export',
     experimental: {
         useLightningcss: false,
         parallelServerCompiles: true,
         parallelServerBuildTraces: true,
         webpackBuildWorker: true,
     },
-    distDir: "dist",
+    distDir: 'dist',
 };
 
 export default nextConfig;

@@ -1,10 +1,10 @@
-import type { TagInfo } from "@/bindings";
-import { ScrollBar } from "@/components/ui/scroll-area";
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { cn } from "@/lib/utils";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import React from "react";
-import { Tag } from "@/stories/atoms/Tag";
+import type { TagInfo } from '@/bindings';
+import { ScrollBar } from '@/components/ui/scroll-area';
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { cn } from '@/lib/utils';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import React from 'react';
+import { Tag } from '@/stories/atoms/Tag';
 
 export interface TagListProps
     extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -23,7 +23,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
 
     return (
         <ScrollAreaPrimitive.Root
-            className={cn("relative overflow-hidden", className)}
+            className={cn('relative overflow-hidden', className)}
             {...props}
         >
             <ScrollAreaPrimitive.Viewport
@@ -34,7 +34,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
                     ref={parentRef}
                     className={cn(className)}
                     style={{
-                        overflow: "auto",
+                        overflow: 'auto',
                     }}
                     {...props}
                 >
@@ -44,7 +44,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
                         }}
                         className="w-full relative"
                     >
-                        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                        {rowVirtualizer.getVirtualItems().map(virtualItem => {
                             const item = tags[virtualItem.index];
 
                             return (

@@ -1,39 +1,39 @@
-import type { FileTree } from "@/bindings";
-import Icon from "@/components/icon";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
+import type { FileTree } from '@/bindings';
+import Icon from '@/components/icon';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 export interface FilePanelProps
     extends React.ComponentProps<typeof ScrollArea> {
     files: FileTree[];
-    on_clicked?: (file_name: string) => void;
+    onClicked?: (fileName: string) => void;
 }
 
 export default function FilePanel({
     className,
     files,
-    on_clicked = () => {},
+    onClicked = () => {},
     ...props
 }: FilePanelProps) {
     return (
         <ScrollArea className={cn(className)} {...props}>
             <SimpleTreeView>
-                {files.map((v) => {
-                    return generate_tree("", v, on_clicked);
+                {files.map(v => {
+                    return generateTree('', v, onClicked);
                 })}
             </SimpleTreeView>
         </ScrollArea>
     );
 }
 
-function generate_tree(
+function generateTree(
     parent: string,
     file: FileTree,
     callback: (path: string) => void,
 ) {
-    if ("File" in file) {
+    if ('File' in file) {
         const entry = file.File;
         const key = `${parent}/${entry.filename}`;
         return (
@@ -75,8 +75,8 @@ function generate_tree(
             }
         >
             <div>
-                {tree.files.map((v) => {
-                    return generate_tree(key, v, callback);
+                {tree.files.map(v => {
+                    return generateTree(key, v, callback);
                 })}
             </div>
         </TreeItem>

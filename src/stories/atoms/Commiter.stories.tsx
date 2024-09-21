@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import Commiter from "./Commiter";
+import Commiter from './Commiter';
 
 const meta = {
     component: Commiter,

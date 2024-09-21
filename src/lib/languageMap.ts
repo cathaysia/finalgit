@@ -1,4 +1,4 @@
-import languageMap_ from "@/lib/language-map.json";
+import languageMap_ from '@/lib/language-map.json';
 
 const languageMap = languageMap_ as {
     fileExtensions: Record<string, string>;

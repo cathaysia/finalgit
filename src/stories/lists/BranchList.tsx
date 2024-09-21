@@ -1,10 +1,10 @@
-import type { BranchInfo } from "@/bindings";
-import { ScrollBar } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import React from "react";
-import Branch from "@/stories/atoms/Branch";
+import type { BranchInfo } from '@/bindings';
+import { ScrollBar } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import React from 'react';
+import Branch from '@/stories/atoms/Branch';
 
 export interface BranchListProps
     extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -28,7 +28,7 @@ export default function BranchList({
 
     return (
         <ScrollAreaPrimitive.Root
-            className={cn("relative overflow-hidden", className)}
+            className={cn('relative overflow-hidden', className)}
             {...props}
         >
             <ScrollAreaPrimitive.Viewport
@@ -41,13 +41,13 @@ export default function BranchList({
                     }}
                     className="w-full relative"
                 >
-                    {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                    {rowVirtualizer.getVirtualItems().map(virtualItem => {
                         const item = branches[virtualItem.index];
 
                         return (
                             <div
                                 key={virtualItem.key}
-                                className={"absolute top-0 left-0 w-full"}
+                                className={'absolute top-0 left-0 w-full'}
                                 style={{
                                     height: `${virtualItem.size}px`,
                                     transform: `translateY(${virtualItem.start}px)`,

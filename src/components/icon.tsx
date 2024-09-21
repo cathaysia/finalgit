@@ -1,8 +1,8 @@
-import languageMap from "@/lib/languageMap";
-import { cn } from "@/lib/utils";
-import type { Manifest } from "material-icon-theme";
-import * as Dist from "material-icon-theme/dist/material-icons.json";
-import { useEffect, useState } from "react";
+import languageMap from '@/lib/languageMap';
+import { cn } from '@/lib/utils';
+import type { Manifest } from 'material-icon-theme';
+import * as Dist from 'material-icon-theme/dist/material-icons.json';
+import { useEffect, useState } from 'react';
 
 const manifest = Dist as Manifest;
 
@@ -25,7 +25,7 @@ export default function Icon({
     const fileExtensions: string[] = [];
     if (fileName.length <= 255) {
         for (let i = 0; i < fileName.length; i += 1) {
-            if (fileName[i] === ".")
+            if (fileName[i] === '.')
                 fileExtensions.push(lowerFileName.slice(i + 1));
         }
     }
@@ -39,11 +39,11 @@ export default function Icon({
         manifest,
     );
 
-    const [icon, setIcon] = useState("");
+    const [icon, setIcon] = useState('');
     const iconpath = `../../node_modules/material-icon-theme/icons/${iconname}.svg`;
 
     useEffect(() => {
-        import(iconpath).then((icon) => {
+        import(iconpath).then(icon => {
             setIcon(icon.default);
         });
     }, []);
@@ -51,7 +51,7 @@ export default function Icon({
     return (
         <img
             alt={iconname}
-            className={cn("w-4 h-4 inline", className)}
+            className={cn('w-4 h-4 inline', className)}
             src={icon}
         />
     );
@@ -66,8 +66,8 @@ function lookForMatch(
     isSymlink: boolean,
     manifest: Manifest,
 ): string {
-    if (isSubmodule) return "folder-git";
-    if (isSymlink) return "folder-symlink";
+    if (isSubmodule) return 'folder-git';
+    if (isSymlink) return 'folder-symlink';
 
     if (!isDir) {
         if (manifest.fileNames?.[fileName])
@@ -90,7 +90,7 @@ function lookForMatch(
                 return languageMap.fileExtensions[ext];
         }
 
-        return "file";
+        return 'file';
     }
 
     if (manifest.folderNames?.[fileName])
@@ -98,5 +98,5 @@ function lookForMatch(
     if (manifest.folderNames?.[lowerFileName])
         return manifest.folderNames?.[lowerFileName];
 
-    return "folder";
+    return 'folder';
 }

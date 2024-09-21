@@ -1,5 +1,7 @@
 import type { FileStatus, FileTree } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { FaFolderTree } from 'react-icons/fa6';
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -8,6 +10,7 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import ChangeCard from '@/stories/atoms/ChangeCard';
 import { DEFAULT_STYLE } from '@/lib/style';
+import Link from 'next/link';
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -49,11 +52,16 @@ export default function WorkspacePanel({
                     DEFAULT_STYLE,
                 )}
             >
-                <div className="flex items-center gap-2">
-                    <span>{t('workspace.changed_files')} </span>
-                    <Avatar className="bg-gray-50 inline-block w-6 h-6">
-                        <AvatarFallback>{changeSet.length}</AvatarFallback>
-                    </Avatar>
+                <div className="flex items-center gap-2 justify-between">
+                    <div className="flex items-center gap-2">
+                        <span>{t('workspace.changed_files')} </span>
+                        <Avatar className="bg-gray-50 inline-block w-6 h-6">
+                            <AvatarFallback>{changeSet.length}</AvatarFallback>
+                        </Avatar>
+                    </div>
+                    <Link href="/filetree">
+                        <FaFolderTree />
+                    </Link>
                 </div>
                 <ChangeCard changeSet={changeSet} className="grow" />
             </div>

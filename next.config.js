@@ -2,7 +2,10 @@
 const nextConfig = {
     output: "export",
     experimental: {
-        useLightningcss: true,
+        useLightningcss: false,
+        parallelServerCompiles: true,
+        parallelServerBuildTraces: true,
+        webpackBuildWorker: true,
     },
     distDir: "dist",
 };

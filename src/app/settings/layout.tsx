@@ -3,10 +3,14 @@ import Panel from "@/stories/settings/Panel";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="h-screen flex">
-            <Panel />
+        <div className="h-screen flex p-2" data-tauri-drag-region={true}>
+            <Panel className="w-1/6 min-w-36" />
             <hr />
-            {children}
+            <div className="flex flex-col items-center grow m-2">
+                <div className="w-1/2 flex flex-col items-center gap-4">
+                    {children}
+                </div>
+            </div>
         </div>
     );
 }

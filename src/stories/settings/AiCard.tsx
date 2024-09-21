@@ -15,7 +15,7 @@ export default function AiCard() {
     const endpoint = useAppState((s) => s.ollama_endpoint);
 
     return (
-        <Card>
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle>{t("profile.ai_provider")}</CardTitle>
             </CardHeader>

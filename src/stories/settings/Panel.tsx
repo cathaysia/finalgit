@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import Nav from "./Nav";
 import { MdHome } from "react-icons/md";
+import { DEFAULT_STYLE } from "@/lib/style";
 
 export interface PanelProps extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
@@ -31,13 +32,16 @@ export default function Panel({ className, ...props }: PanelProps) {
         },
     ];
     return (
-        <div className={cn("h-screen w-56 bg-slate-900", className)} {...props}>
+        <div
+            className={cn("border rounded-xl shadow", DEFAULT_STYLE, className)}
+            {...props}
+        >
             {navs.map((item) => {
                 return (
                     <Nav
                         key={item.to}
                         href={item.to}
-                        className="w-full h-16 border-b border-neutral-200 dark:border-slate-800 rounded-none"
+                        className={cn("w-full h-16 border-b")}
                     >
                         {item.text}
                     </Nav>

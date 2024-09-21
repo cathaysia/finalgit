@@ -2,6 +2,22 @@ import type { BranchInfo, FileStatus, FileTree, TagInfo } from "@/bindings";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
+export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.
+Only respond with the commit message. Don't give any notes.
+Explain what were the changes and why the changes were done.
+Focus the most important changes.
+Use the present tense.
+Use a semantic commit prefix.
+Hard wrap lines at 72 characters.
+Ensure the title is only 50 characters.
+Do not start any lines with the hash symbol.
+
+Here is my git diff:
+\`\`\`
+%{diff}
+\`\`\`
+`;
+
 export interface AppState {
     repo_path?: string;
     branches: BranchInfo[];
@@ -9,12 +25,14 @@ export interface AppState {
     changes: FileStatus[];
     files: FileTree[];
     ollama_endpoint: string;
+    ai_prompt: string;
     setRepoPath: (isOpened: string) => void;
     setBranches: (branches: BranchInfo[]) => void;
     setTags: (tags: TagInfo[]) => void;
     setChanges: (changes: FileStatus[]) => void;
     setFiles: (files: FileTree[]) => void;
     setOllamaEndpoint: (endpoint: string) => void;
+    setPrompt: (prompt: string) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -25,6 +43,7 @@ export const useAppState = create<AppState>()(
         tags: [],
         files: [],
         ollama_endpoint: "http://127.0.0.1:11434",
+        ai_prompt: SHORT_DEFAULT_COMMIT_TEMPLATE,
         setRepoPath: (repo_path: string) => set({ repo_path: repo_path }),
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
@@ -32,6 +51,10 @@ export const useAppState = create<AppState>()(
         setFiles: (files: FileTree[]) => set({ files: files }),
         setOllamaEndpoint: (endpoint: string) =>
             set({ ollama_endpoint: endpoint }),
+        setPrompt: (prompt: string) =>
+            set({
+                ai_prompt: prompt,
+            }),
     })),
 );
 

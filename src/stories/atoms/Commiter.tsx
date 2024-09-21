@@ -45,6 +45,7 @@ export default function Commiter({
     const setError = useErrorState((s) => s.setError);
     const refreshStage = useRefreshRequest((s) => s.refreshStage);
     const [isLoading, setIsLoading] = useState(false);
+    const prompt = useAppState((s) => s.ai_prompt);
 
     useHotkeys(
         "Escape",
@@ -163,7 +164,7 @@ export default function Commiter({
                         const res = await commands?.createPatch(repo_path);
                         match(res)
                             .with({ status: "ok" }, (v) => {
-                                generate_commit(v.data).then((v) => {
+                                generate_commit(v.data, prompt).then((v) => {
                                     const lines = v.split("\n");
                                     if (lines.length !== 0) {
                                         setCommitMsg(lines[0]);

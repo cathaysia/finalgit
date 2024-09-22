@@ -43,6 +43,9 @@ impl RepoExt for git2::Repository {
 
         for (branch, kind) in self.branches(None)?.flatten() {
             let branch_name = branch.name()?.unwrap();
+            if branch_name == "origin/HEAD" {
+                continue;
+            }
             let branch_head = branch.get().resolve()?.target().unwrap().to_string();
             let is_head = branch.is_head();
             let upstream = branch

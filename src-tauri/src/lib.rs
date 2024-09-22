@@ -62,6 +62,7 @@ pub fn run() {
             branch::get_config,
             branch::set_config,
             branch::get_configes,
+            utils::assume_language,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -96,6 +97,7 @@ mod test {
                 branch::get_config,
                 branch::set_config,
                 branch::get_configes,
+                utils::assume_language,
             ]);
 
         builder

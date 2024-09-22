@@ -10,6 +10,7 @@ import { match } from 'ts-pattern';
 import NOTIFY from '@/lib/notify';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import { useTheme } from 'next-themes';
+import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 
 export default function FileTree() {
     const [repoPath, tree, current] = useAppState(s => [
@@ -19,6 +20,7 @@ export default function FileTree() {
     ]);
     const [text, setText] = useState<string>();
     const { theme } = useTheme();
+    const [language, setLanguage] = useState<string>();
     const mirrorTheme = theme === 'dark' ? githubDark : githubLight;
 
     async function getText(path: string) {
@@ -26,6 +28,12 @@ export default function FileTree() {
             return;
         }
         const normalPath = path.slice(1);
+        const language = await commands.assumeLanguage(normalPath);
+        match(language).with({ status: 'ok' }, val => {
+            if (val.data) {
+                setLanguage(val.data);
+            }
+        });
 
         const content = await commands?.getFileContent(
             repoPath,
@@ -39,6 +47,12 @@ export default function FileTree() {
             .with({ status: 'error' }, err => {
                 NOTIFY.error(err.error);
             });
+    }
+
+    const extensions = [];
+    if (language) {
+        // @ts-ignore
+        extensions.push(loadLanguage(language));
     }
 
     return (
@@ -55,6 +69,9 @@ export default function FileTree() {
                 className="h-screen w-full text-base font-mono text-black"
                 height="100%"
                 theme={mirrorTheme}
+                readOnly
+                // @ts-ignore
+                extensions={extensions}
             />
         </div>
     );

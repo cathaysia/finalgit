@@ -7,8 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import { commands } from '@/bindings';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { match } from 'ts-pattern';
-import { useErrorState } from '@/lib/error';
 import { trace } from '@tauri-apps/plugin-log';
+import NOTIFY from '@/lib/notify';
 
 export default function Home() {
     typeof window !== 'undefined' && attachConsole();
@@ -17,7 +17,6 @@ export default function Home() {
         s.setBranchListener,
         s.setStageListener,
     ]);
-    const setError = useErrorState(s => s.setError);
 
     useQuery({
         queryKey: ['.git/logs/HEAD'],
@@ -33,8 +32,8 @@ export default function Home() {
                     trace(`refreshTime: ${v.data}`);
                     return v.data;
                 })
-                .with({ status: 'error' }, v => {
-                    setError(v.error);
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
                 });
 
             return 0;

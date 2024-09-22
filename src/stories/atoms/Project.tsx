@@ -16,8 +16,8 @@ import { MdAddToPhotos } from 'react-icons/md';
 import { open } from '@tauri-apps/plugin-dialog';
 import { match } from 'ts-pattern';
 import { commands } from '@/bindings';
-import { useErrorState } from '@/lib/error';
 import { useAppState } from '@/lib/state';
+import NOTIFY from '@/lib/notify';
 
 export interface ProjectProps {
     projects?: string[];
@@ -26,7 +26,6 @@ export interface ProjectProps {
 
 export default function Project({ projects = [], className }: ProjectProps) {
     const { t } = useTranslation();
-    const setError = useErrorState(s => s.setError);
     const [repoPath, setRepoPath] = useAppState(s => [
         s.repoPath,
         s.setRepoPath,
@@ -43,7 +42,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
                             setRepoPath(value);
                         })
                         .with({ status: 'error' }, err => {
-                            setError(err.error);
+                            NOTIFY.error(err.error);
                         });
                 });
         });

@@ -22,11 +22,11 @@ import { useState } from 'react';
 import { commands, type FileStatus } from '@/bindings';
 import { useAiState, useAppState, useRefreshRequest } from '@/lib/state';
 import { match } from 'ts-pattern';
-import { useErrorState } from '@/lib/error';
 import GitFileStatus from '@/lib/file_status';
 import { debug } from '@tauri-apps/plugin-log';
 import { generateCommit } from '@/lib/ai';
 import { Loader2 } from 'lucide-react';
+import NOTIFY from '@/lib/notify';
 
 export interface CommiterProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -42,7 +42,6 @@ export default function Commiter({
     const [isCommiting, setIsCommiting] = useState(false);
     const t = useTranslation().t;
     const repoPath = useAppState(s => s.repoPath);
-    const setError = useErrorState(s => s.setError);
     const refreshStage = useRefreshRequest(s => s.refreshStage);
     const [isLoading, setIsLoading] = useState(false);
     const [prompt, currentModel] = useAiState(s => [
@@ -86,7 +85,7 @@ export default function Commiter({
                                     refreshStage();
                                 })
                                 .with({ status: 'error' }, err => {
-                                    setError(err.error);
+                                    NOTIFY.error(err.error);
                                 });
                         }
                         setIsCommiting(true);
@@ -119,7 +118,7 @@ export default function Commiter({
                                             await writeTextFile(path, v.data);
                                         })
                                         .with({ status: 'error' }, err => {
-                                            setError(err.error);
+                                            NOTIFY.error(err.error);
                                         });
                                     debug(`save patch file to ${path}`);
                                 }}
@@ -179,7 +178,7 @@ export default function Commiter({
                                     });
                             })
                             .with({ status: 'error' }, err => {
-                                setError(err.error);
+                                NOTIFY.error(err.error);
                             });
                     }}
                     disabled={isLoading}
@@ -213,7 +212,7 @@ export default function Commiter({
                                     refreshStage();
                                 })
                                 .with({ status: 'error' }, err => {
-                                    setError(err.error);
+                                    NOTIFY.error(err.error);
                                 });
                         }
                     }}

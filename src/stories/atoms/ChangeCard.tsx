@@ -6,8 +6,8 @@ import Commiter from './Commiter';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import ChangeItem from './ChangeItem';
 import { match } from 'ts-pattern';
-import { useErrorState } from '@/lib/error';
 import type { CheckedState } from '@radix-ui/react-checkbox';
+import NOTIFY from '@/lib/notify';
 
 export interface ChangeCardProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -17,7 +17,6 @@ export interface ChangeCardProps
 export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
     const repoPath = useAppState(s => s.repoPath);
     const refreshStage = useRefreshRequest(s => s.refreshStage);
-    const setError = useErrorState(s => s.setError);
 
     async function handleCheckedChange(e: CheckedState, item: FileStatus) {
         if (!repoPath) {
@@ -30,7 +29,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                     refreshStage();
                 })
                 .with({ status: 'error' }, err => {
-                    setError(err.error);
+                    NOTIFY.error(err.error);
                 });
         }
         if (e === false) {
@@ -40,7 +39,7 @@ export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
                     refreshStage();
                 })
                 .with({ status: 'error' }, err => {
-                    setError(err.error);
+                    NOTIFY.error(err.error);
                 });
         }
     }

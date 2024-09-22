@@ -6,6 +6,7 @@ import { MdHome } from 'react-icons/md';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const tree = useAppState(s => s.files);
+
     return (
         <div className="h-screen flex p-2" data-tauri-drag-region={true}>
             <div className="flex flex-col">

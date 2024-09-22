@@ -8,8 +8,8 @@ import Project from '@/stories/atoms/Project';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { useEffect } from 'react';
 import { match } from 'ts-pattern';
-import { useErrorState } from '@/lib/error';
 import ControlBar from '../atoms/ControlBar';
+import NOTIFY from '@/lib/notify';
 
 export interface ControlPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -27,7 +27,6 @@ export default function ControlPanel({
         s.setTags,
     ]);
     const [branchListener] = useRefreshRequest(s => [s.branchListener]);
-    const setError = useErrorState(s => s.setError);
 
     useEffect(() => {
         if (repoPath) {
@@ -37,7 +36,7 @@ export default function ControlPanel({
                         setBranches(val.data);
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
         }
@@ -51,7 +50,7 @@ export default function ControlPanel({
                         setTags(val.data);
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
         }

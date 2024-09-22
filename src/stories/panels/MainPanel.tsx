@@ -9,10 +9,10 @@ import ControlPanel from './ControlPanel';
 import WorkspacePanel from './WorkspacePanel';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { useEffect, useState } from 'react';
-import { useErrorState } from '@/lib/error';
 import { match } from 'ts-pattern';
 import { debug } from '@tauri-apps/plugin-log';
 import GitHistory from '../lists/GitHistory';
+import NOTIFY from '@/lib/notify';
 
 export interface MainPanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -37,7 +37,6 @@ export default function MainPanel({
             s.setFiles,
         ]);
 
-    const setError = useErrorState(s => s.setError);
     const [stageListener] = useRefreshRequest(s => [s.stageListener]);
     const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
 
@@ -55,7 +54,7 @@ export default function MainPanel({
                         setChanges(v.data);
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
         }
@@ -71,7 +70,7 @@ export default function MainPanel({
                         setFiles(v.data);
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
             commands?.getHistory(repoPath, head.commit).then(v => {
@@ -80,7 +79,7 @@ export default function MainPanel({
                         setCurrentHisotry(v.data);
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
         }

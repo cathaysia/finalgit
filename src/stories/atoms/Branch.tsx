@@ -8,7 +8,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useErrorState } from '@/lib/error';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -20,6 +19,7 @@ import { match } from 'ts-pattern';
 import BranchRename from './BranchRename';
 import { Label } from '@/components/ui/label';
 import { DEFAULT_STYLE } from '@/lib/style';
+import NOTIFY from '@/lib/notify';
 
 export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: BranchInfo;
@@ -44,7 +44,6 @@ export default function Branch({
     const upstream = info.remote;
     const isLocal = info.kind === 'Local';
     const [repoPath, changes] = useAppState(s => [s.repoPath, s.changes]);
-    const setError = useErrorState(s => s.setError);
     const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
     const isDirty = changes.length !== 0;
 
@@ -56,7 +55,7 @@ export default function Branch({
                         refreshBranch();
                     })
                     .with({ status: 'error' }, err => {
-                        setError(err.error);
+                        NOTIFY.error(err.error);
                     });
             });
         }
@@ -71,7 +70,7 @@ export default function Branch({
                             refreshBranch();
                         })
                         .with({ status: 'error' }, err => {
-                            setError(err.error);
+                            NOTIFY.error(err.error);
                         });
                 });
             } else {
@@ -81,7 +80,7 @@ export default function Branch({
                             refreshBranch();
                         })
                         .with({ status: 'error' }, err => {
-                            setError(err.error);
+                            NOTIFY.error(err.error);
                         });
                 });
             }

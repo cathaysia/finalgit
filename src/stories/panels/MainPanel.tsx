@@ -27,15 +27,23 @@ export default function MainPanel({
     tags,
     ...props
 }: MainPanelProps) {
-    const [repoPath, branches, changes, setChanges, files, setFiles] =
-        useAppState(s => [
-            s.repoPath,
-            s.branches,
-            s.changes,
-            s.setChanges,
-            s.files,
-            s.setFiles,
-        ]);
+    const [
+        repoPath,
+        branches,
+        changes,
+        setChanges,
+        files,
+        setFiles,
+        setCurrent,
+    ] = useAppState(s => [
+        s.repoPath,
+        s.branches,
+        s.changes,
+        s.setChanges,
+        s.files,
+        s.setFiles,
+        s.setCurrent,
+    ]);
 
     const [stageListener] = useRefreshRequest(s => [s.stageListener]);
     const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
@@ -64,6 +72,7 @@ export default function MainPanel({
         const head = branches.find(item => item.is_head);
         if (repoPath && head) {
             debug('refresh branch');
+            setCurrent(head.commit);
             commands?.getFileTree(repoPath, head.commit).then(v => {
                 match(v)
                     .with({ status: 'ok' }, v => {

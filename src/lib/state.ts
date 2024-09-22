@@ -24,11 +24,13 @@ export interface AppState {
     tags: TagInfo[];
     changes: FileStatus[];
     files: FileTree[];
+    current?: string;
     setRepoPath: (isOpened: string) => void;
     setBranches: (branches: BranchInfo[]) => void;
     setTags: (tags: TagInfo[]) => void;
     setChanges: (changes: FileStatus[]) => void;
     setFiles: (files: FileTree[]) => void;
+    setCurrent: (current: string) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -38,11 +40,13 @@ export const useAppState = create<AppState>()(
         changes: [],
         tags: [],
         files: [],
+        current: undefined,
         setRepoPath: (repoPath: string) => set({ repoPath: repoPath }),
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
         setChanges: (changes: FileStatus[]) => set({ changes: changes }),
         setFiles: (files: FileTree[]) => set({ files: files }),
+        setCurrent: (current: string) => set({ current: current }),
     })),
 );
 

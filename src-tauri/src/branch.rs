@@ -61,8 +61,9 @@ pub fn get_file_tree(repo_path: &str, commit: &str) -> AppResult<Vec<FileTree>> 
 
 #[tauri::command]
 #[specta::specta]
-pub fn get_file_content(repo_path: &str, commit: &str, path: &str) -> AppResult<Vec<u8>> {
-    utils::open_repo(repo_path)?.get_file_content(commit, path)
+pub fn get_file_content(repo_path: &str, commit: &str, path: &str) -> AppResult<String> {
+    let content = utils::open_repo(repo_path)?.get_file_content(commit, path)?;
+    Ok(String::from_utf8(content)?)
 }
 
 #[tauri::command]

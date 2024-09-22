@@ -69,7 +69,9 @@ export default function Project({ projects = [], className }: ProjectProps) {
                         <BsChevronExpand />
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className={cn('w-full', className)}>
+                <DropdownMenuContent
+                    style={{ width: 'var(--radix-popper-anchor-width)' }}
+                >
                     <DropdownMenuGroup>
                         {projects.map(item => {
                             return (

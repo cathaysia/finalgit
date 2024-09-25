@@ -1,8 +1,8 @@
 import languageMap from '@/lib/languageMap';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import type { Manifest } from 'material-icon-theme';
 import * as Dist from 'material-icon-theme/dist/material-icons.json';
-import { useEffect, useState } from 'react';
 
 const manifest = Dist as Manifest;
 
@@ -39,20 +39,15 @@ export default function Icon({
         manifest,
     );
 
-    const [icon, setIcon] = useState('');
-    const iconpath = `../../node_modules/material-icon-theme/icons/${iconname}.svg`;
-
-    useEffect(() => {
-        import(iconpath).then(icon => {
-            setIcon(icon.default);
-        });
-    }, []);
+    const iconpath = `/icons/${iconname}.svg`;
 
     return (
-        <img
+        <Image
             alt={iconname}
-            className={cn('w-4 h-4 inline', className)}
-            src={icon}
+            className={cn('inline', className)}
+            width={16}
+            height={16}
+            src={iconpath}
         />
     );
 }

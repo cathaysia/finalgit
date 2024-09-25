@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import ChangeCard from '@/stories/atoms/ChangeCard';
 import { DEFAULT_STYLE } from '@/lib/style';
 import Link from 'next/link';
+import { useAppState } from '@/lib/state';
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -28,6 +29,7 @@ export default function WorkspacePanel({
     ...props
 }: WorkspacePanelProps) {
     const { t } = useTranslation();
+    const [tree] = useAppState(s => [s.files]);
 
     return (
         <div className={cn('flex flex-col gap-2', className)} {...props}>
@@ -59,7 +61,12 @@ export default function WorkspacePanel({
                             <AvatarFallback>{changeSet.length}</AvatarFallback>
                         </Avatar>
                     </div>
-                    <Link href="/filetree">
+                    <Link
+                        href="/filetree"
+                        className={cn(
+                            tree.length === 0 && 'pointer-events-none',
+                        )}
+                    >
                         <FaFolderTree />
                     </Link>
                 </div>

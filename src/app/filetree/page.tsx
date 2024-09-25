@@ -11,6 +11,7 @@ import NOTIFY from '@/lib/notify';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import { useTheme } from 'next-themes';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
+import { redirect } from 'next/navigation';
 
 export default function FileTree() {
     const [repoPath, tree, current] = useAppState(s => [
@@ -18,6 +19,9 @@ export default function FileTree() {
         s.files,
         s.current,
     ]);
+    if (tree.length === 0) {
+        redirect('/');
+    }
     const [text, setText] = useState<string>();
     const { theme } = useTheme();
     const [language, setLanguage] = useState<string>();

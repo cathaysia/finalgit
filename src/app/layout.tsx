@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="min-h-screen bg-white dark:bg-zinc-950 text-slate-500 dark:text-slate-400 max-h-screen overflow-scroll antialiased">
+            <body className="min-h-screen bg-white dark:bg-zinc-950 text-slate-500 dark:text-slate-400 max-h-screen overflow-scroll antialiased font-sans">
                 <ThemeProvider
                     defaultTheme="dark"
                     storageKey="vite-ui-theme"

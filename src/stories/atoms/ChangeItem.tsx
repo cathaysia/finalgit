@@ -1,4 +1,4 @@
-import type { FileStatus } from '@/bindings';
+import { commands, type FileStatus } from '@/bindings';
 import { VscDiff, VscDiffAdded, VscDiffRemoved } from 'react-icons/vsc';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -16,6 +16,9 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { match } from 'ts-pattern';
+import NOTIFY from '@/lib/notify';
 
 type CheckedState = boolean | 'indeterminate';
 export interface ChangeItemProps
@@ -32,6 +35,8 @@ export default function ChangeItem({
     ...props
 }: ChangeItemProps) {
     const { t } = useTranslation();
+    const [repoPath] = useAppState(s => [s.repoPath]);
+    const [refreshStage] = useRefreshRequest(s => [s.refreshStage]);
 
     function getCheckedStatus(status: number) {
         const isIndexed = GitFileStatus.isIndexed(status);
@@ -43,6 +48,8 @@ export default function ChangeItem({
         return isIndexed;
     }
 
+    const isChecked = getCheckedStatus(item.status);
+
     return (
         <div
             className={cn('flex justify-between items-center', className)}
@@ -51,7 +58,7 @@ export default function ChangeItem({
             <div className="flex gap-2">
                 <Checkbox
                     defaultChecked={GitFileStatus.isIndexed(item.status)}
-                    checked={getCheckedStatus(item.status)}
+                    checked={isChecked}
                     onCheckedChange={onCheckedChange}
                 />
                 <Label
@@ -96,9 +103,49 @@ export default function ChangeItem({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                                className={cn(isChecked && 'hidden')}
+                                onClick={async () => {
+                                    if (!repoPath) {
+                                        return;
+                                    }
+                                    const v = await commands.addToStage(
+                                        repoPath,
+                                        [item.path],
+                                    );
+                                    match(v)
+                                        .with({ status: 'ok' }, () =>
+                                            refreshStage(),
+                                        )
+                                        .with({ status: 'error' }, err =>
+                                            NOTIFY.error(err.error),
+                                        );
+                                }}
+                            >
                                 <VscDiffAdded className="w-4 h-4 mr-2" />
                                 {t('changes.add')}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                className={cn(!isChecked && 'hidden')}
+                                onClick={async () => {
+                                    if (!repoPath) {
+                                        return;
+                                    }
+                                    const v = await commands.removeFromStage(
+                                        repoPath,
+                                        [item.path],
+                                    );
+                                    match(v)
+                                        .with({ status: 'ok' }, () =>
+                                            refreshStage(),
+                                        )
+                                        .with({ status: 'error' }, err =>
+                                            NOTIFY.error(err.error),
+                                        );
+                                }}
+                            >
+                                <VscDiffRemoved className="w-4 h-4 mr-2" />
+                                {t('changes.unstage')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <VscDiff className="w-4 h-4 mr-2" />

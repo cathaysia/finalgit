@@ -163,19 +163,20 @@ export default function Commiter({
                         setIsLoading(true);
                         const res = await commands?.createPatch(repoPath);
                         match(res)
-                            .with({ status: 'ok' }, v => {
-                                currentModel &&
-                                    generateCommit(
-                                        v.data,
-                                        prompt,
-                                        currentModel,
-                                    ).then(v => {
-                                        const lines = v.split('\n');
-                                        if (lines.length !== 0) {
-                                            setCommitMsg(lines[0]);
-                                        }
-                                        setIsLoading(false);
-                                    });
+                            .with({ status: 'ok' }, async value => {
+                                if (currentModel === undefined) {
+                                    return;
+                                }
+                                const v = await generateCommit(
+                                    value.data,
+                                    prompt,
+                                    currentModel,
+                                );
+                                const lines = v.split('\n');
+                                if (lines.length !== 0) {
+                                    setCommitMsg(lines[0]);
+                                }
+                                setIsLoading(false);
                             })
                             .with({ status: 'error' }, err => {
                                 NOTIFY.error(err.error);

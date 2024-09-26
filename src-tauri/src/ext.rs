@@ -300,6 +300,7 @@ impl RepoExt for git2::Repository {
         let output = std::process::Command::new("git")
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
+            .env("LANG", "C")
             .env("GIT_TERMINAL_PROMPT", "0")
             .args(args)
             .current_dir(path)

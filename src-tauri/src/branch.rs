@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+use specta::Type;
 use std::collections::HashMap;
 use std::process::Stdio;
 
@@ -148,4 +150,63 @@ pub fn set_config(repo_path: &str, key: &str, value: &str) -> AppResult<()> {
 #[specta::specta]
 pub fn get_configes(repo_path: &str) -> AppResult<HashMap<String, String>> {
     utils::open_repo(repo_path)?.get_configes()
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn get_repo_head(repo_path: &str) -> AppResult<String> {
+    let repo = utils::open_repo(repo_path)?;
+    let head = repo.head()?;
+    let oid = head.target().unwrap();
+    Ok(oid.to_string())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn branch_fetch(repo_path: &str, branch: &str) -> AppResult<()> {
+    let repo = utils::open_repo(repo_path)?;
+    let local = repo.find_branch(branch, git2::BranchType::Local)?;
+    let upstream = local.upstream()?.get().target().unwrap().to_string();
+    let mut v = repo.find_remote(&upstream)?;
+    v.fetch(&[branch], None, None)?;
+
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn branch_push(repo_path: &str, force: bool) -> AppResult<()> {
+    let repo = utils::open_repo(repo_path)?;
+    if force {
+        repo.exec_git(["push", "-f"])?;
+    } else {
+        repo.exec_git(["push"])?;
+    }
+
+    Ok(())
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+pub struct PushStatus {
+    unpush: u32,
+    unpull: u32,
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn branch_status(repo_path: &str, branch: &str) -> AppResult<PushStatus> {
+    let repo = utils::open_repo(repo_path)?;
+    let local = repo.find_branch(branch, git2::BranchType::Local)?;
+    let upstream = local.upstream()?.into_reference();
+    let upstream = upstream.name().unwrap();
+    let (_, upstream) = upstream.split_once('/').unwrap();
+    let (_, upstream) = upstream.split_once('/').unwrap();
+
+    let local = repo.get_commits(branch, git2::BranchType::Local)?;
+    let remote = repo.get_commits(upstream, git2::BranchType::Remote)?;
+
+    Ok(PushStatus {
+        unpush: local.len().saturating_sub(remote.len()) as u32,
+        unpull: remote.len().saturating_sub(local.len()) as u32,
+    })
 }

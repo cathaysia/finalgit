@@ -31,19 +31,20 @@ export default function Project({ projects = [], className }: ProjectProps) {
         s.setRepoPath,
     ]);
 
-    function openRepo() {
-        open({
+    async function openRepo() {
+        const value = await open({
             directory: true,
-        }).then(value => {
-            value &&
-                commands?.openRepo(value).then(res => {
-                    match(res)
-                        .with({ status: 'ok' }, () => {
-                            setRepoPath(value);
-                        })
-                        .with({ status: 'error' }, err => {
-                            NOTIFY.error(err.error);
-                        });
+        });
+        if (value === null) {
+            return;
+        }
+        commands?.openRepo(value).then(res => {
+            match(res)
+                .with({ status: 'ok' }, () => {
+                    setRepoPath(value);
+                })
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
                 });
         });
     }

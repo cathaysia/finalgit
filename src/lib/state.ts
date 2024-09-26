@@ -1,4 +1,5 @@
 import type { BranchInfo, FileStatus, FileTree, TagInfo } from '@/bindings';
+import { Store } from '@tauri-apps/plugin-store';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -25,12 +26,14 @@ export interface AppState {
     changes: FileStatus[];
     files: FileTree[];
     current?: string;
+    project: string[];
     setRepoPath: (isOpened: string) => void;
     setBranches: (branches: BranchInfo[]) => void;
     setTags: (tags: TagInfo[]) => void;
     setChanges: (changes: FileStatus[]) => void;
     setFiles: (files: FileTree[]) => void;
     setCurrent: (current: string) => void;
+    setProject: (project: string[]) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -41,12 +44,22 @@ export const useAppState = create<AppState>()(
         tags: [],
         files: [],
         current: undefined,
-        setRepoPath: (repoPath: string) => set({ repoPath: repoPath }),
+        project: [],
+        setRepoPath: (repoPath: string) => {
+            set(s => ({
+                repoPath: repoPath,
+                projects: (() => {
+                    const p = s.project;
+                    return [repoPath, ...p];
+                })(),
+            }));
+        },
         setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
         setTags: (tags: TagInfo[]) => set({ tags: tags }),
         setChanges: (changes: FileStatus[]) => set({ changes: changes }),
         setFiles: (files: FileTree[]) => set({ files: files }),
         setCurrent: (current: string) => set({ current: current }),
+        setProject: (project: string[]) => set({ project: project }),
     })),
 );
 
@@ -103,3 +116,29 @@ export const useAiState = create<AiStateProps>()(
             }),
     })),
 );
+
+function getSettingsStore() {
+    return new Store('settings.bin');
+}
+
+async function initSettings() {
+    const store = getSettingsStore();
+    const prompt = (await store.get('ai.prompt')) as string | null;
+    if (prompt !== null) {
+        useAiState().setPrompt(prompt);
+    }
+    const ollamaEndpoint = (await store.get('ollama.endpoint')) as
+        | string
+        | null;
+    if (ollamaEndpoint !== null) {
+        useAiState().setOllamaEndpoint(ollamaEndpoint);
+    }
+
+    const projects = (await store.get('projects')) as string[] | null;
+    if (projects !== null && projects.length !== 0) {
+        useAppState().setProject(projects);
+        useAppState().setRepoPath(projects[0]);
+    }
+}
+
+initSettings();

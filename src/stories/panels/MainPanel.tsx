@@ -5,7 +5,6 @@ import {
     type TagInfo,
 } from '@/bindings';
 import { cn } from '@/lib/utils';
-import ControlPanel from './ControlPanel';
 import WorkspacePanel from './WorkspacePanel';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { useEffect, useState } from 'react';
@@ -97,13 +96,12 @@ export default function MainPanel({
     return (
         <div
             className={cn(
-                'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 h-screen p-2',
+                'grid lg:grid-cols-2 xl:grid-cols-3 gap-2 h-screen p-2',
                 className,
             )}
             data-tauri-drag-region={true}
             {...props}
         >
-            <ControlPanel />
             <WorkspacePanel
                 branchName={branchName}
                 changeSet={changes}

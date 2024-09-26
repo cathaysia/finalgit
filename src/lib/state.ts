@@ -94,8 +94,10 @@ export const useAppState = create<AppState>()(
 export interface RefreshRequest {
     branchListener: number;
     stageListener: number;
+    pushListener: number;
     refreshBranch: () => void;
     refreshStage: () => void;
+    refreshPush: () => void;
     setBranchListener: (time: number) => void;
     setStageListener: (time: number) => void;
 }
@@ -104,6 +106,7 @@ export const useRefreshRequest = create<RefreshRequest>()(
     devtools(set => ({
         branchListener: 0,
         stageListener: 0,
+        pushListener: 0,
         refreshBranch: () =>
             set(s => ({ branchListener: s.branchListener + 1 })),
         refreshStage: () => set(s => ({ stageListener: s.stageListener + 1 })),
@@ -111,6 +114,7 @@ export const useRefreshRequest = create<RefreshRequest>()(
             set(() => ({ branchListener: time })),
         setStageListener: (time: number) =>
             set(() => ({ stageListener: time })),
+        refreshPush: () => set(s => ({ pushListener: s.pushListener + 1 })),
     })),
 );
 

@@ -1,5 +1,6 @@
 import type { FileStatus, FileTree } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { commands, type PushStatus } from '@/bindings';
 import { FaFolderTree } from 'react-icons/fa6';
 
 import { Badge } from '@/components/ui/badge';
@@ -11,8 +12,11 @@ import { useTranslation } from 'react-i18next';
 import ChangeCard from '@/stories/atoms/ChangeCard';
 import { DEFAULT_STYLE } from '@/lib/style';
 import Link from 'next/link';
-import { useAppState } from '@/lib/state';
-import { VscDiff } from 'react-icons/vsc';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { VscDiff, VscRepoPull, VscRepoPush } from 'react-icons/vsc';
+import { useEffect, useState } from 'react';
+import { match } from 'ts-pattern';
+import NOTIFY from '@/lib/notify';
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -30,7 +34,77 @@ export default function WorkspacePanel({
     ...props
 }: WorkspacePanelProps) {
     const { t } = useTranslation();
-    const [tree] = useAppState(s => [s.files]);
+    const [repoPath, branches, tree] = useAppState(s => [
+        s.repoPath,
+        s.branches,
+        s.files,
+    ]);
+
+    const [stateListener, refreshState] = useRefreshRequest(s => [
+        s.branchListener,
+        s.refreshPush,
+    ]);
+    const [pushState, setPushState] = useState<PushStatus>({
+        unpush: 0,
+        unpull: 0,
+    });
+
+    async function refreshBranchStatus() {
+        if (!repoPath) {
+            return;
+        }
+        const currentBranch = branches.find(item => item.is_head);
+        if (!currentBranch) {
+            return;
+        }
+        const status = await commands.branchStatus(
+            repoPath,
+            currentBranch.name,
+        );
+        match(status)
+            .with({ status: 'ok' }, val => {
+                setPushState(val.data);
+            })
+            .with({ status: 'error' }, err => {
+                NOTIFY.error(err.error);
+            });
+    }
+
+    useEffect(() => {
+        refreshBranchStatus();
+    }, [branches, stateListener]);
+
+    async function pushBranch() {
+        if (!repoPath) {
+            return;
+        }
+        const res = await commands.branchPush(repoPath, false);
+        match(res)
+            .with({ status: 'ok' }, () => {
+                refreshState();
+            })
+            .with({ status: 'error' }, err => {
+                NOTIFY.error(err.error);
+            });
+    }
+
+    async function pullBranch() {
+        if (!repoPath) {
+            return;
+        }
+        const currentBranch = branches.find(item => item.is_head);
+        if (!currentBranch) {
+            return;
+        }
+        const res = await commands.branchFetch(repoPath, currentBranch.name);
+        match(res)
+            .with({ status: 'ok' }, () => {
+                refreshState();
+            })
+            .with({ status: 'error' }, err => {
+                NOTIFY.error(err.error);
+            });
+    }
 
     return (
         <div className={cn('flex flex-col gap-2', className)} {...props}>
@@ -46,6 +120,20 @@ export default function WorkspacePanel({
                             {t('workspace.set_as_default')}
                         </Button>
                         <Button>{t('workspace.create_pr')}</Button>
+                        <Button
+                            className={cn(pushState?.unpull === 0 && 'hidden')}
+                            onClick={pullBranch}
+                        >
+                            <VscRepoPull />
+                            {pushState?.unpull}
+                        </Button>
+                        <Button
+                            className={cn(pushState?.unpush === 0 && 'hidden')}
+                            onClick={pushBranch}
+                        >
+                            <VscRepoPush />
+                            {pushState?.unpush}
+                        </Button>
                     </div>
                 </div>
             </div>

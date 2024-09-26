@@ -68,6 +68,10 @@ pub fn run() {
             stash::stash_apply,
             stash::stash_remove,
             stash::stash_list,
+            branch::get_repo_head,
+            branch::branch_fetch,
+            branch::branch_push,
+            branch::branch_status,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -107,6 +111,10 @@ mod test {
                 stash::stash_apply,
                 stash::stash_remove,
                 stash::stash_list,
+                branch::get_repo_head,
+                branch::branch_fetch,
+                branch::branch_push,
+                branch::branch_status,
             ]);
 
         builder

@@ -382,6 +382,59 @@ export const commands = {
             else return { status: 'error', error: e as any };
         }
     },
+    async getRepoHead(repoPath: string): Promise<Result<string, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('get_repo_head', { repoPath }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async branchFetch(
+        repoPath: string,
+        branch: string,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('branch_fetch', { repoPath, branch }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async branchPush(
+        repoPath: string,
+        force: boolean,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('branch_push', { repoPath, force }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async branchStatus(
+        repoPath: string,
+        branch: string,
+    ): Promise<Result<PushStatus, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('branch_status', { repoPath, branch }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
 };
 
 /** user-defined events **/
@@ -412,6 +465,7 @@ export type FileStatus = { path: string; status: number };
 export type FileTree =
     | { File: { filename: string; mode: number } }
     | { Dir: { dir: string; files: FileTree[]; mode: number } };
+export type PushStatus = { unpush: number; unpull: number };
 export type StashInfo = { id: number; message: string; oid: string };
 export type TagInfo = { name: string; commit: string };
 

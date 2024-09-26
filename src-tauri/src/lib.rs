@@ -64,6 +64,10 @@ pub fn run() {
             branch::set_config,
             branch::get_configes,
             utils::assume_language,
+            stash::stash_save,
+            stash::stash_apply,
+            stash::stash_remove,
+            stash::stash_list,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -99,6 +103,10 @@ mod test {
                 branch::set_config,
                 branch::get_configes,
                 utils::assume_language,
+                stash::stash_save,
+                stash::stash_apply,
+                stash::stash_remove,
+                stash::stash_list,
             ]);
 
         builder

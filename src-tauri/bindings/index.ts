@@ -329,6 +329,59 @@ export const commands = {
             else return { status: 'error', error: e as any };
         }
     },
+    async stashSave(
+        repoPath: string,
+        message: string | null,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('stash_save', { repoPath, message }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async stashApply(
+        repoPath: string,
+        index: number,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('stash_apply', { repoPath, index }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async stashRemove(
+        repoPath: string,
+        index: number,
+    ): Promise<Result<null, string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('stash_remove', { repoPath, index }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
+    async stashList(repoPath: string): Promise<Result<StashInfo[], string>> {
+        try {
+            return {
+                status: 'ok',
+                data: await TAURI_INVOKE('stash_list', { repoPath }),
+            };
+        } catch (e) {
+            if (e instanceof Error) throw e;
+            else return { status: 'error', error: e as any };
+        }
+    },
 };
 
 /** user-defined events **/
@@ -359,6 +412,7 @@ export type FileStatus = { path: string; status: number };
 export type FileTree =
     | { File: { filename: string; mode: number } }
     | { Dir: { dir: string; files: FileTree[]; mode: number } };
+export type StashInfo = { id: number; message: string; oid: string };
 export type TagInfo = { name: string; commit: string };
 
 /** tauri-specta globals **/

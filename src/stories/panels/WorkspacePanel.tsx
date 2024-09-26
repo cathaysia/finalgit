@@ -12,6 +12,7 @@ import ChangeCard from '@/stories/atoms/ChangeCard';
 import { DEFAULT_STYLE } from '@/lib/style';
 import Link from 'next/link';
 import { useAppState } from '@/lib/state';
+import { VscDiff } from 'react-icons/vsc';
 
 export interface WorkspacePanelProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -61,14 +62,22 @@ export default function WorkspacePanel({
                             <AvatarFallback>{changeSet.length}</AvatarFallback>
                         </Avatar>
                     </div>
-                    <Link
-                        href="/filetree"
-                        className={cn(
-                            tree.length === 0 && 'pointer-events-none',
-                        )}
-                    >
-                        <FaFolderTree />
-                    </Link>
+                    <div className="flex gap-2">
+                        <Link
+                            href="/diff"
+                            className={cn(tree.length === 0 && 'hidden')}
+                        >
+                            <VscDiff />
+                        </Link>
+                        <Link
+                            href="/filetree"
+                            className={cn(
+                                tree.length === 0 && 'pointer-events-none',
+                            )}
+                        >
+                            <FaFolderTree />
+                        </Link>
+                    </div>
                 </div>
                 <ChangeCard changeSet={changeSet} className="grow" />
             </div>

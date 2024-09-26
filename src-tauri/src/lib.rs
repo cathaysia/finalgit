@@ -3,6 +3,7 @@
 mod branch;
 mod error;
 mod ext;
+mod stash;
 mod ty;
 mod utils;
 

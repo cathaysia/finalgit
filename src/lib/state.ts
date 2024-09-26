@@ -1,7 +1,12 @@
 import type { BranchInfo, FileStatus, FileTree, TagInfo } from '@/bindings';
 import { Store } from '@tauri-apps/plugin-store';
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import {
+    createJSONStorage,
+    devtools,
+    persist,
+    type StateStorage,
+} from 'zustand/middleware';
 
 export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.
 Only respond with the commit message. Don't give any notes.
@@ -18,6 +23,21 @@ Here is my git diff:
 %{diff}
 \`\`\`
 `;
+
+const storeStorage: StateStorage = {
+    setItem: async (k, v) => {
+        const store = getSettingsStore();
+        await store.set(k, v);
+    },
+    getItem: async k => {
+        const store = getSettingsStore();
+        return await store.get(k);
+    },
+    removeItem: async k => {
+        const store = getSettingsStore();
+        await store.delete(k);
+    },
+};
 
 export interface AppState {
     repoPath?: string;
@@ -37,30 +57,38 @@ export interface AppState {
 }
 
 export const useAppState = create<AppState>()(
-    devtools(set => ({
-        repoPath: undefined,
-        branches: [],
-        changes: [],
-        tags: [],
-        files: [],
-        current: undefined,
-        project: [],
-        setRepoPath: (repoPath: string) => {
-            set(s => ({
-                repoPath: repoPath,
-                projects: (() => {
-                    const p = s.project;
-                    return [repoPath, ...p];
-                })(),
-            }));
+    persist(
+        set => ({
+            repoPath: undefined,
+            branches: [],
+            changes: [],
+            tags: [],
+            files: [],
+            current: undefined,
+            project: [],
+            setRepoPath: (repoPath: string) => {
+                set(s => ({
+                    repoPath: repoPath,
+                    projects: (() => {
+                        const p = s.project;
+                        return [repoPath, ...p];
+                    })(),
+                }));
+            },
+            setBranches: (branches: BranchInfo[]) =>
+                set({ branches: branches }),
+            setTags: (tags: TagInfo[]) => set({ tags: tags }),
+            setChanges: (changes: FileStatus[]) => set({ changes: changes }),
+            setFiles: (files: FileTree[]) => set({ files: files }),
+            setCurrent: (current: string) => set({ current: current }),
+            setProject: (project: string[]) => set({ project: project }),
+        }),
+        {
+            name: 'app',
+            storage: createJSONStorage(() => storeStorage),
+            partialize: s => ({ repoPath: s.repoPath, current: s.current }),
         },
-        setBranches: (branches: BranchInfo[]) => set({ branches: branches }),
-        setTags: (tags: TagInfo[]) => set({ tags: tags }),
-        setChanges: (changes: FileStatus[]) => set({ changes: changes }),
-        setFiles: (files: FileTree[]) => set({ files: files }),
-        setCurrent: (current: string) => set({ current: current }),
-        setProject: (project: string[]) => set({ project: project }),
-    })),
+    ),
 );
 
 export interface RefreshRequest {
@@ -98,47 +126,35 @@ export interface AiStateProps {
 }
 
 export const useAiState = create<AiStateProps>()(
-    devtools(set => ({
-        prompt: SHORT_DEFAULT_COMMIT_TEMPLATE,
-        ollamaEndpoint: 'http://127.0.0.1:11434',
-        ollamaModel: [],
-        ollamaCurrentModel: undefined,
-        setPrompt: (prompt: string) => set({ prompt: prompt }),
-        setOllamaEndpoint: (endpoint: string) =>
-            set({ ollamaEndpoint: endpoint }),
-        setOllamaModels: (models: string[]) =>
-            set({
-                ollamaModel: models,
+    persist(
+        set => ({
+            prompt: SHORT_DEFAULT_COMMIT_TEMPLATE,
+            ollamaEndpoint: 'http://127.0.0.1:11434',
+            ollamaModel: [],
+            ollamaCurrentModel: undefined,
+            setPrompt: (prompt: string) => set({ prompt: prompt }),
+            setOllamaEndpoint: (endpoint: string) =>
+                set({ ollamaEndpoint: endpoint }),
+            setOllamaModels: (models: string[]) =>
+                set({
+                    ollamaModel: models,
+                }),
+            setOllamaModel: (model: string) =>
+                set({
+                    ollamaCurrentModel: model,
+                }),
+        }),
+        {
+            name: 'ai',
+            storage: createJSONStorage(() => storeStorage),
+            partialize: s => ({
+                prompt: s.prompt,
+                ollamaEndpoint: s.ollamaEndpoint,
             }),
-        setOllamaModel: (model: string) =>
-            set({
-                ollamaCurrentModel: model,
-            }),
-    })),
+        },
+    ),
 );
 
 function getSettingsStore() {
     return new Store('settings.bin');
 }
-
-async function initSettings() {
-    const store = getSettingsStore();
-    const prompt = (await store.get('ai.prompt')) as string | null;
-    if (prompt !== null) {
-        useAiState().setPrompt(prompt);
-    }
-    const ollamaEndpoint = (await store.get('ollama.endpoint')) as
-        | string
-        | null;
-    if (ollamaEndpoint !== null) {
-        useAiState().setOllamaEndpoint(ollamaEndpoint);
-    }
-
-    const projects = (await store.get('projects')) as string[] | null;
-    if (projects !== null && projects.length !== 0) {
-        useAppState().setProject(projects);
-        useAppState().setRepoPath(projects[0]);
-    }
-}
-
-initSettings();

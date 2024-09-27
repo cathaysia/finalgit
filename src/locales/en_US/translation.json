@@ -7,6 +7,7 @@
     "branches": "Branches",
     "checkout": "Checkout",
     "checkout_remote": "Checkout into local branch",
+    "create_new_branch": "Create Branch",
     "delete": "Delete",
     "details": "Details",
     "disable_dirty": "Workspace is dirty. Commit or Stash first.",
@@ -27,7 +28,8 @@
   "changes": {
     "add": "Add",
     "diff": "Diff",
-    "discard": "Discard"
+    "discard": "Discard",
+    "unstage": "Remove from stage"
   },
   "commit": {
     "copy": "Copy",
@@ -46,31 +48,32 @@
     "start_commit": "Start Commit"
   },
   "controlbar": {
-    "preference": "controlbar.preference"
+    "preference": "Perference"
   },
   "ollama": {
-    "endpoint": "ollama.endpoint",
-    "model": "ollama.model"
+    "add_model": "Add model",
+    "endpoint": "Endpoint",
+    "model": "Model"
   },
   "Ollama": "Ollama",
   "profile": {
-    "ai_provider": "profile.ai_provider",
-    "behaviour": "profile.behaviour",
+    "ai_provider": "Provider",
+    "behaviour": "Behaviour",
     "git": {
       "core": "Core",
-      "defaultBranch": "profile.git.defaultBranch",
-      "email": "profile.git.email",
-      "ff": "profile.git.ff",
-      "gpg_sign": "profile.git.gpg_sign",
-      "noff": "profile.git.noff",
-      "norebase": "profile.git.norebase",
-      "pull": "profile.git.pull",
-      "rebase": "profile.git.rebase",
-      "signingKey": "profile.git.signingKey",
-      "user": "profile.git.user",
-      "username": "profile.git.username"
+      "defaultBranch": "Default branch",
+      "email": "Email",
+      "ff": "Fast-forwarding",
+      "gpg_sign": "Sign by GPG",
+      "noff": "No fast-forwarding",
+      "norebase": "No rebase",
+      "pull": "Pull method",
+      "rebase": "Rebase",
+      "signingKey": "signingKey",
+      "user": "User",
+      "username": "Name"
     },
-    "stash_before_checkout": "profile.stash_before_checkout"
+    "stash_before_checkout": "Enable smart stash."
   },
   "project": {
     "add_local_repository": "add local repository",
@@ -93,7 +96,7 @@
     "discard": "Discard",
     "discard_all": "Discard all",
     "generate_patch": "Generate patch",
-    "patch_save_path": "workspace.patch_save_path",
+    "patch_save_path": "Path to save patch",
     "set_as_default": "Set as default",
     "stash": "Stash"
   },

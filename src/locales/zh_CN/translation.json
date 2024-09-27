@@ -7,6 +7,7 @@
     "branches": "branch.branches",
     "checkout": "branch.checkout",
     "checkout_remote": "branch.checkout_remote",
+    "create_new_branch": "branch.create_new_branch",
     "delete": "branch.delete",
     "details": "branch.details",
     "disable_dirty": "branch.disable_dirty",
@@ -27,7 +28,8 @@
   "changes": {
     "add": "changes.add",
     "diff": "changes.diff",
-    "discard": "changes.discard"
+    "discard": "changes.discard",
+    "unstage": "changes.unstage"
   },
   "commit": {
     "copy": "commit.copy",
@@ -49,6 +51,7 @@
     "preference": "controlbar.preference"
   },
   "ollama": {
+    "add_model": "ollama.add_model",
     "endpoint": "ollama.endpoint",
     "model": "ollama.model"
   },

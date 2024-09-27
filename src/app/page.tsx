@@ -9,6 +9,7 @@ import { useAppState, useRefreshRequest } from '@/lib/state';
 import { match } from 'ts-pattern';
 import { trace } from '@tauri-apps/plugin-log';
 import NOTIFY from '@/lib/notify';
+import ControlPanel from '@/stories/panels/ControlPanel';
 
 export default function Home() {
     typeof window !== 'undefined' && attachConsole();
@@ -43,5 +44,10 @@ export default function Home() {
         refetchOnWindowFocus: 'always',
         refetchOnReconnect: true,
     });
-    return <MainPanel projectName={''} branches={[]} tags={[]} />;
+    return (
+        <div className="flex gap-2 w-screen h-screen">
+            <ControlPanel className="w-1/4" />
+            <MainPanel className="grow" />
+        </div>
+    );
 }

@@ -13,9 +13,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        projectName: 'project_name',
-        branches: BranchListStories.args.branches,
-        tags: TagListStories.args.tags,
-    },
+    args: {},
 };

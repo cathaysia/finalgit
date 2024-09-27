@@ -1,9 +1,4 @@
-import {
-    commands,
-    type CommitInfo,
-    type BranchInfo,
-    type TagInfo,
-} from '@/bindings';
+import { commands, type CommitInfo } from '@/bindings';
 import { cn } from '@/lib/utils';
 import WorkspacePanel from './WorkspacePanel';
 import { useAppState, useRefreshRequest } from '@/lib/state';
@@ -14,18 +9,9 @@ import GitHistory from '../lists/GitHistory';
 import NOTIFY from '@/lib/notify';
 
 export interface MainPanelProps
-    extends React.HtmlHTMLAttributes<HTMLDivElement> {
-    projectName: string;
-    branches: BranchInfo[];
-    tags: TagInfo[];
-}
+    extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
-export default function MainPanel({
-    className,
-    projectName,
-    tags,
-    ...props
-}: MainPanelProps) {
+export default function MainPanel({ className, ...props }: MainPanelProps) {
     const [
         repoPath,
         branches,

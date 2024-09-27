@@ -42,7 +42,10 @@ export default function Commiter({
     const [isCommiting, setIsCommiting] = useState(false);
     const t = useTranslation().t;
     const repoPath = useAppState(s => s.repoPath);
-    const refreshStage = useRefreshRequest(s => s.refreshStage);
+    const [refreshStage, refreshPush] = useRefreshRequest(s => [
+        s.refreshStage,
+        s.refreshPush,
+    ]);
     const [isLoading, setIsLoading] = useState(false);
     const [prompt, currentModel] = useAiState(s => [
         s.prompt,
@@ -83,6 +86,7 @@ export default function Commiter({
                             match(res)
                                 .with({ status: 'ok' }, () => {
                                     refreshStage();
+                                    refreshPush();
                                 })
                                 .with({ status: 'error' }, err => {
                                     NOTIFY.error(err.error);

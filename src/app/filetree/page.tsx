@@ -12,6 +12,11 @@ import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import { useTheme } from 'next-themes';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { redirect } from 'next/navigation';
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from '@/components/ui/resizable';
 
 export default function FileTree() {
     const [repoPath, tree, current] = useAppState(s => [
@@ -60,23 +65,27 @@ export default function FileTree() {
     }
 
     return (
-        <div
+        <ResizablePanelGroup
+            direction="horizontal"
             className="h-screen flex p-2 overflow-clip"
             data-tauri-drag-region={true}
         >
-            <div className="flex flex-col min-w-52">
+            <ResizablePanel defaultSize={20} className="flex flex-col w-52">
                 <Nav to="/" text={<MdHome />} />
                 <FilePanel files={tree} onClicked={getText} />
-            </div>
-            <CodeMirror
-                value={text}
-                className="h-screen w-full text-base font-mono text-black"
-                height="100%"
-                theme={mirrorTheme}
-                readOnly
-                // @ts-ignore
-                extensions={extensions}
-            />
-        </div>
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel className="grow">
+                <CodeMirror
+                    value={text}
+                    className="h-screen w-full text-base font-mono"
+                    height="100%"
+                    theme={mirrorTheme}
+                    readOnly
+                    // @ts-ignore
+                    extensions={extensions}
+                />
+            </ResizablePanel>
+        </ResizablePanelGroup>
     );
 }

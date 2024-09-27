@@ -41,7 +41,7 @@ function generateTree(
                 itemId={key}
                 key={key}
                 label={
-                    <span>
+                    <span className="text-nowrap text-ellipsis">
                         <Icon
                             fileName={entry.filename}
                             className="w-4 h-4 mr-2"

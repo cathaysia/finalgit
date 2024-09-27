@@ -1,4 +1,4 @@
-import type { TagInfo } from '@/bindings';
+import { commands, type TagInfo } from '@/bindings';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,6 +8,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -15,6 +17,7 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import { match } from 'ts-pattern';
 
 export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     info: TagInfo;
@@ -22,6 +25,20 @@ export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 export function Tag({ info, filter, className, ...props }: TagProps) {
     const t = useTranslation().t;
+    const [repoPath] = useAppState(s => [s.repoPath]);
+    const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
+
+    async function checkoutTag() {
+        if (!repoPath) {
+            return;
+        }
+        const res = await commands?.commitCheckout(repoPath, info.commit);
+        match(res).with({ status: 'error' }, err => {
+            NOTIFY.error(err.error);
+        });
+        refreshBranch();
+    }
+
     return (
         <div
             className={cn(
@@ -58,7 +75,7 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
                             <MdDelete className="text-red-600 mr-2 h-4 w-4" />
                             <span>{t('tag.delete')}</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={checkoutTag}>
                             <div className="w-4 h-4 mr-2" />
                             <span>{t('branch.checkout')}</span>
                         </DropdownMenuItem>

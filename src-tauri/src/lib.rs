@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 mod branch;
+mod commit;
 mod error;
 mod ext;
 mod stash;
@@ -72,6 +73,7 @@ pub fn run() {
             branch::branch_fetch,
             branch::branch_push,
             branch::branch_status,
+            commit::commit_checkout,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -115,6 +117,7 @@ mod test {
                 branch::branch_fetch,
                 branch::branch_push,
                 branch::branch_status,
+                commit::commit_checkout,
             ]);
 
         builder

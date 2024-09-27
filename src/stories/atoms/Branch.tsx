@@ -29,6 +29,11 @@ export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
     onDelete?: () => void;
 }
 
+enum OpState {
+    Renaming = 1,
+    NewBranch = 2,
+}
+
 export default function Branch({
     info,
     filter,
@@ -38,7 +43,7 @@ export default function Branch({
     ...props
 }: BranchProps) {
     const t = useTranslation().t;
-    const [newName, setNewName] = useState<string>();
+    const [opState, setOpState] = useState<OpState>();
     const isHead = info.is_head;
     const branchName = info.name;
     const upstream = info.remote;
@@ -61,33 +66,62 @@ export default function Branch({
         }
     }
 
-    function checkout() {
-        if (repoPath) {
-            if (isLocal) {
-                commands?.checkoutBranch(repoPath, info.name).then(v => {
-                    match(v)
-                        .with({ status: 'ok' }, () => {
-                            refreshBranch();
-                        })
-                        .with({ status: 'error' }, err => {
-                            NOTIFY.error(err.error);
-                        });
+    async function checkout() {
+        if (!repoPath) {
+            return;
+        }
+        if (isLocal) {
+            const v = await commands?.checkoutBranch(repoPath, info.name);
+            match(v)
+                .with({ status: 'ok' }, () => {
+                    refreshBranch();
+                })
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
                 });
-            } else {
-                commands?.checkoutRemote(repoPath, info.name).then(v => {
-                    match(v)
-                        .with({ status: 'ok' }, () => {
-                            refreshBranch();
-                        })
-                        .with({ status: 'error' }, err => {
-                            NOTIFY.error(err.error);
-                        });
+        } else {
+            const v = await commands?.checkoutRemote(repoPath, info.name);
+            match(v)
+                .with({ status: 'ok' }, () => {
+                    refreshBranch();
+                })
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
                 });
-            }
         }
     }
 
-    if (newName) {
+    async function renameBranch(newName: string) {
+        if (!repoPath || !opState) {
+            return;
+        }
+        if (opState === OpState.Renaming) {
+            const res = await commands?.renameBranch(repoPath, info, newName);
+            match(res)
+                .with({ status: 'ok' }, () => {
+                    refreshBranch();
+                })
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
+                });
+        } else {
+            const res = await commands?.createBranch(
+                repoPath,
+                newName,
+                info.commit,
+            );
+            match(res)
+                .with({ status: 'ok' }, () => {
+                    refreshBranch();
+                })
+                .with({ status: 'error' }, err => {
+                    NOTIFY.error(err.error);
+                });
+        }
+        setOpState(undefined);
+    }
+
+    if (opState) {
         return (
             <div
                 className={cn(
@@ -99,10 +133,11 @@ export default function Branch({
                 {...props}
             >
                 <BranchRename
-                    defaultValue={newName}
+                    defaultValue={branchName}
                     onCancel={() => {
-                        setNewName(undefined);
+                        setOpState(undefined);
                     }}
+                    onConfirm={renameBranch}
                 />
             </div>
         );
@@ -145,7 +180,9 @@ export default function Branch({
                     <DropdownMenuContent>
                         <DropdownMenuGroup>
                             <DropdownMenuItem
-                                onClick={() => setNewName(branchName)}
+                                onClick={() => {
+                                    setOpState(OpState.Renaming);
+                                }}
                             >
                                 {t('branch.rename')}
                             </DropdownMenuItem>
@@ -171,6 +208,13 @@ export default function Branch({
                                     {t('branch.checkout')}
                                 </DropdownMenuItem>
                             )}
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setOpState(OpState.NewBranch);
+                                }}
+                            >
+                                {t('branch.create_new_branch')}
+                            </DropdownMenuItem>
                             <DropdownMenuItem>
                                 {t('branch.details')}
                             </DropdownMenuItem>

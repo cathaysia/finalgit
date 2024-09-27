@@ -93,6 +93,7 @@ impl RepoExt for git2::Repository {
     }
 
     fn rename_branch(&self, info: BranchInfo, to: &str) -> AppResult<()> {
+        debug!("rename_branch: {info:?} ==> {to:?}");
         let mut branch = self.find_branch(&info.name, info.kind)?;
         let _ = branch.rename(to, true)?;
         Ok(())

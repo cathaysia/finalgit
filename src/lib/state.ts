@@ -40,6 +40,7 @@ const storeStorage: StateStorage = {
 };
 
 export interface AppState {
+    head?: string;
     repoPath?: string;
     branches: BranchInfo[];
     tags: TagInfo[];
@@ -54,11 +55,13 @@ export interface AppState {
     setFiles: (files: FileTree[]) => void;
     setCurrent: (current: string) => void;
     setProject: (project: string[]) => void;
+    setHead: (head: string | undefined) => void;
 }
 
 export const useAppState = create<AppState>()(
     persist(
         set => ({
+            head: undefined,
             repoPath: undefined,
             branches: [],
             changes: [],
@@ -82,6 +85,7 @@ export const useAppState = create<AppState>()(
             setFiles: (files: FileTree[]) => set({ files: files }),
             setCurrent: (current: string) => set({ current: current }),
             setProject: (project: string[]) => set({ project: project }),
+            setHead: (head: string | undefined) => set({ head: head }),
         }),
         {
             name: 'app',

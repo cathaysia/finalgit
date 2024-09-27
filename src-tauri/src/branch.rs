@@ -186,7 +186,7 @@ pub fn branch_push(repo_path: &str, force: bool) -> AppResult<()> {
     Ok(())
 }
 
-#[derive(Debug, Serialize, Deserialize, Type)]
+#[derive(Debug, Default, Serialize, Deserialize, Type)]
 pub struct PushStatus {
     unpush: u32,
     unpull: u32,
@@ -197,7 +197,11 @@ pub struct PushStatus {
 pub fn branch_status(repo_path: &str, branch: &str) -> AppResult<PushStatus> {
     let repo = utils::open_repo(repo_path)?;
     let local = repo.find_branch(branch, git2::BranchType::Local)?;
-    let upstream = local.upstream()?.into_reference();
+    let Ok(upstream) = local.upstream() else {
+        return Ok(Default::default());
+    };
+    let upstream = upstream.into_reference();
+    // let upstream =
     let upstream = upstream.name().unwrap();
     let (_, upstream) = upstream.split_once('/').unwrap();
     let (_, upstream) = upstream.split_once('/').unwrap();

@@ -484,7 +484,7 @@ export type FileTree =
     | { Dir: { dir: string; files: FileTree[]; mode: number } };
 export type PushStatus = { unpush: number; unpull: number };
 export type StashInfo = { id: number; message: string; oid: string };
-export type TagInfo = { name: string; commit: string };
+export type TagInfo = { name: string; commit: string; ref_hash: string };
 
 /** tauri-specta globals **/
 

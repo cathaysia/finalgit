@@ -76,6 +76,7 @@ impl Ord for FileTree {
 pub struct TagInfo {
     pub name: String,
     pub commit: String,
+    pub ref_hash: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]

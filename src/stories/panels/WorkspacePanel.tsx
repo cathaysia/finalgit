@@ -34,10 +34,13 @@ export default function WorkspacePanel({
     ...props
 }: WorkspacePanelProps) {
     const { t } = useTranslation();
-    const [repoPath, branches, tree] = useAppState(s => [
+    const [repoPath, branches, tags, tree, head, setHead] = useAppState(s => [
         s.repoPath,
         s.branches,
+        s.tags,
         s.files,
+        s.head,
+        s.setHead,
     ]);
 
     const [stateListener, refreshState] = useRefreshRequest(s => [
@@ -49,12 +52,40 @@ export default function WorkspacePanel({
         unpull: 0,
     });
 
+    async function refreshHead() {
+        if (!repoPath) {
+            return;
+        }
+
+        const head = await commands?.getRepoHead(repoPath);
+        match(head)
+            .with({ status: 'ok' }, val => {
+                setHead(val.data);
+                console.log(`head === ${val.data}`);
+            })
+            .with({ status: 'error' }, err => {
+                NOTIFY.error(err.error);
+            });
+    }
+
+    if (branchName === '') {
+        const item = tags.find(item => {
+            return item.ref_hash === head;
+        });
+        if (item !== undefined) {
+            branchName = item.name;
+        }
+    }
+
     async function refreshBranchStatus() {
         if (!repoPath) {
             return;
         }
         const currentBranch = branches.find(item => item.is_head);
         if (!currentBranch) {
+            return;
+        }
+        if (currentBranch.remote === null) {
             return;
         }
         const status = await commands.branchStatus(
@@ -72,6 +103,7 @@ export default function WorkspacePanel({
 
     useEffect(() => {
         refreshBranchStatus();
+        refreshHead();
     }, [branches, stateListener]);
 
     async function pushBranch() {

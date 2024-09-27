@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path, process::Stdio};
 
-use git2::{ObjectType, Sort};
+use git2::{build::CheckoutBuilder, ObjectType, Sort};
 use itertools::Itertools;
 use log::debug;
 
@@ -117,7 +117,9 @@ impl RepoExt for git2::Repository {
     /// https://stackoverflow.com/a/46758861
     fn checkout_branch(&self, name: &str) -> AppResult<()> {
         let branch = self.revparse_single(name)?;
-        self.checkout_tree(&branch, None)?;
+        let mut opts = CheckoutBuilder::new();
+        let opts = opts.safe().force();
+        self.checkout_tree(&branch, Some(opts))?;
         self.set_head(&format!("refs/heads/{name}"))?;
 
         Ok(())
@@ -215,7 +217,16 @@ impl RepoExt for git2::Repository {
                 .unwrap()
                 .to_string();
             let commit = oid.to_string();
-            taginfos.push(TagInfo { name, commit });
+            let mut ref_hash = commit.clone();
+
+            if let Ok(tag) = self.find_tag(oid) {
+                ref_hash = tag.target().unwrap().id().to_string();
+            }
+            taginfos.push(TagInfo {
+                name,
+                commit,
+                ref_hash,
+            });
             true
         })?;
 

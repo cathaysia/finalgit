@@ -25,13 +25,14 @@ export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 export function Tag({ info, filter, className, ...props }: TagProps) {
     const t = useTranslation().t;
-    const [repoPath] = useAppState(s => [s.repoPath]);
+    const [repoPath, head] = useAppState(s => [s.repoPath, s.head]);
     const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
 
     async function checkoutTag() {
         if (!repoPath) {
             return;
         }
+        console.log(`checkout to ${info.commit}`);
         const res = await commands?.commitCheckout(repoPath, info.commit);
         match(res).with({ status: 'error' }, err => {
             NOTIFY.error(err.error);
@@ -45,13 +46,14 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
                 'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
                 className,
                 DEFAULT_STYLE,
+                info.ref_hash === head &&
+                    'border-green-600 dark:border-green-600',
             )}
             {...props}
         >
             <span className="text-sm font-medium leading-none items-center flex gap-2">
                 <FaTag className="inline-block" />
                 {(() => {
-                    console.log(filter);
                     if (!filter) {
                         return <span>{info.name}</span>;
                     }
@@ -61,7 +63,7 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
                     );
                     return <span dangerouslySetInnerHTML={{ __html: v }} />;
                 })()}
-                <Badge>{info.commit.slice(0, 6)}</Badge>
+                <Badge className="font-mono">{info.ref_hash.slice(0, 6)}</Badge>
             </span>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>

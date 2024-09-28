@@ -4,7 +4,7 @@ import { Default as ChangeCardStories } from '@/stories/atoms/ChangeCard.stories
 import WorkspacePanel from './WorkspacePanel';
 
 const meta = {
-    component: WorkspacePanel,
+  component: WorkspacePanel,
 } satisfies Meta<typeof WorkspacePanel>;
 
 export default meta;
@@ -12,10 +12,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        branchName: 'master',
-        upstream: 'origin/master',
-        changeSet: ChangeCardStories.args.changeSet,
-        files: [],
-    },
+  args: {
+    branchName: 'master',
+    upstream: 'origin/master',
+    changeSet: ChangeCardStories.args.changeSet,
+    files: [],
+  },
 };

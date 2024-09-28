@@ -5,7 +5,7 @@ import BranchPanel from './BranchPanel';
 import { Default as TagListStories } from '@/stories/lists/TagList.stories';
 
 const meta = {
-    component: BranchPanel,
+  component: BranchPanel,
 } satisfies Meta<typeof BranchPanel>;
 
 export default meta;
@@ -13,8 +13,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        branches: BranchListStories.args.branches,
-        tags: TagListStories.args.tags,
-    },
+  args: {
+    branches: BranchListStories.args.branches,
+    tags: TagListStories.args.tags,
+  },
 };

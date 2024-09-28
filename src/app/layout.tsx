@@ -10,29 +10,29 @@ import { cn } from '@/lib/utils';
 const queryClient = new QueryClient();
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body
-                className={cn(
-                    'bg-white dark:bg-zinc-950 text-slate-500 dark:text-slate-400 max-h-screen antialiased font-sans',
-                )}
-            >
-                <ThemeProvider
-                    defaultTheme="dark"
-                    storageKey="vite-ui-theme"
-                    attribute="class"
-                >
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                        <Toaster richColors position="top-right" />
-                        <ReactQueryDevtools initialIsOpen={false} />
-                    </QueryClientProvider>
-                </ThemeProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body
+        className={cn(
+          'bg-white dark:bg-zinc-950 text-slate-500 dark:text-slate-400 max-h-screen antialiased font-sans',
+        )}
+      >
+        <ThemeProvider
+          defaultTheme="dark"
+          storageKey="vite-ui-theme"
+          attribute="class"
+        >
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <Toaster richColors position="top-right" />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }

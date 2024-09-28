@@ -5,7 +5,7 @@ import { Default as TagListStories } from '@/stories/lists/TagList.stories';
 import MainPanel from './MainPanel';
 
 const meta = {
-    component: MainPanel,
+  component: MainPanel,
 } satisfies Meta<typeof MainPanel>;
 
 export default meta;
@@ -13,5 +13,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {},
+  args: {},
 };

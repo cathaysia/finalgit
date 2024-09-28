@@ -11,7 +11,8 @@
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
-      "arrowParentheses": "asNeeded"
+      "arrowParentheses": "asNeeded",
+      "indentWidth": 2
     }
   },
   "json": {

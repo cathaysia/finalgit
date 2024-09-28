@@ -1,3 +1,3 @@
 export default function Diff() {
-    return <div>Diff</div>;
+  return <div>Diff</div>;
 }

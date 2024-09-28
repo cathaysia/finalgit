@@ -4,20 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { Avatar } from '@/components/ui/avatar';
 
 export interface StashCardProps
-    extends React.HtmlHTMLAttributes<HTMLDivElement> {
-    info: StashInfo;
+  extends React.HtmlHTMLAttributes<HTMLDivElement> {
+  info: StashInfo;
 }
 
 export default function StashCard({
-    className,
-    info,
-    ...props
+  className,
+  info,
+  ...props
 }: StashCardProps) {
-    const { t } = useTranslation();
-    return (
-        <div className={cn(className)} {...props}>
-            {info.message}
-            <Avatar>{info.oid.slice(0, 6)}</Avatar>
-        </div>
-    );
+  const { t } = useTranslation();
+  return (
+    <div className={cn(className)} {...props}>
+      {info.message}
+      <Avatar>{info.oid.slice(0, 6)}</Avatar>
+    </div>
+  );
 }

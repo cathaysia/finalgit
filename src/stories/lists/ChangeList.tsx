@@ -3,9 +3,9 @@ import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
 import React, { useMemo } from 'react';
 import { Separator } from '@/components/ui/separator';
-import Commiter from './Commiter';
+import Commiter from '../atoms/Commiter';
 import { useAppState, useRefreshRequest } from '@/lib/state';
-import ChangeItem from './ChangeItem';
+import ChangeItem from '../atoms/ChangeItem';
 import { match } from 'ts-pattern';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import NOTIFY from '@/lib/notify';
@@ -14,12 +14,12 @@ import { ScrollBar } from '@/components/ui/scroll-area';
 import GitFileStatus from '@/lib/file_status';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export interface ChangeCardProps
+export interface ChangeListProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {
     changeSet: FileStatus[];
 }
 
-export default function ChangeCard({ className, changeSet }: ChangeCardProps) {
+export default function ChangeList({ className, changeSet }: ChangeListProps) {
     const repoPath = useAppState(s => s.repoPath);
     const refreshStage = useRefreshRequest(s => s.refreshStage);
 

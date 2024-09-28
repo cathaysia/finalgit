@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import GitFileStatus from '@/lib/file_status';
-import ChangeCard from './ChangeCard';
+import ChangeList from './ChangeList';
 
 const meta = {
-    component: ChangeCard,
-} satisfies Meta<typeof ChangeCard>;
+    component: ChangeList,
+} satisfies Meta<typeof ChangeList>;
 
 export default meta;
 

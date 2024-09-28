@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
-import ChangeCard from '@/stories/atoms/ChangeCard';
+import ChangeList from '@/stories/lists/ChangeList';
 import { DEFAULT_STYLE } from '@/lib/style';
 import Link from 'next/link';
 import { useAppState, useRefreshRequest } from '@/lib/state';
@@ -199,7 +199,7 @@ export default function WorkspacePanel({
                         </Link>
                     </div>
                 </div>
-                <ChangeCard changeSet={changeSet} className="grow" />
+                <ChangeList changeSet={changeSet} className="grow" />
             </div>
         </div>
     );

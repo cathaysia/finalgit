@@ -19,6 +19,23 @@ enum GitFileStatus {
 }
 
 namespace GitFileStatus {
+  export function isNew(status: number) {
+    return (
+      (status & GitFileStatus.IndexNew || status & GitFileStatus.WtNew) !== 0
+    );
+  }
+  export function isModified(status: number) {
+    return (
+      (status & GitFileStatus.IndexModified ||
+        status & GitFileStatus.WtModified) !== 0
+    );
+  }
+  export function isDeleted(status: number) {
+    return (
+      (status & GitFileStatus.WtDeleted ||
+        status & GitFileStatus.IndexDeleted) !== 0
+    );
+  }
   export function isIndexed(status: number) {
     return (
       (status & GitFileStatus.IndexNew ||
@@ -37,6 +54,10 @@ namespace GitFileStatus {
         status & GitFileStatus.WtRenamed ||
         status & GitFileStatus.WtUnreadable) !== 0
     );
+  }
+
+  export function isConflicted(status: number) {
+    return (status & GitFileStatus.Conflicted) !== 0;
   }
 }
 

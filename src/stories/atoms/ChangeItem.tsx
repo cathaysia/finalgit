@@ -49,6 +49,10 @@ export default function ChangeItem({
   }
 
   const isChecked = getCheckedStatus(item.status);
+  const isConflicted = GitFileStatus.isConflicted(item.status);
+  const isDeleted = GitFileStatus.isDeleted(item.status);
+  const isModified = GitFileStatus.isModified(item.status);
+  const isNew = GitFileStatus.isNew(item.status);
 
   return (
     <div
@@ -62,17 +66,17 @@ export default function ChangeItem({
           onCheckedChange={onCheckedChange}
         />
         <Label
-          className={DEFAULT_STYLE}
+          className={cn(
+            DEFAULT_STYLE,
+            isConflicted && 'text-red-600 dark:text-red-600 underline decoration-wavy',
+            isDeleted && 'line-through',
+            isNew && 'text-green-600 dark:text-gray-600',
+            isModified && 'text-yellow-600 dark:text-yellow-600',
+          )}
           title={
-            ((item.status & GitFileStatus.WtModified ||
-              item.status & GitFileStatus.IndexModified) &&
-              t('change.modified')) ||
-            ((item.status & GitFileStatus.WtDeleted ||
-              item.status & GitFileStatus.IndexDeleted) &&
-              t('change.deleted')) ||
-            ((item.status & GitFileStatus.WtNew ||
-              item.status & GitFileStatus.IndexNew) &&
-              t('change.new_file')) ||
+            (isModified && t('change.modified')) ||
+            (isDeleted && t('change.deleted')) ||
+            (isNew && t('change.new_file')) ||
             undefined
           }
         >
@@ -80,21 +84,6 @@ export default function ChangeItem({
         </Label>
       </div>
       <div className="flex items-center">
-        <div
-          key={item.path}
-          className={cn(
-            'w-3 h-3 rounded-lg',
-            (item.status & GitFileStatus.WtModified ||
-              item.status & GitFileStatus.IndexModified) &&
-              'bg-yellow-600',
-            (item.status & GitFileStatus.WtDeleted ||
-              item.status & GitFileStatus.IndexDeleted) &&
-              'bg-red-600',
-            (item.status & GitFileStatus.WtNew ||
-              item.status & GitFileStatus.IndexNew) &&
-              'bg-green-600',
-          )}
-        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant={'ghost'} size="sm">

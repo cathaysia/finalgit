@@ -149,81 +149,98 @@ export default function Branch({
       )}
       {...props}
     >
-      <div className="text-sm font-medium leading-none items-center flex gap-2 overflow-ellipsis overflow-x-hidden text-nowrap">
-        <FaCodeBranch className="inline-block" />
-        {(() => {
-          if (!filter) {
-            return <Label>{branchName}</Label>;
-          }
-          const v = branchName.replace(
-            filter,
-            `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
-          );
-          return <Label dangerouslySetInnerHTML={{ __html: v }} />;
-        })()}
-        <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
-        {upstream && <Badge>{upstream}</Badge>}
+      <div className="flex">
+        <div className="w-full flex flex-col gap-2">
+          <div className="flex gap-2">
+            <FaCodeBranch className="inline-block" />
+            {(() => {
+              if (!filter) {
+                return (
+                  <Label
+                    className="whitespace-nowrap text-ellipsis overflow-clip flex-1 max-w-60"
+                    title={branchName}
+                  >
+                    {branchName}
+                  </Label>
+                );
+              }
+              const v = branchName.replace(
+                filter,
+                `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
+              );
+              return (
+                <Label
+                  className="whitespace-nowrap text-ellipsis overflow-clip flex-1 max-w-60"
+                  title={branchName}
+                  dangerouslySetInnerHTML={{ __html: v }}
+                />
+              );
+            })()}
+          </div>
+          <div>
+            <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
+            {upstream && <Badge>{upstream}</Badge>}
+          </div>
+        </div>
       </div>
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={'ghost'} size="sm">
-              <DotsHorizontalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuGroup>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={'ghost'} size="sm">
+            <DotsHorizontalIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              onClick={() => {
+                setOpState(OpState.Renaming);
+              }}
+            >
+              {t('branch.rename')}
+            </DropdownMenuItem>
+            {!isHead && (
               <DropdownMenuItem
+                disabled={isDirty}
                 onClick={() => {
-                  setOpState(OpState.Renaming);
+                  checkout();
                 }}
+                className={cn(
+                  !isLocal && 'text-yellow-500 hover:text-yellow-500',
+                )}
+                title={(() => {
+                  if (isDirty) {
+                    return t('branch.disable_dirty');
+                  }
+                  if (!isLocal) {
+                    return t('branch.checkout_remote');
+                  }
+                })()}
               >
-                {t('branch.rename')}
+                {t('branch.checkout')}
               </DropdownMenuItem>
-              {!isHead && (
-                <DropdownMenuItem
-                  disabled={isDirty}
-                  onClick={() => {
-                    checkout();
-                  }}
-                  className={cn(
-                    !isLocal && 'text-yellow-500 hover:text-yellow-500',
-                  )}
-                  title={(() => {
-                    if (isDirty) {
-                      return t('branch.disable_dirty');
-                    }
-                    if (!isLocal) {
-                      return t('branch.checkout_remote');
-                    }
-                  })()}
-                >
-                  {t('branch.checkout')}
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem
-                onClick={() => {
-                  setOpState(OpState.NewBranch);
-                }}
-              >
-                {t('branch.create_new_branch')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>{t('branch.details')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('branch.set_upstream')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('branch.pull')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('branch.push')}</DropdownMenuItem>
-              <DropdownMenuItem
-                className="text-red-600"
-                onClick={() => {
-                  removeBranch();
-                }}
-              >
-                {t('branch.delete')}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+            )}
+            <DropdownMenuItem
+              onClick={() => {
+                setOpState(OpState.NewBranch);
+              }}
+            >
+              {t('branch.create_new_branch')}
+            </DropdownMenuItem>
+            <DropdownMenuItem>{t('branch.details')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('branch.set_upstream')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('branch.pull')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('branch.push')}</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => {
+                removeBranch();
+              }}
+            >
+              {t('branch.delete')}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

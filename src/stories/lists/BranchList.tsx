@@ -23,7 +23,7 @@ export default function BranchList({
   const rowVirtualizer = useVirtualizer({
     count: branches.length,
     getScrollElement: () => parentRef.current || null,
-    estimateSize: () => 65,
+    estimateSize: () => 85,
   });
 
   return (

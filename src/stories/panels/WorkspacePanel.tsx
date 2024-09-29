@@ -1,4 +1,4 @@
-import type { FileStatus, FileTree } from '@/bindings';
+import type { FileStatus, FileTree, StashInfo } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { commands, type PushStatus } from '@/bindings';
 import { FaFolderTree } from 'react-icons/fa6';
@@ -51,6 +51,23 @@ export default function WorkspacePanel({
     s.setHead,
   ]);
   const [isOpen, setIsOpen] = useState(false);
+  const [stashList, setStashList] = useState<StashInfo[]>([]);
+  const [refreshStash] = useRefreshRequest(s => [s.refreshStash]);
+
+  async function refreshStashList() {
+    if (!repoPath) {
+      return;
+    }
+
+    const stash = await commands?.stashList(repoPath);
+    match(stash).with({ status: 'ok' }, val => {
+      setStashList(val.data);
+    });
+  }
+
+  useEffect(() => {
+    refreshStashList();
+  }, [refreshStash, repoPath]);
 
   const [stateListener, refreshState] = useRefreshRequest(s => [
     s.branchListener,
@@ -202,7 +219,11 @@ export default function WorkspacePanel({
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="w-[350px] space-y-2"
+          className={cn(
+            'w-[350px] space-y-2',
+            stashList.length === 0 && 'hidden',
+          )}
+          style={{ width: 'var(--radix-popper-anchor-width)' }}
         >
           <div className="flex items-center justify-between space-x-4 px-4">
             <CollapsibleTrigger asChild className="w-full items-center">
@@ -210,7 +231,7 @@ export default function WorkspacePanel({
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="space-y-2">
-            <StashList />
+            <StashList stashs={stashList} />
           </CollapsibleContent>
         </Collapsible>
       </div>

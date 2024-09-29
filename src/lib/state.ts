@@ -98,9 +98,11 @@ export interface RefreshRequest {
   branchListener: number;
   stageListener: number;
   pushListener: number;
+  stashListener: number;
   refreshBranch: () => void;
   refreshStage: () => void;
   refreshPush: () => void;
+  refreshStash: () => void;
   setBranchListener: (time: number) => void;
   setStageListener: (time: number) => void;
 }
@@ -110,11 +112,13 @@ export const useRefreshRequest = create<RefreshRequest>()(
     branchListener: 0,
     stageListener: 0,
     pushListener: 0,
+    stashListener: 0,
     refreshBranch: () => set(s => ({ branchListener: s.branchListener + 1 })),
     refreshStage: () => set(s => ({ stageListener: s.stageListener + 1 })),
     setBranchListener: (time: number) => set(() => ({ branchListener: time })),
     setStageListener: (time: number) => set(() => ({ stageListener: time })),
     refreshPush: () => set(s => ({ pushListener: s.pushListener + 1 })),
+    refreshStash: () => set(s => ({ stashListener: s.stashListener + 1 })),
   })),
 );
 

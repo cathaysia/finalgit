@@ -64,33 +64,40 @@ export default function Commiter({
 
   const [commitMsg, setCommitMsg] = useState<string>('');
 
+  async function startCommit() {
+    if (!repoPath) {
+      return;
+    }
+    const isIndexed = changeSet
+      .map(item => GitFileStatus.isIndexed(item.status))
+      .reduce((l, r) => l && r);
+    if (!isIndexed) {
+      const allfiles = changeSet
+        .filter(item => !GitFileStatus.isConflicted(item.status))
+        .map(item => item.path);
+      if (allfiles.length === 0) {
+        return;
+      }
+      const res = await commands?.addToStage(repoPath, allfiles);
+      match(res)
+        .with({ status: 'ok' }, () => {
+          refreshStage();
+          refreshPush();
+        })
+        .with({ status: 'error' }, err => {
+          NOTIFY.error(err.error);
+        });
+    }
+    setIsCommiting(true);
+  }
+
   if (!isCommiting) {
     return (
       <div className={cn('flex gap-2', className)}>
         <Button
           className="w-full"
           disabled={changeSet.length === 0}
-          onClick={async () => {
-            if (!repoPath) {
-              return;
-            }
-            const isIndexed = changeSet
-              .map(item => GitFileStatus.isIndexed(item.status))
-              .reduce((l, r) => l && r);
-            if (!isIndexed) {
-              const allfiles = changeSet.map(item => item.path);
-              const res = await commands?.addToStage(repoPath, allfiles);
-              match(res)
-                .with({ status: 'ok' }, () => {
-                  refreshStage();
-                  refreshPush();
-                })
-                .with({ status: 'error' }, err => {
-                  NOTIFY.error(err.error);
-                });
-            }
-            setIsCommiting(true);
-          }}
+          onClick={startCommit}
         >
           {t('commiter.start_commit')}
         </Button>

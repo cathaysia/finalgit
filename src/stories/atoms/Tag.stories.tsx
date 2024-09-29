@@ -15,6 +15,7 @@ export const Default: Story = {
     info: {
       name: 'v1',
       commit: 'b51e7cbf8cf28be7d277e2d2b2a429885334ec7d',
+      ref_hash: 'b51e7cbf8cf28be7d277e2d2b2a429885334ec7d',
     },
   },
 };

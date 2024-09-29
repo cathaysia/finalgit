@@ -27,6 +27,7 @@ for (const _ in Array(1000)) {
   tags.push({
     name: createRandomString(10),
     commit: createRandomString(40).toLowerCase(),
+    ref_hash: createRandomString(40).toLowerCase(),
   });
 }
 

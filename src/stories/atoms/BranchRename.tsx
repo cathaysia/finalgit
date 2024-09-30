@@ -32,7 +32,12 @@ export default function BranchRename({
   const [value, setValue] = useState<string>(defaultValue || '');
 
   return (
-    <div className={cn('w-full flex justify-between gap-2', className)}>
+    <div
+      className={cn(
+        'w-full flex justify-between gap-2 @container/renamer',
+        className,
+      )}
+    >
       <Select defaultValue="none">
         <SelectTrigger className="w-20">
           <SelectValue />
@@ -65,7 +70,7 @@ export default function BranchRename({
         }}
         {...props}
       />
-      <div className="flex gap-2">
+      <div className="@sm/renamer:flex @sm/renamer:gap-2 hidden">
         <Button
           onClick={() => {
             onConfirm?.(value);

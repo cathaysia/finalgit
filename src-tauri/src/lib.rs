@@ -4,6 +4,7 @@ mod branch;
 mod commit;
 mod error;
 mod ext;
+mod stage;
 mod stash;
 mod ty;
 mod utils;
@@ -55,8 +56,8 @@ pub fn run() {
             branch::get_current_status,
             branch::get_commits,
             branch::checkout_remote,
-            branch::add_to_stage,
-            branch::remove_from_stage,
+            stage::add_to_stage,
+            stage::remove_from_stage,
             branch::create_commit,
             branch::create_patch,
             utils::get_head_modify_time,
@@ -99,8 +100,8 @@ mod test {
                 branch::get_current_status,
                 branch::get_commits,
                 branch::checkout_remote,
-                branch::add_to_stage,
-                branch::remove_from_stage,
+                stage::add_to_stage,
+                stage::remove_from_stage,
                 branch::create_commit,
                 branch::create_patch,
                 utils::get_head_modify_time,

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path, process::Stdio};
 
-use git2::{build::CheckoutBuilder, ObjectType, Sort};
+use git2::{build::CheckoutBuilder, Sort};
 use itertools::Itertools;
 use log::debug;
 
@@ -22,7 +22,6 @@ pub trait RepoExt {
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>>;
     fn get_tags(&self) -> AppResult<Vec<TagInfo>>;
-    fn remove_from_stage(&self, files: &[&str]) -> AppResult<()>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
     fn create_patch(&self) -> AppResult<String>;
     fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
@@ -230,13 +229,6 @@ impl RepoExt for git2::Repository {
         })?;
 
         Ok(taginfos)
-    }
-
-    fn remove_from_stage(&self, files: &[&str]) -> AppResult<()> {
-        let head = self.head()?.target().ok_or(AppError::NoRepo)?;
-        let obj = self.find_object(head, Some(ObjectType::Commit))?;
-        self.reset_default(Some(&obj), files)?;
-        Ok(())
     }
 
     fn create_commit(&self, msg: &str) -> AppResult<()> {

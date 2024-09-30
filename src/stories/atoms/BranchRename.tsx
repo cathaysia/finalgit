@@ -3,6 +3,15 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export interface BranchRenameProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -24,8 +33,24 @@ export default function BranchRename({
 
   return (
     <div className={cn('w-full flex justify-between gap-2', className)}>
+      <Select defaultValue="none">
+        <SelectTrigger className="w-20">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>{t('rename.kind')}</SelectLabel>
+            <SelectItem value="none">none</SelectItem>
+            <SelectItem value="bugfix">bugfix</SelectItem>
+            <SelectItem value="feature">feature</SelectItem>
+            <SelectItem value="release">release</SelectItem>
+            <SelectItem value="hotfix">hotfix</SelectItem>
+            <SelectItem value="support">support</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <Input
-        className={cn('w-full h-', className)}
+        className={cn('w-full', className)}
         type="text"
         autoFocus
         value={value}

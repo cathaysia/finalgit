@@ -14,6 +14,8 @@ pub enum AppError {
     Utf8(#[from] std::str::Utf8Error),
     #[error("Utf8 error: {0}")]
     StringUtf8(#[from] std::string::FromUtf8Error),
+    #[error("Bad Git Status")]
+    BadStatus,
 }
 
 pub type AppResult<T> = Result<T, AppError>;

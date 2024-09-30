@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use std::collections::HashMap;
+use std::path::Path;
 use std::process::Stdio;
 
 use log::info;
@@ -106,8 +107,20 @@ pub fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
 
 #[tauri::command]
 #[specta::specta]
-pub fn add_to_stage(repo_path: &str, files: Vec<&str>) -> AppResult<()> {
-    utils::open_repo(repo_path)?.add_to_stage(&files)
+pub fn add_to_stage(repo_path: &str, files: Vec<FileStatus>) -> AppResult<()> {
+    let repo = utils::open_repo(repo_path)?;
+
+    let mut index = repo.index()?;
+    for item in files {
+        let s = git2::Status::from_bits(item.status).ok_or(AppError::BadStatus)?;
+        if s.is_wt_deleted() || s.is_index_deleted() {
+            index.remove_path(Path::new(&item.path))?;
+        } else {
+            index.add_path(Path::new(&item.path))?
+        }
+    }
+    index.write()?;
+    Ok(())
 }
 
 #[tauri::command]

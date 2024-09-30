@@ -6,7 +6,6 @@ import Commiter from '../atoms/Commiter';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import ChangeItem from '../atoms/ChangeItem';
 import { match } from 'ts-pattern';
-import type { CheckedState } from '@radix-ui/react-checkbox';
 import NOTIFY from '@/lib/notify';
 import GitFileStatus from '@/lib/file_status';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,32 +19,6 @@ export interface ChangeListProps
 export default function ChangeList({ className, changeSet }: ChangeListProps) {
   const repoPath = useAppState(s => s.repoPath);
   const refreshStage = useRefreshRequest(s => s.refreshStage);
-
-  async function handleCheckedChange(e: CheckedState, item: FileStatus) {
-    if (!repoPath) {
-      return;
-    }
-    if (e === true) {
-      const v = await commands?.addToStage(repoPath, [item.path]);
-      match(v)
-        .with({ status: 'ok' }, () => {
-          refreshStage();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-    if (e === false) {
-      const v = await commands?.removeFromStage(repoPath, [item.path]);
-      match(v)
-        .with({ status: 'ok' }, () => {
-          refreshStage();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-  }
 
   const allChecked = useMemo(() => {
     const hasUnIndexed =
@@ -66,9 +39,10 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
     if (!repoPath) {
       return;
     }
-    const allFiles = changeSet.map(item => item.path);
+    const changed = changeSet.map(item => item.path);
+
     if (allChecked) {
-      const res = await commands.removeFromStage(repoPath, allFiles);
+      const res = await commands.removeFromStage(repoPath, changed);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshStage();
@@ -77,7 +51,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
           NOTIFY.error(err.error);
         });
     } else {
-      const res = await commands.addToStage(repoPath, allFiles);
+      const res = await commands.addToStage(repoPath, changeSet);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshStage();
@@ -109,7 +83,6 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
                 path: item.path,
                 status: item.status,
               }}
-              onCheckedChange={async state => handleCheckedChange(state, item)}
             />
           );
         }}

@@ -25,13 +25,11 @@ export interface ChangeItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   item: FileStatus;
   checked?: boolean;
-  onCheckedChange?(checked: CheckedState): void;
 }
 
 export default function ChangeItem({
   className,
   item,
-  onCheckedChange,
   ...props
 }: ChangeItemProps) {
   const { t } = useTranslation();
@@ -54,6 +52,35 @@ export default function ChangeItem({
   const isModified = GitFileStatus.isModified(item.status);
   const isNew = GitFileStatus.isNew(item.status);
 
+  async function addFileToStage() {
+    if (!repoPath) {
+      return;
+    }
+    const v = await commands.addToStage(repoPath, [item]);
+    match(v)
+      .with({ status: 'ok' }, () => refreshStage())
+      .with({ status: 'error' }, err => NOTIFY.error(err.error));
+  }
+
+  async function handleCheckedChange(e: CheckedState, item: FileStatus) {
+    if (!repoPath) {
+      return;
+    }
+    if (e === true) {
+      addFileToStage();
+    }
+    if (e === false) {
+      const v = await commands?.removeFromStage(repoPath, [item.path]);
+      match(v)
+        .with({ status: 'ok' }, () => {
+          refreshStage();
+        })
+        .with({ status: 'error' }, err => {
+          NOTIFY.error(err.error);
+        });
+    }
+  }
+
   return (
     <div
       className={cn('flex justify-between items-center', className)}
@@ -63,12 +90,13 @@ export default function ChangeItem({
         <Checkbox
           defaultChecked={GitFileStatus.isIndexed(item.status)}
           checked={isChecked}
-          onCheckedChange={onCheckedChange}
+          onCheckedChange={s => handleCheckedChange(s, item)}
         />
         <Label
           className={cn(
             DEFAULT_STYLE,
-            isConflicted && 'text-red-600 dark:text-red-600 underline decoration-wavy',
+            isConflicted &&
+              'text-red-600 dark:text-red-600 underline decoration-wavy',
             isDeleted && 'line-through',
             isNew && 'text-green-600 dark:text-gray-600',
             isModified && 'text-yellow-600 dark:text-yellow-600',
@@ -94,15 +122,7 @@ export default function ChangeItem({
             <DropdownMenuGroup>
               <DropdownMenuItem
                 className={cn(isChecked && 'hidden')}
-                onClick={async () => {
-                  if (!repoPath) {
-                    return;
-                  }
-                  const v = await commands.addToStage(repoPath, [item.path]);
-                  match(v)
-                    .with({ status: 'ok' }, () => refreshStage())
-                    .with({ status: 'error' }, err => NOTIFY.error(err.error));
-                }}
+                onClick={addFileToStage}
               >
                 <VscDiffAdded className="w-4 h-4 mr-2" />
                 {t('changes.add')}

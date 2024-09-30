@@ -72,9 +72,9 @@ export default function Commiter({
       .map(item => GitFileStatus.isIndexed(item.status))
       .reduce((l, r) => l && r);
     if (!isIndexed) {
-      const allfiles = changeSet
-        .filter(item => !GitFileStatus.isConflicted(item.status))
-        .map(item => item.path);
+      const allfiles = changeSet.filter(
+        item => !GitFileStatus.isConflicted(item.status),
+      );
       if (allfiles.length === 0) {
         return;
       }

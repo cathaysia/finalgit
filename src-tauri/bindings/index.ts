@@ -44,11 +44,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('rename_branch', {
-          repoPath,
-          info,
-          to,
-        }),
+        data: await TAURI_INVOKE('rename_branch', { repoPath, info, to }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -77,11 +73,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('create_branch', {
-          repoPath,
-          name,
-          commit,
-        }),
+        data: await TAURI_INVOKE('create_branch', { repoPath, name, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -95,10 +87,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('checkout_branch', {
-          repoPath,
-          branch,
-        }),
+        data: await TAURI_INVOKE('checkout_branch', { repoPath, branch }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -159,11 +148,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('get_commits', {
-          repoPath,
-          branch,
-          kind,
-        }),
+        data: await TAURI_INVOKE('get_commits', { repoPath, branch, kind }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -177,10 +162,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('checkout_remote', {
-          repoPath,
-          branch,
-        }),
+        data: await TAURI_INVOKE('checkout_remote', { repoPath, branch }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -189,7 +171,7 @@ export const commands = {
   },
   async addToStage(
     repoPath: string,
-    files: string[],
+    files: FileStatus[],
   ): Promise<Result<null, string>> {
     try {
       return {
@@ -208,10 +190,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('remove_from_stage', {
-          repoPath,
-          files,
-        }),
+        data: await TAURI_INVOKE('remove_from_stage', { repoPath, files }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -290,11 +269,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('set_config', {
-          repoPath,
-          key,
-          value,
-        }),
+        data: await TAURI_INVOKE('set_config', { repoPath, key, value }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -440,10 +415,7 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('commit_checkout', {
-          repoPath,
-          commit,
-        }),
+        data: await TAURI_INVOKE('commit_checkout', { repoPath, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;

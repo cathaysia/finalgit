@@ -1,5 +1,5 @@
 import type { CommitInfo } from '@/bindings';
-import Commit from '../atoms/Commit';
+import CommitItem from '../atoms/CommitItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface GitHistoryProps
@@ -15,10 +15,10 @@ export default function GitHistory({
   return (
     <VirtualScrollArea
       count={history.length}
-      height={65}
+      height={75}
       getItem={(idx: number) => {
         const item = history[idx];
-        return <Commit commit={item} />;
+        return <CommitItem commit={item} />;
       }}
       className={className}
       {...props}

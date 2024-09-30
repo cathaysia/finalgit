@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { Label } from '@/components/ui/label';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/stories/atoms/UserAvatar';
@@ -16,18 +15,20 @@ import { Button } from '@/components/ui/button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import NOTIFY from '@/lib/notify';
 import { useTranslation } from 'react-i18next';
+import HighLightLabel from './HighlightLabel';
 
-export interface CommitProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface CommitItemProps
+  extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
   commit: CommitInfo;
 }
 
-export default function Commit({
+export default function CommitItem({
   className,
   filter,
   commit,
   ...props
-}: CommitProps) {
+}: CommitItemProps) {
   const branchName = commit.summary.slice(0, 50);
   const { t } = useTranslation();
   const names = [commit.author.name];
@@ -38,25 +39,17 @@ export default function Commit({
   return (
     <div
       className={cn(
-        'border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between',
+        'border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between text-wrap',
         DEFAULT_STYLE,
         className,
       )}
       {...props}
     >
       <div className="flex items-center gap-2">
-        {(() => {
-          if (!filter) {
-            return <Label>{branchName}</Label>;
-          }
-          const v = branchName.replace(
-            filter,
-            `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
-          );
-          return <Label dangerouslySetInnerHTML={{ __html: v }} />;
-        })()}
+        <HighLightLabel text={branchName} filter={filter} />
         <Badge
           title={commit.hash}
+          className="font-mono"
           onClick={async () => {
             const _ = await writeText(commit.hash);
             NOTIFY.info(
@@ -68,7 +61,7 @@ export default function Commit({
         >
           {commit.hash.slice(0, 6)}
         </Badge>
-        <UserAvatar userName={names} />
+        <UserAvatar userName={names} className="w-4" />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

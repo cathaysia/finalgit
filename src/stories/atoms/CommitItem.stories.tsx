@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Commit from './Commit';
+import CommitItem from './CommitItem';
 
 const meta = {
-  component: Commit,
-} satisfies Meta<typeof Commit>;
+  component: CommitItem,
+} satisfies Meta<typeof CommitItem>;
 
 export default meta;
 

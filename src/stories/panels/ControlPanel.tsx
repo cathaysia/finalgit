@@ -73,7 +73,7 @@ export default function ControlPanel({
       <BranchPanel
         branches={branches}
         tags={tags}
-        className="border-none w-full"
+        className="border-none w-full h-full"
       />
     </aside>
   );

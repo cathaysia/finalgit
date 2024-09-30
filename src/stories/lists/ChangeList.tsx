@@ -1,7 +1,6 @@
 import { commands, type FileStatus } from '@/bindings';
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Separator } from '@/components/ui/separator';
 import Commiter from '../atoms/Commiter';
 import { useAppState, useRefreshRequest } from '@/lib/state';
@@ -9,10 +8,9 @@ import ChangeItem from '../atoms/ChangeItem';
 import { match } from 'ts-pattern';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import NOTIFY from '@/lib/notify';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { ScrollBar } from '@/components/ui/scroll-area';
 import GitFileStatus from '@/lib/file_status';
 import { Checkbox } from '@/components/ui/checkbox';
+import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface ChangeListProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -48,14 +46,6 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
         });
     }
   }
-
-  const parentRef = React.useRef<HTMLDivElement>(null);
-
-  const rowVirtualizer = useVirtualizer({
-    count: changeSet.length,
-    getScrollElement: () => parentRef.current || null,
-    estimateSize: () => 35,
-  });
 
   const allChecked = useMemo(() => {
     const hasUnIndexed =
@@ -100,61 +90,31 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <div className="grow flex flex-col gap-2">
-        <ScrollAreaPrimitive.Root
-          className={cn('relative overflow-hidden', className)}
-        >
-          <div className="w-full flex">
-            <Checkbox
-              checked={allChecked}
-              onCheckedChange={toggleAllChecked}
-              hidden={changeSet.length === 0}
-            />
-          </div>
-          <ScrollAreaPrimitive.Viewport
-            ref={parentRef}
-            className="h-full w-full rounded-[inherit]"
-            style={{
-              maxHeight: '60vh',
-            }}
-          >
-            <div
-              style={{
-                height: `${rowVirtualizer.getTotalSize()}px`,
-              }}
-              className="w-full relative"
-            >
-              {rowVirtualizer.getVirtualItems().map(virtualItem => {
-                const item = changeSet[virtualItem.index];
-
-                return (
-                  <div
-                    key={virtualItem.key}
-                    className={'absolute top-0 left-0 w-full'}
-                    style={{
-                      height: `${virtualItem.size}px`,
-                      transform: `translateY(${virtualItem.start}px)`,
-                    }}
-                  >
-                    <ChangeItem
-                      key={item.path}
-                      item={{
-                        path: item.path,
-                        status: item.status,
-                      }}
-                      onCheckedChange={async state =>
-                        handleCheckedChange(state, item)
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </ScrollAreaPrimitive.Viewport>
-          <ScrollBar />
-          <ScrollAreaPrimitive.Corner />
-        </ScrollAreaPrimitive.Root>
+      <div className="w-full flex">
+        <Checkbox
+          checked={allChecked}
+          onCheckedChange={toggleAllChecked}
+          hidden={changeSet.length === 0}
+        />
       </div>
+      <VirtualScrollArea
+        count={changeSet.length}
+        height={35}
+        getItem={(idx: number) => {
+          const item = changeSet[idx];
+          return (
+            <ChangeItem
+              key={item.path}
+              item={{
+                path: item.path,
+                status: item.status,
+              }}
+              onCheckedChange={async state => handleCheckedChange(state, item)}
+            />
+          );
+        }}
+        className="grow"
+      />
       <Separator />
       <Commiter changeSet={changeSet} />
     </div>

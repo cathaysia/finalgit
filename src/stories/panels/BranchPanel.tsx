@@ -53,7 +53,7 @@ export default function BranchPanel({
   return (
     <Tabs
       defaultValue="branch"
-      className={cn('border focus:bg-red-50', className)}
+      className={cn('border focus:bg-red-50 h-full flex flex-col', className)}
     >
       <div className="flex gap-2 flex-col px-2">
         <div className="flex justify-between items-center gap-2">
@@ -100,13 +100,13 @@ export default function BranchPanel({
           />
         )}
       </div>
-      <TabsContent value="branch">
+      <TabsContent value="branch" className="h-full">
         <BranchList
           branches={filteredBranches}
           filter={isSearching ? filter : undefined}
         />
       </TabsContent>
-      <TabsContent value="tags">
+      <TabsContent value="tags" className="h-full">
         <TagList
           tags={filteredTags}
           filter={isSearching ? filter : undefined}

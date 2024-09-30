@@ -46,8 +46,8 @@ export default function Home() {
   });
   return (
     <div className="flex gap-2 w-screen h-screen">
-      <ControlPanel className="w-1/4" />
-      <MainPanel className="grow" />
+      <ControlPanel className="w-1/4 h-full" />
+      <MainPanel className="grow h-full" />
     </div>
   );
 }

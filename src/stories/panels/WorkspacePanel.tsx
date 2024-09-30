@@ -231,7 +231,7 @@ export default function WorkspacePanel({
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="space-y-2">
-            <StashList stashs={stashList} />
+            <StashList stashs={stashList} className="grow" />
           </CollapsibleContent>
         </Collapsible>
       </div>

@@ -24,7 +24,7 @@ function createRandomString(length: number) {
 
 const branches: BranchInfo[] = [];
 
-for (const _ in Array(1000)) {
+for (const _ in [...Array(1000).keys()]) {
   branches.push({
     remote: null,
     name: createRandomString(10),

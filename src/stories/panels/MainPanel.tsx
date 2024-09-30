@@ -75,7 +75,7 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
   return (
     <div
       className={cn(
-        'grid lg:grid-cols-2 xl:grid-cols-3 gap-2 h-screen p-2',
+        'grid lg:grid-cols-2 xl:grid-cols-3 gap-2 h-full p-2',
         className,
       )}
       data-tauri-drag-region={true}
@@ -85,8 +85,9 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
         branchName={branchName}
         changeSet={changes}
         files={files}
+        className="h-full"
       />
-      <GitHistory history={currentHistory} />
+      <GitHistory history={currentHistory} className="h-full" />
     </div>
   );
 }

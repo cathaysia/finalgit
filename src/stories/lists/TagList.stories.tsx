@@ -23,7 +23,7 @@ function createRandomString(length: number) {
 }
 
 const tags: TagInfo[] = [];
-for (const _ in Array(1000)) {
+for (const _ in [...Array(1000).keys()]) {
   tags.push({
     name: createRandomString(10),
     commit: createRandomString(40).toLowerCase(),

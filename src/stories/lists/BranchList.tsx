@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React from 'react';
-import Branch from '@/stories/atoms/Branch';
+import BranchItem from '@/stories/atoms/BranchItem';
 
 export interface BranchListProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -53,7 +53,7 @@ export default function BranchList({
                   transform: `translateY(${virtualItem.start}px)`,
                 }}
               >
-                <Branch info={item} filter={filter} />
+                <BranchItem info={item} filter={filter} />
               </div>
             );
           })}

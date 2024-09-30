@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Branch from './Branch';
+import BranchItem from './BranchItem';
 
 const meta = {
-  component: Branch,
-} satisfies Meta<typeof Branch>;
+  component: BranchItem,
+} satisfies Meta<typeof BranchItem>;
 
 export default meta;
 
@@ -14,7 +14,7 @@ export const Default: Story = {
   args: {
     info: {
       remote: null,
-      name: 'master',
+      name: 'maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaster',
       commit: 'e5b49f0f6bf15efb2317b17d033c485bb4e897b4',
       kind: 'Local',
       is_head: true,

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Tag } from './Tag';
+import { TagItem } from './TagItem';
 
 const meta = {
-  component: Tag,
-} satisfies Meta<typeof Tag>;
+  component: TagItem,
+} satisfies Meta<typeof TagItem>;
 
 export default meta;
 

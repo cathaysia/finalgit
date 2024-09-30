@@ -4,7 +4,7 @@ import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { cn } from '@/lib/utils';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React from 'react';
-import { Tag } from '@/stories/atoms/Tag';
+import { TagItem } from '@/stories/atoms/TagItem';
 
 export interface TagListProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -56,7 +56,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
                     transform: `translateY(${virtualItem.start}px)`,
                   }}
                 >
-                  <Tag info={item} filter={filter} />
+                  <TagItem info={item} filter={filter} />
                 </div>
               );
             })}

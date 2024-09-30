@@ -18,12 +18,13 @@ import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { match } from 'ts-pattern';
+import HighLightLabel from './HighlightLabel';
 
-export interface TagProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   info: TagInfo;
   filter?: string;
 }
-export function Tag({ info, filter, className, ...props }: TagProps) {
+export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   const t = useTranslation().t;
   const [repoPath, head] = useAppState(s => [s.repoPath, s.head]);
   const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
@@ -52,16 +53,7 @@ export function Tag({ info, filter, className, ...props }: TagProps) {
     >
       <span className="text-sm font-medium leading-none items-center flex gap-2">
         <FaTag className="inline-block" />
-        {(() => {
-          if (!filter) {
-            return <span>{info.name}</span>;
-          }
-          const v = info.name.replace(
-            filter,
-            `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
-          );
-          return <span dangerouslySetInnerHTML={{ __html: v }} />;
-        })()}
+        <HighLightLabel text={info.name} filter={filter} />
         <Badge className="font-mono">{info.ref_hash.slice(0, 6)}</Badge>
       </span>
       <DropdownMenu>

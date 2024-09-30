@@ -17,11 +17,12 @@ import { useTranslation } from 'react-i18next';
 import { FaCodeBranch } from 'react-icons/fa';
 import { match } from 'ts-pattern';
 import BranchRename from './BranchRename';
-import { Label } from '@/components/ui/label';
 import { DEFAULT_STYLE } from '@/lib/style';
 import NOTIFY from '@/lib/notify';
+import HighLightLabel from './HighlightLabel';
 
-export interface BranchProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface BranchItemProps
+  extends React.HtmlHTMLAttributes<HTMLDivElement> {
   info: BranchInfo;
   filter?: string;
   className?: string;
@@ -34,14 +35,14 @@ enum OpState {
   NewBranch = 2,
 }
 
-export default function Branch({
+export default function BranchItem({
   info,
   filter,
   onRename,
   onDelete,
   className,
   ...props
-}: BranchProps) {
+}: BranchItemProps) {
   const t = useTranslation().t;
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
@@ -52,18 +53,19 @@ export default function Branch({
   const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
   const isDirty = changes.length !== 0;
 
-  function removeBranch() {
-    if (isLocal && repoPath) {
-      commands?.removeBranch(repoPath, info).then(v => {
-        match(v)
-          .with({ status: 'ok' }, () => {
-            refreshBranch();
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      });
+  async function removeBranch() {
+    if (!isLocal || !repoPath) {
+      return;
     }
+
+    const v = await commands?.removeBranch(repoPath, info);
+    match(v)
+      .with({ status: 'ok' }, () => {
+        refreshBranch();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
   }
 
   async function checkout() {
@@ -142,42 +144,22 @@ export default function Branch({
   return (
     <div
       className={cn(
-        'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
+        'w-full flex justify-between border rounded-none px-4 py-3 items-center gap-2',
         DEFAULT_STYLE,
         isHead && 'border-green-600 dark:border-green-600',
         className,
       )}
       {...props}
     >
-      <div className="flex">
-        <div className="w-full flex flex-col gap-2">
+      <div className="w-full flex min-w-0 gap-2 items-center">
+        <FaCodeBranch className="inline-block min-w-4 min-h-4 max-w-4 max-h-4" />
+        <div className="w-full flex min-w-0 gap-2 flex-col">
+          <HighLightLabel
+            text={branchName}
+            filter={filter}
+            className="whitespace-nowrap overflow-hidden text-ellipsis"
+          />
           <div className="flex gap-2">
-            <FaCodeBranch className="inline-block" />
-            {(() => {
-              if (!filter) {
-                return (
-                  <Label
-                    className="whitespace-nowrap text-ellipsis overflow-clip flex-1 max-w-60"
-                    title={branchName}
-                  >
-                    {branchName}
-                  </Label>
-                );
-              }
-              const v = branchName.replace(
-                filter,
-                `<span class="bg-yellow-300 dark:bg-yellow-500">${filter}</span>`,
-              );
-              return (
-                <Label
-                  className="whitespace-nowrap text-ellipsis overflow-clip flex-1 max-w-60"
-                  title={branchName}
-                  dangerouslySetInnerHTML={{ __html: v }}
-                />
-              );
-            })()}
-          </div>
-          <div>
             <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
             {upstream && <Badge>{upstream}</Badge>}
           </div>

@@ -153,7 +153,7 @@ export default function BranchItem({
     >
       <div className="w-full flex min-w-0 gap-2 items-center">
         <FaCodeBranch className="inline-block min-w-4 min-h-4 max-w-4 max-h-4" />
-        <div className="w-full flex min-w-0 gap-2 flex-col">
+        <div className="w-full flex gap-2 flex-col">
           <HighLightLabel
             text={branchName}
             filter={filter}

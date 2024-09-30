@@ -62,7 +62,7 @@ export default function StashItem({
       {...props}
     >
       <div className="min-w-0">
-        <div className="flex gap-2 items-center min-w-0">
+        <div className="flex gap-2 items-center">
           <span
             className="whitespace-nowrap overflow-hidden text-ellipsis"
             title={stash.message}

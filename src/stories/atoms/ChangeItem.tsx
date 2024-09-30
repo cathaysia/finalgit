@@ -81,6 +81,21 @@ export default function ChangeItem({
     }
   }
 
+  async function discardChanges() {
+    if (!repoPath) {
+      return;
+    }
+
+    const v = await commands?.restoreFile(repoPath, [item], null);
+    match(v)
+      .with({ status: 'ok' }, () => {
+        refreshStage();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  }
+
   return (
     <div
       className={cn('flex justify-between items-center', className)}
@@ -148,7 +163,10 @@ export default function ChangeItem({
                 <VscDiff className="w-4 h-4 mr-2" />
                 {t('changes.diff')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={discardChanges}
+              >
                 <VscDiffRemoved className="w-4 h-4 mr-2" />
                 {t('changes.discard')}
               </DropdownMenuItem>

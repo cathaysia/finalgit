@@ -91,6 +91,35 @@ export default function Commiter({
     setIsCommiting(true);
   }
 
+  async function discardChanges() {
+    if (!repoPath) {
+      return;
+    }
+
+    const wtFiles = changeSet.filter(
+      item => !GitFileStatus.isIndexed(item.status),
+    );
+    const indexFiles = changeSet.filter(item =>
+      GitFileStatus.isIndexed(item.status),
+    );
+
+    const res = await (async () => {
+      if (wtFiles.length !== 0) {
+        return await commands.restoreFile(repoPath, wtFiles, null);
+      }
+
+      return await commands.restoreFile(repoPath, indexFiles, null);
+    })();
+
+    match(res)
+      .with({ status: 'ok' }, () => {
+        refreshStage();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  }
+
   if (!isCommiting) {
     return (
       <div className={cn('flex gap-2', className)}>
@@ -137,7 +166,10 @@ export default function Commiter({
                 <VscGitStash className="w-4 h-4 mr-2" />
                 {t('workspace.stash')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={discardChanges}
+              >
                 <VscDiscard className="w-4 h-4 mr-2" />
                 {t('workspace.discard')}
               </DropdownMenuItem>

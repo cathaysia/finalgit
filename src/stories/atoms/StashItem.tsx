@@ -55,15 +55,16 @@ export default function StashItem({
         NOTIFY.error(err.error);
       });
   }
+
   return (
     <div
       className={cn('flex gap-2 justify-between w-full', className)}
       {...props}
     >
-      <div>
-        <div className="w-full flex">
+      <div className="min-w-0">
+        <div className="flex gap-2 items-center min-w-0">
           <span
-            className="whitespace-nowrap overflow-clip text-ellipsis flex-1 max-w-52"
+            className="whitespace-nowrap overflow-hidden text-ellipsis"
             title={stash.message}
           >
             {stash.message}

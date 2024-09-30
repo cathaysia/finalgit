@@ -11,11 +11,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    stashs: [
+    stashList: [
       {
         id: 0,
         oid: '73b43fbc22240376c5a2fbadee2deb0653c94b14',
-        message: 'asdfasdf',
+        message: 'asdfasdfdasfdasdfasdf',
       },
       {
         id: 1,

@@ -4,12 +4,12 @@ import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface StashListProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  stashs: StashInfo[];
+  stashList: StashInfo[];
 }
 
 export default function StashList({
   className,
-  stashs,
+  stashList: stashs,
   ...props
 }: StashListProps) {
   return (

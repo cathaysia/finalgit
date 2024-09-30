@@ -17,7 +17,6 @@ import { VscDiff, VscRepoPull, VscRepoPush } from 'react-icons/vsc';
 import { useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
 import NOTIFY from '@/lib/notify';
-import { GoTriangleUp, GoTriangleDown } from 'react-icons/go';
 
 export interface WorkspacePanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -27,12 +26,7 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import StashList from '../lists/StashList';
+import StashCard from '../card/StashCard';
 
 export default function WorkspacePanel({
   className,
@@ -50,7 +44,6 @@ export default function WorkspacePanel({
     s.head,
     s.setHead,
   ]);
-  const [isOpen, setIsOpen] = useState(false);
   const [stashList, setStashList] = useState<StashInfo[]>([]);
   const [refreshStash] = useRefreshRequest(s => [s.refreshStash]);
 
@@ -216,24 +209,10 @@ export default function WorkspacePanel({
           </div>
         </div>
         <ChangeList changeSet={changeSet} className="grow" />
-        <Collapsible
-          open={isOpen}
-          onOpenChange={setIsOpen}
-          className={cn(
-            'w-[350px] space-y-2',
-            stashList.length === 0 && 'hidden',
-          )}
-          style={{ width: 'var(--radix-popper-anchor-width)' }}
-        >
-          <div className="flex items-center justify-between space-x-4 px-4">
-            <CollapsibleTrigger asChild className="w-full items-center">
-              {isOpen ? <GoTriangleDown /> : <GoTriangleUp />}
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent className="space-y-2">
-            <StashList stashs={stashList} className="grow" />
-          </CollapsibleContent>
-        </Collapsible>
+        <StashCard
+          className={cn(stashList.length === 0 && 'hidden')}
+          stashList={stashList}
+        />
       </div>
     </div>
   );

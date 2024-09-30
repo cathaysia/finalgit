@@ -197,6 +197,21 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async restoreFile(
+    repoPath: string,
+    files: FileStatus[],
+    commit: string | null,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('restore_file', { repoPath, files, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async createCommit(
     repoPath: string,
     msg: string,

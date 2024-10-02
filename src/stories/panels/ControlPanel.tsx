@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import { match } from 'ts-pattern';
 import ControlBar from '../atoms/ControlBar';
 import NOTIFY from '@/lib/notify';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export interface ControlPanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -56,6 +58,8 @@ export default function ControlPanel({
     }
   }, [repoPath]);
 
+  const currentPath = usePathname();
+
   return (
     <aside
       className={cn(
@@ -66,8 +70,8 @@ export default function ControlPanel({
     >
       <ControlBar />
       <Project />
-      <Button variant={'secondary'} className="w-full h-12">
-        {t('Workspace')}
+      <Button variant={'link'} disabled={currentPath === '/main/workspace'}>
+        <Link href="/main/workspace">{t('Workspace')}</Link>
       </Button>
 
       <BranchPanel

@@ -42,9 +42,10 @@ export default function Commiter({
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
   const repoPath = useAppState(s => s.repoPath);
-  const [refreshStage, refreshPush] = useRefreshRequest(s => [
+  const [refreshStage, refreshPush, refreshStash] = useRefreshRequest(s => [
     s.refreshStage,
     s.refreshPush,
+    s.refreshStash,
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, currentModel] = useAiState(s => [
@@ -91,6 +92,26 @@ export default function Commiter({
     setIsCommiting(true);
   }
 
+  async function savePatch() {
+    const path = await save({
+      title: t('workspace.patch_save_path'),
+      defaultPath: repoPath,
+      canCreateDirectories: true,
+    });
+    if (path === null || !repoPath) {
+      return;
+    }
+    const res = await commands?.createPatch(repoPath);
+    match(res)
+      .with({ status: 'ok' }, async v => {
+        await writeTextFile(path, v.data);
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+    debug(`save patch file to ${path}`);
+  }
+
   async function discardChanges() {
     if (!repoPath) {
       return;
@@ -120,6 +141,22 @@ export default function Commiter({
       });
   }
 
+  async function stashFiles() {
+    if (!repoPath) {
+      return;
+    }
+    const res = await commands?.stashSave(repoPath, null);
+    match(res)
+      .with({ status: 'ok' }, async _ => {
+        refreshStash();
+        refreshStage();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+    debug('save stash');
+  }
+
   if (!isCommiting) {
     return (
       <div className={cn('flex gap-2', className)}>
@@ -131,38 +168,18 @@ export default function Commiter({
           {t('commiter.start_commit')}
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild disabled={changeSet.length === 0}>
             <Button variant={'ghost'}>
               <DotsHorizontalIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={async () => {
-                  const path = await save({
-                    title: t('workspace.patch_save_path'),
-                    defaultPath: repoPath,
-                    canCreateDirectories: true,
-                  });
-                  if (path === null || !repoPath) {
-                    return;
-                  }
-                  const res = await commands?.createPatch(repoPath);
-                  match(res)
-                    .with({ status: 'ok' }, async v => {
-                      await writeTextFile(path, v.data);
-                    })
-                    .with({ status: 'error' }, err => {
-                      NOTIFY.error(err.error);
-                    });
-                  debug(`save patch file to ${path}`);
-                }}
-              >
+              <DropdownMenuItem onClick={savePatch}>
                 <VscDiff className="w-4 h-4 mr-2" />
                 {t('workspace.generate_patch')}
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={stashFiles}>
                 <VscGitStash className="w-4 h-4 mr-2" />
                 {t('workspace.stash')}
               </DropdownMenuItem>

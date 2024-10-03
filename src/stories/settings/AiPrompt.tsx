@@ -15,6 +15,7 @@ export default function () {
       <CardContent>
         <Textarea
           value={prompt}
+          className="text-base"
           onChange={val => {
             setPrompt(val.target.value);
           }}

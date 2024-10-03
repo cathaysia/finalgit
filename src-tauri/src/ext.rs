@@ -274,9 +274,9 @@ impl RepoExt for git2::Repository {
         Ok(res)
     }
     fn get_config(&self, key: &str) -> AppResult<String> {
-        let output = self.exec_git(["config", "--local", "--get", key])?;
-        let out = String::from_utf8(output.stdout)?;
-        Ok(out)
+        let output = self.exec_git(["config", "--get", key])?;
+        let out = std::str::from_utf8(&output.stdout)?.trim();
+        Ok(out.into())
     }
     fn set_config(&self, key: &str, value: &str) -> AppResult<()> {
         let _ = self.exec_git(["config", "--local", key, value])?;

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -11,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import GitSwitch from '../atoms/GitSwitch';
 
 export interface GitCoreProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -23,10 +23,16 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
         <CardTitle>{t('profile.git.core')}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <div className="w-full flex justify-between">
-          <Label>{t('profile.git.gpg_sign')}</Label>
-          <Checkbox />
-        </div>
+        <GitSwitch
+          name={t('profile.git.commit.gpgsign')}
+          id="profile.git.commitsign"
+          opt={'commit.gpgsign'}
+        />
+        <GitSwitch
+          name={t('profile.git.tag.gpgsign')}
+          id="profile.git.tag.gpgsign"
+          opt={'tag.gpgsign'}
+        />
         <div>
           <Label>{t('profile.git.defaultBranch')}</Label>
           <Input type="text" />

@@ -8,7 +8,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex gap-2 w-screen h-screen">
+    <div className="flex gap-2 w-screen h-screen p-2">
       <ControlPanel className="w-1/4 h-full" />
       {children}
     </div>

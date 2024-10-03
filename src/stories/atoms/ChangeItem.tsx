@@ -33,7 +33,10 @@ export default function ChangeItem({
   ...props
 }: ChangeItemProps) {
   const { t } = useTranslation();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath, toggleDiffView] = useAppState(s => [
+    s.repoPath,
+    s.toggleDiffView,
+  ]);
   const [refreshStage] = useRefreshRequest(s => [s.refreshStage]);
 
   function getCheckedStatus(status: number) {
@@ -100,6 +103,7 @@ export default function ChangeItem({
     <div
       className={cn('flex justify-between items-center', className)}
       {...props}
+      onClick={toggleDiffView}
     >
       <div className="flex gap-2">
         <Checkbox

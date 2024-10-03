@@ -48,6 +48,7 @@ export interface AppState {
   files: FileTree[];
   current?: string;
   project: string[];
+  isDiffView: boolean;
   setRepoPath: (isOpened: string) => void;
   setBranches: (branches: BranchInfo[]) => void;
   setTags: (tags: TagInfo[]) => void;
@@ -56,6 +57,8 @@ export interface AppState {
   setCurrent: (current: string) => void;
   setProject: (project: string[]) => void;
   setHead: (head: string | undefined) => void;
+  setIsDiffView: (enabled: boolean) => void;
+  toggleDiffView: () => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -69,6 +72,7 @@ export const useAppState = create<AppState>()(
       files: [],
       current: undefined,
       project: [],
+      isDiffView: false,
       setRepoPath: (repoPath: string) => {
         set(s => ({
           repoPath: repoPath,
@@ -85,6 +89,8 @@ export const useAppState = create<AppState>()(
       setCurrent: (current: string) => set({ current: current }),
       setProject: (project: string[]) => set({ project: project }),
       setHead: (head: string | undefined) => set({ head: head }),
+      setIsDiffView: (enabled: boolean) => set({ isDiffView: enabled }),
+      toggleDiffView: () => set(s => ({ isDiffView: !s.isDiffView })),
     }),
     {
       name: 'app',

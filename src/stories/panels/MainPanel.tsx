@@ -1,11 +1,10 @@
-import { commands, type CommitInfo } from '@/bindings';
+import { commands } from '@/bindings';
 import { cn } from '@/lib/utils';
 import WorkspacePanel from './WorkspacePanel';
 import { useAppState, useRefreshRequest } from '@/lib/state';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { match } from 'ts-pattern';
 import { debug } from '@tauri-apps/plugin-log';
-import GitHistory from '../lists/GitHistory';
 import NOTIFY from '@/lib/notify';
 
 export interface MainPanelProps
@@ -24,7 +23,6 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
     ]);
 
   const [stageListener] = useRefreshRequest(s => [s.stageListener]);
-  const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
 
   const item = branches.find(item => item.is_head);
   let branchName = '';
@@ -60,34 +58,17 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
             NOTIFY.error(err.error);
           });
       });
-      commands?.getHistory(repoPath, head.commit).then(v => {
-        match(v)
-          .with({ status: 'ok' }, v => {
-            setCurrentHisotry(v.data);
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      });
     }
   }, [branches]);
 
   return (
-    <div
-      className={cn(
-        'grid lg:grid-cols-2 xl:grid-cols-3 gap-2 h-full p-2',
-        className,
-      )}
-      data-tauri-drag-region={true}
-      {...props}
-    >
+    <div className={cn(className)} data-tauri-drag-region={true} {...props}>
       <WorkspacePanel
         branchName={branchName}
         changeSet={changes}
         files={files}
         className="h-full"
       />
-      <GitHistory history={currentHistory} className="h-full" />
     </div>
   );
 }

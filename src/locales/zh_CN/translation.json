@@ -57,6 +57,7 @@
   },
   "Ollama": "Ollama",
   "profile": {
+    "add_before_discard": "profile.add_before_discard",
     "ai_provider": "profile.ai_provider",
     "behaviour": "profile.behaviour",
     "git": {
@@ -79,10 +80,17 @@
     "add_local_repository": "project.add_local_repository",
     "clone_repository": "project.clone_repository"
   },
+  "rename": {
+    "kind": "rename.kind"
+  },
   "settings": {
     "ai": "settings.ai",
     "git": "settings.git",
     "profile": "settings.profile"
+  },
+  "stash": {
+    "apply": "stash.apply",
+    "delete": "stash.delete"
   },
   "tag": {
     "delete": "tag.delete"

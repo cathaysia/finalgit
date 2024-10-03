@@ -57,6 +57,7 @@
   },
   "Ollama": "Ollama",
   "profile": {
+    "add_before_discard": "Add before discard",
     "ai_provider": "Provider",
     "behaviour": "Behaviour",
     "git": {
@@ -73,16 +74,23 @@
       "user": "User",
       "username": "Name"
     },
-    "stash_before_checkout": "Enable smart stash."
+    "stash_before_checkout": "Enable smart stash"
   },
   "project": {
     "add_local_repository": "add local repository",
     "clone_repository": "clone repository"
   },
+  "rename": {
+    "kind": "rename.kind"
+  },
   "settings": {
     "ai": "AI",
     "git": "GIT",
     "profile": "PROFILE"
+  },
+  "stash": {
+    "apply": "stash.apply",
+    "delete": "stash.delete"
   },
   "tag": {
     "delete": "delete"

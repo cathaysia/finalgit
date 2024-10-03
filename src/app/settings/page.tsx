@@ -14,11 +14,19 @@ export default function ProfileComponent() {
         <CardHeader>
           <CardTitle>{t('profile.behaviour')}</CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-between">
-          <Label htmlFor="profile.stash">
-            {t('profile.stash_before_checkout')}
-          </Label>
-          <Checkbox id="profile.stash" />
+        <CardContent className="flex justify-between flex-col gap-2">
+          <div className="flex justify-between">
+            <Label htmlFor="profile.stash">
+              {t('profile.stash_before_checkout')}
+            </Label>
+            <Checkbox id="profile.stash" />
+          </div>
+          <div className="flex justify-between">
+            <Label htmlFor="profile.discard">
+              {t('profile.add_before_discard')}
+            </Label>
+            <Checkbox id="profile.discard" />
+          </div>
         </CardContent>
       </Card>
     </>

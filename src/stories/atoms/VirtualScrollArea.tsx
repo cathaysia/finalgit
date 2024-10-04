@@ -5,18 +5,16 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import React from 'react';
 
 export interface VirtualScrollAreaProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {
+  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   count: number;
   height: number;
   getItem: (idx: number) => React.ReactElement;
 }
 
-export default function VirtualScrollArea({
-  className,
-  count,
-  height,
-  getItem,
-}: VirtualScrollAreaProps) {
+const VirtualScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  VirtualScrollAreaProps
+>(({ className, count, height, getItem, ...props }, ref) => {
   const parentRef = React.useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -28,6 +26,8 @@ export default function VirtualScrollArea({
   return (
     <ScrollAreaPrimitive.Root
       className={cn('relative overflow-hidden', className)}
+      {...props}
+      ref={ref}
     >
       <ScrollAreaPrimitive.Viewport
         ref={parentRef}
@@ -60,4 +60,6 @@ export default function VirtualScrollArea({
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
   );
-}
+});
+
+export default VirtualScrollArea;

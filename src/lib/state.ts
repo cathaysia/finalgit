@@ -2,10 +2,10 @@ import type { BranchInfo, FileStatus, FileTree, TagInfo } from '@/bindings';
 import { Store } from '@tauri-apps/plugin-store';
 import { create } from 'zustand';
 import {
+  type StateStorage,
   createJSONStorage,
   devtools,
   persist,
-  type StateStorage,
 } from 'zustand/middleware';
 
 export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.

@@ -1,7 +1,7 @@
 import type { BranchInfo } from '@/bindings';
+import { cn } from '@/lib/utils';
 import BranchItem from '@/stories/atoms/BranchItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
-import { cn } from '@/lib/utils';
 
 export interface BranchListProps
   extends React.ComponentProps<typeof VirtualScrollArea> {
@@ -23,7 +23,7 @@ export default function BranchList({
         const item = branches[idx];
         return <BranchItem info={item} filter={filter} />;
       }}
-      className={cn('min-h-0 h-full', className)}
+      className={cn('h-full min-h-0', className)}
       {...props}
     />
   );

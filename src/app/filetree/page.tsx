@@ -1,22 +1,22 @@
 'use client';
-import CodeMirror from '@uiw/react-codemirror';
-import { Nav } from '@/components/Nav';
-import { useAppState } from '@/lib/state';
-import FilePanel from '@/stories/panels/FilePanel';
-import { useState } from 'react';
-import { MdHome } from 'react-icons/md';
 import { commands } from '@/bindings';
-import { match } from 'ts-pattern';
-import NOTIFY from '@/lib/notify';
-import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
-import { useTheme } from 'next-themes';
-import { loadLanguage } from '@uiw/codemirror-extensions-langs';
-import { redirect } from 'next/navigation';
+import { Nav } from '@/components/Nav';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
+import NOTIFY from '@/lib/notify';
+import { useAppState } from '@/lib/state';
+import FilePanel from '@/stories/panels/FilePanel';
+import { loadLanguage } from '@uiw/codemirror-extensions-langs';
+import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
+import CodeMirror from '@uiw/react-codemirror';
+import { useTheme } from 'next-themes';
+import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { MdHome } from 'react-icons/md';
+import { match } from 'ts-pattern';
 
 export default function FileTree() {
   const [repoPath, tree, current] = useAppState(s => [
@@ -67,10 +67,10 @@ export default function FileTree() {
   return (
     <ResizablePanelGroup
       direction="horizontal"
-      className="h-screen flex p-2 overflow-clip"
+      className="flex h-screen overflow-clip p-2"
       data-tauri-drag-region={true}
     >
-      <ResizablePanel defaultSize={20} className="flex flex-col w-52">
+      <ResizablePanel defaultSize={20} className="flex w-52 flex-col">
         <Nav to="/" text={<MdHome />} />
         <FilePanel files={tree} onClicked={getText} />
       </ResizablePanel>
@@ -78,7 +78,7 @@ export default function FileTree() {
       <ResizablePanel className="grow">
         <CodeMirror
           value={text}
-          className="h-screen w-full text-base font-mono"
+          className="h-screen w-full font-mono text-base"
           height="100%"
           theme={mirrorTheme}
           readOnly

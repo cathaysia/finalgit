@@ -474,8 +474,8 @@ export type TagInfo = { name: string; commit: string; ref_hash: string };
 /** tauri-specta globals **/
 
 import {
-  invoke as TAURI_INVOKE,
   Channel as TAURI_CHANNEL,
+  invoke as TAURI_INVOKE,
 } from '@tauri-apps/api/core';
 import * as TAURI_API_EVENT from '@tauri-apps/api/event';
 import { type WebviewWindow as __WebviewWindow__ } from '@tauri-apps/api/webviewWindow';

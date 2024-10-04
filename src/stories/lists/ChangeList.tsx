@@ -1,14 +1,14 @@
-import { commands, type FileStatus } from '@/bindings';
+import { type FileStatus, commands } from '@/bindings';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
+import GitFileStatus from '@/lib/file_status';
+import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
-import { Separator } from '@/components/ui/separator';
-import Commiter from '../atoms/Commiter';
-import { useAppState, useRefreshRequest } from '@/lib/state';
-import ChangeItem from '../atoms/ChangeItem';
 import { match } from 'ts-pattern';
-import NOTIFY from '@/lib/notify';
-import GitFileStatus from '@/lib/file_status';
-import { Checkbox } from '@/components/ui/checkbox';
+import ChangeItem from '../atoms/ChangeItem';
+import Commiter from '../atoms/Commiter';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface ChangeListProps
@@ -64,7 +64,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
-      <div className="w-full flex">
+      <div className="flex w-full">
         <Checkbox
           checked={allChecked}
           onCheckedChange={toggleAllChecked}

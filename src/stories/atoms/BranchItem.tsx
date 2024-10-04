@@ -1,4 +1,4 @@
-import { commands, type BranchInfo } from '@/bindings';
+import { type BranchInfo, commands } from '@/bindings';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,7 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import NOTIFY from '@/lib/notify';
 import { useAppState, useRefreshRequest } from '@/lib/state';
+import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import type React from 'react';
@@ -17,8 +19,6 @@ import { useTranslation } from 'react-i18next';
 import { FaCodeBranch } from 'react-icons/fa';
 import { match } from 'ts-pattern';
 import BranchRename from './BranchRename';
-import { DEFAULT_STYLE } from '@/lib/style';
-import NOTIFY from '@/lib/notify';
 import HighLightLabel from './HighlightLabel';
 
 export interface BranchItemProps
@@ -123,7 +123,7 @@ export default function BranchItem({
     return (
       <div
         className={cn(
-          'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
+          'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:bg-neutral-900 dark:text-white',
           DEFAULT_STYLE,
           isHead && 'border-green-600',
           className,
@@ -144,20 +144,20 @@ export default function BranchItem({
   return (
     <div
       className={cn(
-        'w-full flex justify-between border rounded-none px-4 py-3 items-center gap-2',
+        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
         DEFAULT_STYLE,
         isHead && 'border-green-600 dark:border-green-600',
         className,
       )}
       {...props}
     >
-      <div className="w-full flex min-w-0 gap-2 items-center">
-        <FaCodeBranch className="inline-block min-w-4 min-h-4 max-w-4 max-h-4" />
-        <div className="w-full flex gap-2 flex-col">
+      <div className="flex w-full min-w-0 items-center gap-2">
+        <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
+        <div className="flex w-full flex-col gap-2">
           <HighLightLabel
             text={branchName}
             filter={filter}
-            className="whitespace-nowrap overflow-hidden text-ellipsis"
+            className="overflow-hidden text-ellipsis whitespace-nowrap"
           />
           <div className="flex gap-2">
             <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>

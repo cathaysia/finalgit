@@ -1,4 +1,6 @@
 import type { CommitInfo } from '@/bindings';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,17 +8,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
+import NOTIFY from '@/lib/notify';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/stories/atoms/UserAvatar';
-import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-import { Button } from '@/components/ui/button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import NOTIFY from '@/lib/notify';
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import HighLightLabel from './HighlightLabel';
-import React from 'react';
 
 export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -36,7 +36,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     return (
       <div
         className={cn(
-          'border h-16 py-4 px-2 text-sm font-medium items-center flex justify-between text-wrap',
+          'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
           className,
         )}

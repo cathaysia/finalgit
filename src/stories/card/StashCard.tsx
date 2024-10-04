@@ -1,13 +1,13 @@
-import { cn } from '@/lib/utils';
+import type { StashInfo } from '@/bindings';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { GoTriangleUp, GoTriangleDown } from 'react-icons/go';
-import StashList from '../lists/StashList';
-import type { StashInfo } from '@/bindings';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+import StashList from '../lists/StashList';
 
 export interface StashCardProps
   extends React.ComponentProps<typeof Collapsible> {
@@ -27,7 +27,7 @@ export default function StashCard({
   return (
     <Collapsible
       open={isOpen}
-      className={cn('w-full flex flex-col space-y-2', className)}
+      className={cn('flex w-full flex-col space-y-2', className)}
       onOpenChange={setIsOpen}
       style={{ width: 'var(--radix-popper-anchor-width)', ...style }}
       {...props}

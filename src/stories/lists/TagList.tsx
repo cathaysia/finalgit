@@ -1,16 +1,20 @@
 import type { TagInfo } from '@/bindings';
+import { cn } from '@/lib/utils';
 import { TagItem } from '@/stories/atoms/TagItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
-import { cn } from '@/lib/utils';
 
-export interface TagListProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface TagListProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof VirtualScrollArea>,
+    'count' | 'height' | 'getItem'
+  > {
   tags: TagInfo[];
   filter?: string;
 }
 
 export function TagList({ tags, filter, className, ...props }: TagListProps) {
   return (
-    <div className={cn('flex flex-col h-full', className)} {...props}>
+    <div className={cn('flex h-full flex-col', className)} {...props}>
       <VirtualScrollArea
         count={tags.length}
         height={60}

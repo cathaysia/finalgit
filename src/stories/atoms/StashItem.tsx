@@ -1,7 +1,5 @@
-import { commands, type StashInfo } from '@/bindings';
+import { type StashInfo, commands } from '@/bindings';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { useAppState, useRefreshRequest } from '@/lib/state';
-import { match } from 'ts-pattern';
 import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { cn } from '@/lib/utils';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useTranslation } from 'react-i18next';
+import { match } from 'ts-pattern';
 
 export interface StashItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -58,18 +58,18 @@ export default function StashItem({
 
   return (
     <div
-      className={cn('flex gap-2 justify-between w-full', className)}
+      className={cn('flex w-full justify-between gap-2', className)}
       {...props}
     >
       <div className="min-w-0">
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <span
-            className="whitespace-nowrap overflow-hidden text-ellipsis"
+            className="overflow-hidden text-ellipsis whitespace-nowrap"
             title={stash.message}
           >
             {stash.message}
           </span>
-          <Badge className="font-mono h-8">{stash.oid.slice(0, 6)}</Badge>
+          <Badge className="h-8 font-mono">{stash.oid.slice(0, 6)}</Badge>
         </div>
       </div>
       <DropdownMenu>

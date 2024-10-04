@@ -1,6 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GitOption from '../atoms/GitOption';
 
 export interface GitUserProps
@@ -13,7 +13,7 @@ export default function GitUser({ className, ...props }: GitUserProps) {
       <CardHeader>
         <CardTitle>{t('profile.git.user')}</CardTitle>
       </CardHeader>
-      <CardContent className="flex gap-2 flex-col">
+      <CardContent className="flex flex-col gap-2">
         <GitOption
           name={t('profile.git.username')}
           id="profile.git.username"

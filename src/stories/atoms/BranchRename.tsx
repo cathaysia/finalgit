@@ -1,8 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Select,
   SelectContent,
@@ -12,6 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface BranchRenameProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -34,7 +34,7 @@ export default function BranchRename({
   return (
     <div
       className={cn(
-        'w-full flex justify-between gap-2 @container/renamer',
+        '@container/renamer flex w-full justify-between gap-2',
         className,
       )}
     >
@@ -70,7 +70,7 @@ export default function BranchRename({
         }}
         {...props}
       />
-      <div className="@sm/renamer:flex @sm/renamer:gap-2 hidden">
+      <div className="@sm/renamer:flex hidden @sm/renamer:gap-2">
         <Button
           onClick={() => {
             onConfirm?.(value);

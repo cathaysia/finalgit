@@ -3,7 +3,10 @@ import StashItem from '../atoms/StashItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface StashListProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof VirtualScrollArea>,
+    'count' | 'height' | 'getItem'
+  > {
   stashList: StashInfo[];
 }
 

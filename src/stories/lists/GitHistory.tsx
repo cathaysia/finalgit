@@ -1,7 +1,7 @@
 import type { CommitInfo } from '@/bindings';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 import CommitItem from '../atoms/CommitItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
-import { Draggable, Droppable } from '@hello-pangea/dnd';
 
 export interface GitHistoryProps
   extends React.ComponentProps<typeof VirtualScrollArea> {

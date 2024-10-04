@@ -14,7 +14,7 @@ export default function ProfileComponent() {
         <CardHeader>
           <CardTitle>{t('profile.behaviour')}</CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-between flex-col gap-2">
+        <CardContent className="flex flex-col justify-between gap-2">
           <div className="flex justify-between">
             <Label htmlFor="profile.stash">
               {t('profile.stash_before_checkout')}

@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import Icon from '@/components/icon';
 import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 import {
-  useTreeItem2,
-  type UseTreeItem2Parameters,
-} from '@mui/x-tree-view/useTreeItem2';
-import {
+  TreeItem2Checkbox,
   TreeItem2Content,
-  TreeItem2IconContainer,
   TreeItem2GroupTransition,
+  TreeItem2IconContainer,
   TreeItem2Label,
   TreeItem2Root,
-  TreeItem2Checkbox,
 } from '@mui/x-tree-view/TreeItem2';
+import { TreeItem2DragAndDropOverlay } from '@mui/x-tree-view/TreeItem2DragAndDropOverlay';
 import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
-import { TreeItem2DragAndDropOverlay } from '@mui/x-tree-view/TreeItem2DragAndDropOverlay';
-import Icon from '@/components/icon';
+import {
+  type UseTreeItem2Parameters,
+  useTreeItem2,
+} from '@mui/x-tree-view/useTreeItem2';
+import * as React from 'react';
 
 const CustomTreeItemContent = styled(TreeItem2Content)(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
@@ -57,7 +57,7 @@ export const IconedItem = React.forwardRef(function IconedItem(
             <Icon
               fileName={label as string}
               isDir={isDir}
-              className="w-4 h-4 mr-2"
+              className="mr-2 h-4 w-4"
             />
             <TreeItem2Checkbox {...getCheckboxProps()} />
             <TreeItem2Label {...getLabelProps()} />

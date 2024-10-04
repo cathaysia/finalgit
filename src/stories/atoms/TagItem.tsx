@@ -1,4 +1,4 @@
-import { commands, type TagInfo } from '@/bindings';
+import { type TagInfo, commands } from '@/bindings';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,14 +44,14 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   return (
     <div
       className={cn(
-        'w-full flex justify-between border rounded-none px-4 py-3 items-center dark:bg-neutral-900 dark:text-white gap-2',
+        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:bg-neutral-900 dark:text-white',
         className,
         DEFAULT_STYLE,
         info.ref_hash === head && 'border-green-600 dark:border-green-600',
       )}
       {...props}
     >
-      <span className="text-sm font-medium leading-none items-center flex gap-2">
+      <span className="flex items-center gap-2 font-medium text-sm leading-none">
         <FaTag className="inline-block" />
         <HighLightLabel text={info.name} filter={filter} />
         <Badge className="font-mono">{info.ref_hash.slice(0, 6)}</Badge>
@@ -65,15 +65,15 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <MdDelete className="text-red-600 mr-2 h-4 w-4" />
+              <MdDelete className="mr-2 h-4 w-4 text-red-600" />
               <span>{t('tag.delete')}</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={checkoutTag}>
-              <div className="w-4 h-4 mr-2" />
+              <div className="mr-2 h-4 w-4" />
               <span>{t('branch.checkout')}</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <div className="w-4 h-4 mr-2" />
+              <div className="mr-2 h-4 w-4" />
               <span>{t('tags.create_branch')}</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>

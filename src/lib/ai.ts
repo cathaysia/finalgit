@@ -1,5 +1,5 @@
-import { createOllama } from 'ollama-ai-provider';
 import { generateText } from 'ai';
+import { createOllama } from 'ollama-ai-provider';
 
 const Ollama = createOllama();
 

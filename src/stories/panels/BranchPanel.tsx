@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import BranchList from '@/stories/lists/BranchList';
+import { TagList } from '@/stories/lists/TagList';
 import { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { FaCodeBranch, FaFilter, FaTag } from 'react-icons/fa';
-import BranchList from '@/stories/lists/BranchList';
-import { TagList } from '@/stories/lists/TagList';
 
 export interface BranchCardProps {
   branches: BranchInfo[];
@@ -53,11 +53,11 @@ export default function BranchPanel({
   return (
     <Tabs
       defaultValue="branch"
-      className={cn('border focus:bg-red-50 h-full flex flex-col', className)}
+      className={cn('flex h-full flex-col border focus:bg-red-50', className)}
     >
-      <div className="flex gap-2 flex-col px-2">
-        <div className="flex justify-between items-center gap-2">
-          <TabsList className={cn('w-full grid grid-cols-2 mt-2')}>
+      <div className="flex flex-col gap-2 px-2">
+        <div className="flex items-center justify-between gap-2">
+          <TabsList className={cn('mt-2 grid w-full grid-cols-2')}>
             <TabsTrigger value="branch">
               <FaCodeBranch />
               {t('branch.branches')}

@@ -1,17 +1,17 @@
 import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import type React from 'react';
-import { useTranslation } from 'react-i18next';
-import BranchPanel from './BranchPanel';
-import Project from '@/stories/atoms/Project';
-import { useAppState, useRefreshRequest } from '@/lib/state';
-import { useEffect } from 'react';
-import { match } from 'ts-pattern';
-import ControlBar from '../atoms/ControlBar';
 import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { cn } from '@/lib/utils';
+import Project from '@/stories/atoms/Project';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type React from 'react';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { match } from 'ts-pattern';
+import ControlBar from '../atoms/ControlBar';
+import BranchPanel from './BranchPanel';
 
 export interface ControlPanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {}
@@ -63,7 +63,7 @@ export default function ControlPanel({
   return (
     <aside
       className={cn(
-        'w-full flex flex-col max-h-full overflow-hidden gap-4',
+        'flex max-h-full w-full flex-col gap-4 overflow-hidden',
         className,
       )}
       {...props}
@@ -77,7 +77,7 @@ export default function ControlPanel({
       <BranchPanel
         branches={branches}
         tags={tags}
-        className="border-none w-full h-full"
+        className="h-full w-full border-none"
       />
     </aside>
   );

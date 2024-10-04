@@ -41,8 +41,8 @@ function generateTree(
         itemId={key}
         key={key}
         label={
-          <span className="text-nowrap text-ellipsis">
-            <Icon fileName={entry.filename} className="w-4 h-4 mr-2" />
+          <span className="text-ellipsis text-nowrap">
+            <Icon fileName={entry.filename} className="mr-2 h-4 w-4" />
             {entry.filename}
           </span>
         }
@@ -62,7 +62,7 @@ function generateTree(
       key={key}
       label={
         <span>
-          <Icon fileName={tree.dir} isDir={true} className="w-4 h-4 mr-2" />
+          <Icon fileName={tree.dir} isDir={true} className="mr-2 h-4 w-4" />
           {tree.dir}
         </span>
       }

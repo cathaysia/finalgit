@@ -1,11 +1,11 @@
 import { commands } from '@/bindings';
-import { cn } from '@/lib/utils';
-import WorkspacePanel from './WorkspacePanel';
+import NOTIFY from '@/lib/notify';
 import { useAppState, useRefreshRequest } from '@/lib/state';
+import { cn } from '@/lib/utils';
+import { debug } from '@tauri-apps/plugin-log';
 import { useEffect } from 'react';
 import { match } from 'ts-pattern';
-import { debug } from '@tauri-apps/plugin-log';
-import NOTIFY from '@/lib/notify';
+import WorkspacePanel from './WorkspacePanel';
 
 export interface MainPanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {}

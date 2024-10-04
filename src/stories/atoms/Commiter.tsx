@@ -2,13 +2,14 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { save } from '@tauri-apps/plugin-dialog';
+import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { useTranslation } from 'react-i18next';
 import { FaMagic } from 'react-icons/fa';
 import { VscDiff } from 'react-icons/vsc';
 import { VscGitStash } from 'react-icons/vsc';
-import { save } from '@tauri-apps/plugin-dialog';
-import { writeTextFile } from '@tauri-apps/plugin-fs';
 
+import { type FileStatus, commands } from '@/bindings';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,17 +17,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { VscDiscard } from 'react-icons/vsc';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useState } from 'react';
-import { commands, type FileStatus } from '@/bindings';
-import { useAiState, useAppState, useRefreshRequest } from '@/lib/state';
-import { match } from 'ts-pattern';
-import GitFileStatus from '@/lib/file_status';
-import { debug } from '@tauri-apps/plugin-log';
 import { generateCommit } from '@/lib/ai';
-import { Loader2 } from 'lucide-react';
+import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
+import { useAiState, useAppState, useRefreshRequest } from '@/lib/state';
+import { debug } from '@tauri-apps/plugin-log';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { VscDiscard } from 'react-icons/vsc';
+import { match } from 'ts-pattern';
 
 export interface CommiterProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -176,18 +176,18 @@ export default function Commiter({
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={savePatch}>
-                <VscDiff className="w-4 h-4 mr-2" />
+                <VscDiff className="mr-2 h-4 w-4" />
                 {t('workspace.generate_patch')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={stashFiles}>
-                <VscGitStash className="w-4 h-4 mr-2" />
+                <VscGitStash className="mr-2 h-4 w-4" />
                 {t('workspace.stash')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="text-red-600"
                 onClick={discardChanges}
               >
-                <VscDiscard className="w-4 h-4 mr-2" />
+                <VscDiscard className="mr-2 h-4 w-4" />
                 {t('workspace.discard')}
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -247,7 +247,7 @@ export default function Commiter({
             </>
           ) : (
             <>
-              <FaMagic className="w-4 h-4 mr-2" />
+              <FaMagic className="mr-2 h-4 w-4" />
               {t('commiter.generate_message')}
             </>
           )}

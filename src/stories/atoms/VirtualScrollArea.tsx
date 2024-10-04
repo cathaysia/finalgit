@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import { ScrollBar } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import React from 'react';
@@ -38,7 +38,7 @@ const VirtualScrollArea = React.forwardRef<
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
           }}
-          className="w-full relative"
+          className="relative w-full"
         >
           {rowVirtualizer.getVirtualItems().map(item => {
             return (

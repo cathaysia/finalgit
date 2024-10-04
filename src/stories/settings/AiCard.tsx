@@ -1,15 +1,14 @@
 'use client';
-import { useTranslation } from 'react-i18next';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { useAiState } from '@/lib/state';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -17,9 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
 import { ollama } from '@/lib/ai';
+import { useAiState } from '@/lib/state';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 
 export default function AiCard() {
   const { t } = useTranslation();
@@ -83,7 +83,7 @@ export default function AiCard() {
                     })}
                   </SelectContent>
                 </Select>
-                <div className="w-full flex gap-2 items-center">
+                <div className="flex w-full items-center gap-2">
                   <Input className="mt-2" type="text" id="ollama_model" />
                   <Button>{t('ollama.add_model')}</Button>
                 </div>

@@ -2,19 +2,19 @@
 
 import '@/app/global.css';
 import '@/locales';
-import { ThemeProvider } from 'next-themes';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from 'sonner';
+import { commands } from '@/bindings';
+import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
 import { cn } from '@/lib/utils';
+import { DragDropContext } from '@hello-pangea/dnd';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { attachConsole } from '@tauri-apps/plugin-log';
 import { trace } from '@tauri-apps/plugin-log';
-import NOTIFY from '@/lib/notify';
-import { commands } from '@/bindings';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'sonner';
 import { match } from 'ts-pattern';
-import { useQuery } from '@tanstack/react-query';
-import { DragDropContext } from '@hello-pangea/dnd';
 
 const queryClient = new QueryClient();
 
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'bg-white dark:bg-zinc-950 text-slate-500 dark:text-slate-400 max-h-screen antialiased font-sans',
+          'max-h-screen bg-white font-sans text-slate-500 antialiased dark:bg-zinc-950 dark:text-slate-400',
         )}
       >
         <ThemeProvider

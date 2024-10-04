@@ -12,24 +12,24 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
   return (
     <div
       data-tauri-drag-region={true}
-      className={cn('flex justify-between w-full', className)}
+      className={cn('flex w-full justify-between', className)}
       {...props}
     >
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <div
-          className="h-3 w-3 bg-red-600 rounded-lg"
+          className="h-3 w-3 rounded-lg bg-red-600"
           onClick={() => {
             getCurrentWindow().close();
           }}
         />
         <div
-          className="h-3 w-3 bg-yellow-600 rounded-lg"
+          className="h-3 w-3 rounded-lg bg-yellow-600"
           onClick={() => {
             getCurrentWindow().minimize();
           }}
         />
         <div
-          className="h-3 w-3 bg-green-600 rounded-lg"
+          className="h-3 w-3 rounded-lg bg-green-600"
           onClick={() => {
             getCurrentWindow().toggleMaximize();
           }}

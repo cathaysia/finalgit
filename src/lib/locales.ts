@@ -1,10 +1,10 @@
-import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
 // biome-ignore lint/style/useNamingConvention: <explanation>
 import * as en_US from '@/locales/en_US/translation.json';
 // biome-ignore lint/style/useNamingConvention: <explanation>
 import * as zh_CN from '@/locales/zh_CN/translation.json';
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
 const resources = {
   // biome-ignore lint/style/useNamingConvention: <explanation>

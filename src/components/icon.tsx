@@ -1,8 +1,8 @@
 import languageMap from '@/lib/languageMap';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import type { Manifest } from 'material-icon-theme';
 import * as Dist from 'material-icon-theme/dist/material-icons.json';
+import Image from 'next/image';
 
 const manifest = Dist as Manifest;
 

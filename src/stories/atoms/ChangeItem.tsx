@@ -1,7 +1,6 @@
-import { commands, type FileStatus } from '@/bindings';
-import { VscDiff, VscDiffAdded, VscDiffRemoved } from 'react-icons/vsc';
+import { type FileStatus, commands } from '@/bindings';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,16 +8,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Label } from '@/components/ui/label';
 import GitFileStatus from '@/lib/file_status';
+import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/ui/button';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { VscDiff, VscDiffAdded, VscDiffRemoved } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
-import NOTIFY from '@/lib/notify';
 
 type CheckedState = boolean | 'indeterminate';
 export interface ChangeItemProps
@@ -101,7 +101,7 @@ export default function ChangeItem({
 
   return (
     <div
-      className={cn('flex justify-between items-center', className)}
+      className={cn('flex items-center justify-between', className)}
       {...props}
       onClick={toggleDiffView}
     >
@@ -115,7 +115,7 @@ export default function ChangeItem({
           className={cn(
             DEFAULT_STYLE,
             isConflicted &&
-              'text-red-600 dark:text-red-600 underline decoration-wavy',
+              'text-red-600 underline decoration-wavy dark:text-red-600',
             isDeleted && 'line-through',
             isNew && 'text-green-600 dark:text-gray-600',
             isModified && 'text-yellow-600 dark:text-yellow-600',
@@ -143,7 +143,7 @@ export default function ChangeItem({
                 className={cn(isChecked && 'hidden')}
                 onClick={addFileToStage}
               >
-                <VscDiffAdded className="w-4 h-4 mr-2" />
+                <VscDiffAdded className="mr-2 h-4 w-4" />
                 {t('changes.add')}
               </DropdownMenuItem>
               <DropdownMenuItem
@@ -160,18 +160,18 @@ export default function ChangeItem({
                     .with({ status: 'error' }, err => NOTIFY.error(err.error));
                 }}
               >
-                <VscDiffRemoved className="w-4 h-4 mr-2" />
+                <VscDiffRemoved className="mr-2 h-4 w-4" />
                 {t('changes.unstage')}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <VscDiff className="w-4 h-4 mr-2" />
+                <VscDiff className="mr-2 h-4 w-4" />
                 {t('changes.diff')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="text-red-600"
                 onClick={discardChanges}
               >
-                <VscDiffRemoved className="w-4 h-4 mr-2" />
+                <VscDiffRemoved className="mr-2 h-4 w-4" />
                 {t('changes.discard')}
               </DropdownMenuItem>
             </DropdownMenuGroup>

@@ -1,22 +1,22 @@
 import type { FileStatus, FileTree, StashInfo } from '@/bindings';
+import { type PushStatus, commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { commands, type PushStatus } from '@/bindings';
 import { FaFolderTree } from 'react-icons/fa6';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import type React from 'react';
-import { useTranslation } from 'react-i18next';
-import ChangeList from '@/stories/lists/ChangeList';
-import { DEFAULT_STYLE } from '@/lib/style';
-import Link from 'next/link';
-import { useAppState, useRefreshRequest } from '@/lib/state';
-import { VscDiff, VscRepoPull, VscRepoPush } from 'react-icons/vsc';
-import { useEffect, useState } from 'react';
-import { match } from 'ts-pattern';
 import NOTIFY from '@/lib/notify';
+import { useAppState, useRefreshRequest } from '@/lib/state';
+import { DEFAULT_STYLE } from '@/lib/style';
+import { cn } from '@/lib/utils';
+import ChangeList from '@/stories/lists/ChangeList';
+import Link from 'next/link';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { VscDiff, VscRepoPull, VscRepoPush } from 'react-icons/vsc';
+import { match } from 'ts-pattern';
 
 export interface WorkspacePanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -156,7 +156,7 @@ export default function WorkspacePanel({
 
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
-      <div className={cn('p-4 border rounded-xl shadow', DEFAULT_STYLE)}>
+      <div className={cn('rounded-xl border p-4 shadow', DEFAULT_STYLE)}>
         <div className="pb-2">
           <div className="pb-2">{branchName}</div>
           {upstream && <Badge>{upstream}</Badge>}
@@ -185,14 +185,14 @@ export default function WorkspacePanel({
       </div>
       <div
         className={cn(
-          'flex flex-col gap-2 grow p-4 border rounded-xl shadow',
+          'flex grow flex-col gap-2 rounded-xl border p-4 shadow',
           DEFAULT_STYLE,
         )}
       >
-        <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span>{t('workspace.changed_files')} </span>
-            <Avatar className="bg-gray-50 inline-block w-6 h-6">
+            <Avatar className="inline-block h-6 w-6 bg-gray-50">
               <AvatarFallback>{changeSet.length}</AvatarFallback>
             </Avatar>
           </div>

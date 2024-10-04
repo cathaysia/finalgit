@@ -45,6 +45,12 @@
       },
       "a11y": {
         "useKeyWithClickEvents": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe"
+        }
       }
     },
     "include": ["src/**/*", ".storybook/*", "index.html"],

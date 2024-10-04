@@ -1,3 +1,4 @@
+import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -7,17 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import NOTIFY from '@/lib/notify';
+import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
+import { open } from '@tauri-apps/plugin-dialog';
 import { useTranslation } from 'react-i18next';
 import { BsChevronExpand } from 'react-icons/bs';
 import { FaCheck } from 'react-icons/fa';
 import { IoIosAdd } from 'react-icons/io';
 import { MdAddToPhotos } from 'react-icons/md';
-import { open } from '@tauri-apps/plugin-dialog';
 import { match } from 'ts-pattern';
-import { commands } from '@/bindings';
-import { useAppState } from '@/lib/state';
-import NOTIFY from '@/lib/notify';
 
 export interface ProjectProps {
   projects?: string[];
@@ -59,7 +59,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className={cn('w-full flex justify-between', className)}>
+          <Button className={cn('flex w-full justify-between', className)}>
             {current}
             <BsChevronExpand />
           </Button>
@@ -78,7 +78,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
                   )}
                 >
                   <span>{item}</span>
-                  {item === current && <FaCheck className="w-4 h-4 ml-2" />}
+                  {item === current && <FaCheck className="ml-2 h-4 w-4" />}
                 </DropdownMenuItem>
               );
             })}
@@ -88,11 +88,11 @@ export default function Project({ projects = [], className }: ProjectProps) {
               onClick={openRepo}
             >
               <span>{t('project.add_local_repository')}</span>
-              <IoIosAdd className="w-4 h-4 ml-2" />
+              <IoIosAdd className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
             <DropdownMenuItem className="flex justify-between">
               <span>{t('project.clone_repository')}</span>
-              <MdAddToPhotos className="w-4 h-4 ml-2" />
+              <MdAddToPhotos className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

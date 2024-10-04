@@ -14,6 +14,7 @@ import { commands } from '@/bindings';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { match } from 'ts-pattern';
 import { useQuery } from '@tanstack/react-query';
+import { DragDropContext } from '@hello-pangea/dnd';
 
 const queryClient = new QueryClient();
 
@@ -38,12 +39,18 @@ export default function RootLayout({
           storageKey="vite-ui-theme"
           attribute="class"
         >
-          <QueryClientProvider client={queryClient}>
-            <App />
-            {children}
-            <Toaster richColors position="top-right" />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+          <DragDropContext
+            onDragEnd={() => {
+              console.log('drag end');
+            }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <App />
+              {children}
+              <Toaster richColors position="top-right" />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+          </DragDropContext>
         </ThemeProvider>
       </body>
     </html>

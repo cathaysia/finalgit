@@ -91,6 +91,31 @@ pub struct BranchInfo {
     pub upstream: Option<String>,
 }
 
+impl PartialOrd for BranchInfo {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for BranchInfo {
+    fn cmp(&self, other: &Self) -> Ordering {
+        if self.is_head {
+            return Ordering::Greater;
+        }
+        if other.is_head {
+            return Ordering::Less;
+        }
+
+        match (self.kind, other.kind) {
+            (git2::BranchType::Local, git2::BranchType::Remote) => return Ordering::Greater,
+            (git2::BranchType::Remote, git2::BranchType::Local) => return Ordering::Less,
+            _ => {}
+        }
+
+        self.name.cmp(&other.name)
+    }
+}
+
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(remote = "git2::BranchType")]
 enum BranchTypeSerde {

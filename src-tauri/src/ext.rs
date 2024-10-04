@@ -87,6 +87,8 @@ impl RepoExt for git2::Repository {
             branches.push(branch)
         }
 
+        branches.sort_by(|a, b| b.cmp(a));
+
         Ok(branches)
     }
 

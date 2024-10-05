@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'max-h-screen bg-white font-sans text-slate-500 antialiased dark:bg-zinc-950 dark:text-slate-400',
+          'max-h-screen bg-background font-sans text-foreground antialiased',
         )}
       >
         <ThemeProvider

@@ -12,6 +12,7 @@ import NOTIFY from '@/lib/notify';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
+import { Droppable } from '@hello-pangea/dnd';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import type React from 'react';
 import { useState } from 'react';
@@ -142,87 +143,99 @@ export default function BranchItem({
   }
 
   return (
-    <div
-      className={cn(
-        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
-        DEFAULT_STYLE,
-        isHead && 'border-green-600 dark:border-green-600',
-        className,
-      )}
-      {...props}
-    >
-      <div className="flex w-full min-w-0 items-center gap-2">
-        <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
-        <div className="flex w-full flex-col gap-2">
-          <HighLightLabel
-            text={branchName}
-            filter={filter}
-            className="overflow-hidden text-ellipsis whitespace-nowrap"
-          />
-          <div className="flex gap-2">
-            <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
-            {upstream && <Badge>{upstream}</Badge>}
-          </div>
-        </div>
-      </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant={'ghost'} size="sm">
-            <DotsHorizontalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              onClick={() => {
-                setOpState(OpState.Renaming);
-              }}
-            >
-              {t('branch.rename')}
-            </DropdownMenuItem>
-            {!isHead && (
-              <DropdownMenuItem
-                disabled={isDirty}
-                onClick={() => {
-                  checkout();
-                }}
-                className={cn(
-                  !isLocal && 'text-yellow-500 hover:text-yellow-500',
-                )}
-                title={(() => {
-                  if (isDirty) {
-                    return t('branch.disable_dirty');
-                  }
-                  if (!isLocal) {
-                    return t('branch.checkout_remote');
-                  }
-                })()}
-              >
-                {t('branch.checkout')}
-              </DropdownMenuItem>
+    <Droppable droppableId="branch">
+      {(provided, _) => {
+        return (
+          <div
+            ref={provided.innerRef}
+            className={cn(
+              'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
+              DEFAULT_STYLE,
+              isHead && 'border-green-600 dark:border-green-600',
+              className,
             )}
-            <DropdownMenuItem
-              onClick={() => {
-                setOpState(OpState.NewBranch);
-              }}
-            >
-              {t('branch.create_new_branch')}
-            </DropdownMenuItem>
-            <DropdownMenuItem>{t('branch.details')}</DropdownMenuItem>
-            <DropdownMenuItem>{t('branch.set_upstream')}</DropdownMenuItem>
-            <DropdownMenuItem>{t('branch.pull')}</DropdownMenuItem>
-            <DropdownMenuItem>{t('branch.push')}</DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={() => {
-                removeBranch();
-              }}
-            >
-              {t('branch.delete')}
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+            {...provided.droppableProps}
+            {...props}
+          >
+            <div className="flex w-full min-w-0 items-center gap-2">
+              <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
+              <div className="flex w-full flex-col gap-2">
+                <HighLightLabel
+                  text={branchName}
+                  filter={filter}
+                  className="overflow-hidden text-ellipsis whitespace-nowrap"
+                />
+                <div className="flex gap-2">
+                  <Badge>
+                    {isLocal ? t('branch.local') : t('branch.remote')}
+                  </Badge>
+                  {upstream && <Badge>{upstream}</Badge>}
+                </div>
+              </div>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant={'ghost'} size="sm">
+                  <DotsHorizontalIcon />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpState(OpState.Renaming);
+                    }}
+                  >
+                    {t('branch.rename')}
+                  </DropdownMenuItem>
+                  {!isHead && (
+                    <DropdownMenuItem
+                      disabled={isDirty}
+                      onClick={() => {
+                        checkout();
+                      }}
+                      className={cn(
+                        !isLocal && 'text-yellow-500 hover:text-yellow-500',
+                      )}
+                      title={(() => {
+                        if (isDirty) {
+                          return t('branch.disable_dirty');
+                        }
+                        if (!isLocal) {
+                          return t('branch.checkout_remote');
+                        }
+                      })()}
+                    >
+                      {t('branch.checkout')}
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpState(OpState.NewBranch);
+                    }}
+                  >
+                    {t('branch.create_new_branch')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>{t('branch.details')}</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    {t('branch.set_upstream')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>{t('branch.pull')}</DropdownMenuItem>
+                  <DropdownMenuItem>{t('branch.push')}</DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onClick={() => {
+                      removeBranch();
+                    }}
+                  >
+                    {t('branch.delete')}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      }}
+    </Droppable>
   );
 }

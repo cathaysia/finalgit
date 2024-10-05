@@ -5,6 +5,7 @@ import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { cn } from '@/lib/utils';
+import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 import ChangeItem from '../atoms/ChangeItem';
@@ -63,33 +64,73 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
   }
 
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
-      <div className="flex w-full">
-        <Checkbox
-          checked={allChecked}
-          onCheckedChange={toggleAllChecked}
-          hidden={changeSet.length === 0}
-        />
-      </div>
-      <VirtualScrollArea
-        count={changeSet.length}
-        height={35}
-        getItem={(idx: number) => {
-          const item = changeSet[idx];
-          return (
-            <ChangeItem
-              key={item.path}
-              item={{
-                path: item.path,
-                status: item.status,
+    <Droppable
+      droppableId="change"
+      mode="virtual"
+      renderClone={(provided, _, rubbic) => {
+        const item = changeSet[rubbic.source.index];
+        return (
+          <ChangeItem
+            ref={provided.innerRef}
+            key={item.path}
+            item={{
+              path: item.path,
+              status: item.status,
+            }}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          />
+        );
+      }}
+    >
+      {(provided, _) => {
+        return (
+          <div
+            className={cn('flex flex-col gap-2', className)}
+            ref={provided.innerRef}
+          >
+            <div className="flex w-full">
+              <Checkbox
+                checked={allChecked}
+                onCheckedChange={toggleAllChecked}
+                hidden={changeSet.length === 0}
+              />
+            </div>
+            <VirtualScrollArea
+              count={changeSet.length}
+              height={35}
+              getItem={(idx: number) => {
+                const item = changeSet[idx];
+                return (
+                  <Draggable
+                    key={item.path}
+                    index={idx}
+                    draggableId={item.path}
+                  >
+                    {(provided, _) => {
+                      return (
+                        <ChangeItem
+                          ref={provided.innerRef}
+                          key={item.path}
+                          item={{
+                            path: item.path,
+                            status: item.status,
+                          }}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        />
+                      );
+                    }}
+                  </Draggable>
+                );
               }}
+              className="grow"
             />
-          );
-        }}
-        className="grow"
-      />
-      <Separator />
-      <Commiter changeSet={changeSet} />
-    </div>
+            <Separator />
+            <Commiter changeSet={changeSet} />
+          </div>
+        );
+      }}
+    </Droppable>
   );
 }

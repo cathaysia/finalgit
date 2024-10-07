@@ -16,34 +16,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ollama } from '@/lib/ai';
+import NOTIFY from '@/lib/notify';
+import { queryOllamaModels } from '@/lib/query';
 import { useAiState } from '@/lib/state';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 export default function AiCard() {
   const { t } = useTranslation();
-  const [endpoint, models, setModels, currentModel, setCurrentModel] =
-    useAiState(s => [
-      s.ollamaEndpoint,
-      s.ollamaModel,
-      s.setOllamaModels,
-      s.ollamaCurrentModel,
-      s.setOllamaModel,
-    ]);
+  const [endpoint, currentModel, setCurrentModel] = useAiState(s => [
+    s.ollamaEndpoint,
+    s.ollamaCurrentModel,
+    s.setOllamaModel,
+  ]);
 
-  useQuery({
-    queryKey: ['ollama_model'],
-    queryFn: async () => {
-      const v = await ollama.queryModels(endpoint);
-      const res = v.models.map(item => item.model);
-      setModels(res);
-      if (!currentModel && res.length > 0) {
-        setCurrentModel(res[0]);
-      }
-      return 0;
-    },
-  });
+  const { error, data: models } = queryOllamaModels();
+  if (error) {
+    NOTIFY.error(error.message);
+  }
+  if (models && !currentModel && models.length > 0) {
+    setCurrentModel(models[0]);
+  }
 
   return (
     <Card className="w-full">
@@ -74,7 +66,7 @@ export default function AiCard() {
                     <SelectValue placeholder={currentModel} />
                   </SelectTrigger>
                   <SelectContent>
-                    {models.map(item => {
+                    {models?.map(item => {
                       return (
                         <SelectItem key={item} value={item}>
                           {item}

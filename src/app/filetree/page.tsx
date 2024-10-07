@@ -7,6 +7,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import NOTIFY from '@/lib/notify';
+import { queryFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import FilePanel from '@/stories/panels/FilePanel';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
@@ -19,11 +20,12 @@ import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
 export default function FileTree() {
-  const [repoPath, tree, current] = useAppState(s => [
-    s.repoPath,
-    s.files,
-    s.current,
-  ]);
+  const [repoPath, current] = useAppState(s => [s.repoPath, s.current]);
+  const { error: fileErr, data: files } = queryFiles();
+  if (fileErr) {
+    NOTIFY.error(fileErr.message);
+  }
+  const tree = files || [];
   if (tree.length === 0) {
     redirect('/');
   }

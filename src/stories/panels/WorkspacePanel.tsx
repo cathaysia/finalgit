@@ -26,6 +26,7 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
+import { queryBranches, queryFiles, queryTags } from '@/lib/query';
 import StashCard from '../card/StashCard';
 
 export default function WorkspacePanel({
@@ -36,16 +37,18 @@ export default function WorkspacePanel({
   ...props
 }: WorkspacePanelProps) {
   const { t } = useTranslation();
-  const [repoPath, branches, tags, tree, head, setHead] = useAppState(s => [
+  const [repoPath, head, setHead] = useAppState(s => [
     s.repoPath,
-    s.branches,
-    s.tags,
-    s.files,
     s.head,
     s.setHead,
   ]);
   const [stashList, setStashList] = useState<StashInfo[]>([]);
   const [refreshStash] = useRefreshRequest(s => [s.refreshStash]);
+  const { error: fileErr, data: files } = queryFiles();
+  if (fileErr) {
+    NOTIFY.error(fileErr.message);
+  }
+  const tree = files || [];
 
   async function refreshStashList() {
     if (!repoPath) {
@@ -62,10 +65,7 @@ export default function WorkspacePanel({
     refreshStashList();
   }, [refreshStash, repoPath]);
 
-  const [stateListener, refreshState] = useRefreshRequest(s => [
-    s.branchListener,
-    s.refreshPush,
-  ]);
+  const [refreshState] = useRefreshRequest(s => [s.refreshPush]);
   const [pushState, setPushState] = useState<PushStatus>({
     unpush: 0,
     unpull: 0,
@@ -87,8 +87,13 @@ export default function WorkspacePanel({
       });
   }
 
+  const { error: tagErr, data: tags } = queryTags();
+  if (tagErr) {
+    NOTIFY.error(tagErr.message);
+  }
+
   if (branchName === '') {
-    const item = tags.find(item => {
+    const item = tags?.find(item => {
       return item.ref_hash === head;
     });
     if (item !== undefined) {
@@ -96,8 +101,13 @@ export default function WorkspacePanel({
     }
   }
 
+  const { error, data: branches } = queryBranches();
+  if (error) {
+    NOTIFY.error(error.message);
+  }
+
   async function refreshBranchStatus() {
-    if (!repoPath) {
+    if (!repoPath || !branches) {
       return;
     }
     const currentBranch = branches.find(item => item.is_head);
@@ -120,7 +130,7 @@ export default function WorkspacePanel({
   useEffect(() => {
     refreshBranchStatus();
     refreshHead();
-  }, [branches, stateListener]);
+  }, [branches]);
 
   async function pushBranch() {
     if (!repoPath) {
@@ -137,7 +147,7 @@ export default function WorkspacePanel({
   }
 
   async function pullBranch() {
-    if (!repoPath) {
+    if (!repoPath || !branches) {
       return;
     }
     const currentBranch = branches.find(item => item.is_head);

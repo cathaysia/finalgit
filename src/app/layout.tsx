@@ -4,10 +4,11 @@ import '@/app/global.css';
 import '@/locales';
 import { commands } from '@/bindings';
 import NOTIFY from '@/lib/notify';
+import { queryClient } from '@/lib/query';
 import { useAppState, useRefreshRequest } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { DragDropContext } from '@hello-pangea/dnd';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { attachConsole } from '@tauri-apps/plugin-log';
@@ -15,8 +16,6 @@ import { trace } from '@tauri-apps/plugin-log';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from 'sonner';
 import { match } from 'ts-pattern';
-
-const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -59,10 +58,7 @@ export default function RootLayout({
 
 function App() {
   const repoPath = useAppState(s => s.repoPath);
-  const [setBranchListener, setStageListener] = useRefreshRequest(s => [
-    s.setBranchListener,
-    s.setStageListener,
-  ]);
+  const [setStageListener] = useRefreshRequest(s => [s.setStageListener]);
 
   useQuery({
     queryKey: ['.git/logs/HEAD'],
@@ -73,7 +69,6 @@ function App() {
       const res = await commands?.getHeadModifyTime(repoPath);
       match(res)
         .with({ status: 'ok' }, v => {
-          setBranchListener(v.data);
           setStageListener(v.data);
           trace(`refreshTime: ${v.data}`);
           return v.data;

@@ -1,15 +1,12 @@
-import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { queryBranches, queryTags } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import Project from '@/stories/atoms/Project';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type React from 'react';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { match } from 'ts-pattern';
 import ControlBar from '../atoms/ControlBar';
 import BranchPanel from './BranchPanel';
 
@@ -21,44 +18,17 @@ export default function ControlPanel({
   ...props
 }: ControlPanelProps) {
   const { t } = useTranslation();
-  const [repoPath, branches, setBranches, tags, setTags] = useAppState(s => [
-    s.repoPath,
-    s.branches,
-    s.setBranches,
-    s.tags,
-    s.setTags,
-  ]);
-  const [branchListener] = useRefreshRequest(s => [s.branchListener]);
-
-  useEffect(() => {
-    if (repoPath) {
-      commands?.getBranchInfo(repoPath).then(v => {
-        match(v)
-          .with({ status: 'ok' }, val => {
-            setBranches(val.data);
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      });
-    }
-  }, [repoPath, branchListener]);
-
-  useEffect(() => {
-    if (repoPath) {
-      commands?.getTagInfo(repoPath).then(v => {
-        match(v)
-          .with({ status: 'ok' }, val => {
-            setTags(val.data);
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      });
-    }
-  }, [repoPath]);
 
   const currentPath = usePathname();
+  const { error, data: branches } = queryBranches();
+  if (error) {
+    NOTIFY.error(error.message);
+  }
+
+  const { error: tagErr, data: tags } = queryTags();
+  if (tagErr) {
+    NOTIFY.error(tagErr.message);
+  }
 
   return (
     <aside
@@ -75,8 +45,8 @@ export default function ControlPanel({
       </Button>
 
       <BranchPanel
-        branches={branches}
-        tags={tags}
+        branches={branches || []}
+        tags={tags || []}
         className="h-full w-full border-none"
       />
     </aside>

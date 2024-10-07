@@ -9,7 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { refreshBranches } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -27,7 +28,6 @@ export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   const t = useTranslation().t;
   const [repoPath, head] = useAppState(s => [s.repoPath, s.head]);
-  const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
 
   async function checkoutTag() {
     if (!repoPath) {
@@ -38,7 +38,7 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
     match(res).with({ status: 'error' }, err => {
       NOTIFY.error(err.error);
     });
-    refreshBranch();
+    refreshBranches();
   }
 
   return (

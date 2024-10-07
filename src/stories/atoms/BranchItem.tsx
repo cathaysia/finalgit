@@ -9,7 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { queryChanges, refreshBranches } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { Droppable } from '@hello-pangea/dnd';
@@ -50,9 +51,13 @@ export default function BranchItem({
   const branchName = info.name;
   const upstream = info.remote;
   const isLocal = info.kind === 'Local';
-  const [repoPath, changes] = useAppState(s => [s.repoPath, s.changes]);
-  const [refreshBranch] = useRefreshRequest(s => [s.refreshBranch]);
-  const isDirty = changes.length !== 0;
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  const { error: changeErr, data: changes } = queryChanges();
+  if (changeErr) {
+    NOTIFY.error(changeErr.message);
+  }
+  const isDirty = changes?.length !== 0;
 
   async function removeBranch() {
     if (!isLocal || !repoPath) {
@@ -62,7 +67,7 @@ export default function BranchItem({
     const v = await commands?.removeBranch(repoPath, info);
     match(v)
       .with({ status: 'ok' }, () => {
-        refreshBranch();
+        refreshBranches();
       })
       .with({ status: 'error' }, err => {
         NOTIFY.error(err.error);
@@ -77,7 +82,7 @@ export default function BranchItem({
       const v = await commands?.checkoutBranch(repoPath, info.name);
       match(v)
         .with({ status: 'ok' }, () => {
-          refreshBranch();
+          refreshBranches();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);
@@ -86,7 +91,7 @@ export default function BranchItem({
       const v = await commands?.checkoutRemote(repoPath, info.name);
       match(v)
         .with({ status: 'ok' }, () => {
-          refreshBranch();
+          refreshBranches();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);
@@ -102,7 +107,7 @@ export default function BranchItem({
       const res = await commands?.renameBranch(repoPath, info, newName);
       match(res)
         .with({ status: 'ok' }, () => {
-          refreshBranch();
+          refreshBranches();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);
@@ -111,7 +116,7 @@ export default function BranchItem({
       const res = await commands?.createBranch(repoPath, newName, info.commit);
       match(res)
         .with({ status: 'ok' }, () => {
-          refreshBranch();
+          refreshBranches();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);

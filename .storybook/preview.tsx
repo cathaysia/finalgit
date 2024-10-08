@@ -1,7 +1,11 @@
+import '@/app/global.css';
+import { queryClient } from '@/lib/query';
+import { DragDropContext } from '@hello-pangea/dnd';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
 import { withI18next } from './i18n.tsx';
-import '@/app/global.css';
 
 export const decorators = [
   withThemeByClassName({
@@ -12,6 +16,16 @@ export const decorators = [
     defaultTheme: 'light',
   }),
   withI18next,
+  (Story, _) => {
+    return (
+      <DragDropContext>
+        <QueryClientProvider client={queryClient}>
+          <Story />
+          <Toaster richColors position="top-right" />
+        </QueryClientProvider>
+      </DragDropContext>
+    );
+  },
 ];
 const preview: Preview = {
   parameters: {

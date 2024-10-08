@@ -2,7 +2,6 @@ import languageMap from '@/lib/languageMap';
 import { cn } from '@/lib/utils';
 import type { Manifest } from 'material-icon-theme';
 import * as Dist from 'material-icon-theme/dist/material-icons.json';
-import Image from 'next/image';
 
 const manifest = Dist as Manifest;
 
@@ -41,7 +40,7 @@ export default function Icon({
   const iconpath = `/icons/${iconname}.svg`;
 
   return (
-    <Image
+    <img
       alt={iconname}
       className={cn('inline', className)}
       width={16}

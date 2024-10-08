@@ -1,4 +1,3 @@
-'use client';
 import { commands } from '@/bindings';
 import { Nav } from '@/components/Nav';
 import {
@@ -10,16 +9,21 @@ import NOTIFY from '@/lib/notify';
 import { useFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import FilePanel from '@/stories/panels/FilePanel';
+import { createFileRoute } from '@tanstack/react-router';
+import { Navigate } from '@tanstack/react-router';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
-import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
-export default function FileTree() {
+export const Route = createFileRoute('/filetree/')({
+  component: FileTree,
+});
+
+function FileTree() {
   const [repoPath, current] = useAppState(s => [s.repoPath, s.current]);
   const { error: fileErr, data: files } = useFiles();
   if (fileErr) {
@@ -27,7 +31,7 @@ export default function FileTree() {
   }
   const tree = files || [];
   if (tree.length === 0) {
-    redirect('/');
+    <Navigate to="/" />;
   }
   const [text, setText] = useState<string>();
   const { theme } = useTheme();

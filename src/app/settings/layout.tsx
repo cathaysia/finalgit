@@ -1,7 +1,11 @@
-'use client';
 import Panel from '@/stories/settings/Panel';
+import { Outlet, createFileRoute } from '@tanstack/react-router';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export const Route = createFileRoute('/settings')({
+  component: Layout,
+});
+
+export default function Layout() {
   return (
     <div className="flex h-screen p-2" data-tauri-drag-region={true}>
       <Panel className="w-1/6 min-w-36" />
@@ -14,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className="flex w-1/2 flex-col items-center gap-4"
           data-tauri-drag-region={true}
         >
-          {children}
+          <Outlet />
         </div>
       </div>
     </div>

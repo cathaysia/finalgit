@@ -1,4 +1,9 @@
-'use client';
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/settings/')({
+  component: ProfileComponent,
+});
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';

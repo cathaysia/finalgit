@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
+import { Link } from '@tanstack/react-router';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
 
@@ -34,7 +34,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
           }}
         />
       </div>
-      <Link href="/settings">
+      <Link to="/settings">
         <MdSettings className="mr-2" title={t('controlbar.preference')} />
       </Link>
     </div>

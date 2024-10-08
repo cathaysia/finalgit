@@ -5,7 +5,8 @@
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 4
+    "indentWidth": 4,
+    "ignore": ["./src/routeTree.gen.ts"]
   },
   "javascript": {
     "formatter": {

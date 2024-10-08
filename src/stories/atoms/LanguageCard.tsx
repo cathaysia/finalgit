@@ -1,5 +1,3 @@
-'use client';
-
 import i18n from '@/locales';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

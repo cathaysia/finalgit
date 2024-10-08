@@ -11,7 +11,6 @@ import { useAppState, useRefreshRequest } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/lists/ChangeList';
-import Link from 'next/link';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +26,7 @@ export interface WorkspacePanelProps
 }
 
 import { useBranches, useFiles, useStashList, useTags } from '@/lib/query';
+import { Link } from '@tanstack/react-router';
 import StashCard from '../card/StashCard';
 
 export default function WorkspacePanel({
@@ -171,11 +171,11 @@ export default function WorkspacePanel({
             </Avatar>
           </div>
           <div className="flex gap-2">
-            <Link href="/diff" className={cn(tree.length === 0 && 'hidden')}>
+            <Link to="/diff" className={cn(tree.length === 0 && 'hidden')}>
               <VscDiff />
             </Link>
             <Link
-              href="/filetree"
+              to="/filetree"
               className={cn(tree.length === 0 && 'pointer-events-none')}
             >
               <FaFolderTree />

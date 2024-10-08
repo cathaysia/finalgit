@@ -2,20 +2,23 @@
 
 import '@/app/global.css';
 import '@/locales';
-import { commands } from '@/bindings';
 import NOTIFY from '@/lib/notify';
-import { queryClient } from '@/lib/query';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import {
+  queryClient,
+  queryModifyTimes,
+  refreshBranches,
+  refreshChanges,
+  refreshFiles,
+  refreshTags,
+} from '@/lib/query';
 import { cn } from '@/lib/utils';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { attachConsole } from '@tauri-apps/plugin-log';
-import { trace } from '@tauri-apps/plugin-log';
 import { ThemeProvider } from 'next-themes';
+import { useEffect } from 'react';
 import { Toaster } from 'sonner';
-import { match } from 'ts-pattern';
 
 export default function RootLayout({
   children,
@@ -57,33 +60,17 @@ export default function RootLayout({
 }
 
 function App() {
-  const repoPath = useAppState(s => s.repoPath);
-  const [setStageListener] = useRefreshRequest(s => [s.setStageListener]);
+  const { error, data } = queryModifyTimes();
+  if (error) {
+    NOTIFY.error(error.message);
+  }
 
-  useQuery({
-    queryKey: ['.git/logs/HEAD'],
-    queryFn: async () => {
-      if (!repoPath) {
-        return 0;
-      }
-      const res = await commands?.getHeadModifyTime(repoPath);
-      match(res)
-        .with({ status: 'ok' }, v => {
-          setStageListener(v.data);
-          trace(`refreshTime: ${v.data}`);
-          return v.data;
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-
-      return 0;
-    },
-    retry: false,
-    refetchInterval: 1000,
-    refetchOnWindowFocus: 'always',
-    refetchOnReconnect: true,
-  });
+  useEffect(() => {
+    refreshBranches();
+    refreshTags();
+    refreshFiles();
+    refreshChanges();
+  }, [data]);
 
   return <></>;
 }

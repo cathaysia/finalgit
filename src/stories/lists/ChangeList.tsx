@@ -3,7 +3,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { refreshChanges } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { useMemo } from 'react';
@@ -19,7 +20,6 @@ export interface ChangeListProps
 
 export default function ChangeList({ className, changeSet }: ChangeListProps) {
   const repoPath = useAppState(s => s.repoPath);
-  const refreshStage = useRefreshRequest(s => s.refreshStage);
 
   const allChecked = useMemo(() => {
     const hasUnIndexed =
@@ -46,7 +46,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
       const res = await commands.removeFromStage(repoPath, changed);
       match(res)
         .with({ status: 'ok' }, () => {
-          refreshStage();
+          refreshChanges();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);
@@ -55,7 +55,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
       const res = await commands.addToStage(repoPath, changeSet);
       match(res)
         .with({ status: 'ok' }, () => {
-          refreshStage();
+          refreshChanges();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);

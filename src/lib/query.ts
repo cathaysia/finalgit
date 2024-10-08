@@ -26,6 +26,7 @@ export function queryBranches() {
         })
         .exhaustive();
     },
+    enabled: repoPath !== undefined,
   });
 }
 
@@ -52,6 +53,7 @@ export function queryTags() {
         })
         .exhaustive();
     },
+    enabled: repoPath !== undefined,
   });
 }
 
@@ -78,6 +80,7 @@ export function queryChanges() {
         })
         .exhaustive();
     },
+    enabled: repoPath !== undefined,
   });
 }
 
@@ -107,6 +110,7 @@ export function queryFiles() {
         })
         .exhaustive();
     },
+    enabled: repoPath !== undefined && head !== undefined,
   });
 }
 
@@ -125,4 +129,35 @@ export function queryOllamaModels() {
       return res;
     },
   });
+}
+
+export function queryModifyTimes() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['modifiedTime', repoPath],
+    queryFn: async () => {
+      if (!repoPath) {
+        return 0;
+      }
+      const res = await commands?.getHeadModifyTime(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, v => {
+          return v.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    retry: false,
+    refetchInterval: 1000,
+    refetchOnWindowFocus: 'always',
+    refetchOnReconnect: true,
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshModifyTimes() {
+  queryClient.invalidateQueries({ queryKey: ['modifiedTime'] });
 }

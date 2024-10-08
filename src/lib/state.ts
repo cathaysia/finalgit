@@ -84,22 +84,16 @@ export const useAppState = create<AppState>()(
 );
 
 export interface RefreshRequest {
-  stageListener: number;
   pushListener: number;
   stashListener: number;
-  refreshStage: () => void;
   refreshPush: () => void;
   refreshStash: () => void;
-  setStageListener: (time: number) => void;
 }
 
 export const useRefreshRequest = create<RefreshRequest>()(
   devtools(set => ({
-    stageListener: 0,
     pushListener: 0,
     stashListener: 0,
-    refreshStage: () => set(s => ({ stageListener: s.stageListener + 1 })),
-    setStageListener: (time: number) => set(() => ({ stageListener: time })),
     refreshPush: () => set(s => ({ pushListener: s.pushListener + 1 })),
     refreshStash: () => set(s => ({ stashListener: s.stashListener + 1 })),
   })),

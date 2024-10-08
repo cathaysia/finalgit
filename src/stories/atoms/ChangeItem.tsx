@@ -11,7 +11,8 @@ import {
 import { Label } from '@/components/ui/label';
 import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { refreshChanges } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -34,7 +35,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
       s.repoPath,
       s.toggleDiffView,
     ]);
-    const [refreshStage] = useRefreshRequest(s => [s.refreshStage]);
 
     function getCheckedStatus(status: number) {
       const isIndexed = GitFileStatus.isIndexed(status);
@@ -58,7 +58,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
       }
       const v = await commands.addToStage(repoPath, [item]);
       match(v)
-        .with({ status: 'ok' }, () => refreshStage())
+        .with({ status: 'ok' }, () => refreshChanges())
         .with({ status: 'error' }, err => NOTIFY.error(err.error));
     }
 
@@ -73,7 +73,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
         const v = await commands?.removeFromStage(repoPath, [item.path]);
         match(v)
           .with({ status: 'ok' }, () => {
-            refreshStage();
+            refreshChanges();
           })
           .with({ status: 'error' }, err => {
             NOTIFY.error(err.error);
@@ -89,7 +89,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
       const v = await commands?.restoreFile(repoPath, [item], null);
       match(v)
         .with({ status: 'ok' }, () => {
-          refreshStage();
+          refreshChanges();
         })
         .with({ status: 'error' }, err => {
           NOTIFY.error(err.error);
@@ -154,7 +154,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                       item.path,
                     ]);
                     match(v)
-                      .with({ status: 'ok' }, () => refreshStage())
+                      .with({ status: 'ok' }, () => refreshChanges())
                       .with({ status: 'error' }, err =>
                         NOTIFY.error(err.error),
                       );

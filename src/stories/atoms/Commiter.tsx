@@ -20,6 +20,7 @@ import {
 import { generateCommit } from '@/lib/ai';
 import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
+import { refreshChanges } from '@/lib/query';
 import { useAiState, useAppState, useRefreshRequest } from '@/lib/state';
 import { debug } from '@tauri-apps/plugin-log';
 import { Loader2 } from 'lucide-react';
@@ -42,8 +43,7 @@ export default function Commiter({
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
   const repoPath = useAppState(s => s.repoPath);
-  const [refreshStage, refreshPush, refreshStash] = useRefreshRequest(s => [
-    s.refreshStage,
+  const [refreshPush, refreshStash] = useRefreshRequest(s => [
     s.refreshPush,
     s.refreshStash,
   ]);
@@ -82,7 +82,7 @@ export default function Commiter({
       const res = await commands?.addToStage(repoPath, allfiles);
       match(res)
         .with({ status: 'ok' }, () => {
-          refreshStage();
+          refreshChanges();
           refreshPush();
         })
         .with({ status: 'error' }, err => {
@@ -134,7 +134,7 @@ export default function Commiter({
 
     match(res)
       .with({ status: 'ok' }, () => {
-        refreshStage();
+        refreshChanges();
       })
       .with({ status: 'error' }, err => {
         NOTIFY.error(err.error);
@@ -149,7 +149,7 @@ export default function Commiter({
     match(res)
       .with({ status: 'ok' }, async _ => {
         refreshStash();
-        refreshStage();
+        refreshChanges();
       })
       .with({ status: 'error' }, err => {
         NOTIFY.error(err.error);
@@ -263,7 +263,7 @@ export default function Commiter({
               match(v)
                 .with({ status: 'ok' }, () => {
                   setIsCommiting(false);
-                  refreshStage();
+                  refreshChanges();
                 })
                 .with({ status: 'error' }, err => {
                   NOTIFY.error(err.error);

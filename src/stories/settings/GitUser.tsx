@@ -3,8 +3,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import GitOption from '../atoms/GitOption';
 
-export interface GitUserProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
+type GitUserProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function GitUser({ className, ...props }: GitUserProps) {
   const { t } = useTranslation();

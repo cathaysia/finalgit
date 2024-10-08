@@ -85,17 +85,13 @@ export const useAppState = create<AppState>()(
 
 export interface RefreshRequest {
   pushListener: number;
-  stashListener: number;
   refreshPush: () => void;
-  refreshStash: () => void;
 }
 
 export const useRefreshRequest = create<RefreshRequest>()(
   devtools(set => ({
     pushListener: 0,
-    stashListener: 0,
     refreshPush: () => set(s => ({ pushListener: s.pushListener + 1 })),
-    refreshStash: () => set(s => ({ stashListener: s.stashListener + 1 })),
   })),
 );
 

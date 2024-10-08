@@ -26,42 +26,22 @@ export default function GitOption({
   const [value, setValue] = useState<string>();
   const [debounce] = useDebounce(value, 1000);
 
-  async function getValue() {
-    if (!repoPath) {
-      return;
-    }
-    const res = await commands?.getConfig(repoPath, opt);
-    match(res)
-      .with({ status: 'ok' }, val => {
-        setValue(val.data);
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
+  useEffect(() => {
+    if (repoPath) {
+      getValue(repoPath, opt).then(val => {
+        if (val) {
+          setValue(val);
+        }
       });
-  }
+    }
+  }, [repoPath, opt]);
 
   useEffect(() => {
-    getValue();
-  }, [repoPath]);
-
-  async function handleValueChange(value: string) {
-    if (!repoPath) {
+    if (!debounce || !repoPath || !debounce) {
       return;
     }
-    const res = await commands?.setConfig(repoPath, opt, value);
-    match(res)
-      .with({ status: 'ok' }, _ => {})
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
-  useEffect(() => {
-    if (!debounce) {
-      return;
-    }
-    handleValueChange(debounce);
-  }, [debounce]);
+    setConfig(repoPath, opt, debounce);
+  }, [debounce, repoPath, opt]);
 
   return (
     <div className={cn(className)} {...props}>
@@ -76,4 +56,25 @@ export default function GitOption({
       />
     </div>
   );
+}
+
+async function getValue(repoPath: string, opt: string) {
+  const res = await commands?.getConfig(repoPath, opt);
+  return match(res)
+    .with({ status: 'ok' }, val => {
+      return val.data;
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    })
+    .exhaustive();
+}
+
+async function setConfig(repoPath: string, opt: string, value: string) {
+  const res = await commands?.setConfig(repoPath, opt, value);
+  match(res)
+    .with({ status: 'ok' }, _ => {})
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
 }

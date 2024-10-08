@@ -1,13 +1,12 @@
 import NOTIFY from '@/lib/notify';
-import { queryBranches, queryChanges, queryFiles } from '@/lib/query';
+import { useBranches, useChanges, useFiles } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import WorkspacePanel from './WorkspacePanel';
 
-export interface MainPanelProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
+type MainPanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function MainPanel({ className, ...props }: MainPanelProps) {
-  const { error, data: branches } = queryBranches();
+  const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
   }
@@ -18,12 +17,12 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
     branchName = head.name;
   }
 
-  const { error: fileErr, data: file } = queryFiles();
+  const { error: fileErr, data: file } = useFiles();
   if (fileErr) {
     NOTIFY.error(fileErr.message);
   }
   const files = file || [];
-  const { error: changeErr, data: changes } = queryChanges();
+  const { error: changeErr, data: changes } = useChanges();
   if (changeErr) {
     NOTIFY.error(changeErr.message);
   }

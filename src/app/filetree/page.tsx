@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import NOTIFY from '@/lib/notify';
-import { queryFiles } from '@/lib/query';
+import { useFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import FilePanel from '@/stories/panels/FilePanel';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
@@ -21,7 +21,7 @@ import { match } from 'ts-pattern';
 
 export default function FileTree() {
   const [repoPath, current] = useAppState(s => [s.repoPath, s.current]);
-  const { error: fileErr, data: files } = queryFiles();
+  const { error: fileErr, data: files } = useFiles();
   if (fileErr) {
     NOTIFY.error(fileErr.message);
   }
@@ -62,7 +62,7 @@ export default function FileTree() {
 
   const extensions = [];
   if (language) {
-    // @ts-ignore
+    // @ts-expect-error: no error
     extensions.push(loadLanguage(language));
   }
 
@@ -84,7 +84,7 @@ export default function FileTree() {
           height="100%"
           theme={mirrorTheme}
           readOnly
-          // @ts-ignore
+          // @ts-expect-error: no error
           extensions={extensions}
         />
       </ResizablePanel>

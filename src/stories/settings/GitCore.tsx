@@ -12,9 +12,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import GitSwitch from '../atoms/GitSwitch';
 
-export interface GitCoreProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
-
+type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {
   const { t } = useTranslation();
   return (

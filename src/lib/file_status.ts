@@ -18,6 +18,7 @@ enum GitFileStatus {
   Conflicted = 1 << 15,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace GitFileStatus {
   export function isNew(status: number) {
     return (

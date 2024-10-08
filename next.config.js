@@ -6,6 +6,7 @@ const nextConfig = {
     parallelServerCompiles: true,
     parallelServerBuildTraces: true,
     webpackBuildWorker: true,
+    typedRoutes: true,
   },
   distDir: 'dist',
 };

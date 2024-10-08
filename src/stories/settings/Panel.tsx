@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { MdHome } from 'react-icons/md';
 import Nav from './Nav';
 
-export interface PanelProps extends React.HtmlHTMLAttributes<HTMLDivElement> {}
+type PanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 interface NavItemProps {
   to: string;

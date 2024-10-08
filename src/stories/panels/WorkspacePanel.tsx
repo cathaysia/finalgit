@@ -1,4 +1,4 @@
-import type { FileStatus, FileTree, StashInfo } from '@/bindings';
+import type { BranchInfo, FileStatus, FileTree } from '@/bindings';
 import { type PushStatus, commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { FaFolderTree } from 'react-icons/fa6';
@@ -26,7 +26,7 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
-import { queryBranches, queryFiles, queryTags } from '@/lib/query';
+import { useBranches, useFiles, useStashList, useTags } from '@/lib/query';
 import StashCard from '../card/StashCard';
 
 export default function WorkspacePanel({
@@ -42,28 +42,15 @@ export default function WorkspacePanel({
     s.head,
     s.setHead,
   ]);
-  const [stashList, setStashList] = useState<StashInfo[]>([]);
-  const [refreshStash] = useRefreshRequest(s => [s.refreshStash]);
-  const { error: fileErr, data: files } = queryFiles();
+  const { error: stashErr, data: stashList } = useStashList();
+  if (stashErr) {
+    NOTIFY.error(stashErr.message);
+  }
+  const { error: fileErr, data: files } = useFiles();
   if (fileErr) {
     NOTIFY.error(fileErr.message);
   }
   const tree = files || [];
-
-  async function refreshStashList() {
-    if (!repoPath) {
-      return;
-    }
-
-    const stash = await commands?.stashList(repoPath);
-    match(stash).with({ status: 'ok' }, val => {
-      setStashList(val.data);
-    });
-  }
-
-  useEffect(() => {
-    refreshStashList();
-  }, [refreshStash, repoPath]);
 
   const [refreshState] = useRefreshRequest(s => [s.refreshPush]);
   const [pushState, setPushState] = useState<PushStatus>({
@@ -71,23 +58,7 @@ export default function WorkspacePanel({
     unpull: 0,
   });
 
-  async function refreshHead() {
-    if (!repoPath) {
-      return;
-    }
-
-    const head = await commands?.getRepoHead(repoPath);
-    match(head)
-      .with({ status: 'ok' }, val => {
-        setHead(val.data);
-        console.log(`head === ${val.data}`);
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
-  const { error: tagErr, data: tags } = queryTags();
+  const { error: tagErr, data: tags } = useTags();
   if (tagErr) {
     NOTIFY.error(tagErr.message);
   }
@@ -101,36 +72,29 @@ export default function WorkspacePanel({
     }
   }
 
-  const { error, data: branches } = queryBranches();
+  const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
   }
 
-  async function refreshBranchStatus() {
-    if (!repoPath || !branches) {
-      return;
-    }
-    const currentBranch = branches.find(item => item.is_head);
-    if (!currentBranch) {
-      return;
-    }
-    if (currentBranch.remote === null) {
-      return;
-    }
-    const status = await commands.branchStatus(repoPath, currentBranch.name);
-    match(status)
-      .with({ status: 'ok' }, val => {
-        setPushState(val.data);
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
   useEffect(() => {
-    refreshBranchStatus();
-    refreshHead();
-  }, [branches]);
+    if (!repoPath) {
+      return;
+    }
+    refreshHead(repoPath).then(val => {
+      if (val) {
+        setHead(val);
+      }
+    });
+    if (!branches) {
+      return;
+    }
+    refreshBranchStatus(repoPath, branches).then(val => {
+      if (val) {
+        setPushState(val);
+      }
+    });
+  }, [branches, repoPath]);
 
   async function pushBranch() {
     if (!repoPath) {
@@ -220,10 +184,43 @@ export default function WorkspacePanel({
         </div>
         <ChangeList changeSet={changeSet} className="grow" />
         <StashCard
-          className={cn(stashList.length === 0 && 'hidden')}
-          stashList={stashList}
+          className={cn(stashList?.length === 0 && 'hidden')}
+          stashList={stashList || []}
         />
       </div>
     </div>
   );
+}
+
+async function refreshHead(repoPath: string) {
+  const head = await commands?.getRepoHead(repoPath);
+  return match(head)
+    .with({ status: 'ok' }, val => {
+      return val.data;
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+      return undefined;
+    })
+    .exhaustive();
+}
+
+async function refreshBranchStatus(repoPath: string, branches: BranchInfo[]) {
+  const currentBranch = branches.find(item => item.is_head);
+  if (!currentBranch) {
+    return;
+  }
+  if (currentBranch.remote === null) {
+    return;
+  }
+  const status = await commands.branchStatus(repoPath, currentBranch.name);
+  return match(status)
+    .with({ status: 'ok' }, val => {
+      return val.data;
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+      return undefined;
+    })
+    .exhaustive();
 }

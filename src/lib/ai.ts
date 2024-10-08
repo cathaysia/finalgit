@@ -16,19 +16,17 @@ export async function generateCommit(
   return value.text;
 }
 
-export namespace ollama {
-  interface QueryModel {
-    name: string;
-    model: string;
-  }
+interface QueryModel {
+  name: string;
+  model: string;
+}
 
-  interface QueryModelResult {
-    models: QueryModel[];
-  }
+interface QueryModelResult {
+  models: QueryModel[];
+}
 
-  export async function queryModels(api: string) {
-    const res = await fetch(`${api}/api/tags`);
-    const text = await res.text();
-    return JSON.parse(text) as QueryModelResult;
-  }
+export async function queryModels(api: string) {
+  const res = await fetch(`${api}/api/tags`);
+  const text = await res.text();
+  return JSON.parse(text) as QueryModelResult;
 }

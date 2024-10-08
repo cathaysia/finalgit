@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import NOTIFY from '@/lib/notify';
-import { queryBranches, queryTags } from '@/lib/query';
+import { useBranches, useTags } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import Project from '@/stories/atoms/Project';
 import Link from 'next/link';
@@ -10,8 +10,7 @@ import { useTranslation } from 'react-i18next';
 import ControlBar from '../atoms/ControlBar';
 import BranchPanel from './BranchPanel';
 
-export interface ControlPanelProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
+type ControlPanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function ControlPanel({
   className,
@@ -20,12 +19,12 @@ export default function ControlPanel({
   const { t } = useTranslation();
 
   const currentPath = usePathname();
-  const { error, data: branches } = queryBranches();
+  const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
   }
 
-  const { error: tagErr, data: tags } = queryTags();
+  const { error: tagErr, data: tags } = useTags();
   if (tagErr) {
     NOTIFY.error(tagErr.message);
   }

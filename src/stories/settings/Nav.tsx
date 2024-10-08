@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export interface NavProps extends React.ComponentProps<typeof Link> {}
+type NavProps = React.ComponentProps<typeof Link>;
 
 export default function Nav({ className, children, href, ...props }: NavProps) {
   const pathname = usePathname();

@@ -5,11 +5,12 @@ import '@/locales';
 import NOTIFY from '@/lib/notify';
 import {
   queryClient,
-  queryModifyTimes,
   refreshBranches,
   refreshChanges,
   refreshFiles,
+  refreshStashList,
   refreshTags,
+  useModifyTimes,
 } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import { DragDropContext } from '@hello-pangea/dnd';
@@ -60,7 +61,7 @@ export default function RootLayout({
 }
 
 function App() {
-  const { error, data } = queryModifyTimes();
+  const { error, data } = useModifyTimes();
   if (error) {
     NOTIFY.error(error.message);
   }
@@ -70,6 +71,7 @@ function App() {
     refreshTags();
     refreshFiles();
     refreshChanges();
+    refreshStashList();
   }, [data]);
 
   return <></>;

@@ -1,7 +1,7 @@
 'use client';
 import { type CommitInfo, commands } from '@/bindings';
 import NOTIFY from '@/lib/notify';
-import { queryBranches } from '@/lib/query';
+import { useBranches } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import GitHistory from '@/stories/lists/GitHistory';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { match } from 'ts-pattern';
 export default function Page() {
   const [repoPath] = useAppState(s => [s.repoPath]);
   const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
-  const { error, data: branches } = queryBranches();
+  const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
   }
@@ -31,6 +31,6 @@ export default function Page() {
           });
       });
     }
-  }, [branches]);
+  }, [repoPath, branches]);
   return <GitHistory history={currentHistory} className="h-full" />;
 }

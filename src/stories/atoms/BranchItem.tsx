@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
 import { checkoutBranch, removeBranch } from '@/lib/operator';
-import { queryChanges, refreshBranches } from '@/lib/query';
+import { refreshBranches, useChanges } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
@@ -54,7 +54,7 @@ export default function BranchItem({
   const isLocal = info.kind === 'Local';
   const [repoPath] = useAppState(s => [s.repoPath]);
 
-  const { error: changeErr, data: changes } = queryChanges();
+  const { error: changeErr, data: changes } = useChanges();
   if (changeErr) {
     NOTIFY.error(changeErr.message);
   }
@@ -158,7 +158,9 @@ export default function BranchItem({
                     <DropdownMenuItem
                       disabled={isDirty}
                       onClick={() => {
-                        repoPath && checkoutBranch(repoPath, info);
+                        if (repoPath) {
+                          checkoutBranch(repoPath, info);
+                        }
                       }}
                       className={cn(
                         !isLocal && 'text-yellow-500 hover:text-yellow-500',
@@ -191,7 +193,9 @@ export default function BranchItem({
                   <DropdownMenuItem
                     className="text-red-600"
                     onClick={() => {
-                      repoPath && removeBranch(repoPath, info);
+                      if (repoPath) {
+                        removeBranch(repoPath, info);
+                      }
                     }}
                   >
                     {t('branch.delete')}

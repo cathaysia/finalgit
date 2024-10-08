@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
 
-export interface ControlBarProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
+type ControlBarProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function ControlBar({ className, ...props }: ControlBarProps) {
   const { t } = useTranslation();

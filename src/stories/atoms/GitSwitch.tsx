@@ -26,50 +26,23 @@ export default function GitSwitch({
   const [value, setValue] = useState<boolean>(false);
   const [debounce] = useDebounce(value, 1000);
 
-  async function getValue() {
+  useEffect(() => {
     if (!repoPath) {
       return;
     }
-    const res = await commands?.getConfig(repoPath, opt);
-    match(res)
-      .with({ status: 'ok' }, val => {
-        if (val.data === 'true') {
-          setValue(true);
-        } else if (val.data === 'false') {
-          setValue(false);
-        }
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
+    getBooleanConfig(repoPath, opt).then(val => {
+      if (val) {
+        setValue(val);
+      }
+    });
+  }, [repoPath, opt]);
 
   useEffect(() => {
-    getValue();
-  }, [repoPath]);
-
-  async function handleValueChange(value: boolean) {
-    if (!repoPath) {
+    if (!debounce || !repoPath || !debounce) {
       return;
     }
-    const res = await commands?.setConfig(
-      repoPath,
-      opt,
-      value ? 'true' : 'false',
-    );
-    match(res)
-      .with({ status: 'ok' }, _ => {})
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
-  useEffect(() => {
-    if (!debounce) {
-      return;
-    }
-    handleValueChange(debounce);
-  }, [debounce]);
+    setBooleanConfig(repoPath, opt, debounce);
+  }, [debounce, repoPath, opt]);
 
   return (
     <div className={cn('flex justify-between', className)} {...props}>
@@ -83,4 +56,35 @@ export default function GitSwitch({
       />
     </div>
   );
+}
+
+async function getBooleanConfig(repoPath: string, opt: string) {
+  const res = await commands?.getConfig(repoPath, opt);
+  return match(res)
+    .with({ status: 'ok' }, val => {
+      if (val.data === 'true') {
+        return true;
+      }
+      if (val.data === 'false') {
+        return false;
+      }
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+      return undefined;
+    })
+    .exhaustive();
+}
+
+async function setBooleanConfig(repoPath: string, opt: string, value: boolean) {
+  const res = await commands?.setConfig(
+    repoPath,
+    opt,
+    value ? 'true' : 'false',
+  );
+  match(res)
+    .with({ status: 'ok' }, _ => {})
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
 }

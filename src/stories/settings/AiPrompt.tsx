@@ -4,7 +4,7 @@ import { useAiState } from '@/lib/state';
 
 import { useTranslation } from 'react-i18next';
 
-export default function () {
+export default function AiPrompt() {
   const { t } = useTranslation();
   const [prompt, setPrompt] = useAiState(s => [s.prompt, s.setPrompt]);
   return (

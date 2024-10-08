@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
 import { LanguageCard } from '../atoms/LanguageCard';
 
-export interface ThemeCardProps extends React.ComponentProps<typeof Card> {}
+type ThemeCardProps = React.ComponentProps<typeof Card>;
 
 export default function ThemeCard({ className, ...props }: ThemeCardProps) {
   const { setTheme } = useTheme();

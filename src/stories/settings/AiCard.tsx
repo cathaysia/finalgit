@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import NOTIFY from '@/lib/notify';
-import { queryOllamaModels } from '@/lib/query';
+import { useOllamaModels } from '@/lib/query';
 import { useAiState } from '@/lib/state';
 import { useTranslation } from 'react-i18next';
 
@@ -29,7 +29,7 @@ export default function AiCard() {
     s.setOllamaModel,
   ]);
 
-  const { error, data: models } = queryOllamaModels();
+  const { error, data: models } = useOllamaModels();
   if (error) {
     NOTIFY.error(error.message);
   }

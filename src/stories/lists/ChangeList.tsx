@@ -36,33 +36,6 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
     return !hasUnIndexed;
   }, [changeSet]);
 
-  async function toggleAllChecked() {
-    if (!repoPath) {
-      return;
-    }
-    const changed = changeSet.map(item => item.path);
-
-    if (allChecked) {
-      const res = await commands.removeFromStage(repoPath, changed);
-      match(res)
-        .with({ status: 'ok' }, () => {
-          refreshChanges();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    } else {
-      const res = await commands.addToStage(repoPath, changeSet);
-      match(res)
-        .with({ status: 'ok' }, () => {
-          refreshChanges();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-  }
-
   return (
     <Droppable
       droppableId="change"
@@ -92,7 +65,10 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
             <div className="flex w-full">
               <Checkbox
                 checked={allChecked}
-                onCheckedChange={toggleAllChecked}
+                onCheckedChange={() =>
+                  repoPath &&
+                  toggleAllChecked(repoPath, changeSet, allChecked === true)
+                }
                 hidden={changeSet.length === 0}
               />
             </div>
@@ -133,4 +109,35 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
       }}
     </Droppable>
   );
+}
+
+async function toggleAllChecked(
+  repoPath: string,
+  changeSet: FileStatus[],
+  allChecked: boolean,
+) {
+  if (!repoPath) {
+    return;
+  }
+  const changed = changeSet.map(item => item.path);
+
+  if (allChecked) {
+    const res = await commands.removeFromStage(repoPath, changed);
+    match(res)
+      .with({ status: 'ok' }, () => {
+        refreshChanges();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  } else {
+    const res = await commands.addToStage(repoPath, changeSet);
+    match(res)
+      .with({ status: 'ok' }, () => {
+        refreshChanges();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  }
 }

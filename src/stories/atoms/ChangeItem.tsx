@@ -11,17 +11,18 @@ import {
 import { Label } from '@/components/ui/label';
 import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
+import { addFileToStage, discardChanges } from '@/lib/operator';
 import { refreshChanges } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
+import type { CheckedState } from '@radix-ui/react-checkbox';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscDiff, VscDiffAdded, VscDiffRemoved } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
 
-type CheckedState = boolean | 'indeterminate';
 export interface ChangeItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   item: FileStatus;
@@ -52,50 +53,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
     const isModified = GitFileStatus.isModified(item.status);
     const isNew = GitFileStatus.isNew(item.status);
 
-    async function addFileToStage() {
-      if (!repoPath) {
-        return;
-      }
-      const v = await commands.addToStage(repoPath, [item]);
-      match(v)
-        .with({ status: 'ok' }, () => refreshChanges())
-        .with({ status: 'error' }, err => NOTIFY.error(err.error));
-    }
-
-    async function handleCheckedChange(e: CheckedState, item: FileStatus) {
-      if (!repoPath) {
-        return;
-      }
-      if (e === true) {
-        addFileToStage();
-      }
-      if (e === false) {
-        const v = await commands?.removeFromStage(repoPath, [item.path]);
-        match(v)
-          .with({ status: 'ok' }, () => {
-            refreshChanges();
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      }
-    }
-
-    async function discardChanges() {
-      if (!repoPath) {
-        return;
-      }
-
-      const v = await commands?.restoreFile(repoPath, [item], null);
-      match(v)
-        .with({ status: 'ok' }, () => {
-          refreshChanges();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-
     return (
       <div
         className={cn('flex items-center justify-between', className)}
@@ -107,7 +64,9 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
           <Checkbox
             defaultChecked={GitFileStatus.isIndexed(item.status)}
             checked={isChecked}
-            onCheckedChange={s => handleCheckedChange(s, item)}
+            onCheckedChange={s =>
+              repoPath && handleCheckedChange(repoPath, s, item)
+            }
           />
           <Label
             className={cn(
@@ -139,7 +98,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   className={cn(isChecked && 'hidden')}
-                  onClick={addFileToStage}
+                  onClick={() => repoPath && addFileToStage(repoPath, item)}
                 >
                   <VscDiffAdded className="mr-2 h-4 w-4" />
                   {t('changes.add')}
@@ -169,7 +128,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-red-600"
-                  onClick={discardChanges}
+                  onClick={() => repoPath && discardChanges(repoPath, item)}
                 >
                   <VscDiffRemoved className="mr-2 h-4 w-4" />
                   {t('changes.discard')}
@@ -182,5 +141,25 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
     );
   },
 );
+
+async function handleCheckedChange(
+  repoPath: string,
+  e: CheckedState,
+  item: FileStatus,
+) {
+  if (e === true) {
+    addFileToStage(repoPath, item);
+  }
+  if (e === false) {
+    const v = await commands?.removeFromStage(repoPath, [item.path]);
+    match(v)
+      .with({ status: 'ok' }, () => {
+        refreshChanges();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  }
+}
 
 export default ChangeItem;

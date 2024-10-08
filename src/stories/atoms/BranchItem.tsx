@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
+import { checkoutBranch, removeBranch } from '@/lib/operator';
 import { queryChanges, refreshBranches } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
@@ -58,46 +59,6 @@ export default function BranchItem({
     NOTIFY.error(changeErr.message);
   }
   const isDirty = changes?.length !== 0;
-
-  async function removeBranch() {
-    if (!isLocal || !repoPath) {
-      return;
-    }
-
-    const v = await commands?.removeBranch(repoPath, info);
-    match(v)
-      .with({ status: 'ok' }, () => {
-        refreshBranches();
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
-  async function checkout() {
-    if (!repoPath) {
-      return;
-    }
-    if (isLocal) {
-      const v = await commands?.checkoutBranch(repoPath, info.name);
-      match(v)
-        .with({ status: 'ok' }, () => {
-          refreshBranches();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    } else {
-      const v = await commands?.checkoutRemote(repoPath, info.name);
-      match(v)
-        .with({ status: 'ok' }, () => {
-          refreshBranches();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-  }
 
   async function renameBranch(newName: string) {
     if (!repoPath || !opState) {
@@ -197,7 +158,7 @@ export default function BranchItem({
                     <DropdownMenuItem
                       disabled={isDirty}
                       onClick={() => {
-                        checkout();
+                        repoPath && checkoutBranch(repoPath, info);
                       }}
                       className={cn(
                         !isLocal && 'text-yellow-500 hover:text-yellow-500',
@@ -230,7 +191,7 @@ export default function BranchItem({
                   <DropdownMenuItem
                     className="text-red-600"
                     onClick={() => {
-                      removeBranch();
+                      repoPath && removeBranch(repoPath, info);
                     }}
                   >
                     {t('branch.delete')}

@@ -1,5 +1,5 @@
 import type { FileTree } from '@/bindings';
-import Icon from '@/components/icon';
+import Icon from '@/components/Icon';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';

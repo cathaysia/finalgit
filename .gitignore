@@ -27,3 +27,4 @@ dist-ssr
 .next
 out
 tsconfig.tsbuildinfo
+stats.html

@@ -1,14 +1,20 @@
 import path from 'path';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
-import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { type PluginOption, defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [TanStackRouterVite(), react(), ViteImageOptimizer()],
+  plugins: [
+    TanStackRouterVite(),
+    react(),
+    ViteImageOptimizer(),
+    visualizer() as PluginOption,
+  ],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

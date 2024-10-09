@@ -1,4 +1,4 @@
-import Icon from '@/components/icon';
+import Icon from '@/components/Icon';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import {

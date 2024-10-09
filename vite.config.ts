@@ -43,4 +43,19 @@ export default defineConfig(async () => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // zod: ['zod'],
+          // dnd: ['@hello-pangea/dnd'],
+          codemirror: [
+            '@uiw/react-codemirror',
+            '@uiw/codemirror-extensions-langs',
+          ],
+        },
+        experimentalMinChunkSize: 100 * 1024,
+      },
+    },
+  },
 }));

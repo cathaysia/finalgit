@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { refreshBranches } from '@/lib/query';
+import { refreshBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,11 @@ export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   const t = useTranslation().t;
-  const [repoPath, head] = useAppState(s => [s.repoPath, s.head]);
+  const [repoPath] = useAppState(s => [s.repoPath]);
+  const { error: headErr, data: head } = useHeadState();
+  if (headErr) {
+    NOTIFY.error(headErr.message);
+  }
 
   async function checkoutTag() {
     if (!repoPath) {

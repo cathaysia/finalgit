@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/lists/ChangeList';
@@ -25,7 +25,15 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
-import { useBranches, useFiles, useStashList, useTags } from '@/lib/query';
+import {
+  refreshChanges,
+  refreshHead,
+  useBranches,
+  useFiles,
+  useHeadState,
+  useStashList,
+  useTags,
+} from '@/lib/query';
 import { Link } from '@tanstack/react-router';
 import StashCard from '../card/StashCard';
 
@@ -37,11 +45,7 @@ export default function WorkspacePanel({
   ...props
 }: WorkspacePanelProps) {
   const { t } = useTranslation();
-  const [repoPath, head, setHead] = useAppState(s => [
-    s.repoPath,
-    s.head,
-    s.setHead,
-  ]);
+  const [repoPath] = useAppState(s => [s.repoPath]);
   const { error: stashErr, data: stashList } = useStashList();
   if (stashErr) {
     NOTIFY.error(stashErr.message);
@@ -50,9 +54,12 @@ export default function WorkspacePanel({
   if (fileErr) {
     NOTIFY.error(fileErr.message);
   }
-  const tree = files || [];
 
-  const [refreshState] = useRefreshRequest(s => [s.refreshPush]);
+  const { error: headErr, data: current } = useHeadState();
+  if (headErr) {
+    NOTIFY.error(headErr.message);
+  }
+
   const [pushState, setPushState] = useState<PushStatus>({
     unpush: 0,
     unpull: 0,
@@ -65,7 +72,7 @@ export default function WorkspacePanel({
 
   if (branchName === '') {
     const item = tags?.find(item => {
-      return item.ref_hash === head;
+      return item.ref_hash === current;
     });
     if (item !== undefined) {
       branchName = item.name;
@@ -81,11 +88,7 @@ export default function WorkspacePanel({
     if (!repoPath) {
       return;
     }
-    refreshHead(repoPath).then(val => {
-      if (val) {
-        setHead(val);
-      }
-    });
+    refreshHead();
     if (!branches) {
       return;
     }
@@ -95,38 +98,6 @@ export default function WorkspacePanel({
       }
     });
   }, [branches, repoPath]);
-
-  async function pushBranch() {
-    if (!repoPath) {
-      return;
-    }
-    const res = await commands.branchPush(repoPath, false);
-    match(res)
-      .with({ status: 'ok' }, () => {
-        refreshState();
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
-
-  async function pullBranch() {
-    if (!repoPath || !branches) {
-      return;
-    }
-    const currentBranch = branches.find(item => item.is_head);
-    if (!currentBranch) {
-      return;
-    }
-    const res = await commands.branchFetch(repoPath, currentBranch.name);
-    match(res)
-      .with({ status: 'ok' }, () => {
-        refreshState();
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  }
 
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
@@ -142,14 +113,22 @@ export default function WorkspacePanel({
             <Button>{t('workspace.create_pr')}</Button>
             <Button
               className={cn(pushState?.unpull === 0 && 'hidden')}
-              onClick={pullBranch}
+              onClick={() => {
+                if (repoPath && branches) {
+                  pullBranch(repoPath, branches);
+                }
+              }}
             >
               <VscRepoPull />
               {pushState?.unpull}
             </Button>
             <Button
               className={cn(pushState?.unpush === 0 && 'hidden')}
-              onClick={pushBranch}
+              onClick={() => {
+                if (repoPath) {
+                  pushBranch(repoPath);
+                }
+              }}
             >
               <VscRepoPush />
               {pushState?.unpush}
@@ -171,15 +150,20 @@ export default function WorkspacePanel({
             </Avatar>
           </div>
           <div className="flex gap-2">
-            <Link to="/diff" className={cn(tree.length === 0 && 'hidden')}>
+            <Link to="/diff" className={cn(files?.length === 0 && 'hidden')}>
               <VscDiff />
             </Link>
-            <Link
-              to="/filetree"
-              className={cn(tree.length === 0 && 'pointer-events-none')}
-            >
-              <FaFolderTree />
-            </Link>
+            {current && (
+              <Link
+                to="/filetree/$commit"
+                params={{
+                  commit: current,
+                }}
+                className={cn(files?.length === 0 && 'pointer-events-none')}
+              >
+                <FaFolderTree />
+              </Link>
+            )}
           </div>
         </div>
         <ChangeList changeSet={changeSet} className="grow" />
@@ -190,19 +174,6 @@ export default function WorkspacePanel({
       </div>
     </div>
   );
-}
-
-async function refreshHead(repoPath: string) {
-  const head = await commands?.getRepoHead(repoPath);
-  return match(head)
-    .with({ status: 'ok' }, val => {
-      return val.data;
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-      return undefined;
-    })
-    .exhaustive();
 }
 
 async function refreshBranchStatus(repoPath: string, branches: BranchInfo[]) {
@@ -223,4 +194,30 @@ async function refreshBranchStatus(repoPath: string, branches: BranchInfo[]) {
       return undefined;
     })
     .exhaustive();
+}
+
+async function pushBranch(repoPath: string) {
+  const res = await commands.branchPush(repoPath, false);
+  match(res)
+    .with({ status: 'ok' }, () => {
+      refreshChanges();
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
+}
+
+async function pullBranch(repoPath: string, branches: BranchInfo[]) {
+  const currentBranch = branches.find(item => item.is_head);
+  if (!currentBranch) {
+    return;
+  }
+  const res = await commands.branchFetch(repoPath, currentBranch.name);
+  match(res)
+    .with({ status: 'ok' }, () => {
+      refreshChanges();
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
 }

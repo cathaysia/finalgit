@@ -89,7 +89,8 @@ export function refreshChanges() {
 }
 
 export function useFiles() {
-  const [repoPath, head] = useAppState(s => [s.repoPath, s.head]);
+  const [repoPath] = useAppState(s => [s.repoPath]);
+  const { data: head } = useHeadState();
 
   return useQuery({
     queryKey: ['changes', repoPath, head],
@@ -214,4 +215,31 @@ export function useHistory(commit: string) {
 
 export function refreshHistory() {
   queryClient.invalidateQueries({ queryKey: ['history'] });
+}
+
+export function useHeadState() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['head', repoPath],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.getRepoHead(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshHead() {
+  queryClient.invalidateQueries({ queryKey: ['head'] });
 }

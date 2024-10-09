@@ -38,17 +38,6 @@ export default function RootLayout() {
   if (typeof window !== 'undefined') {
     attachConsole();
   }
-
-  return (
-    <>
-      <App />
-      <Outlet />
-      <Toaster richColors position="top-right" />
-    </>
-  );
-}
-
-function App() {
   const { error, data } = useModifyTimes();
   if (error) {
     NOTIFY.error(error.message);
@@ -62,5 +51,10 @@ function App() {
     refreshStashList();
   }, [data]);
 
-  return <></>;
+  return (
+    <>
+      <Outlet />
+      <Toaster richColors position="top-right" />
+    </>
+  );
 }

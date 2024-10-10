@@ -1,4 +1,4 @@
-import type { CommitInfo } from '@/bindings';
+import { type CommitInfo, commands } from '@/bindings';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
+import { refreshChanges, refreshHead, useHeadState } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/stories/atoms/UserAvatar';
@@ -17,6 +19,7 @@ import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { match } from 'ts-pattern';
 import HighLightLabel from './HighlightLabel';
 
 export interface CommitItemProps
@@ -30,6 +33,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const branchName = commit.summary.slice(0, 50);
     const { t } = useTranslation();
     const names = [commit.author.name];
+    const [repoPath] = useAppState(s => [s.repoPath]);
+    const { data: head } = useHeadState();
 
     if (commit.author.name !== commit.commiter.name) {
       names.push(commit.commiter.name);
@@ -39,6 +44,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         className={cn(
           'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
+          head === commit.hash &&
+            'border border-green-600 dark:border-green-600',
           className,
         )}
         ref={ref}
@@ -81,6 +88,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                   {t('commit.viewtree')}
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (repoPath) {
+                    checkoutCommit(repoPath, commit.hash);
+                  }
+                }}
+              >
+                {t('commit.checkout')}
+              </DropdownMenuItem>
               <DropdownMenuItem>{t('commit.copy')}</DropdownMenuItem>
               <DropdownMenuItem>{t('commit.cut')}</DropdownMenuItem>
               <DropdownMenuItem>{t('commit.insert_before')}</DropdownMenuItem>
@@ -97,3 +113,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
 );
 
 export default CommitItem;
+
+async function checkoutCommit(repoPath: string, commit: string) {
+  const res = await commands?.commitCheckout(repoPath, commit);
+  match(res)
+    .with({ status: 'ok' }, () => {
+      refreshHead();
+      refreshChanges();
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
+}

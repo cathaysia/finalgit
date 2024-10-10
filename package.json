@@ -13,6 +13,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@codemirror/language": "^6.10.3",
+    "@codemirror/state": "^6.4.1",
+    "@codemirror/view": "^6.34.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@hello-pangea/dnd": "^17.0.0",

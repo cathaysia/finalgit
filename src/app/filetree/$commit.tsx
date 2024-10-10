@@ -5,6 +5,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
+import { checkboxPlugin } from '@/extensions/BoolCheckbox';
 import NOTIFY from '@/lib/notify';
 import { useFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
@@ -89,9 +90,8 @@ function FileTree() {
           className="h-screen w-full font-mono text-base"
           height="100%"
           theme={mirrorTheme}
-          readOnly
           // @ts-expect-error: no error
-          extensions={extensions}
+          extensions={[...extensions, checkboxPlugin]}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

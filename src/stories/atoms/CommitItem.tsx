@@ -13,6 +13,7 @@ import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/stories/atoms/UserAvatar';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,6 +71,16 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuItem>{t('commit.details')}</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  to="/filetree/$commit"
+                  params={{
+                    commit: commit.hash,
+                  }}
+                >
+                  {t('commit.viewtree')}
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>{t('commit.copy')}</DropdownMenuItem>
               <DropdownMenuItem>{t('commit.cut')}</DropdownMenuItem>
               <DropdownMenuItem>{t('commit.insert_before')}</DropdownMenuItem>

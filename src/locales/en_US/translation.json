@@ -17,7 +17,8 @@
     "remote": "Remote",
     "rename": "Rename",
     "set_upstream": "Set Upstream",
-    "tags": "Tags"
+    "tags": "Tags",
+    "view_tree": "Browse files"
   },
   "Cancel": "Cancel",
   "change": {
@@ -38,7 +39,8 @@
     "delete": "Delete",
     "details": "Details",
     "insert_after": "Insert After",
-    "insert_before": "Insert Before"
+    "insert_before": "Insert Before",
+    "viewtree": "Browse files"
   },
   "commiter": {
     "commit": "Commit",
@@ -61,19 +63,25 @@
     "ai_provider": "Provider",
     "behaviour": "Behaviour",
     "git": {
+      "commit": {
+        "gpgsign": "profile.git.commit.gpgsign"
+      },
       "core": "Core",
       "defaultBranch": "Default branch",
       "email": "Email",
       "ff": "Fast-forwarding",
-      "gpg_sign": "Sign by GPG",
       "noff": "No fast-forwarding",
       "norebase": "No rebase",
       "pull": "Pull method",
       "rebase": "Rebase",
       "signingKey": "signingKey",
+      "tag": {
+        "gpgsign": "profile.git.tag.gpgsign"
+      },
       "user": "User",
       "username": "Name"
     },
+    "language": "profile.language",
     "stash_before_checkout": "Enable smart stash"
   },
   "project": {
@@ -86,7 +94,8 @@
   "settings": {
     "ai": "AI",
     "git": "GIT",
-    "profile": "PROFILE"
+    "profile": "PROFILE",
+    "search_langing": "settings.search_langing"
   },
   "stash": {
     "apply": "stash.apply",

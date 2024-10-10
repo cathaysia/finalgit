@@ -17,7 +17,8 @@
     "remote": "branch.remote",
     "rename": "branch.rename",
     "set_upstream": "branch.set_upstream",
-    "tags": "branch.tags"
+    "tags": "branch.tags",
+    "view_tree": "branch.view_tree"
   },
   "Cancel": "取消",
   "change": {
@@ -38,7 +39,8 @@
     "delete": "commit.delete",
     "details": "commit.details",
     "insert_after": "commit.insert_after",
-    "insert_before": "commit.insert_before"
+    "insert_before": "commit.insert_before",
+    "viewtree": "commit.viewtree"
   },
   "commiter": {
     "commit": "commiter.commit",
@@ -61,19 +63,25 @@
     "ai_provider": "profile.ai_provider",
     "behaviour": "profile.behaviour",
     "git": {
+      "commit": {
+        "gpgsign": "profile.git.commit.gpgsign"
+      },
       "core": "profile.git.core",
       "defaultBranch": "profile.git.defaultBranch",
       "email": "profile.git.email",
       "ff": "profile.git.ff",
-      "gpg_sign": "profile.git.gpg_sign",
       "noff": "profile.git.noff",
       "norebase": "profile.git.norebase",
       "pull": "profile.git.pull",
       "rebase": "profile.git.rebase",
       "signingKey": "profile.git.signingKey",
+      "tag": {
+        "gpgsign": "profile.git.tag.gpgsign"
+      },
       "user": "profile.git.user",
       "username": "profile.git.username"
     },
+    "language": "profile.language",
     "stash_before_checkout": "profile.stash_before_checkout"
   },
   "project": {
@@ -86,7 +94,8 @@
   "settings": {
     "ai": "settings.ai",
     "git": "settings.git",
-    "profile": "settings.profile"
+    "profile": "settings.profile",
+    "search_langing": "settings.search_langing"
   },
   "stash": {
     "apply": "stash.apply",

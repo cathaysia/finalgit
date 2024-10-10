@@ -16,6 +16,7 @@ import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { Droppable } from '@hello-pangea/dnd';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Link } from '@tanstack/react-router';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -187,6 +188,16 @@ export default function BranchItem({
                   <DropdownMenuItem>{t('branch.details')}</DropdownMenuItem>
                   <DropdownMenuItem>
                     {t('branch.set_upstream')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      to="/filetree/$commit"
+                      params={{
+                        commit: info.commit,
+                      }}
+                    >
+                      {t('branch.view_tree')}
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>{t('branch.pull')}</DropdownMenuItem>
                   <DropdownMenuItem>{t('branch.push')}</DropdownMenuItem>

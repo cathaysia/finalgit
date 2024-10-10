@@ -1,5 +1,11 @@
 import type { FileTree } from '@/bindings';
 import Icon from '@/components/Icon';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
@@ -41,10 +47,17 @@ function generateTree(
         itemId={key}
         key={key}
         label={
-          <span className="text-ellipsis text-nowrap">
-            <Icon fileName={entry.filename} className="mr-2 h-4 w-4" />
-            {entry.filename}
-          </span>
+          <ContextMenu>
+            <ContextMenuTrigger>
+              <span className="text-ellipsis text-nowrap">
+                <Icon fileName={entry.filename} className="mr-2 h-4 w-4" />
+                {entry.filename}
+              </span>
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+              <ContextMenuItem>copy</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
         }
         onClick={() => {
           callback(key);
@@ -61,10 +74,17 @@ function generateTree(
       itemId={key}
       key={key}
       label={
-        <span>
-          <Icon fileName={tree.dir} isDir={true} className="mr-2 h-4 w-4" />
-          {tree.dir}
-        </span>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <span>
+              <Icon fileName={tree.dir} isDir={true} className="mr-2 h-4 w-4" />
+              {tree.dir}
+            </span>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem>copy path</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       }
     >
       <div>

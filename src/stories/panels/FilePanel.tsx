@@ -9,18 +9,20 @@ import { FileItem } from '../atoms/FileItem';
 export interface FilePanelProps
   extends React.ComponentProps<typeof ScrollArea> {
   files: FileTree[];
+  commit: string;
   onClicked?: (fileName: string) => void;
 }
 
 export default function FilePanel({
   className,
   files,
+  commit,
   onClicked = () => {},
   ...props
 }: FilePanelProps) {
   const items = useMemo(() => {
     return files.flatMap(v => {
-      const items = generateTree('', v, onClicked);
+      const items = generateTree('', v, commit);
 
       return items;
     });
@@ -60,18 +62,20 @@ type FileProps = TreeViewBaseItem<{
   fileName: string;
   label: string;
   isDir?: boolean;
+  commit: string;
 }>;
 
 function generateTree(
   parent: string,
   file: FileTree,
-  callback: (path: string) => void,
+  commit: string,
 ): FileProps[] {
   if ('File' in file) {
     const entry = file.File;
     const key = `${parent}/${entry.filename}`;
     return [
       {
+        commit: commit,
         itemId: key,
         id: key,
         fileName: entry.filename,
@@ -88,10 +92,11 @@ function generateTree(
       itemId: key,
       isDir: true,
       id: key,
+      commit: commit,
       fileName: tree.dir,
       label: tree.dir,
       children: tree.files.flatMap(v => {
-        return generateTree(key, v, callback);
+        return generateTree(key, v, commit);
       }),
     },
   ];

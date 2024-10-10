@@ -76,6 +76,7 @@ pub fn run() {
             branch::branch_push,
             branch::branch_status,
             commit::commit_checkout,
+            commit::checkout_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -121,6 +122,7 @@ mod test {
                 branch::branch_push,
                 branch::branch_status,
                 commit::commit_checkout,
+                commit::checkout_file,
             ]);
 
         builder

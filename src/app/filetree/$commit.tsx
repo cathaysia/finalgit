@@ -80,7 +80,7 @@ function FileTree() {
     >
       <ResizablePanel defaultSize={20} className="flex w-52 flex-col">
         <Nav to="/" text={<MdHome />} />
-        <FilePanel files={tree} onClicked={getText} />
+        <FilePanel files={tree} onClicked={getText} commit={commit} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel className="grow">

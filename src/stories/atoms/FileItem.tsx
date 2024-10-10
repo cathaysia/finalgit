@@ -80,6 +80,8 @@ export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
           >
             {t('fileItem.checkout')}
           </ContextMenuItem>
+          <ContextMenuItem>{t('fileItem.compareHead')}</ContextMenuItem>
+          <ContextMenuItem>{t('fileItem.compareWith')}</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
     );

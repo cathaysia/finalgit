@@ -8,7 +8,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { useAppState, useRefreshRequest } from '@/lib/state';
+import { refreshChanges } from '@/lib/query';
+import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,6 @@ export default function StashItem({
 }: StashItemProps) {
   const { t } = useTranslation();
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const [refreshStash] = useRefreshRequest(s => [s.refreshStash]);
 
   async function applyStash() {
     if (!repoPath) {
@@ -35,7 +35,7 @@ export default function StashItem({
     const res = await commands?.stashApply(repoPath, stash.id);
     match(res)
       .with({ status: 'ok' }, _ => {
-        refreshStash();
+        refreshChanges();
       })
       .with({ status: 'error' }, err => {
         NOTIFY.error(err.error);
@@ -49,7 +49,7 @@ export default function StashItem({
     const res = await commands?.stashRemove(repoPath, stash.id);
     match(res)
       .with({ status: 'ok' }, _ => {
-        refreshStash();
+        refreshChanges();
       })
       .with({ status: 'error' }, err => {
         NOTIFY.error(err.error);

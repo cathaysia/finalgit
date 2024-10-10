@@ -43,10 +43,7 @@ export default function Commiter({
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
   const repoPath = useAppState(s => s.repoPath);
-  const [refreshPush, refreshStash] = useRefreshRequest(s => [
-    s.refreshPush,
-    s.refreshStash,
-  ]);
+  const [refreshPush] = useRefreshRequest(s => [s.refreshPush]);
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, currentModel] = useAiState(s => [
     s.prompt,
@@ -148,7 +145,6 @@ export default function Commiter({
     const res = await commands?.stashSave(repoPath, null);
     match(res)
       .with({ status: 'ok' }, async _ => {
-        refreshStash();
         refreshChanges();
       })
       .with({ status: 'error' }, err => {

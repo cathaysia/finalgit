@@ -8,7 +8,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges } from '@/lib/query';
+import { refreshChanges, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import {
   TreeItem2,
@@ -16,6 +16,7 @@ import {
   type TreeItem2Props,
 } from '@mui/x-tree-view/TreeItem2';
 import { useTreeItem2 } from '@mui/x-tree-view/useTreeItem2';
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
@@ -50,6 +51,7 @@ export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
       disabled,
       rootRef: ref,
     });
+    const { data: head } = useHeadState();
     const item = publicAPI.getItem(itemId);
     const isDir = item.isDir;
     const fileName = item.fileName;
@@ -69,9 +71,29 @@ export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuLabel>{fileName}</ContextMenuLabel>
-          {isDir && <ContextMenuItem>{t('fileItem.copy')}</ContextMenuItem>}
-          <ContextMenuItem>{t('fileItem.copy_path')}</ContextMenuItem>
+          {!isDir && (
+            <ContextMenuItem
+              onClick={() => {
+                if (!repoPath) {
+                  return;
+                }
+                copyFileContent(repoPath, commit, itemId);
+              }}
+            >
+              {t('fileItem.copy')}
+            </ContextMenuItem>
+          )}
           <ContextMenuItem
+            onClick={async () => {
+              const path = itemId.slice(1);
+              await writeText(path);
+              NOTIFY.info(`copy ${path}`);
+            }}
+          >
+            {t('fileItem.copy_path')}
+          </ContextMenuItem>
+          <ContextMenuItem
+            disabled={head === commit}
             onClick={async () => {
               if (repoPath) {
                 checkoutFile(repoPath, itemId, commit);
@@ -94,6 +116,24 @@ async function checkoutFile(repoPath: string, itemId: string, commit: string) {
   match(res)
     .with({ status: 'ok' }, () => {
       refreshChanges();
+      NOTIFY.info(`checkout file ${path}`);
+    })
+    .with({ status: 'error' }, err => {
+      NOTIFY.error(err.error);
+    });
+}
+
+async function copyFileContent(
+  repoPath: string,
+  commit: string,
+  itemId: string,
+) {
+  const path = itemId.slice(1);
+  const res = await commands?.getFileContent(repoPath, commit, path);
+  match(res)
+    .with({ status: 'ok' }, async val => {
+      await writeText(val.data);
+      NOTIFY.info(`copy content of ${path}`);
     })
     .with({ status: 'error' }, err => {
       NOTIFY.error(err.error);

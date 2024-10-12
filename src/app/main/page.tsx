@@ -1,6 +1,6 @@
 import { type CommitInfo, commands } from '@/bindings';
 import NOTIFY from '@/lib/notify';
-import { useBranches } from '@/lib/query';
+import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
@@ -33,14 +33,20 @@ export default function Commit() {
   if (error) {
     NOTIFY.error(error.message);
   }
+  const { error: headErr, data: head } = useHeadState();
+  if (headErr) {
+    NOTIFY.error(headErr.message);
+  }
 
   useEffect(() => {
-    if (!branches) {
-      return;
+    let trueHead = branches?.find(item => {
+      return item.is_head;
+    })?.commit;
+    if (trueHead === undefined) {
+      trueHead = head?.oid;
     }
-    const head = branches.find(item => item.is_head);
-    if (repoPath && head) {
-      commands?.getHistory(repoPath, head.commit).then(v => {
+    if (repoPath && trueHead) {
+      commands?.getHistory(repoPath, trueHead).then(v => {
         match(v)
           .with({ status: 'ok' }, v => {
             setCurrentHisotry(v.data);

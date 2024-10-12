@@ -77,6 +77,9 @@ export default function WorkspacePanel({
     if (item !== undefined && !current?.is_detached) {
       branchName = item.name;
     }
+    if (branchName === '' && current) {
+      branchName = current?.oid.slice(0, 6);
+    }
   }
 
   const { error, data: branches } = useBranches();

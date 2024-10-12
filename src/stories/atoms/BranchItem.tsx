@@ -129,7 +129,7 @@ export default function BranchItem({
               <div
                 className="flex w-full flex-col gap-2"
                 onClick={() => {
-                  if (repoPath && info.kind === 'Local') {
+                  if (repoPath && info.kind === 'Local' && !isHead) {
                     checkoutBranch(repoPath, info);
                   }
                 }}

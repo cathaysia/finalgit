@@ -17,7 +17,7 @@ export function BlameCard(blame: BlameHunk) {
     <HoverCard>
       <HoverCardTrigger>
         <Label
-          className="cm-boolean-toggle mx-2 rounded-md bg-slate-300 px-2 shadow dark:bg-slate-700"
+          className="ml-2 text-gray-500 hover:text-blue-800 hover:underline"
           aria-hidden
         >
           {line}

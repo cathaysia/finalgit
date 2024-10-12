@@ -1,4 +1,5 @@
 import type { BlameHunk } from '@/bindings';
+import { BlameCard } from '@/stories/atoms/BlameCard';
 import { syntaxTree } from '@codemirror/language';
 import type { Range } from '@codemirror/state';
 import { WidgetType } from '@codemirror/view';
@@ -10,7 +11,6 @@ import {
   type ViewUpdate,
 } from '@codemirror/view';
 import { createRoot } from 'react-dom/client';
-import { BlameCard } from './BlameCard';
 
 class BlameWidget extends WidgetType {
   constructor(readonly blame: BlameHunk) {

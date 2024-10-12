@@ -5,7 +5,6 @@ import type { Range } from '@codemirror/state';
 import { WidgetType } from '@codemirror/view';
 import {
   Decoration,
-  type DecorationSet,
   type EditorView,
   ViewPlugin,
   type ViewUpdate,
@@ -32,8 +31,9 @@ class BlameWidget extends WidgetType {
   }
 }
 
+type WidgetTypeItem = Range<Decoration> | null;
 function blameLines(view: EditorView, hunks: BlameHunk[]) {
-  const widgets: Range<Decoration>[] = [];
+  const widgets: WidgetTypeItem[] = [];
 
   function getText(num: number) {
     for (const item of hunks) {
@@ -49,6 +49,7 @@ function blameLines(view: EditorView, hunks: BlameHunk[]) {
   for (let i = 1; i <= view.state.doc.lines; i += 1) {
     const line = view.state.doc.line(i);
     if (line.text.trim().length === 0) {
+      widgets.push(null);
       continue;
     }
     const blame = getText(i);
@@ -60,11 +61,12 @@ function blameLines(view: EditorView, hunks: BlameHunk[]) {
       widgets.push(deco.range(line.to));
     }
   }
-  return Decoration.set(widgets);
+  return widgets;
 }
 
 class BlamePluginInner {
-  decorations: DecorationSet;
+  decorations: WidgetTypeItem[];
+  cursor: undefined | number;
 
   constructor(
     view: EditorView,
@@ -74,12 +76,25 @@ class BlamePluginInner {
   }
 
   update(update: ViewUpdate) {
+    const head = update.state.selection.main.head;
+    const cursor = update.state.doc.lineAt(head);
+    this.cursor = cursor.number - 1;
+
     if (
       update.docChanged ||
       update.viewportChanged ||
       syntaxTree(update.startState) !== syntaxTree(update.state)
-    )
+    ) {
       this.decorations = blameLines(update.view, this.hunks);
+    }
+  }
+
+  decorationAt() {
+    if (this.cursor !== undefined) {
+      const res = this.decorations[this.cursor];
+      return Decoration.set(res || []);
+    }
+    return Decoration.set([]);
   }
 }
 
@@ -89,7 +104,7 @@ export function BlamePlugin(blame: BlameHunk[]) {
       return new BlamePluginInner(view, blame);
     },
     {
-      decorations: v => v.decorations,
+      decorations: v => v.decorationAt(),
 
       eventHandlers: {
         mousedown: (e, view) => {

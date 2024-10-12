@@ -68,7 +68,6 @@ export const checkboxPlugin = ViewPlugin.fromClass(
     decorations: DecorationSet;
 
     constructor(view: EditorView) {
-      console.log('cra');
       this.decorations = checkboxes(view);
     }
 

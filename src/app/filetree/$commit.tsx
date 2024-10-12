@@ -84,7 +84,6 @@ function FileTree() {
   const blamePlugin = useMemo(() => {
     return BlamePlugin(blameInfo || []);
   }, [blameInfo, path]);
-  console.log(blameInfo);
 
   return (
     <ResizablePanelGroup

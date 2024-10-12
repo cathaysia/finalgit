@@ -88,21 +88,55 @@ export const useRefreshRequest = create<RefreshRequest>()(
 );
 
 export interface AiStateProps {
-  prompt: string;
+  current: string;
+  promptList: Map<string, string>;
   ollamaEndpoint: string;
   ollamaCurrentModel: string | undefined;
-  setPrompt: (prompt: string) => void;
+  setPrompt: (name: string, prompt: string) => void;
+  setCurrent: (name: string) => void;
   setOllamaEndpoint: (endpoint: string) => void;
   setOllamaModel: (model: string) => void;
 }
 
+const defaultPrompt = new Map();
+defaultPrompt.set('Conventional Commits', SHORT_DEFAULT_COMMIT_TEMPLATE);
+defaultPrompt.set(
+  'GitMoji',
+  ` Please could you write a commit message for my changes.
+Only respond with the commit message. Don't give any notes.
+Explain what were the changes and why the changes were done.
+Focus the most important changes.
+
+The commit message shoule following this format:
+<intention> [scope?][:?] <message>
+
+intention: The intention you want to express with the commit, using an emoji from the gitmoji. Either in the :shortcode: or unicode format.
+scope: An optional string that adds contextual information for the scope of the change.
+message: A brief explanation of the change.
+
+Here is my git diff:
+\`\`\`
+%{diff}
+\`\`\`
+`,
+);
+
 export const useAiState = create<AiStateProps>()(
   persist(
     set => ({
-      prompt: SHORT_DEFAULT_COMMIT_TEMPLATE,
+      current: 'Conventional Commits',
+      promptList: defaultPrompt,
       ollamaEndpoint: 'http://127.0.0.1:11434',
       ollamaCurrentModel: undefined,
-      setPrompt: (prompt: string) => set({ prompt: prompt }),
+      setCurrent: (name: string) => set({ current: name }),
+      setPrompt: (name: string, prompt: string) =>
+        set(s =>
+          (() => {
+            const promptList = s.promptList;
+            promptList.set(name, prompt);
+            return { promptList: promptList };
+          })(),
+        ),
       setOllamaEndpoint: (endpoint: string) =>
         set({ ollamaEndpoint: endpoint }),
       setOllamaModel: (model: string) =>
@@ -114,7 +148,7 @@ export const useAiState = create<AiStateProps>()(
       name: 'ai',
       storage: createJSONStorage(() => storeStorage),
       partialize: s => ({
-        prompt: s.prompt,
+        prompt: s.current,
         ollamaEndpoint: s.ollamaEndpoint,
       }),
     },

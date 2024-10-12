@@ -45,10 +45,12 @@ export default function Commiter({
   const repoPath = useAppState(s => s.repoPath);
   const [refreshPush] = useRefreshRequest(s => [s.refreshPush]);
   const [isLoading, setIsLoading] = useState(false);
-  const [prompt, currentModel] = useAiState(s => [
-    s.prompt,
+  const [current, promptList, currentModel] = useAiState(s => [
+    s.current,
+    s.promptList,
     s.ollamaCurrentModel,
   ]);
+  const prompt = promptList.get(current) || '';
 
   useHotkeys(
     'Escape',

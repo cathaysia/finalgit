@@ -467,6 +467,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async commitInfo(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<Commit, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_info', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
 };
 
 /** user-defined events **/
@@ -491,6 +505,15 @@ export type BranchInfo = {
   upstream: string | null;
 };
 export type BranchType = 'Local' | 'Remote';
+export type Commit = {
+  id: string;
+  author: Signature;
+  commiter: Signature;
+  message: string;
+  summary: string;
+  body: string;
+  time: number;
+};
 export type CommitInfo = {
   hash: string;
   author: Author;

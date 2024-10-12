@@ -79,6 +79,7 @@ pub fn run() {
             commit::commit_checkout,
             commit::checkout_file,
             blame::blame_of_file,
+            commit::commit_info,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -126,6 +127,7 @@ mod test {
                 commit::commit_checkout,
                 commit::checkout_file,
                 blame::blame_of_file,
+                commit::commit_info,
             ]);
 
         builder

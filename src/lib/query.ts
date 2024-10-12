@@ -243,3 +243,49 @@ export function useHeadState() {
 export function refreshHead() {
   queryClient.invalidateQueries({ queryKey: ['head'] });
 }
+
+export function useBlameInfo(commit: string, file: string) {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['blame', repoPath, commit, file],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.blameOfFile(repoPath, commit, file);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function useCommitInfo(commit: string) {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['commit', repoPath, commit],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.commitInfo(repoPath, commit);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}

@@ -5,9 +5,10 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
+import { BlamePlugin } from '@/extensions/Blame';
 import { checkboxPlugin } from '@/extensions/BoolCheckbox';
 import NOTIFY from '@/lib/notify';
-import { useFiles } from '@/lib/query';
+import { useBlameInfo, useFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import FilePanel from '@/stories/panels/FilePanel';
 import { createFileRoute } from '@tanstack/react-router';
@@ -16,7 +17,7 @@ import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
@@ -41,11 +42,14 @@ function FileTree() {
   const [language, setLanguage] = useState<string>();
   const mirrorTheme = theme === 'dark' ? githubDark : githubLight;
 
+  const [path, setPath] = useState('');
+
   async function getText(path: string) {
     if (!repoPath) {
       return;
     }
     const normalPath = path.slice(1);
+    setPath(normalPath);
     const language = await commands.assumeLanguage(normalPath);
     match(language).with({ status: 'ok' }, val => {
       if (val.data) {
@@ -73,6 +77,15 @@ function FileTree() {
     extensions.push(loadLanguage(language));
   }
 
+  const { error: blameErr, data: blameInfo } = useBlameInfo(commit, path);
+  if (blameErr) {
+    NOTIFY.error(blameErr.name);
+  }
+  const blamePlugin = useMemo(() => {
+    return BlamePlugin(blameInfo || []);
+  }, [blameInfo, path]);
+  console.log(blameInfo);
+
   return (
     <ResizablePanelGroup
       direction="horizontal"
@@ -91,7 +104,7 @@ function FileTree() {
           height="100%"
           theme={mirrorTheme}
           // @ts-expect-error: no error
-          extensions={[...extensions, checkboxPlugin]}
+          extensions={[...extensions, checkboxPlugin, blamePlugin]}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

@@ -452,6 +452,21 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async blameOfFile(
+    repoPath: string,
+    commit: string,
+    path: string,
+  ): Promise<Result<BlameHunk[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('blame_of_file', { repoPath, commit, path }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
 };
 
 /** user-defined events **/
@@ -461,6 +476,12 @@ export const commands = {
 /** user-defined types **/
 
 export type Author = { name: string; email: string };
+export type BlameHunk = {
+  final_commit_id: string;
+  final_start_line: number;
+  lines: number;
+  signature: Signature;
+};
 export type BranchInfo = {
   remote: string | null;
   name: string;
@@ -484,6 +505,7 @@ export type FileTree =
   | { Dir: { dir: string; files: FileTree[]; mode: number } };
 export type HeadInfo = { oid: string; is_detached: boolean };
 export type PushStatus = { unpush: number; unpull: number };
+export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
 export type TagInfo = { name: string; commit: string; ref_hash: string };
 

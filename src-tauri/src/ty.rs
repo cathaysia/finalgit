@@ -2,6 +2,8 @@ use std::cmp::Ordering;
 
 use specta::Type;
 
+use crate::AppError;
+
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
 pub enum FileTree {
     File {
@@ -159,4 +161,23 @@ pub struct CommitInfo {
     pub message: String,
     pub summary: String,
     pub time: u32,
+}
+
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
+pub struct Signature {
+    pub name: String,
+    pub email: String,
+    pub time: u32,
+}
+
+impl TryFrom<&git2::Signature<'_>> for Signature {
+    type Error = AppError;
+
+    fn try_from(value: &git2::Signature<'_>) -> Result<Self, Self::Error> {
+        Ok(Self {
+            name: value.name().unwrap().to_string(),
+            email: value.name().unwrap().to_string(),
+            time: value.when().seconds() as u32,
+        })
+    }
 }

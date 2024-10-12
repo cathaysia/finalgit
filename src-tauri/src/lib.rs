@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+mod blame;
 mod branch;
 mod commit;
 mod error;
@@ -77,6 +78,7 @@ pub fn run() {
             branch::branch_status,
             commit::commit_checkout,
             commit::checkout_file,
+            blame::blame_of_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -123,6 +125,7 @@ mod test {
                 branch::branch_status,
                 commit::commit_checkout,
                 commit::checkout_file,
+                blame::blame_of_file,
             ]);
 
         builder

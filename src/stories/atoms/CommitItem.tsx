@@ -52,7 +52,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         {...props}
       >
         <div className="flex items-center gap-2">
-          <HighLightLabel text={branchName} filter={filter} />
+          <HighLightLabel
+            text={branchName}
+            filter={filter}
+            onClick={() => {
+              if (repoPath) {
+                checkoutCommit(repoPath, commit.hash);
+              }
+            }}
+          />
           <Badge
             title={commit.hash}
             className="font-mono"

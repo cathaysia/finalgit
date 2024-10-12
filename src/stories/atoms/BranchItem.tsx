@@ -126,7 +126,14 @@ export default function BranchItem({
           >
             <div className="flex w-full min-w-0 items-center gap-2">
               <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
-              <div className="flex w-full flex-col gap-2">
+              <div
+                className="flex w-full flex-col gap-2"
+                onClick={() => {
+                  if (repoPath && info.kind === 'Local') {
+                    checkoutBranch(repoPath, info);
+                  }
+                }}
+              >
                 <HighLightLabel
                   text={branchName}
                   filter={filter}

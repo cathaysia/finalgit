@@ -370,7 +370,7 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async getRepoHead(repoPath: string): Promise<Result<string, string>> {
+  async getRepoHead(repoPath: string): Promise<Result<HeadInfo, string>> {
     try {
       return {
         status: 'ok',
@@ -482,6 +482,7 @@ export type FileStatus = { path: string; status: number };
 export type FileTree =
   | { File: { filename: string; mode: number } }
   | { Dir: { dir: string; files: FileTree[]; mode: number } };
+export type HeadInfo = { oid: string; is_detached: boolean };
 export type PushStatus = { unpush: number; unpull: number };
 export type StashInfo = { id: number; message: string; oid: string };
 export type TagInfo = { name: string; commit: string; ref_hash: string };

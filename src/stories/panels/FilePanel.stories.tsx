@@ -40,6 +40,7 @@ export const Default: Story = {
         },
       },
     ],
+    commit: 'c1ae3d7af9a0414bdc7aced4182fb742be216bae',
     onClicked: () => {},
   },
 };

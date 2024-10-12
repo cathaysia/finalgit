@@ -72,9 +72,9 @@ export default function WorkspacePanel({
 
   if (branchName === '') {
     const item = tags?.find(item => {
-      return item.ref_hash === current;
+      return item.ref_hash === current?.oid;
     });
-    if (item !== undefined) {
+    if (item !== undefined && !current?.is_detached) {
       branchName = item.name;
     }
   }
@@ -157,7 +157,7 @@ export default function WorkspacePanel({
               <Link
                 to="/filetree/$commit"
                 params={{
-                  commit: current,
+                  commit: current.oid,
                 }}
                 className={cn(files?.length === 0 && 'pointer-events-none')}
               >

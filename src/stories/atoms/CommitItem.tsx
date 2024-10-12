@@ -9,7 +9,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges, refreshHead, useHeadState } from '@/lib/query';
+import {
+  refreshBranches,
+  refreshChanges,
+  refreshHead,
+  useChanges,
+  useHeadState,
+} from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
@@ -35,6 +41,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const names = [commit.author.name];
     const [repoPath] = useAppState(s => [s.repoPath]);
     const { data: head } = useHeadState();
+    const { data: changes } = useChanges();
+    const isDirty = changes === undefined ? false : changes.length !== 0;
 
     if (commit.author.name !== commit.commiter.name) {
       names.push(commit.commiter.name);
@@ -44,7 +52,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         className={cn(
           'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
-          head === commit.hash &&
+          head?.is_detached &&
+            head?.oid === commit.hash &&
             'border border-green-600 dark:border-green-600',
           className,
         )}
@@ -56,8 +65,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             text={branchName}
             filter={filter}
             onClick={() => {
-              if (repoPath) {
+              if (repoPath && !isDirty) {
                 checkoutCommit(repoPath, commit.hash);
+                refreshBranches();
               }
             }}
           />
@@ -98,8 +108,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  if (repoPath) {
+                  if (repoPath && !isDirty) {
                     checkoutCommit(repoPath, commit.hash);
+                    refreshBranches();
                   }
                 }}
               >

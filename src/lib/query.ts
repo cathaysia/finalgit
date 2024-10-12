@@ -101,7 +101,7 @@ export function useFiles() {
       if (!head) {
         throw new Error('no head');
       }
-      const res = await commands.getFileTree(repoPath, head);
+      const res = await commands.getFileTree(repoPath, head.oid);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;

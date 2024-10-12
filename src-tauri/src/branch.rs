@@ -140,13 +140,22 @@ pub fn get_configes(repo_path: &str) -> AppResult<HashMap<String, String>> {
     utils::open_repo(repo_path)?.get_configes()
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
+pub struct HeadInfo {
+    oid: String,
+    is_detached: bool,
+}
+
 #[tauri::command]
 #[specta::specta]
-pub fn get_repo_head(repo_path: &str) -> AppResult<String> {
+pub fn get_repo_head(repo_path: &str) -> AppResult<HeadInfo> {
     let repo = utils::open_repo(repo_path)?;
     let head = repo.head()?;
-    let oid = head.target().unwrap();
-    Ok(oid.to_string())
+    let oid = head.target().unwrap().to_string();
+    Ok(HeadInfo {
+        oid,
+        is_detached: repo.head_detached()?,
+    })
 }
 
 #[tauri::command]

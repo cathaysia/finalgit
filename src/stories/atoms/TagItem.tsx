@@ -51,7 +51,7 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
         'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:bg-neutral-900 dark:text-white',
         className,
         DEFAULT_STYLE,
-        info.ref_hash === head && 'border-green-600 dark:border-green-600',
+        info.ref_hash === head?.oid && 'border-green-600 dark:border-green-600',
       )}
       {...props}
     >

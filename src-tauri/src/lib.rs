@@ -82,7 +82,8 @@ pub fn run() {
             blame::blame_of_file,
             commit::commit_info,
             commit::commit_reset_author,
-            cherry_pick::cherrypick
+            cherry_pick::cherrypick,
+            commit::commit_amend,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -133,6 +134,7 @@ mod test {
                 commit::commit_info,
                 commit::commit_reset_author,
                 cherry_pick::cherrypick,
+                commit::commit_amend,
             ]);
 
         builder

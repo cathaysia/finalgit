@@ -74,3 +74,18 @@ pub fn commit_reset_author(repo_path: &str, _commit: &str) -> AppResult<()> {
 
     Ok(())
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn commit_amend(repo_path: &str, commit: &str) -> AppResult<()> {
+    let repo = utils::open_repo(repo_path)?;
+
+    let head = repo.head()?.target().unwrap().to_string();
+    if commit == head {
+        repo.exec_git(["commit", "--amend", "--no-edit"])?;
+    } else {
+        return Err(AppError::NotImplement);
+    }
+
+    Ok(())
+}

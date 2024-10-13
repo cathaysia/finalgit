@@ -32,7 +32,7 @@ impl TryFrom<&git2::BlameHunk<'_>> for BlameHunk {
 pub fn blame_of_file(repo_path: &str, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
     let repo = utils::open_repo(repo_path)?;
     let mut opt = BlameOptions::new();
-    opt.oldest_commit(Oid::from_str(commit)?);
+    opt.newest_commit(Oid::from_str(commit)?);
     let blame = repo.blame_file(Path::new(path), Some(&mut opt))?;
 
     let mut res = Vec::with_capacity(blame.len());

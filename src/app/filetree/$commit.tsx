@@ -5,7 +5,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import { BlamePlugin } from '@/extensions/Blame';
+import { createBlamePlugin } from '@/extensions/Blame';
 import { checkboxPlugin } from '@/extensions/BoolCheckbox';
 import NOTIFY from '@/lib/notify';
 import { useBlameInfo, useFiles } from '@/lib/query';
@@ -82,7 +82,7 @@ function FileTree() {
     NOTIFY.error(blameErr.name);
   }
   const blamePlugin = useMemo(() => {
-    return BlamePlugin(blameInfo || []);
+    return createBlamePlugin(blameInfo || []);
   }, [blameInfo, path]);
 
   return (

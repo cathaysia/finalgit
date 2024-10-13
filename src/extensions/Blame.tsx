@@ -1,7 +1,6 @@
 import type { BlameHunk } from '@/bindings';
 import { BlameCard } from '@/stories/atoms/BlameCard';
 import { syntaxTree } from '@codemirror/language';
-import type { Range } from '@codemirror/state';
 import { WidgetType } from '@codemirror/view';
 import {
   Decoration,
@@ -12,18 +11,18 @@ import {
 import { createRoot } from 'react-dom/client';
 
 class BlameWidget extends WidgetType {
+  container: HTMLElement;
   constructor(readonly blame: BlameHunk) {
     super();
+    this.container = document.createElement('span');
   }
 
   // biome-ignore lint/style/useNamingConvention: <explanation>
   toDOM() {
     const card = BlameCard(this.blame);
 
-    const container = document.createElement('span');
-
-    createRoot(container).render(card);
-    return container;
+    createRoot(this.container).render(card);
+    return this.container;
   }
 
   ignoreEvent() {
@@ -31,102 +30,78 @@ class BlameWidget extends WidgetType {
   }
 }
 
-type WidgetTypeItem = Range<Decoration> | null;
-function blameLines(view: EditorView, hunks: BlameHunk[]) {
-  const widgets: WidgetTypeItem[] = [];
-
-  function getText(num: number) {
-    for (const item of hunks) {
-      if (
-        item.final_start_line <= num &&
-        item.final_start_line + item.lines > num
-      ) {
-        return item;
-      }
-    }
-  }
-
-  for (let i = 1; i <= view.state.doc.lines; i += 1) {
-    const line = view.state.doc.line(i);
-    if (line.text.trim().length === 0) {
-      widgets.push(null);
-      continue;
-    }
-    const blame = getText(i);
-    if (blame) {
-      const deco = Decoration.widget({
-        widget: new BlameWidget(blame),
-        side: 1,
-      });
-      widgets.push(deco.range(line.to));
-    }
-  }
-  return widgets;
-}
-
-class BlamePluginInner {
-  decorations: WidgetTypeItem[];
+class BlamePlugin {
   cursor: undefined | number;
+  view: EditorView;
 
   constructor(
     view: EditorView,
     readonly hunks: BlameHunk[],
   ) {
-    this.decorations = blameLines(view, this.hunks);
+    this.view = view;
   }
 
   update(update: ViewUpdate) {
     const head = update.state.selection.main.head;
     const cursor = update.state.doc.lineAt(head);
-    this.cursor = cursor.number - 1;
+    this.cursor = cursor.number;
 
     if (
       update.docChanged ||
       update.viewportChanged ||
       syntaxTree(update.startState) !== syntaxTree(update.state)
     ) {
-      this.decorations = blameLines(update.view, this.hunks);
+      this.view = update.view;
     }
   }
 
-  decorationAt() {
-    if (this.cursor !== undefined) {
-      const res = this.decorations[this.cursor];
-      return Decoration.set(res || []);
+  createBlameWidget() {
+    if (this.cursor === undefined) {
+      return undefined;
     }
-    return Decoration.set([]);
+
+    const cursor = this.cursor;
+
+    const hunk = this.hunks.find(item => {
+      return (
+        item.final_start_line <= cursor &&
+        item.final_start_line + item.lines > cursor
+      );
+    });
+
+    if (hunk === undefined) {
+      return undefined;
+    }
+
+    const line = this.view.state.doc.line(cursor);
+    if (line.text.trim().length === 0) {
+      return undefined;
+    }
+
+    const widget = Decoration.widget({
+      widget: new BlameWidget(hunk),
+      side: 1,
+    });
+
+    return widget.range(line.to);
+  }
+
+  blameLine() {
+    const widget = this.createBlameWidget();
+    if (widget === undefined) {
+      return Decoration.set([]);
+    }
+    return Decoration.set([widget]);
   }
 }
 
-export function BlamePlugin(blame: BlameHunk[]) {
+export function createBlamePlugin(blame: BlameHunk[]) {
   return ViewPlugin.define(
     view => {
-      return new BlamePluginInner(view, blame);
+      return new BlamePlugin(view, blame);
     },
     {
-      decorations: v => v.decorationAt(),
-
-      eventHandlers: {
-        mousedown: (e, view) => {
-          const target = e.target as HTMLElement;
-          if (
-            target.nodeName === 'INPUT' &&
-            target.classList.contains('cm-boolean-toggle')
-          )
-            return toggleBoolean(view, view.posAtDOM(target));
-        },
-      },
+      decorations: v => v.blameLine(),
     },
   );
-}
-
-function toggleBoolean(_view: EditorView, _pos: number) {
-  // const before = view.state.doc.sliceString(Math.max(0, pos - 5), pos);
-  // let change: ChangeSpec;
-  // if (before === 'false') change = { from: pos - 5, to: pos, insert: 'true' };
-  // else if (before.endsWith('true'))
-  //   change = { from: pos - 4, to: pos, insert: 'false' };
-  // else return false;
-  // view.dispatch({ changes: change });
-  return true;
 }

@@ -1,20 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import GitOption from '../atoms/GitOption';
 import GitSwitch from '../atoms/GitSwitch';
 
 type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {
   const { t } = useTranslation();
+
   return (
     <Card className={cn('w-full', className)} {...props}>
       <CardHeader>
@@ -31,26 +24,11 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
           id="profile.git.tag.gpgsign"
           opt={'tag.gpgsign'}
         />
-        <div>
-          <Label>{t('profile.git.defaultBranch')}</Label>
-          <Input type="text" />
-        </div>
-        <div>
-          <Label>{t('profile.git.pull')}</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="rebase">{t('profile.git.rebase')}</SelectItem>
-              <SelectItem value="norebase">
-                {t('profile.git.norebase')}
-              </SelectItem>
-              <SelectItem value="ff">{t('profile.git.ff')}</SelectItem>
-              <SelectItem value="noff">{t('profile.git.noff')}</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <GitOption
+          id="profile.git.defaultBranch"
+          name={t('profile.git.defaultBranch')}
+          opt={'init.defaultbranch'}
+        />
       </CardContent>
     </Card>
   );

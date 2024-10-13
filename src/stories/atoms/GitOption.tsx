@@ -1,11 +1,9 @@
-import { commands } from '@/bindings';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import NOTIFY from '@/lib/notify';
+import { getGitConfig, setGitConfig } from '@/lib/git';
 import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { match } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export interface GitOptionProps
@@ -23,12 +21,12 @@ export default function GitOption({
   ...props
 }: GitOptionProps) {
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>('');
   const [debounce] = useDebounce(value, 1000);
 
   useEffect(() => {
     if (repoPath) {
-      getValue(repoPath, opt).then(val => {
+      getGitConfig(repoPath, opt).then(val => {
         if (val) {
           setValue(val);
         }
@@ -40,7 +38,7 @@ export default function GitOption({
     if (!debounce || !repoPath || !debounce) {
       return;
     }
-    setConfig(repoPath, opt, debounce);
+    setGitConfig(repoPath, opt, debounce);
   }, [debounce, repoPath, opt]);
 
   return (
@@ -56,25 +54,4 @@ export default function GitOption({
       />
     </div>
   );
-}
-
-async function getValue(repoPath: string, opt: string) {
-  const res = await commands?.getConfig(repoPath, opt);
-  return match(res)
-    .with({ status: 'ok' }, val => {
-      return val.data;
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    })
-    .exhaustive();
-}
-
-async function setConfig(repoPath: string, opt: string, value: string) {
-  const res = await commands?.setConfig(repoPath, opt, value);
-  match(res)
-    .with({ status: 'ok' }, _ => {})
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    });
 }

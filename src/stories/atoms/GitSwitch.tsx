@@ -60,6 +60,7 @@ export default function GitSwitch({
 
 async function getBooleanConfig(repoPath: string, opt: string) {
   const res = await commands?.getConfig(repoPath, opt);
+
   return match(res)
     .with({ status: 'ok' }, val => {
       if (val.data === 'true') {

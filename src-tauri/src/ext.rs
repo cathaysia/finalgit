@@ -3,8 +3,11 @@ use std::{collections::HashMap, path::Path, process::Stdio};
 use git2::{build::CheckoutBuilder, Sort};
 use itertools::Itertools;
 use log::debug;
+use tauri_derive::export_ts;
 
-use crate::{AppError, AppResult, Author, BranchInfo, CommitInfo, FileStatus, FileTree, TagInfo};
+use crate::{
+    AppError, AppResult, Author, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree, TagInfo,
+};
 
 pub trait RepoExt {
     fn get_branches(&self) -> AppResult<Vec<BranchInfo>>;
@@ -17,10 +20,10 @@ pub trait RepoExt {
 
     /// https://stackoverflow.com/a/46758861
     fn checkout_branch(&self, name: &str) -> AppResult<()>;
-    fn get_commits(&self, branch: &str, kind: git2::BranchType) -> AppResult<Vec<CommitInfo>>;
+    fn get_commits(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>>;
     fn get_current_status(&self) -> AppResult<Vec<FileStatus>>;
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
-    fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>>;
+    fn get_file_content(&self, commit: &str, path: &str) -> AppResult<String>;
     fn get_tags(&self) -> AppResult<Vec<TagInfo>>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
     fn create_patch(&self) -> AppResult<String>;
@@ -35,6 +38,7 @@ pub trait RepoExt {
         S: AsRef<std::ffi::OsStr>;
 }
 
+#[export_ts]
 impl RepoExt for git2::Repository {
     fn get_branches(&self) -> AppResult<Vec<BranchInfo>> {
         let mut branches = vec![];
@@ -125,8 +129,8 @@ impl RepoExt for git2::Repository {
         Ok(())
     }
 
-    fn get_commits(&self, branch: &str, kind: git2::BranchType) -> AppResult<Vec<CommitInfo>> {
-        let branch = self.find_branch(branch, kind)?;
+    fn get_commits(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
+        let branch = self.find_branch(branch, kind.into())?;
         let oid = branch.get().target().unwrap();
 
         let mut walker = self.revwalk()?;
@@ -183,6 +187,7 @@ impl RepoExt for git2::Repository {
 
         Ok(status)
     }
+
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>> {
         let id = git2::Oid::from_str(commit)?;
 
@@ -198,14 +203,14 @@ impl RepoExt for git2::Repository {
         Ok(files)
     }
 
-    fn get_file_content(&self, commit: &str, path: &str) -> AppResult<Vec<u8>> {
+    fn get_file_content(&self, commit: &str, path: &str) -> AppResult<String> {
         let commit = git2::Oid::from_str(commit)?;
         let commit = self.find_commit(commit)?;
         let tree = commit.tree()?;
         let entry = tree.get_path(Path::new(path))?;
         let entry = self.find_blob(entry.id())?;
 
-        Ok(entry.content().to_vec())
+        Ok(String::from_utf8(entry.content().to_vec())?)
     }
 
     fn get_tags(&self) -> AppResult<Vec<TagInfo>> {

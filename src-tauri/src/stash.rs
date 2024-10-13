@@ -1,5 +1,6 @@
+use tauri_derive::export_ts;
+
 use crate::ext::RepoExt;
-use crate::utils;
 
 use crate::AppResult;
 
@@ -10,50 +11,48 @@ pub struct StashInfo {
     oid: String,
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn stash_save(repo_path: &str, message: Option<String>) -> AppResult<()> {
-    let repo = utils::open_repo(repo_path)?;
-    match message {
-        Some(msg) => {
-            let _ = repo.exec_git(["stash", &msg])?;
+pub trait StashExt {
+    fn stash_save(&self, message: Option<String>) -> AppResult<()>;
+    fn stash_apply(&mut self, index: u32) -> AppResult<()>;
+    fn stash_remove(&mut self, index: u32) -> AppResult<()>;
+    fn stash_list(&mut self) -> AppResult<Vec<StashInfo>>;
+}
+
+#[export_ts]
+impl StashExt for git2::Repository {
+    fn stash_save(&self, message: Option<String>) -> AppResult<()> {
+        match message {
+            Some(msg) => {
+                let _ = self.exec_git(["stash", &msg])?;
+            }
+            None => {
+                let _ = self.exec_git(["stash"])?;
+            }
         }
-        None => {
-            let _ = repo.exec_git(["stash"])?;
-        }
+        Ok(())
     }
-    Ok(())
-}
 
-#[tauri::command]
-#[specta::specta]
-pub fn stash_apply(repo_path: &str, index: u32) -> AppResult<()> {
-    let mut repo = utils::open_repo(repo_path)?;
-    repo.stash_apply(index as usize, None)?;
-    Ok(())
-}
+    fn stash_apply(&mut self, index: u32) -> AppResult<()> {
+        self.stash_apply(index as usize, None)?;
+        Ok(())
+    }
 
-#[tauri::command]
-#[specta::specta]
-pub fn stash_remove(repo_path: &str, index: u32) -> AppResult<()> {
-    let mut repo = utils::open_repo(repo_path)?;
-    repo.stash_drop(index as usize)?;
-    Ok(())
-}
+    fn stash_remove(&mut self, index: u32) -> AppResult<()> {
+        self.stash_drop(index as usize)?;
+        Ok(())
+    }
 
-#[tauri::command]
-#[specta::specta]
-pub fn stash_list(repo_path: &str) -> AppResult<Vec<StashInfo>> {
-    let mut repo = utils::open_repo(repo_path)?;
-    let mut infos = vec![];
-    repo.stash_foreach(|idx, message, id| {
-        infos.push(StashInfo {
-            id: idx as u32,
-            message: message.into(),
-            oid: id.to_string(),
-        });
-        true
-    })?;
+    fn stash_list(&mut self) -> AppResult<Vec<StashInfo>> {
+        let mut infos = vec![];
+        self.stash_foreach(|idx, message, id| {
+            infos.push(StashInfo {
+                id: idx as u32,
+                message: message.into(),
+                oid: id.to_string(),
+            });
+            true
+        })?;
 
-    Ok(infos)
+        Ok(infos)
+    }
 }

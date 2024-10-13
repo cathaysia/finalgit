@@ -1,4 +1,3 @@
-use crate::utils;
 use crate::AppError;
 use crate::AppResult;
 use crate::RepoExt;
@@ -6,28 +5,57 @@ use crate::Signature;
 use git2::build::CheckoutBuilder;
 use git2::Oid;
 use specta::Type;
+use tauri_derive::export_ts;
 
-#[tauri::command]
-#[specta::specta]
-pub fn commit_checkout(repo_path: &str, commit: &str) -> AppResult<()> {
-    let repo = utils::open_repo(repo_path)?;
-    let oid = Oid::from_str(commit)?;
-    repo.set_head_detached(oid)?;
-
-    let mut opts = CheckoutBuilder::new();
-    let opts = opts.safe().force();
-    repo.checkout_head(Some(opts))?;
-
-    Ok(())
+pub trait CommitExt {
+    fn commit_checkout(&self, commit: &str) -> AppResult<()>;
+    fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()>;
+    fn commit_info(&self, commit: &str) -> AppResult<Commit>;
+    fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
+    fn commit_amend(&self, commit: &str) -> AppResult<()>;
 }
 
-#[tauri::command]
-#[specta::specta]
-pub fn checkout_file(repo_path: &str, commit: &str, path: &str) -> AppResult<()> {
-    let repo = utils::open_repo(repo_path)?;
-    repo.exec_git(["checkout", commit, path])?;
+#[export_ts]
+impl CommitExt for git2::Repository {
+    fn commit_checkout(&self, commit: &str) -> AppResult<()> {
+        let oid = Oid::from_str(commit)?;
+        self.set_head_detached(oid)?;
 
-    Ok(())
+        let mut opts = CheckoutBuilder::new();
+        let opts = opts.safe().force();
+        self.checkout_head(Some(opts))?;
+
+        Ok(())
+    }
+
+    fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()> {
+        self.exec_git(["checkout", commit, path])?;
+
+        Ok(())
+    }
+
+    fn commit_info(&self, commit: &str) -> AppResult<Commit> {
+        let commit = self.find_commit(Oid::from_str(commit)?)?;
+
+        (&commit).try_into()
+    }
+
+    fn commit_reset_author(&self, _commit: &str) -> AppResult<()> {
+        self.exec_git(["commit", "--reset-author", "--amend", "--no-edit"])?;
+
+        Ok(())
+    }
+
+    fn commit_amend(&self, commit: &str) -> AppResult<()> {
+        let head = self.head()?.target().unwrap().to_string();
+        if commit == head {
+            self.exec_git(["commit", "--amend", "--no-edit"])?;
+        } else {
+            return Err(AppError::NotImplement);
+        }
+
+        Ok(())
+    }
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
@@ -54,38 +82,4 @@ impl TryFrom<&git2::Commit<'_>> for Commit {
             time: value.time().seconds() as u32,
         })
     }
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn commit_info(repo_path: &str, commit: &str) -> AppResult<Commit> {
-    let repo = utils::open_repo(repo_path)?;
-    let commit = repo.find_commit(Oid::from_str(commit)?)?;
-
-    (&commit).try_into()
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn commit_reset_author(repo_path: &str, _commit: &str) -> AppResult<()> {
-    let repo = utils::open_repo(repo_path)?;
-
-    repo.exec_git(["commit", "--reset-author", "--amend", "--no-edit"])?;
-
-    Ok(())
-}
-
-#[tauri::command]
-#[specta::specta]
-pub fn commit_amend(repo_path: &str, commit: &str) -> AppResult<()> {
-    let repo = utils::open_repo(repo_path)?;
-
-    let head = repo.head()?.target().unwrap().to_string();
-    if commit == head {
-        repo.exec_git(["commit", "--amend", "--no-edit"])?;
-    } else {
-        return Err(AppError::NotImplement);
-    }
-
-    Ok(())
 }

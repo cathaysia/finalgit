@@ -82,12 +82,12 @@ export const commands = {
   },
   async checkoutBranch(
     repoPath: string,
-    branch: string,
+    name: string,
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('checkout_branch', { repoPath, branch }),
+        data: await TAURI_INVOKE('checkout_branch', { repoPath, name }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -495,9 +495,6 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  /**
-   * Cherry-pick the given commit, producing changes in the index and working directory.
-   */
   async cherrypick(
     repoPath: string,
     commit: string,

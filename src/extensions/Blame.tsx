@@ -1,5 +1,3 @@
-import type { BlameHunk } from '@/bindings';
-import { BlameCard } from '@/stories/atoms/BlameCard';
 import { syntaxTree } from '@codemirror/language';
 import { WidgetType } from '@codemirror/view';
 import {
@@ -8,20 +6,15 @@ import {
   ViewPlugin,
   type ViewUpdate,
 } from '@codemirror/view';
-import { createRoot } from 'react-dom/client';
+import type { MutableRefObject } from 'react';
 
 class BlameWidget extends WidgetType {
-  container: HTMLElement;
-  constructor(readonly blame: BlameHunk) {
+  constructor(readonly container: HTMLElement) {
     super();
-    this.container = document.createElement('span');
   }
 
   // biome-ignore lint/style/useNamingConvention: <explanation>
   toDOM() {
-    const card = BlameCard(this.blame);
-
-    createRoot(this.container).render(card);
     return this.container;
   }
 
@@ -33,17 +26,27 @@ class BlameWidget extends WidgetType {
 class BlamePlugin {
   cursor: undefined | number;
   view: EditorView;
+  container: HTMLElement;
+  onCursorChange: (cursor: number) => void;
+  widget: Decoration;
 
-  constructor(
-    view: EditorView,
-    readonly hunks: BlameHunk[],
-  ) {
+  constructor(view: EditorView, onCursorChange: (cursor: number) => void) {
     this.view = view;
+
+    const container = document.createElement('span');
+    container.style.display = 'inline-block';
+    this.container = container;
+    this.onCursorChange = onCursorChange;
+    this.widget = Decoration.widget({
+      widget: new BlameWidget(this.container),
+      side: 1,
+    });
   }
 
   update(update: ViewUpdate) {
     const head = update.state.selection.main.head;
     const cursor = update.state.doc.lineAt(head);
+    const needCallback = this.cursor !== cursor.number;
     this.cursor = cursor.number;
 
     if (
@@ -52,6 +55,9 @@ class BlamePlugin {
       syntaxTree(update.startState) !== syntaxTree(update.state)
     ) {
       this.view = update.view;
+    }
+    if (needCallback) {
+      this.onCursorChange(cursor.number);
     }
   }
 
@@ -62,28 +68,12 @@ class BlamePlugin {
 
     const cursor = this.cursor;
 
-    const hunk = this.hunks.find(item => {
-      return (
-        item.final_start_line <= cursor &&
-        item.final_start_line + item.lines > cursor
-      );
-    });
-
-    if (hunk === undefined) {
-      return undefined;
-    }
-
     const line = this.view.state.doc.line(cursor);
     if (line.text.trim().length === 0) {
       return undefined;
     }
 
-    const widget = Decoration.widget({
-      widget: new BlameWidget(hunk),
-      side: 1,
-    });
-
-    return widget.range(line.to);
+    return this.widget.range(line.to);
   }
 
   blameLine() {
@@ -95,10 +85,15 @@ class BlamePlugin {
   }
 }
 
-export function createBlamePlugin(blame: BlameHunk[]) {
+export function createBlamePlugin(
+  inner: MutableRefObject<HTMLElement | undefined>,
+  onCursorChange: (cursor: number) => void,
+) {
   return ViewPlugin.define(
     view => {
-      return new BlamePlugin(view, blame);
+      const plugin = new BlamePlugin(view, onCursorChange);
+      inner.current = plugin.container;
+      return plugin;
     },
     {
       decorations: v => v.blameLine(),

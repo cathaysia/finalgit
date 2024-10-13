@@ -10,14 +10,16 @@ import { checkboxPlugin } from '@/extensions/BoolCheckbox';
 import NOTIFY from '@/lib/notify';
 import { useBlameInfo, useFiles } from '@/lib/query';
 import { useAppState } from '@/lib/state';
+import { BlameCard } from '@/stories/atoms/BlameCard';
 import FilePanel from '@/stories/panels/FilePanel';
+import * as Portal from '@radix-ui/react-portal';
 import { createFileRoute } from '@tanstack/react-router';
 import { Navigate } from '@tanstack/react-router';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
@@ -81,9 +83,20 @@ function FileTree() {
   if (blameErr) {
     NOTIFY.error(blameErr.name);
   }
+  const [cursor, setCursor] = useState(0);
+  const blameWidget = useRef<HTMLElement | undefined>();
+  const hunk = blameInfo?.find(item => {
+    return (
+      item.final_start_line <= cursor &&
+      item.final_start_line + item.lines > cursor
+    );
+  });
+
   const blamePlugin = useMemo(() => {
-    return createBlamePlugin(blameInfo || []);
-  }, [blameInfo, path]);
+    return createBlamePlugin(blameWidget, cursor => {
+      setCursor(cursor);
+    });
+  }, [path]);
 
   return (
     <ResizablePanelGroup
@@ -105,6 +118,9 @@ function FileTree() {
           // @ts-expect-error: no error
           extensions={[...extensions, checkboxPlugin, blamePlugin]}
         />
+        <Portal.Root container={blameWidget.current} asChild>
+          {hunk && <BlameCard blame={hunk} />}
+        </Portal.Root>
       </ResizablePanel>
     </ResizablePanelGroup>
   );

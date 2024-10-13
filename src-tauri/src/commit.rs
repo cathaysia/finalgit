@@ -37,7 +37,7 @@ pub struct Commit {
     commiter: Signature,
     message: String,
     summary: String,
-    body: String,
+    body: Option<String>,
     time: u32,
 }
 
@@ -50,7 +50,7 @@ impl TryFrom<&git2::Commit<'_>> for Commit {
             author: (&value.author()).try_into()?,
             message: value.message().unwrap().to_string(),
             summary: value.summary().unwrap().to_string(),
-            body: value.body().unwrap().to_string(),
+            body: value.body().map(|item| item.to_string()),
             time: value.time().seconds() as u32,
         })
     }

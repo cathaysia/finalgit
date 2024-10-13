@@ -64,3 +64,13 @@ pub fn commit_info(repo_path: &str, commit: &str) -> AppResult<Commit> {
 
     (&commit).try_into()
 }
+
+#[tauri::command]
+#[specta::specta]
+pub fn commit_reset_author(repo_path: &str, _commit: &str) -> AppResult<()> {
+    let repo = utils::open_repo(repo_path)?;
+
+    repo.exec_git(["commit", "--reset-author", "--amend", "--no-edit"])?;
+
+    Ok(())
+}

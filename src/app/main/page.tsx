@@ -70,6 +70,19 @@ export default function Commit() {
     if (!debounce) {
       return currentHistory;
     }
+    // TODO: support more grammar
+    // https://git-scm.com/docs/revisions#Documentation/revisions.txt
+    const Matcher = /^(HEAD|@|[0-9a-z]{6,40})[~\^](\d+)$/;
+    const v = Matcher.exec(debounce);
+    if (v?.length === 3) {
+      const refname = v[1].slice(0, 6);
+      const starts = currentHistory.findIndex(item => {
+        return refname === item.hash.slice(0, 6);
+      });
+      const skip = Number(v[2]) + (starts === -1 ? 0 : starts);
+      return currentHistory.slice(skip);
+    }
+
     return currentHistory.filter(item => {
       return item.message.includes(debounce) || item.hash.includes(debounce);
     });

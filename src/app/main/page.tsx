@@ -1,4 +1,6 @@
 import { type CommitInfo, commands } from '@/bindings';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
 import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
@@ -6,8 +8,10 @@ import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
+import { useDebounce } from 'use-debounce';
 
 export const Route = createFileRoute('/main/')({
   component: Layout,
@@ -30,6 +34,7 @@ export default function Commit() {
   const [repoPath] = useAppState(s => [s.repoPath]);
   const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
   const { error, data: branches } = useBranches();
+  const { t } = useTranslation();
   if (error) {
     NOTIFY.error(error.message);
   }
@@ -37,6 +42,9 @@ export default function Commit() {
   if (headErr) {
     NOTIFY.error(headErr.message);
   }
+
+  const [filter, setFilter] = useState<string>();
+  const [debounce] = useDebounce(filter, 200);
 
   useEffect(() => {
     let trueHead = branches?.find(item => {
@@ -57,7 +65,36 @@ export default function Commit() {
       });
     }
   }, [repoPath, branches]);
-  return <GitHistory history={currentHistory} className="h-full" />;
+
+  const filteredData = useMemo(() => {
+    if (!debounce) {
+      return currentHistory;
+    }
+    return currentHistory.filter(item => {
+      return item.message.includes(debounce) || item.hash.includes(debounce);
+    });
+  }, [currentHistory, debounce]);
+
+  return (
+    <div className="flex h-full flex-col gap-2 overflow-hidden">
+      <div className="flex gap-2">
+        <Input
+          value={filter}
+          onChange={e => {
+            setFilter(e.target.value);
+          }}
+        />
+        <Button
+          onClick={() => {
+            setFilter(undefined);
+          }}
+        >
+          {t('Cancel')}
+        </Button>
+      </div>
+      <GitHistory history={filteredData} filter={filter} />
+    </div>
+  );
 }
 
 function DiffView() {

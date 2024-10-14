@@ -5,11 +5,13 @@ import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
 export interface GitHistoryProps
   extends React.ComponentProps<typeof VirtualScrollArea> {
+  filter?: string;
   history: CommitInfo[];
 }
 
 export default function GitHistory({
   className,
+  filter,
   history,
   ...props
 }: Omit<GitHistoryProps, 'count' | 'height' | 'getItem'>) {
@@ -22,6 +24,7 @@ export default function GitHistory({
         return (
           <CommitItem
             ref={provided.innerRef}
+            filter={filter}
             commit={item}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -43,6 +46,7 @@ export default function GitHistory({
                     return (
                       <CommitItem
                         ref={provided.innerRef}
+                        filter={filter}
                         commit={item}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}

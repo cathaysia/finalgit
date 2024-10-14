@@ -36,7 +36,7 @@ export interface CommitItemProps
 
 const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
   ({ className, filter, commit, ...props }, ref) => {
-    const branchName = commit.summary.slice(0, 50);
+    const summary = commit.summary.slice(0, 50);
     const { t } = useTranslation();
     const names = [commit.author.name];
     const [repoPath] = useAppState(s => [s.repoPath]);
@@ -62,7 +62,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       >
         <div className="flex items-center gap-2">
           <HighLightLabel
-            text={branchName}
+            text={summary}
             filter={filter}
             onClick={() => {
               if (repoPath && !isDirty) {

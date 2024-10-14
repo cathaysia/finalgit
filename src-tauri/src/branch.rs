@@ -60,6 +60,7 @@ pub fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
 pub struct HeadInfo {
     oid: String,
     is_detached: bool,
+    is_rebasing: bool,
 }
 
 #[tauri::command]
@@ -68,9 +69,13 @@ pub fn get_repo_head(repo_path: &str) -> AppResult<HeadInfo> {
     let repo = utils::open_repo(repo_path)?;
     let head = repo.head()?;
     let oid = head.target().unwrap().to_string();
+
+    let is_rebasing = repo.open_rebase(None).is_ok();
+
     Ok(HeadInfo {
         oid,
         is_detached: repo.head_detached()?,
+        is_rebasing,
     })
 }
 

@@ -6,6 +6,7 @@ mod cherry_pick;
 mod commit;
 mod error;
 mod ext;
+mod rebase;
 mod stage;
 mod stash;
 mod ty;
@@ -84,6 +85,7 @@ pub fn run() {
             commit::commit_reset_author,
             cherry_pick::cherrypick,
             commit::commit_amend,
+            rebase::rebase_abort,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -135,6 +137,7 @@ mod test {
                 commit::commit_reset_author,
                 cherry_pick::cherrypick,
                 commit::commit_amend,
+                rebase::rebase_abort,
             ]);
 
         builder

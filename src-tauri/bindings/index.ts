@@ -523,6 +523,17 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('rebase_abort', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
 };
 
 /** user-defined events **/
@@ -568,7 +579,11 @@ export type FileStatus = { path: string; status: number };
 export type FileTree =
   | { File: { filename: string; mode: number } }
   | { Dir: { dir: string; files: FileTree[]; mode: number } };
-export type HeadInfo = { oid: string; is_detached: boolean };
+export type HeadInfo = {
+  oid: string;
+  is_detached: boolean;
+  is_rebasing: boolean;
+};
 export type PushStatus = { unpush: number; unpull: number };
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };

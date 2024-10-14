@@ -87,6 +87,7 @@ export default function BranchPanel({
         {isSearching && (
           <Input
             value={filter || ''}
+            spellCheck={false}
             onChange={e => {
               setFilter(e.target.value);
             }}

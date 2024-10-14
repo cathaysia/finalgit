@@ -80,6 +80,7 @@ export default function Commit() {
       <div className="flex gap-2">
         <Input
           value={filter}
+          spellCheck={false}
           onChange={e => {
             setFilter(e.target.value);
           }}

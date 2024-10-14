@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
 import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
+import { parseReversion } from '@/parser/parser';
 import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
@@ -70,6 +71,8 @@ export default function Commit() {
     if (!debounce) {
       return currentHistory;
     }
+    const tree = parseReversion(debounce);
+    console.log(tree);
     // TODO: support more grammar
     // https://git-scm.com/docs/revisions#Documentation/revisions.txt
     const Matcher = /^(HEAD|@|[0-9a-z]{6,40})[~\^](\d+)$/;

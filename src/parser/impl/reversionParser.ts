@@ -280,18 +280,28 @@ export default class reversionParser extends Parser {
         switch (this._interp.adaptivePredict(this._input, 3, this._ctx)) {
           case 1:
             {
+              localctx = new RevSingleContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
+
               this.state = 26;
               this.rev();
             }
             break;
           case 2:
             {
+              localctx = new RevExpressionContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 27;
               this.rev_expression();
             }
             break;
           case 3:
             {
+              localctx = new RevSinceContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 28;
               this.match(reversionParser.T__0);
               this.state = 29;
@@ -302,6 +312,9 @@ export default class reversionParser extends Parser {
             break;
           case 4:
             {
+              localctx = new RevUntilContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 31;
               this.match(reversionParser.T__2);
               this.state = 32;
@@ -312,6 +325,9 @@ export default class reversionParser extends Parser {
             break;
           case 5:
             {
+              localctx = new RevAfterContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 34;
               this.match(reversionParser.T__3);
               this.state = 35;
@@ -322,6 +338,9 @@ export default class reversionParser extends Parser {
             break;
           case 6:
             {
+              localctx = new RevSkipContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 37;
               this.match(reversionParser.T__4);
               this.state = 38;
@@ -332,6 +351,9 @@ export default class reversionParser extends Parser {
             break;
           case 7:
             {
+              localctx = new RevBeforeContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 40;
               this.match(reversionParser.T__5);
               this.state = 41;
@@ -342,6 +364,9 @@ export default class reversionParser extends Parser {
             break;
           case 8:
             {
+              localctx = new RevMaxAgeContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 43;
               this.match(reversionParser.T__6);
               this.state = 44;
@@ -352,6 +377,9 @@ export default class reversionParser extends Parser {
             break;
           case 9:
             {
+              localctx = new RevMinAgeContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 46;
               this.match(reversionParser.T__7);
               this.state = 47;
@@ -362,6 +390,9 @@ export default class reversionParser extends Parser {
             break;
           case 10:
             {
+              localctx = new RevAuthorContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 49;
               this.match(reversionParser.T__8);
               this.state = 50;
@@ -390,6 +421,9 @@ export default class reversionParser extends Parser {
             break;
           case 11:
             {
+              localctx = new RevCommiterContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 56;
               this.match(reversionParser.T__9);
               this.state = 57;
@@ -418,6 +452,9 @@ export default class reversionParser extends Parser {
             break;
           case 12:
             {
+              localctx = new RevGrepContext(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 63;
               this.match(reversionParser.T__10);
               this.state = 64;
@@ -446,6 +483,9 @@ export default class reversionParser extends Parser {
             break;
           case 13:
             {
+              localctx = new RevRangeBefore1Context(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 70;
               this.match(reversionParser.T__11);
               this.state = 71;
@@ -454,6 +494,9 @@ export default class reversionParser extends Parser {
             break;
           case 14:
             {
+              localctx = new RevRangeBefore2Context(this, localctx);
+              this._ctx = localctx;
+              _prevctx = localctx;
               this.state = 72;
               this.match(reversionParser.T__12);
               this.state = 73;
@@ -477,7 +520,10 @@ export default class reversionParser extends Parser {
               switch (this._interp.adaptivePredict(this._input, 5, this._ctx)) {
                 case 1:
                   {
-                    localctx = new RulesContext(this, _parentctx, _parentState);
+                    localctx = new RevRange1Context(
+                      this,
+                      new RulesContext(this, _parentctx, _parentState),
+                    );
                     this.pushNewRecursionContext(
                       localctx,
                       _startState,
@@ -497,7 +543,10 @@ export default class reversionParser extends Parser {
                   break;
                 case 2:
                   {
-                    localctx = new RulesContext(this, _parentctx, _parentState);
+                    localctx = new RevRange2Context(
+                      this,
+                      new RulesContext(this, _parentctx, _parentState),
+                    );
                     this.pushNewRecursionContext(
                       localctx,
                       _startState,
@@ -517,7 +566,10 @@ export default class reversionParser extends Parser {
                   break;
                 case 3:
                   {
-                    localctx = new RulesContext(this, _parentctx, _parentState);
+                    localctx = new RevRangeAfter1Context(
+                      this,
+                      new RulesContext(this, _parentctx, _parentState),
+                    );
                     this.pushNewRecursionContext(
                       localctx,
                       _startState,
@@ -535,7 +587,10 @@ export default class reversionParser extends Parser {
                   break;
                 case 4:
                   {
-                    localctx = new RulesContext(this, _parentctx, _parentState);
+                    localctx = new RevRangeAfter2Context(
+                      this,
+                      new RulesContext(this, _parentctx, _parentState),
+                    );
                     this.pushNewRecursionContext(
                       localctx,
                       _startState,
@@ -553,7 +608,10 @@ export default class reversionParser extends Parser {
                   break;
                 case 5:
                   {
-                    localctx = new RulesContext(this, _parentctx, _parentState);
+                    localctx = new RevMultiContext(
+                      this,
+                      new RulesContext(this, _parentctx, _parentState),
+                    );
                     this.pushNewRecursionContext(
                       localctx,
                       _startState,
@@ -966,6 +1024,7 @@ export default class reversionParser extends Parser {
       this._errHandler.sync(this);
       switch (this._interp.adaptivePredict(this._input, 15, this._ctx)) {
         case 1:
+          localctx = new AnchorDateContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
             this.state = 150;
@@ -973,6 +1032,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 2:
+          localctx = new AnchorSignedDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
             this.state = 151;
@@ -980,6 +1040,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 3:
+          localctx = new AnchorDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
             this.state = 152;
@@ -987,6 +1048,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 4:
+          localctx = new AnchorTextContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
             this.state = 153;
@@ -1014,6 +1076,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 5:
+          localctx = new AnchorIsoContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
             this.state = 159;
@@ -1044,6 +1107,7 @@ export default class reversionParser extends Parser {
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 25:
+          localctx = new YesterdayContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
             this.state = 162;
@@ -1051,6 +1115,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 26:
+          localctx = new TodayContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
             this.state = 163;
@@ -1059,6 +1124,7 @@ export default class reversionParser extends Parser {
           break;
         case 27:
         case 31:
+          localctx = new TimepointContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
             this.state = 164;
@@ -1367,8 +1433,407 @@ export class RulesContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_rules;
+  }
+  public copyFrom(ctx: RulesContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class RevAfterContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevAfter) {
+      listener.enterRevAfter(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevAfter) {
+      listener.exitRevAfter(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevAfter) {
+      return visitor.visitRevAfter(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevUntilContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevUntil) {
+      listener.enterRevUntil(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevUntil) {
+      listener.exitRevUntil(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevUntil) {
+      return visitor.visitRevUntil(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevSkipContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.DIGIT, 0);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevSkip) {
+      listener.enterRevSkip(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevSkip) {
+      listener.exitRevSkip(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevSkip) {
+      return visitor.visitRevSkip(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRangeBefore2Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules(): RulesContext {
+    return this.getTypedRuleContext(RulesContext, 0) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRangeBefore2) {
+      listener.enterRevRangeBefore2(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRangeBefore2) {
+      listener.exitRevRangeBefore2(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRangeBefore2) {
+      return visitor.visitRevRangeBefore2(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRangeBefore1Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules(): RulesContext {
+    return this.getTypedRuleContext(RulesContext, 0) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRangeBefore1) {
+      listener.enterRevRangeBefore1(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRangeBefore1) {
+      listener.exitRevRangeBefore1(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRangeBefore1) {
+      return visitor.visitRevRangeBefore1(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevSingleContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
   public rev(): RevContext {
     return this.getTypedRuleContext(RevContext, 0) as RevContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevSingle) {
+      listener.enterRevSingle(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevSingle) {
+      listener.exitRevSingle(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevSingle) {
+      return visitor.visitRevSingle(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevBeforeContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevBefore) {
+      listener.enterRevBefore(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevBefore) {
+      listener.exitRevBefore(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevBefore) {
+      return visitor.visitRevBefore(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevSinceContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevSince) {
+      listener.enterRevSince(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevSince) {
+      listener.exitRevSince(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevSince) {
+      return visitor.visitRevSince(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRangeAfter1Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules(): RulesContext {
+    return this.getTypedRuleContext(RulesContext, 0) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRangeAfter1) {
+      listener.enterRevRangeAfter1(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRangeAfter1) {
+      listener.exitRevRangeAfter1(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRangeAfter1) {
+      return visitor.visitRevRangeAfter1(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevAuthorContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevAuthor) {
+      listener.enterRevAuthor(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevAuthor) {
+      listener.exitRevAuthor(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevAuthor) {
+      return visitor.visitRevAuthor(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRange1Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules_list(): RulesContext[] {
+    return this.getTypedRuleContexts(RulesContext) as RulesContext[];
+  }
+  public rules(i: number): RulesContext {
+    return this.getTypedRuleContext(RulesContext, i) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRange1) {
+      listener.enterRevRange1(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRange1) {
+      listener.exitRevRange1(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRange1) {
+      return visitor.visitRevRange1(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRangeAfter2Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules(): RulesContext {
+    return this.getTypedRuleContext(RulesContext, 0) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRangeAfter2) {
+      listener.enterRevRangeAfter2(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRangeAfter2) {
+      listener.exitRevRangeAfter2(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRangeAfter2) {
+      return visitor.visitRevRangeAfter2(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevCommiterContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevCommiter) {
+      listener.enterRevCommiter(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevCommiter) {
+      listener.exitRevCommiter(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevCommiter) {
+      return visitor.visitRevCommiter(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevGrepContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevGrep) {
+      listener.enterRevGrep(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevGrep) {
+      listener.exitRevGrep(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevGrep) {
+      return visitor.visitRevGrep(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevExpressionContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public rev_expression(): Rev_expressionContext {
     return this.getTypedRuleContext(
@@ -1376,17 +1841,56 @@ export class RulesContext extends ParserRuleContext {
       0,
     ) as Rev_expressionContext;
   }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevExpression) {
+      listener.enterRevExpression(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevExpression) {
+      listener.exitRevExpression(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevExpression) {
+      return visitor.visitRevExpression(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevMaxAgeContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
   public date(): DateContext {
     return this.getTypedRuleContext(DateContext, 0) as DateContext;
   }
-  public DIGIT(): TerminalNode {
-    return this.getToken(reversionParser.DIGIT, 0);
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevMaxAge) {
+      listener.enterRevMaxAge(this);
+    }
   }
-  public ANY_list(): TerminalNode[] {
-    return this.getTokens(reversionParser.ANY);
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevMaxAge) {
+      listener.exitRevMaxAge(this);
+    }
   }
-  public ANY(i: number): TerminalNode {
-    return this.getToken(reversionParser.ANY, i);
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevMaxAge) {
+      return visitor.visitRevMaxAge(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevMultiContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public rules_list(): RulesContext[] {
     return this.getTypedRuleContexts(RulesContext) as RulesContext[];
@@ -1400,23 +1904,77 @@ export class RulesContext extends ParserRuleContext {
   public SPACE(i: number): TerminalNode {
     return this.getToken(reversionParser.SPACE, i);
   }
-  public get ruleIndex(): number {
-    return reversionParser.RULE_rules;
-  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterRules) {
-      listener.enterRules(this);
+    if (listener.enterRevMulti) {
+      listener.enterRevMulti(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitRules) {
-      listener.exitRules(this);
+    if (listener.exitRevMulti) {
+      listener.exitRevMulti(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitRules) {
-      return visitor.visitRules(this);
+    if (visitor.visitRevMulti) {
+      return visitor.visitRevMulti(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevMinAgeContext extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevMinAge) {
+      listener.enterRevMinAge(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevMinAge) {
+      listener.exitRevMinAge(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevMinAge) {
+      return visitor.visitRevMinAge(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevRange2Context extends RulesContext {
+  constructor(parser: reversionParser, ctx: RulesContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rules_list(): RulesContext[] {
+    return this.getTypedRuleContexts(RulesContext) as RulesContext[];
+  }
+  public rules(i: number): RulesContext {
+    return this.getTypedRuleContext(RulesContext, i) as RulesContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevRange2) {
+      listener.enterRevRange2(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevRange2) {
+      listener.exitRevRange2(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevRange2) {
+      return visitor.visitRevRange2(this);
     } else {
       return visitor.visitChildren(this);
     }
@@ -1637,35 +2195,140 @@ export class Ref_anchorContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
-  public date(): DateContext {
-    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  public get ruleIndex(): number {
+    return reversionParser.RULE_ref_anchor;
   }
-  public SIGNED_DIGIT(): TerminalNode {
-    return this.getToken(reversionParser.SIGNED_DIGIT, 0);
+  public copyFrom(ctx: Ref_anchorContext): void {
+    super.copyFrom(ctx);
   }
-  public DIGIT(): TerminalNode {
-    return this.getToken(reversionParser.DIGIT, 0);
+}
+export class AnchorIsoContext extends Ref_anchorContext {
+  constructor(parser: reversionParser, ctx: Ref_anchorContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public iso_8601(): Iso_8601Context {
     return this.getTypedRuleContext(Iso_8601Context, 0) as Iso_8601Context;
   }
-  public get ruleIndex(): number {
-    return reversionParser.RULE_ref_anchor;
-  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterRef_anchor) {
-      listener.enterRef_anchor(this);
+    if (listener.enterAnchorIso) {
+      listener.enterAnchorIso(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitRef_anchor) {
-      listener.exitRef_anchor(this);
+    if (listener.exitAnchorIso) {
+      listener.exitAnchorIso(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitRef_anchor) {
-      return visitor.visitRef_anchor(this);
+    if (visitor.visitAnchorIso) {
+      return visitor.visitAnchorIso(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class AnchorTextContext extends Ref_anchorContext {
+  constructor(parser: reversionParser, ctx: Ref_anchorContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterAnchorText) {
+      listener.enterAnchorText(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitAnchorText) {
+      listener.exitAnchorText(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitAnchorText) {
+      return visitor.visitAnchorText(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class AnchorDateContext extends Ref_anchorContext {
+  constructor(parser: reversionParser, ctx: Ref_anchorContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public date(): DateContext {
+    return this.getTypedRuleContext(DateContext, 0) as DateContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterAnchorDate) {
+      listener.enterAnchorDate(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitAnchorDate) {
+      listener.exitAnchorDate(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitAnchorDate) {
+      return visitor.visitAnchorDate(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class AnchorDigitContext extends Ref_anchorContext {
+  constructor(parser: reversionParser, ctx: Ref_anchorContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.DIGIT, 0);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterAnchorDigit) {
+      listener.enterAnchorDigit(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitAnchorDigit) {
+      listener.exitAnchorDigit(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitAnchorDigit) {
+      return visitor.visitAnchorDigit(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class AnchorSignedDigitContext extends Ref_anchorContext {
+  constructor(parser: reversionParser, ctx: Ref_anchorContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public SIGNED_DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.SIGNED_DIGIT, 0);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterAnchorSignedDigit) {
+      listener.enterAnchorSignedDigit(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitAnchorSignedDigit) {
+      listener.exitAnchorSignedDigit(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitAnchorSignedDigit) {
+      return visitor.visitAnchorSignedDigit(this);
     } else {
       return visitor.visitChildren(this);
     }
@@ -1680,6 +2343,66 @@ export class DateContext extends ParserRuleContext {
   ) {
     super(parent, invokingState);
     this.parser = parser;
+  }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_date;
+  }
+  public copyFrom(ctx: DateContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class YesterdayContext extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterYesterday) {
+      listener.enterYesterday(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitYesterday) {
+      listener.exitYesterday(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitYesterday) {
+      return visitor.visitYesterday(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class TodayContext extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterToday) {
+      listener.enterToday(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitToday) {
+      listener.exitToday(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitToday) {
+      return visitor.visitToday(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class TimepointContext extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public time_point_list(): Time_pointContext[] {
     return this.getTypedRuleContexts(Time_pointContext) as Time_pointContext[];
@@ -1696,23 +2419,20 @@ export class DateContext extends ParserRuleContext {
   public TIME_DIRECTION(): TerminalNode {
     return this.getToken(reversionParser.TIME_DIRECTION, 0);
   }
-  public get ruleIndex(): number {
-    return reversionParser.RULE_date;
-  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterDate) {
-      listener.enterDate(this);
+    if (listener.enterTimepoint) {
+      listener.enterTimepoint(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitDate) {
-      listener.exitDate(this);
+    if (listener.exitTimepoint) {
+      listener.exitTimepoint(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitDate) {
-      return visitor.visitDate(this);
+    if (visitor.visitTimepoint) {
+      return visitor.visitTimepoint(this);
     } else {
       return visitor.visitChildren(this);
     }

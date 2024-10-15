@@ -9,25 +9,25 @@ import reversionRules;
 
 reversion: rules EOF;
 
-rules: rev
-    | rev_expression
-    | 'since' '=' date
-    | 'until' '=' date
-    | 'after' '=' date
-    | 'skip' '=' DIGIT
-    | 'before' '=' date
-    | 'max-age' '=' date
-    | 'min-age' '=' date
-    | 'author' '=' ANY+
-    | 'commiter' '=' ANY+
-    | 'grep' '=' ANY+
-    | rules '..'
-    | rules '...'
-    | rules (' ' rules)+
-    | rules '..' rules
-    | rules '...' rules
-    | '..' rules
-    | '...' rules
+rules: rev # revSingle
+    | rev_expression # revExpression
+    | 'since' '=' date # revSince
+    | 'until' '=' date # revUntil
+    | 'after' '=' date # revAfter
+    | 'skip' '=' DIGIT # revSkip
+    | 'before' '=' date # revBefore
+    | 'max-age' '=' date # revMaxAge
+    | 'min-age' '=' date # revMinAge
+    | 'author' '=' ANY+ # revAuthor
+    | 'commiter' '=' ANY+ # revCommiter
+    | 'grep' '=' ANY+ # revGrep
+    | rules '..' # revRangeAfter1
+    | rules '...' # revRangeAfter2
+    | rules (' ' rules)+ # revMulti
+    | rules '..' rules # revRange1
+    | rules '...' rules # revRange2
+    | '..' rules # revRangeBefore1
+    | '...' rules # revRangeBefore2
     ;
 
 rev: refname
@@ -58,16 +58,16 @@ rev_direction: '@'
     | '~'
     ;
 
-ref_anchor: date
-    | SIGNED_DIGIT
-    | DIGIT
-    | '/' .+?
-    | iso_8601
+ref_anchor: date # anchorDate
+    | SIGNED_DIGIT # anchorSignedDigit
+    | DIGIT # anchorDigit
+    | '/' .+? # anchorText
+    | iso_8601 # anchorIso
     ;
 
-date: 'yesterday'
-    | 'today'
-    | time_point (' ' time_point)* ' ' TIME_DIRECTION
+date: 'yesterday' # yesterday
+    | 'today' # today
+    | time_point (' ' time_point)* ' ' TIME_DIRECTION # timepoint
     ;
 
 time_point: (TIME_VALUE | DIGIT) ' ' TIME_UINT;

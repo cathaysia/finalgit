@@ -1,47 +1,107 @@
 // ex: set ft=antlr:
 // https://git-scm.com/docs/revisions#Documentation/revisions.txt
+// https://git-scm.com/docs/git-rev-list/zh_HANS-CN
 grammar reversion;
+import reversionRules;
+@header {
+    // @ts-ignore
+}
 
-reversion: starts sep offset;
+reversion: rules EOF;
 
-starts: 'HEAD'
-    | '@'
-    | OID
-    | TAG
+rules: rev
+    | rev_expression
+    | 'since' '=' date
+    | 'until' '=' date
+    | 'after' '=' date
+    | 'skip' '=' DIGIT
+    | 'before' '=' date
+    | 'max-age' '=' date
+    | 'min-age' '=' date
+    | 'author' '=' ANY+
+    | 'commiter' '=' ANY+
+    | 'grep' '=' ANY+
+    | rules '..'
+    | rules '...'
+    | rules (' ' rules)+
+    | rules '..' rules
+    | rules '...' rules
+    | '..' rules
+    | '...' rules
     ;
 
-sep: '~' | '^';
+rev: refname
+    | OID
+    | '^' rev
+    ;
 
-offset: DIGIT
-    | '{' date '}'
+refname: 'HEAD'
+    | '@'
+    ;
+
+rev_expression: rev rev_direction rev_position
+    | rev rev_direction DIGIT
+    | ':/' (ANY | ' ')+
+    | rev ':' ANY+ // path
+    | ':' DIGIT ':' ANY+
+    ;
+
+rev_position: '@'
+    | '!'
+    | SIGNED_DIGIT
+    | '-'
+    | '{' ref_anchor? '}'
+    ;
+
+rev_direction: '@'
+    | '^'
+    | '~'
+    ;
+
+ref_anchor: date
+    | SIGNED_DIGIT
+    | DIGIT
+    | '/' .+?
+    | iso_8601
     ;
 
 date: 'yesterday'
-    | iso
-    | relative_date
+    | 'today'
+    | time_point (' ' time_point)* ' ' TIME_DIRECTION
     ;
 
-iso: DATE TIME?;
+time_point: (TIME_VALUE | DIGIT) ' ' TIME_UINT;
 
-DATE: [0-9]{4} '-' [0-9]{1,2} '-' [0-9]{1,2};
-TIME: [0-9]{1,2} '-' [0-9]{1,2} '-' [0-9]{1,2};
-
-relative_date: precise_date ' ' time_direction;
-precise_date: DIGIT ' ' time_unit
-    | precise_date ' ' precise_date
+TIME_VALUE: 'one'
+    | 'two'
+    | 'three'
+    | 'four'
+    | 'five'
+    | 'six'
+    | 'seven'
+    | 'eight'
+    | 'nine'
+    | 'ten'
     ;
-time_unit: 'seconds'
+
+TIME_UINT: 'second'
+    | 'minute'
+    | 'hour'
+    | 'day'
+    | 'week'
+    | 'month'
+    | 'year'
+    | 'seconds'
     | 'minutes'
     | 'hours'
     | 'days'
+    | 'weeks'
+    | 'months'
     | 'years'
     ;
-time_direction: 'ago'
-    | 'after'
+
+TIME_DIRECTION: 'ago' | 'after' ;
+
+// iso 8061
+iso_8601: ISO_DATE (' ' ISO_TIME IS_TIME_POSTFIX?)?
     ;
-
-DIGIT: [0-9]+ ;
-OID: [0-9a-fA-F]{6,40};
-TAG: [0-9a-fA-F-.]+;
-
-WS: [ \t\r\n]+ -> skip;

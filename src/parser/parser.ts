@@ -1,6 +1,6 @@
 import { CharStream, CommonTokenStream } from 'antlr4';
-import reversionLexer from './reversionLexer';
-import reversionParser from './reversionParser';
+import reversionLexer from './impl/reversionLexer';
+import reversionParser from './impl/reversionParser';
 
 export function parseReversion(reversion: string) {
   const value = new CharStream(reversion);

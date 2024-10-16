@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
 import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
-import { parseReversion } from '@/parser/parser';
+import { RevKind, type Rule, parseReversion } from '@/parser/parser';
 import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
@@ -71,19 +71,14 @@ export default function Commit() {
     if (!debounce) {
       return currentHistory;
     }
-    const tree = parseReversion(debounce);
-    console.log(tree);
-    // TODO: support more grammar
-    // https://git-scm.com/docs/revisions#Documentation/revisions.txt
-    const Matcher = /^(HEAD|@|[0-9a-z]{6,40})[~\^](\d+)$/;
-    const v = Matcher.exec(debounce);
-    if (v?.length === 3) {
-      const refname = v[1].slice(0, 6);
-      const starts = currentHistory.findIndex(item => {
-        return refname === item.hash.slice(0, 6);
-      });
-      const skip = Number(v[2]) + (starts === -1 ? 0 : starts);
-      return currentHistory.slice(skip);
+    if (debounce.startsWith('$')) {
+      try {
+        const expr = debounce.slice(1).trim();
+        const res = filterCommits(expr, currentHistory);
+        if (res) {
+          return res;
+        }
+      } catch {}
     }
 
     return currentHistory.filter(item => {
@@ -120,4 +115,73 @@ function DiffView() {
       <div>TODO</div>
     </div>
   );
+}
+
+function filterCommits(filter: string, commits: CommitInfo[]) {
+  const expr = parseReversion(filter);
+  return expressionFilter(expr, commits);
+}
+
+function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
+  if (expr.kind === RevKind.Single) {
+    return commits.filter(item => {
+      let hash = expr.data.slice(0, 6);
+      if (expr.data === 'HEAD') {
+        hash = commits[0].hash.slice(0, 6);
+      }
+
+      if (expr.isExclude) {
+        return item.hash.slice(0, 6) !== hash;
+      }
+      return item.hash.slice(0, 6) === hash;
+    });
+  }
+
+  if (expr.kind === RevKind.Since) {
+    return commits.filter(item => {
+      if (expr.data.isBefore) {
+        return expr.data.data < item.time;
+      }
+      return expr.data.data > item.time;
+    });
+  }
+
+  if (expr.kind === RevKind.Until) {
+    return commits.filter(item => {
+      if (expr.data.isBefore) {
+        return expr.data.data > item.time;
+      }
+      return expr.data.data < item.time;
+    });
+  }
+
+  if (expr.kind === RevKind.Skip) {
+    return commits.slice(expr.data);
+  }
+  if (expr.kind === RevKind.Author) {
+    return commits.filter(item => {
+      return item.author.name.includes(expr.data);
+    });
+  }
+  if (expr.kind === RevKind.Commiter) {
+    return commits.filter(item => {
+      return item.commiter.name.includes(expr.data);
+    });
+  }
+  if (expr.kind === RevKind.Grep) {
+    return commits.filter(item => {
+      const pat = new RegExp(expr.data);
+      return pat.test(item.message);
+    });
+  }
+  if (expr.kind === RevKind.RevRange) {
+    // TODO
+  }
+  if (expr.kind === RevKind.RevMulti) {
+    return expr.rules.flatMap(expr => {
+      return expressionFilter(expr, commits);
+    });
+  }
+
+  return [];
 }

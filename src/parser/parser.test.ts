@@ -81,4 +81,5 @@ test('saa', () => {
   console.log(P('since=2024-01-01 00:00:00'));
   console.log(P('since=1 day ago'));
   console.log(P('@~10'));
+  console.log(P(':10:README.md'));
 });

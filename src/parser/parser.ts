@@ -4,8 +4,23 @@ import reversionLexer from './impl/reversionLexer';
 import reversionParser, { RevSinceContext } from './impl/reversionParser';
 import Visitor from './impl/reversionVisitor';
 
+export enum RevKind {
+  Single = 0,
+  Since = 1,
+  Until = 2,
+  Skip = 3,
+  Author = 4,
+  Commiter = 5,
+  Grep = 6,
+  RevRange = 7,
+  RevMulti = 8,
+  SkipGrep = 9,
+  SkipPos = 10,
+  TODO = 999,
+}
+
 interface RevSingle {
-  kind: 'rev';
+  kind: RevKind.Single;
   data: String;
   isExclude: boolean;
 }
@@ -15,36 +30,36 @@ interface RevDate {
   isBefore: boolean;
 }
 interface SinceDate {
-  kind: 'since';
+  kind: RevKind.Since;
   data: RevDate;
 }
 
 interface UntilDate {
-  kind: 'until';
+  kind: RevKind.Until;
   data: RevDate;
 }
 interface RevSkip {
-  kind: 'skip';
+  kind: RevKind.Skip;
   data: number;
 }
 
 interface RevAuthor {
-  kind: 'author';
-  data: String;
+  kind: RevKind.Author;
+  data: string;
 }
 
 interface RevCommiter {
-  kind: 'commiter';
-  data: String;
+  kind: RevKind.Commiter;
+  data: string;
 }
 
 interface RevGrep {
-  kind: 'grep';
-  data: String;
+  kind: RevKind.Grep;
+  data: string;
 }
 
 interface RevRange {
-  kind: 'revRange';
+  kind: RevKind.RevRange;
   starts: Rule | undefined;
   ends: Rule | undefined;
   containStarts: boolean;
@@ -52,20 +67,24 @@ interface RevRange {
 }
 
 interface RevMulti {
-  kind: 'RevMulti';
+  kind: RevKind.RevMulti;
   rules: Rule[];
 }
 
 interface RevSkipGrep {
-  kind: 'SkipGrep';
+  kind: RevKind.SkipGrep;
   skip: number;
   grep?: string;
 }
 
 interface RevSkipPos {
-  kind: 'revSkipPos';
+  kind: RevKind.SkipPos;
   rev: RevSingle;
   skip: number;
+}
+
+interface RevTodo {
+  kind: RevKind.TODO;
 }
 
 export type Rule =
@@ -79,7 +98,8 @@ export type Rule =
   | RevRange
   | RevMulti
   | RevSkipGrep
-  | RevSkipPos;
+  | RevSkipPos
+  | RevTodo;
 
 export type Filter = Rule;
 
@@ -90,7 +110,7 @@ function createVisitor() {
   };
   visitor.visitRevSince = ctx => {
     const date = visitor.visit(ctx.date()) as any as RevDate;
-    return { kind: 'since', data: date };
+    return { kind: RevKind.Since, data: date };
   };
   visitor.visitRefName = ctx => {
     let refname = ctx.getText();
@@ -98,7 +118,7 @@ function createVisitor() {
       refname = 'HEAD';
     }
     return {
-      kind: 'rev',
+      kind: RevKind.Single,
       data: refname,
       isExclude: false,
     };
@@ -106,14 +126,14 @@ function createVisitor() {
   visitor.visitRefOID = ctx => {
     const oid = ctx.getText();
     return {
-      kind: 'rev',
+      kind: RevKind.Single,
       data: oid,
       isExclude: false,
     };
   };
   visitor.visitRevExclude = ctx => {
     const v = visitor.visit(ctx.rev());
-    if (!isMatching({ kind: 'rev' }, v)) {
+    if (!isMatching({ kind: RevKind.Single }, v)) {
       throw new Error('bad kind');
     }
     v.isExclude = !v.isExclude;
@@ -122,27 +142,27 @@ function createVisitor() {
   visitor.visitRevUntil = ctx => {
     const date = visitor.visit(ctx.date()) as any as RevDate;
     return {
-      kind: 'until',
+      kind: RevKind.Until,
       data: date,
     };
   };
   visitor.visitRevAfter = ctx => {
     const date = visitor.visit(ctx.date()) as any as RevDate;
     return {
-      kind: 'since',
+      kind: RevKind.Since,
       data: date,
     };
   };
   visitor.visitRevBefore = ctx => {
     const date = visitor.visit(ctx.date()) as any as RevDate;
     return {
-      kind: 'until',
+      kind: RevKind.Until,
       data: date,
     };
   };
   visitor.visitRevSkip = ctx => {
     return {
-      kind: 'skip',
+      kind: RevKind.Skip,
       data: Number(ctx.DIGIT().getText()),
     };
   };
@@ -150,9 +170,9 @@ function createVisitor() {
     const name = ctx
       .ANY_list()
       .map(item => item.getText())
-      .join();
+      .join('');
     return {
-      kind: 'author',
+      kind: RevKind.Author,
       data: name,
     };
   };
@@ -160,9 +180,9 @@ function createVisitor() {
     const name = ctx
       .ANY_list()
       .map(item => item.getText())
-      .join();
+      .join('');
     return {
-      kind: 'commiter',
+      kind: RevKind.Commiter,
       data: name,
     };
   };
@@ -170,9 +190,9 @@ function createVisitor() {
     const name = ctx
       .ANY_list()
       .map(item => item.getText())
-      .join();
+      .join('');
     return {
-      kind: 'grep',
+      kind: RevKind.Grep,
       data: name,
     };
   };
@@ -242,7 +262,7 @@ function createVisitor() {
   };
 
   visitor.visitDateTimePoint = ctx => {
-    const times = ctx
+    let date = ctx
       .time_point_list()
       .map(item => {
         const v = visitor.visit(item) as any as number;
@@ -253,14 +273,14 @@ function createVisitor() {
     const isBefore = ctx.TIME_DIRECTION().getText() === 'ago';
 
     return {
-      date: times,
+      date: date,
       isBefore: isBefore,
     } as any;
   };
 
   visitor.visitRevRangeAfter1 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: visitor.visit(ctx.rules()),
       ends: undefined,
       containStarts: false,
@@ -269,7 +289,7 @@ function createVisitor() {
   };
   visitor.visitRevRangeAfter2 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: visitor.visit(ctx.rules()),
       ends: undefined,
       containStarts: true,
@@ -278,7 +298,7 @@ function createVisitor() {
   };
   visitor.visitRevRangeBefore1 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: undefined,
       ends: visitor.visit(ctx.rules()),
       containStarts: false,
@@ -287,7 +307,7 @@ function createVisitor() {
   };
   visitor.visitRevRangeAfter2 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: undefined,
       ends: visitor.visit(ctx.rules()),
       containStarts: true,
@@ -296,7 +316,7 @@ function createVisitor() {
   };
   visitor.visitRevRange1 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: visitor.visit(ctx.rules_list()[0]),
       ends: visitor.visit(ctx.rules_list()[1]),
       containStarts: false,
@@ -305,7 +325,7 @@ function createVisitor() {
   };
   visitor.visitRevRange2 = ctx => {
     return {
-      kind: 'revRange',
+      kind: RevKind.RevRange,
       starts: visitor.visit(ctx.rules_list()[0]),
       ends: visitor.visit(ctx.rules_list()[1]),
       containStarts: true,
@@ -318,29 +338,27 @@ function createVisitor() {
     });
 
     return {
-      kind: 'RevMulti',
+      kind: RevKind.RevMulti,
       rules: rules,
     };
   };
 
-  visitor.visitExprText = ctx => {
-    const text = ctx.getText().replace(':/', '');
-    return {
-      kind: 'grep',
-      data: text,
-    };
-  };
   visitor.visitExprDigitText = ctx => {
     const skip = Number(ctx.DIGIT().getText());
     const text = ctx
       .ANY_list()
       .map(item => item.getText())
-      .join();
+      .join('');
 
     return {
-      kind: 'SkipGrep',
+      kind: RevKind.SkipGrep,
       skip: skip,
       grep: text,
+    };
+  };
+  visitor.visitExprPos = ctx => {
+    return {
+      kind: RevKind.TODO,
     };
   };
   visitor.visitExprDigit = ctx => {
@@ -350,25 +368,37 @@ function createVisitor() {
       throw new Error('bad rev');
     }
     return {
-      kind: 'revSkipPos',
+      kind: RevKind.SkipPos,
       rev: rev,
       skip: skip,
     };
   };
-  // visitor.visitExprPos = ctx => {
-  //   const rev = visitor.visit(ctx.rev());
-  //   const skip = Number(ctx.DIGIT());
-  //   if (!isMatching({ kind: 'rev' }, rev)) {
-  //     throw new Error('bad rev');
-  //   }
-  //   return {
-  //     kind: 'revSkipPos',
-  //     rev: rev,
-  //     skip: skip,
-  //   };
-  // };
+  visitor.visitExprText = ctx => {
+    const text = ctx.getText().replace(':/', '');
+    return {
+      kind: RevKind.Grep,
+      data: text,
+    };
+  };
+  visitor.visitExprRevText = ctx => {
+    return {
+      kind: RevKind.TODO,
+    };
+  };
   visitor.visitReversion = ctx => {
-    return visitor.visit(ctx.rules());
+    const item = visitor.visit(ctx.rules());
+    // TODO: why here has array?
+    if (item instanceof Array) {
+      const arr = item as any as Rule[];
+      if (arr.length === 1) {
+        return arr[0];
+      }
+      return {
+        kind: RevKind.RevMulti,
+        rules: arr,
+      };
+    }
+    return item;
   };
   return visitor;
 }

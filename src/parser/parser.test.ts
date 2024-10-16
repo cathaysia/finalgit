@@ -58,6 +58,8 @@ test('simple', () => {
     `since=yesterday`,
     `since=5 minutes ago`,
     `since=1 days 5 minutes ago`,
+    `since=2024-01-01`,
+    `since=2024-01-01 00:00:00`,
     `author=Bob`,
     'grep=.*',
     `:/some text`,
@@ -71,8 +73,12 @@ test('simple', () => {
   }
 });
 
-// test('saa', () => {
-//   console.log(P('^HEAD'));
-//   console.log(P('since=today'));
-//   console.log(P('since=yesterday'));
-// });
+test('saa', () => {
+  console.log(P('^HEAD'));
+  console.log(P('since=today'));
+  console.log(P('since=yesterday'));
+  console.log(P('since=2024-01-01'));
+  console.log(P('since=2024-01-01 00:00:00'));
+  console.log(P('since=1 day ago'));
+  console.log(P('@~10'));
+});

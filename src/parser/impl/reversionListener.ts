@@ -28,18 +28,30 @@ import { RefNameContext } from './reversionParser';
 import { RefOIDContext } from './reversionParser';
 import { RevExcludeContext } from './reversionParser';
 import { RefnameContext } from './reversionParser';
-import { Rev_expressionContext } from './reversionParser';
-import { Rev_positionContext } from './reversionParser';
+import { ExprPosContext } from './reversionParser';
+import { ExprDigitContext } from './reversionParser';
+import { ExprTextContext } from './reversionParser';
+import { ExprRevTextContext } from './reversionParser';
+import { ExprDigitTextContext } from './reversionParser';
+import { PosHeadContext } from './reversionParser';
+import { PosExcludeContext } from './reversionParser';
+import { PosNegContext } from './reversionParser';
+import { PosReverseContext } from './reversionParser';
+import { PosAnchorContext } from './reversionParser';
 import { Rev_directionContext } from './reversionParser';
 import { AnchorDateContext } from './reversionParser';
 import { AnchorSignedDigitContext } from './reversionParser';
 import { AnchorDigitContext } from './reversionParser';
 import { AnchorTextContext } from './reversionParser';
 import { AnchorIsoContext } from './reversionParser';
-import { YesterdayContext } from './reversionParser';
-import { TodayContext } from './reversionParser';
-import { TimepointContext } from './reversionParser';
-import { Time_pointContext } from './reversionParser';
+import { DateYesterdayContext } from './reversionParser';
+import { DateTodayContext } from './reversionParser';
+import { DateIso8601Context } from './reversionParser';
+import { DateTimePointContext } from './reversionParser';
+import { TimePointValueContext } from './reversionParser';
+import { TimePointDigitContext } from './reversionParser';
+import { Time_valueContext } from './reversionParser';
+import { Time_unitContext } from './reversionParser';
 import { Iso_8601Context } from './reversionParser';
 
 /**
@@ -332,25 +344,125 @@ export default class reversionListener extends ParseTreeListener {
    */
   exitRefname?: (ctx: RefnameContext) => void;
   /**
-   * Enter a parse tree produced by `reversionParser.rev_expression`.
+   * Enter a parse tree produced by the `exprPos`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    */
-  enterRev_expression?: (ctx: Rev_expressionContext) => void;
+  enterExprPos?: (ctx: ExprPosContext) => void;
   /**
-   * Exit a parse tree produced by `reversionParser.rev_expression`.
+   * Exit a parse tree produced by the `exprPos`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    */
-  exitRev_expression?: (ctx: Rev_expressionContext) => void;
+  exitExprPos?: (ctx: ExprPosContext) => void;
   /**
-   * Enter a parse tree produced by `reversionParser.rev_position`.
+   * Enter a parse tree produced by the `exprDigit`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    */
-  enterRev_position?: (ctx: Rev_positionContext) => void;
+  enterExprDigit?: (ctx: ExprDigitContext) => void;
   /**
-   * Exit a parse tree produced by `reversionParser.rev_position`.
+   * Exit a parse tree produced by the `exprDigit`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    */
-  exitRev_position?: (ctx: Rev_positionContext) => void;
+  exitExprDigit?: (ctx: ExprDigitContext) => void;
+  /**
+   * Enter a parse tree produced by the `exprText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  enterExprText?: (ctx: ExprTextContext) => void;
+  /**
+   * Exit a parse tree produced by the `exprText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  exitExprText?: (ctx: ExprTextContext) => void;
+  /**
+   * Enter a parse tree produced by the `exprRevText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  enterExprRevText?: (ctx: ExprRevTextContext) => void;
+  /**
+   * Exit a parse tree produced by the `exprRevText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  exitExprRevText?: (ctx: ExprRevTextContext) => void;
+  /**
+   * Enter a parse tree produced by the `exprDigitText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  enterExprDigitText?: (ctx: ExprDigitTextContext) => void;
+  /**
+   * Exit a parse tree produced by the `exprDigitText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   */
+  exitExprDigitText?: (ctx: ExprDigitTextContext) => void;
+  /**
+   * Enter a parse tree produced by the `posHead`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  enterPosHead?: (ctx: PosHeadContext) => void;
+  /**
+   * Exit a parse tree produced by the `posHead`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  exitPosHead?: (ctx: PosHeadContext) => void;
+  /**
+   * Enter a parse tree produced by the `posExclude`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  enterPosExclude?: (ctx: PosExcludeContext) => void;
+  /**
+   * Exit a parse tree produced by the `posExclude`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  exitPosExclude?: (ctx: PosExcludeContext) => void;
+  /**
+   * Enter a parse tree produced by the `posNeg`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  enterPosNeg?: (ctx: PosNegContext) => void;
+  /**
+   * Exit a parse tree produced by the `posNeg`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  exitPosNeg?: (ctx: PosNegContext) => void;
+  /**
+   * Enter a parse tree produced by the `posReverse`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  enterPosReverse?: (ctx: PosReverseContext) => void;
+  /**
+   * Exit a parse tree produced by the `posReverse`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  exitPosReverse?: (ctx: PosReverseContext) => void;
+  /**
+   * Enter a parse tree produced by the `posAnchor`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  enterPosAnchor?: (ctx: PosAnchorContext) => void;
+  /**
+   * Exit a parse tree produced by the `posAnchor`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   */
+  exitPosAnchor?: (ctx: PosAnchorContext) => void;
   /**
    * Enter a parse tree produced by `reversionParser.rev_direction`.
    * @param ctx the parse tree
@@ -422,51 +534,97 @@ export default class reversionListener extends ParseTreeListener {
    */
   exitAnchorIso?: (ctx: AnchorIsoContext) => void;
   /**
-   * Enter a parse tree produced by the `yesterday`
+   * Enter a parse tree produced by the `dateYesterday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  enterYesterday?: (ctx: YesterdayContext) => void;
+  enterDateYesterday?: (ctx: DateYesterdayContext) => void;
   /**
-   * Exit a parse tree produced by the `yesterday`
+   * Exit a parse tree produced by the `dateYesterday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  exitYesterday?: (ctx: YesterdayContext) => void;
+  exitDateYesterday?: (ctx: DateYesterdayContext) => void;
   /**
-   * Enter a parse tree produced by the `today`
+   * Enter a parse tree produced by the `dateToday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  enterToday?: (ctx: TodayContext) => void;
+  enterDateToday?: (ctx: DateTodayContext) => void;
   /**
-   * Exit a parse tree produced by the `today`
+   * Exit a parse tree produced by the `dateToday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  exitToday?: (ctx: TodayContext) => void;
+  exitDateToday?: (ctx: DateTodayContext) => void;
   /**
-   * Enter a parse tree produced by the `timepoint`
+   * Enter a parse tree produced by the `dateIso8601`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  enterTimepoint?: (ctx: TimepointContext) => void;
+  enterDateIso8601?: (ctx: DateIso8601Context) => void;
   /**
-   * Exit a parse tree produced by the `timepoint`
+   * Exit a parse tree produced by the `dateIso8601`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  exitTimepoint?: (ctx: TimepointContext) => void;
+  exitDateIso8601?: (ctx: DateIso8601Context) => void;
   /**
-   * Enter a parse tree produced by `reversionParser.time_point`.
+   * Enter a parse tree produced by the `dateTimePoint`
+   * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  enterTime_point?: (ctx: Time_pointContext) => void;
+  enterDateTimePoint?: (ctx: DateTimePointContext) => void;
   /**
-   * Exit a parse tree produced by `reversionParser.time_point`.
+   * Exit a parse tree produced by the `dateTimePoint`
+   * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    */
-  exitTime_point?: (ctx: Time_pointContext) => void;
+  exitDateTimePoint?: (ctx: DateTimePointContext) => void;
+  /**
+   * Enter a parse tree produced by the `timePointValue`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   */
+  enterTimePointValue?: (ctx: TimePointValueContext) => void;
+  /**
+   * Exit a parse tree produced by the `timePointValue`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   */
+  exitTimePointValue?: (ctx: TimePointValueContext) => void;
+  /**
+   * Enter a parse tree produced by the `timePointDigit`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   */
+  enterTimePointDigit?: (ctx: TimePointDigitContext) => void;
+  /**
+   * Exit a parse tree produced by the `timePointDigit`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   */
+  exitTimePointDigit?: (ctx: TimePointDigitContext) => void;
+  /**
+   * Enter a parse tree produced by `reversionParser.time_value`.
+   * @param ctx the parse tree
+   */
+  enterTime_value?: (ctx: Time_valueContext) => void;
+  /**
+   * Exit a parse tree produced by `reversionParser.time_value`.
+   * @param ctx the parse tree
+   */
+  exitTime_value?: (ctx: Time_valueContext) => void;
+  /**
+   * Enter a parse tree produced by `reversionParser.time_unit`.
+   * @param ctx the parse tree
+   */
+  enterTime_unit?: (ctx: Time_unitContext) => void;
+  /**
+   * Exit a parse tree produced by `reversionParser.time_unit`.
+   * @param ctx the parse tree
+   */
+  exitTime_unit?: (ctx: Time_unitContext) => void;
   /**
    * Enter a parse tree produced by `reversionParser.iso_8601`.
    * @param ctx the parse tree

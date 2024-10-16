@@ -28,18 +28,30 @@ import { RefNameContext } from './reversionParser';
 import { RefOIDContext } from './reversionParser';
 import { RevExcludeContext } from './reversionParser';
 import { RefnameContext } from './reversionParser';
-import { Rev_expressionContext } from './reversionParser';
-import { Rev_positionContext } from './reversionParser';
+import { ExprPosContext } from './reversionParser';
+import { ExprDigitContext } from './reversionParser';
+import { ExprTextContext } from './reversionParser';
+import { ExprRevTextContext } from './reversionParser';
+import { ExprDigitTextContext } from './reversionParser';
+import { PosHeadContext } from './reversionParser';
+import { PosExcludeContext } from './reversionParser';
+import { PosNegContext } from './reversionParser';
+import { PosReverseContext } from './reversionParser';
+import { PosAnchorContext } from './reversionParser';
 import { Rev_directionContext } from './reversionParser';
 import { AnchorDateContext } from './reversionParser';
 import { AnchorSignedDigitContext } from './reversionParser';
 import { AnchorDigitContext } from './reversionParser';
 import { AnchorTextContext } from './reversionParser';
 import { AnchorIsoContext } from './reversionParser';
-import { YesterdayContext } from './reversionParser';
-import { TodayContext } from './reversionParser';
-import { TimepointContext } from './reversionParser';
-import { Time_pointContext } from './reversionParser';
+import { DateYesterdayContext } from './reversionParser';
+import { DateTodayContext } from './reversionParser';
+import { DateIso8601Context } from './reversionParser';
+import { DateTimePointContext } from './reversionParser';
+import { TimePointValueContext } from './reversionParser';
+import { TimePointDigitContext } from './reversionParser';
+import { Time_valueContext } from './reversionParser';
+import { Time_unitContext } from './reversionParser';
 import { Iso_8601Context } from './reversionParser';
 
 /**
@@ -217,17 +229,75 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    */
   visitRefname?: (ctx: RefnameContext) => Result;
   /**
-   * Visit a parse tree produced by `reversionParser.rev_expression`.
+   * Visit a parse tree produced by the `exprPos`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitRev_expression?: (ctx: Rev_expressionContext) => Result;
+  visitExprPos?: (ctx: ExprPosContext) => Result;
   /**
-   * Visit a parse tree produced by `reversionParser.rev_position`.
+   * Visit a parse tree produced by the `exprDigit`
+   * labeled alternative in `reversionParser.rev_expression`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitRev_position?: (ctx: Rev_positionContext) => Result;
+  visitExprDigit?: (ctx: ExprDigitContext) => Result;
+  /**
+   * Visit a parse tree produced by the `exprText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitExprText?: (ctx: ExprTextContext) => Result;
+  /**
+   * Visit a parse tree produced by the `exprRevText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitExprRevText?: (ctx: ExprRevTextContext) => Result;
+  /**
+   * Visit a parse tree produced by the `exprDigitText`
+   * labeled alternative in `reversionParser.rev_expression`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitExprDigitText?: (ctx: ExprDigitTextContext) => Result;
+  /**
+   * Visit a parse tree produced by the `posHead`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPosHead?: (ctx: PosHeadContext) => Result;
+  /**
+   * Visit a parse tree produced by the `posExclude`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPosExclude?: (ctx: PosExcludeContext) => Result;
+  /**
+   * Visit a parse tree produced by the `posNeg`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPosNeg?: (ctx: PosNegContext) => Result;
+  /**
+   * Visit a parse tree produced by the `posReverse`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPosReverse?: (ctx: PosReverseContext) => Result;
+  /**
+   * Visit a parse tree produced by the `posAnchor`
+   * labeled alternative in `reversionParser.rev_position`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitPosAnchor?: (ctx: PosAnchorContext) => Result;
   /**
    * Visit a parse tree produced by `reversionParser.rev_direction`.
    * @param ctx the parse tree
@@ -270,32 +340,59 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    */
   visitAnchorIso?: (ctx: AnchorIsoContext) => Result;
   /**
-   * Visit a parse tree produced by the `yesterday`
+   * Visit a parse tree produced by the `dateYesterday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitYesterday?: (ctx: YesterdayContext) => Result;
+  visitDateYesterday?: (ctx: DateYesterdayContext) => Result;
   /**
-   * Visit a parse tree produced by the `today`
+   * Visit a parse tree produced by the `dateToday`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitToday?: (ctx: TodayContext) => Result;
+  visitDateToday?: (ctx: DateTodayContext) => Result;
   /**
-   * Visit a parse tree produced by the `timepoint`
+   * Visit a parse tree produced by the `dateIso8601`
    * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitTimepoint?: (ctx: TimepointContext) => Result;
+  visitDateIso8601?: (ctx: DateIso8601Context) => Result;
   /**
-   * Visit a parse tree produced by `reversionParser.time_point`.
+   * Visit a parse tree produced by the `dateTimePoint`
+   * labeled alternative in `reversionParser.date`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitTime_point?: (ctx: Time_pointContext) => Result;
+  visitDateTimePoint?: (ctx: DateTimePointContext) => Result;
+  /**
+   * Visit a parse tree produced by the `timePointValue`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitTimePointValue?: (ctx: TimePointValueContext) => Result;
+  /**
+   * Visit a parse tree produced by the `timePointDigit`
+   * labeled alternative in `reversionParser.time_point`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitTimePointDigit?: (ctx: TimePointDigitContext) => Result;
+  /**
+   * Visit a parse tree produced by `reversionParser.time_value`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitTime_value?: (ctx: Time_valueContext) => Result;
+  /**
+   * Visit a parse tree produced by `reversionParser.time_unit`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitTime_unit?: (ctx: Time_unitContext) => Result;
   /**
    * Visit a parse tree produced by `reversionParser.iso_8601`.
    * @param ctx the parse tree

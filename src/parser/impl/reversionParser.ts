@@ -59,24 +59,46 @@ export default class reversionParser extends Parser {
   public static readonly T__23 = 24;
   public static readonly T__24 = 25;
   public static readonly T__25 = 26;
-  public static readonly TIME_VALUE = 27;
-  public static readonly TIME_UINT = 28;
-  public static readonly TIME_DIRECTION = 29;
-  public static readonly SIGNED_DIGIT = 30;
-  public static readonly DIGIT = 31;
-  public static readonly OID = 32;
-  public static readonly OID_SHORT = 33;
-  public static readonly OID_LONG = 34;
-  public static readonly ISO_DATE = 35;
-  public static readonly ISO_TIME = 36;
-  public static readonly IS_TIME_POSTFIX = 37;
-  public static readonly SPACE = 38;
-  public static readonly INT12 = 39;
-  public static readonly INT2 = 40;
-  public static readonly INT4 = 41;
-  public static readonly ANY = 42;
-  public static readonly OID_EL = 43;
-  public static readonly NEWLINE = 44;
+  public static readonly T__26 = 27;
+  public static readonly T__27 = 28;
+  public static readonly T__28 = 29;
+  public static readonly T__29 = 30;
+  public static readonly T__30 = 31;
+  public static readonly T__31 = 32;
+  public static readonly T__32 = 33;
+  public static readonly T__33 = 34;
+  public static readonly T__34 = 35;
+  public static readonly T__35 = 36;
+  public static readonly T__36 = 37;
+  public static readonly T__37 = 38;
+  public static readonly T__38 = 39;
+  public static readonly T__39 = 40;
+  public static readonly T__40 = 41;
+  public static readonly T__41 = 42;
+  public static readonly T__42 = 43;
+  public static readonly T__43 = 44;
+  public static readonly T__44 = 45;
+  public static readonly T__45 = 46;
+  public static readonly T__46 = 47;
+  public static readonly T__47 = 48;
+  public static readonly T__48 = 49;
+  public static readonly T__49 = 50;
+  public static readonly TIME_DIRECTION = 51;
+  public static readonly SIGNED_DIGIT = 52;
+  public static readonly DIGIT = 53;
+  public static readonly OID = 54;
+  public static readonly OID_SHORT = 55;
+  public static readonly OID_LONG = 56;
+  public static readonly ISO_DATE = 57;
+  public static readonly ISO_TIME = 58;
+  public static readonly IS_TIME_POSTFIX = 59;
+  public static readonly SPACE = 60;
+  public static readonly INT12 = 61;
+  public static readonly INT2 = 62;
+  public static readonly INT4 = 63;
+  public static readonly ANY = 64;
+  public static readonly OID_EL = 65;
+  public static readonly NEWLINE = 66;
   public static readonly EOF = Token.EOF;
   public static readonly RULE_reversion = 0;
   public static readonly RULE_rules = 1;
@@ -88,7 +110,9 @@ export default class reversionParser extends Parser {
   public static readonly RULE_ref_anchor = 7;
   public static readonly RULE_date = 8;
   public static readonly RULE_time_point = 9;
-  public static readonly RULE_iso_8601 = 10;
+  public static readonly RULE_time_value = 10;
+  public static readonly RULE_time_unit = 11;
+  public static readonly RULE_iso_8601 = 12;
   public static readonly literalNames: (string | null)[] = [
     null,
     "'since'",
@@ -117,8 +141,30 @@ export default class reversionParser extends Parser {
     "'/'",
     "'yesterday'",
     "'today'",
-    null,
-    null,
+    "'one'",
+    "'two'",
+    "'three'",
+    "'four'",
+    "'five'",
+    "'six'",
+    "'seven'",
+    "'eight'",
+    "'nine'",
+    "'ten'",
+    "'second'",
+    "'minute'",
+    "'hour'",
+    "'day'",
+    "'week'",
+    "'month'",
+    "'year'",
+    "'seconds'",
+    "'minutes'",
+    "'hours'",
+    "'days'",
+    "'weeks'",
+    "'months'",
+    "'years'",
     null,
     null,
     null,
@@ -158,8 +204,30 @@ export default class reversionParser extends Parser {
     null,
     null,
     null,
-    'TIME_VALUE',
-    'TIME_UINT',
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
     'TIME_DIRECTION',
     'SIGNED_DIGIT',
     'DIGIT',
@@ -189,6 +257,8 @@ export default class reversionParser extends Parser {
     'ref_anchor',
     'date',
     'time_point',
+    'time_value',
+    'time_unit',
     'iso_8601',
   ];
   public get grammarFileName(): string {
@@ -234,9 +304,9 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 22;
+        this.state = 26;
         this.rules(0);
-        this.state = 23;
+        this.state = 27;
         this.match(reversionParser.EOF);
       }
     } catch (re) {
@@ -275,7 +345,7 @@ export default class reversionParser extends Parser {
       let _alt: number;
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 74;
+        this.state = 78;
         this._errHandler.sync(this);
         switch (this._interp.adaptivePredict(this._input, 3, this._ctx)) {
           case 1:
@@ -284,7 +354,7 @@ export default class reversionParser extends Parser {
               this._ctx = localctx;
               _prevctx = localctx;
 
-              this.state = 26;
+              this.state = 30;
               this.rev();
             }
             break;
@@ -293,7 +363,7 @@ export default class reversionParser extends Parser {
               localctx = new RevExpressionContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 27;
+              this.state = 31;
               this.rev_expression();
             }
             break;
@@ -302,11 +372,11 @@ export default class reversionParser extends Parser {
               localctx = new RevSinceContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 28;
+              this.state = 32;
               this.match(reversionParser.T__0);
-              this.state = 29;
+              this.state = 33;
               this.match(reversionParser.T__1);
-              this.state = 30;
+              this.state = 34;
               this.date();
             }
             break;
@@ -315,11 +385,11 @@ export default class reversionParser extends Parser {
               localctx = new RevUntilContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 31;
+              this.state = 35;
               this.match(reversionParser.T__2);
-              this.state = 32;
+              this.state = 36;
               this.match(reversionParser.T__1);
-              this.state = 33;
+              this.state = 37;
               this.date();
             }
             break;
@@ -328,11 +398,11 @@ export default class reversionParser extends Parser {
               localctx = new RevAfterContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 34;
+              this.state = 38;
               this.match(reversionParser.T__3);
-              this.state = 35;
+              this.state = 39;
               this.match(reversionParser.T__1);
-              this.state = 36;
+              this.state = 40;
               this.date();
             }
             break;
@@ -341,11 +411,11 @@ export default class reversionParser extends Parser {
               localctx = new RevSkipContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 37;
+              this.state = 41;
               this.match(reversionParser.T__4);
-              this.state = 38;
+              this.state = 42;
               this.match(reversionParser.T__1);
-              this.state = 39;
+              this.state = 43;
               this.match(reversionParser.DIGIT);
             }
             break;
@@ -354,11 +424,11 @@ export default class reversionParser extends Parser {
               localctx = new RevBeforeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 40;
+              this.state = 44;
               this.match(reversionParser.T__5);
-              this.state = 41;
+              this.state = 45;
               this.match(reversionParser.T__1);
-              this.state = 42;
+              this.state = 46;
               this.date();
             }
             break;
@@ -367,11 +437,11 @@ export default class reversionParser extends Parser {
               localctx = new RevMaxAgeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 43;
+              this.state = 47;
               this.match(reversionParser.T__6);
-              this.state = 44;
+              this.state = 48;
               this.match(reversionParser.T__1);
-              this.state = 45;
+              this.state = 49;
               this.date();
             }
             break;
@@ -380,11 +450,11 @@ export default class reversionParser extends Parser {
               localctx = new RevMinAgeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 46;
+              this.state = 50;
               this.match(reversionParser.T__7);
-              this.state = 47;
+              this.state = 51;
               this.match(reversionParser.T__1);
-              this.state = 48;
+              this.state = 52;
               this.date();
             }
             break;
@@ -393,11 +463,11 @@ export default class reversionParser extends Parser {
               localctx = new RevAuthorContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 49;
+              this.state = 53;
               this.match(reversionParser.T__8);
-              this.state = 50;
+              this.state = 54;
               this.match(reversionParser.T__1);
-              this.state = 52;
+              this.state = 56;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -405,7 +475,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 51;
+                        this.state = 55;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -413,7 +483,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 54;
+                this.state = 58;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 0, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -424,11 +494,11 @@ export default class reversionParser extends Parser {
               localctx = new RevCommiterContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 56;
+              this.state = 60;
               this.match(reversionParser.T__9);
-              this.state = 57;
+              this.state = 61;
               this.match(reversionParser.T__1);
-              this.state = 59;
+              this.state = 63;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -436,7 +506,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 58;
+                        this.state = 62;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -444,7 +514,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 61;
+                this.state = 65;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 1, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -455,11 +525,11 @@ export default class reversionParser extends Parser {
               localctx = new RevGrepContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 63;
+              this.state = 67;
               this.match(reversionParser.T__10);
-              this.state = 64;
+              this.state = 68;
               this.match(reversionParser.T__1);
-              this.state = 66;
+              this.state = 70;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -467,7 +537,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 65;
+                        this.state = 69;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -475,7 +545,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 68;
+                this.state = 72;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 2, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -486,9 +556,9 @@ export default class reversionParser extends Parser {
               localctx = new RevRangeBefore1Context(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 70;
+              this.state = 74;
               this.match(reversionParser.T__11);
-              this.state = 71;
+              this.state = 75;
               this.rules(2);
             }
             break;
@@ -497,15 +567,15 @@ export default class reversionParser extends Parser {
               localctx = new RevRangeBefore2Context(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 72;
+              this.state = 76;
               this.match(reversionParser.T__12);
-              this.state = 73;
+              this.state = 77;
               this.rules(1);
             }
             break;
         }
         this._ctx.stop = this._input.LT(-1);
-        this.state = 95;
+        this.state = 99;
         this._errHandler.sync(this);
         _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
         while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -515,7 +585,7 @@ export default class reversionParser extends Parser {
             }
             _prevctx = localctx;
             {
-              this.state = 93;
+              this.state = 97;
               this._errHandler.sync(this);
               switch (this._interp.adaptivePredict(this._input, 5, this._ctx)) {
                 case 1:
@@ -529,15 +599,15 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 76;
+                    this.state = 80;
                     if (!this.precpred(this._ctx, 4)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 4)',
                       );
                     }
-                    this.state = 77;
+                    this.state = 81;
                     this.match(reversionParser.T__11);
-                    this.state = 78;
+                    this.state = 82;
                     this.rules(5);
                   }
                   break;
@@ -552,15 +622,15 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 79;
+                    this.state = 83;
                     if (!this.precpred(this._ctx, 3)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 3)',
                       );
                     }
-                    this.state = 80;
+                    this.state = 84;
                     this.match(reversionParser.T__12);
-                    this.state = 81;
+                    this.state = 85;
                     this.rules(4);
                   }
                   break;
@@ -575,13 +645,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 82;
+                    this.state = 86;
                     if (!this.precpred(this._ctx, 7)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 7)',
                       );
                     }
-                    this.state = 83;
+                    this.state = 87;
                     this.match(reversionParser.T__11);
                   }
                   break;
@@ -596,13 +666,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 84;
+                    this.state = 88;
                     if (!this.precpred(this._ctx, 6)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 6)',
                       );
                     }
-                    this.state = 85;
+                    this.state = 89;
                     this.match(reversionParser.T__12);
                   }
                   break;
@@ -617,13 +687,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 86;
+                    this.state = 90;
                     if (!this.precpred(this._ctx, 5)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 5)',
                       );
                     }
-                    this.state = 89;
+                    this.state = 93;
                     this._errHandler.sync(this);
                     _alt = 1;
                     do {
@@ -631,9 +701,9 @@ export default class reversionParser extends Parser {
                         case 1:
                           {
                             {
-                              this.state = 87;
+                              this.state = 91;
                               this.match(reversionParser.SPACE);
-                              this.state = 88;
+                              this.state = 92;
                               this.rules(0);
                             }
                           }
@@ -641,7 +711,7 @@ export default class reversionParser extends Parser {
                         default:
                           throw new NoViableAltException(this);
                       }
-                      this.state = 91;
+                      this.state = 95;
                       this._errHandler.sync(this);
                       _alt = this._interp.adaptivePredict(
                         this._input,
@@ -654,7 +724,7 @@ export default class reversionParser extends Parser {
               }
             }
           }
-          this.state = 97;
+          this.state = 101;
           this._errHandler.sync(this);
           _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
         }
@@ -677,7 +747,7 @@ export default class reversionParser extends Parser {
     let localctx: RevContext = new RevContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, reversionParser.RULE_rev);
     try {
-      this.state = 102;
+      this.state = 106;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 15:
@@ -685,15 +755,15 @@ export default class reversionParser extends Parser {
           localctx = new RefNameContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 98;
+            this.state = 102;
             this.refname();
           }
           break;
-        case 32:
+        case 54:
           localctx = new RefOIDContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 99;
+            this.state = 103;
             this.match(reversionParser.OID);
           }
           break;
@@ -701,9 +771,9 @@ export default class reversionParser extends Parser {
           localctx = new RevExcludeContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 100;
+            this.state = 104;
             this.match(reversionParser.T__13);
-            this.state = 101;
+            this.state = 105;
             this.rev();
           }
           break;
@@ -735,7 +805,7 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 104;
+        this.state = 108;
         _la = this._input.LA(1);
         if (!(_la === 15 || _la === 16)) {
           this._errHandler.recoverInline(this);
@@ -768,37 +838,40 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       let _alt: number;
-      this.state = 135;
+      this.state = 139;
       this._errHandler.sync(this);
       switch (this._interp.adaptivePredict(this._input, 11, this._ctx)) {
         case 1:
+          localctx = new ExprPosContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
-          {
-            this.state = 106;
-            this.rev();
-            this.state = 107;
-            this.rev_direction();
-            this.state = 108;
-            this.rev_position();
-          }
-          break;
-        case 2:
-          this.enterOuterAlt(localctx, 2);
           {
             this.state = 110;
             this.rev();
             this.state = 111;
             this.rev_direction();
             this.state = 112;
+            this.rev_position();
+          }
+          break;
+        case 2:
+          localctx = new ExprDigitContext(this, localctx);
+          this.enterOuterAlt(localctx, 2);
+          {
+            this.state = 114;
+            this.rev();
+            this.state = 115;
+            this.rev_direction();
+            this.state = 116;
             this.match(reversionParser.DIGIT);
           }
           break;
         case 3:
+          localctx = new ExprTextContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 114;
+            this.state = 118;
             this.match(reversionParser.T__16);
-            this.state = 116;
+            this.state = 120;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -806,9 +879,9 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 115;
+                      this.state = 119;
                       _la = this._input.LA(1);
-                      if (!(_la === 38 || _la === 42)) {
+                      if (!(_la === 60 || _la === 64)) {
                         this._errHandler.recoverInline(this);
                       } else {
                         this._errHandler.reportMatch(this);
@@ -820,20 +893,21 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 118;
+              this.state = 122;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 8, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
           }
           break;
         case 4:
+          localctx = new ExprRevTextContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 120;
+            this.state = 124;
             this.rev();
-            this.state = 121;
+            this.state = 125;
             this.match(reversionParser.T__17);
-            this.state = 123;
+            this.state = 127;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -841,7 +915,7 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 122;
+                      this.state = 126;
                       this.match(reversionParser.ANY);
                     }
                   }
@@ -849,22 +923,23 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 125;
+              this.state = 129;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
           }
           break;
         case 5:
+          localctx = new ExprDigitTextContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 127;
-            this.match(reversionParser.T__17);
-            this.state = 128;
-            this.match(reversionParser.DIGIT);
-            this.state = 129;
-            this.match(reversionParser.T__17);
             this.state = 131;
+            this.match(reversionParser.T__17);
+            this.state = 132;
+            this.match(reversionParser.DIGIT);
+            this.state = 133;
+            this.match(reversionParser.T__17);
+            this.state = 135;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -872,7 +947,7 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 130;
+                      this.state = 134;
                       this.match(reversionParser.ANY);
                     }
                   }
@@ -880,7 +955,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 133;
+              this.state = 137;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 10, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -910,56 +985,62 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 10, reversionParser.RULE_rev_position);
     let _la: number;
     try {
-      this.state = 146;
+      this.state = 150;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 16:
+          localctx = new PosHeadContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 137;
+            this.state = 141;
             this.match(reversionParser.T__15);
           }
           break;
         case 19:
+          localctx = new PosExcludeContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 138;
+            this.state = 142;
             this.match(reversionParser.T__18);
           }
           break;
-        case 30:
+        case 52:
+          localctx = new PosNegContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 139;
+            this.state = 143;
             this.match(reversionParser.SIGNED_DIGIT);
           }
           break;
         case 20:
+          localctx = new PosReverseContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 140;
+            this.state = 144;
             this.match(reversionParser.T__19);
           }
           break;
         case 21:
+          localctx = new PosAnchorContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 141;
+            this.state = 145;
             this.match(reversionParser.T__20);
-            this.state = 143;
+            this.state = 147;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             if (
-              ((_la - 24) & ~0x1f) === 0 &&
-              ((1 << (_la - 24)) & 2255) !== 0
+              ((_la & ~0x1f) === 0 && ((1 << _la) & 4278190080) !== 0) ||
+              (((_la - 32) & ~0x1f) === 0 &&
+                ((1 << (_la - 32)) & 36700191) !== 0)
             ) {
               {
-                this.state = 142;
+                this.state = 146;
                 this.ref_anchor();
               }
             }
 
-            this.state = 145;
+            this.state = 149;
             this.match(reversionParser.T__21);
           }
           break;
@@ -991,7 +1072,7 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 148;
+        this.state = 152;
         _la = this._input.LA(1);
         if (!((_la & ~0x1f) === 0 && ((1 << _la) & 8470528) !== 0)) {
           this._errHandler.recoverInline(this);
@@ -1023,14 +1104,14 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 14, reversionParser.RULE_ref_anchor);
     try {
       let _alt: number;
-      this.state = 160;
+      this.state = 164;
       this._errHandler.sync(this);
       switch (this._interp.adaptivePredict(this._input, 15, this._ctx)) {
         case 1:
           localctx = new AnchorDateContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 150;
+            this.state = 154;
             this.date();
           }
           break;
@@ -1038,7 +1119,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorSignedDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 151;
+            this.state = 155;
             this.match(reversionParser.SIGNED_DIGIT);
           }
           break;
@@ -1046,7 +1127,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 152;
+            this.state = 156;
             this.match(reversionParser.DIGIT);
           }
           break;
@@ -1054,9 +1135,9 @@ export default class reversionParser extends Parser {
           localctx = new AnchorTextContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 153;
+            this.state = 157;
             this.match(reversionParser.T__23);
-            this.state = 155;
+            this.state = 159;
             this._errHandler.sync(this);
             _alt = 1 + 1;
             do {
@@ -1064,7 +1145,7 @@ export default class reversionParser extends Parser {
                 case 1 + 1:
                   {
                     {
-                      this.state = 154;
+                      this.state = 158;
                       this.matchWildcard();
                     }
                   }
@@ -1072,7 +1153,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 157;
+              this.state = 161;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 14, this._ctx);
             } while (_alt !== 1 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -1082,7 +1163,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorIsoContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 159;
+            this.state = 163;
             this.iso_8601();
           }
           break;
@@ -1106,53 +1187,70 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 16, reversionParser.RULE_date);
     try {
       let _alt: number;
-      this.state = 175;
+      this.state = 180;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 25:
-          localctx = new YesterdayContext(this, localctx);
+          localctx = new DateYesterdayContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 162;
+            this.state = 166;
             this.match(reversionParser.T__24);
           }
           break;
         case 26:
-          localctx = new TodayContext(this, localctx);
+          localctx = new DateTodayContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 163;
+            this.state = 167;
             this.match(reversionParser.T__25);
           }
           break;
-        case 27:
-        case 31:
-          localctx = new TimepointContext(this, localctx);
+        case 57:
+          localctx = new DateIso8601Context(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 164;
-            this.time_point();
+            this.state = 168;
+            this.iso_8601();
+          }
+          break;
+        case 27:
+        case 28:
+        case 29:
+        case 30:
+        case 31:
+        case 32:
+        case 33:
+        case 34:
+        case 35:
+        case 36:
+        case 53:
+          localctx = new DateTimePointContext(this, localctx);
+          this.enterOuterAlt(localctx, 4);
+          {
             this.state = 169;
+            this.time_point();
+            this.state = 174;
             this._errHandler.sync(this);
             _alt = this._interp.adaptivePredict(this._input, 16, this._ctx);
             while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
               if (_alt === 1) {
                 {
                   {
-                    this.state = 165;
+                    this.state = 170;
                     this.match(reversionParser.SPACE);
-                    this.state = 166;
+                    this.state = 171;
                     this.time_point();
                   }
                 }
               }
-              this.state = 171;
+              this.state = 176;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 16, this._ctx);
             }
-            this.state = 172;
+            this.state = 177;
             this.match(reversionParser.SPACE);
-            this.state = 173;
+            this.state = 178;
             this.match(reversionParser.TIME_DIRECTION);
           }
           break;
@@ -1180,22 +1278,115 @@ export default class reversionParser extends Parser {
       this.state,
     );
     this.enterRule(localctx, 18, reversionParser.RULE_time_point);
+    try {
+      this.state = 189;
+      this._errHandler.sync(this);
+      switch (this._input.LA(1)) {
+        case 27:
+        case 28:
+        case 29:
+        case 30:
+        case 31:
+        case 32:
+        case 33:
+        case 34:
+        case 35:
+        case 36:
+          localctx = new TimePointValueContext(this, localctx);
+          this.enterOuterAlt(localctx, 1);
+          {
+            this.state = 182;
+            this.time_value();
+            this.state = 183;
+            this.match(reversionParser.SPACE);
+            this.state = 184;
+            this.time_unit();
+          }
+          break;
+        case 53:
+          localctx = new TimePointDigitContext(this, localctx);
+          this.enterOuterAlt(localctx, 2);
+          {
+            this.state = 186;
+            this.match(reversionParser.DIGIT);
+            this.state = 187;
+            this.match(reversionParser.SPACE);
+            this.state = 188;
+            this.time_unit();
+          }
+          break;
+        default:
+          throw new NoViableAltException(this);
+      }
+    } catch (re) {
+      if (re instanceof RecognitionException) {
+        localctx.exception = re;
+        this._errHandler.reportError(this, re);
+        this._errHandler.recover(this, re);
+      } else {
+        throw re;
+      }
+    } finally {
+      this.exitRule();
+    }
+    return localctx;
+  }
+  // @RuleVersion(0)
+  public time_value(): Time_valueContext {
+    let localctx: Time_valueContext = new Time_valueContext(
+      this,
+      this._ctx,
+      this.state,
+    );
+    this.enterRule(localctx, 20, reversionParser.RULE_time_value);
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 177;
+        this.state = 191;
         _la = this._input.LA(1);
-        if (!(_la === 27 || _la === 31)) {
+        if (!(((_la - 27) & ~0x1f) === 0 && ((1 << (_la - 27)) & 1023) !== 0)) {
           this._errHandler.recoverInline(this);
         } else {
           this._errHandler.reportMatch(this);
           this.consume();
         }
-        this.state = 178;
-        this.match(reversionParser.SPACE);
-        this.state = 179;
-        this.match(reversionParser.TIME_UINT);
+      }
+    } catch (re) {
+      if (re instanceof RecognitionException) {
+        localctx.exception = re;
+        this._errHandler.reportError(this, re);
+        this._errHandler.recover(this, re);
+      } else {
+        throw re;
+      }
+    } finally {
+      this.exitRule();
+    }
+    return localctx;
+  }
+  // @RuleVersion(0)
+  public time_unit(): Time_unitContext {
+    let localctx: Time_unitContext = new Time_unitContext(
+      this,
+      this._ctx,
+      this.state,
+    );
+    this.enterRule(localctx, 22, reversionParser.RULE_time_unit);
+    let _la: number;
+    try {
+      this.enterOuterAlt(localctx, 1);
+      {
+        this.state = 193;
+        _la = this._input.LA(1);
+        if (
+          !(((_la - 37) & ~0x1f) === 0 && ((1 << (_la - 37)) & 16383) !== 0)
+        ) {
+          this._errHandler.recoverInline(this);
+        } else {
+          this._errHandler.reportMatch(this);
+          this.consume();
+        }
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -1217,32 +1408,35 @@ export default class reversionParser extends Parser {
       this._ctx,
       this.state,
     );
-    this.enterRule(localctx, 20, reversionParser.RULE_iso_8601);
-    let _la: number;
+    this.enterRule(localctx, 24, reversionParser.RULE_iso_8601);
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 181;
+        this.state = 195;
         this.match(reversionParser.ISO_DATE);
-        this.state = 187;
+        this.state = 201;
         this._errHandler.sync(this);
-        _la = this._input.LA(1);
-        if (_la === 38) {
-          {
-            this.state = 182;
-            this.match(reversionParser.SPACE);
-            this.state = 183;
-            this.match(reversionParser.ISO_TIME);
-            this.state = 185;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-            if (_la === 37) {
-              {
-                this.state = 184;
-                this.match(reversionParser.IS_TIME_POSTFIX);
+        switch (this._interp.adaptivePredict(this._input, 20, this._ctx)) {
+          case 1:
+            {
+              this.state = 196;
+              this.match(reversionParser.SPACE);
+              this.state = 197;
+              this.match(reversionParser.ISO_TIME);
+              this.state = 199;
+              this._errHandler.sync(this);
+              switch (
+                this._interp.adaptivePredict(this._input, 19, this._ctx)
+              ) {
+                case 1:
+                  {
+                    this.state = 198;
+                    this.match(reversionParser.IS_TIME_POSTFIX);
+                  }
+                  break;
               }
             }
-          }
+            break;
         }
       }
     } catch (re) {
@@ -1287,90 +1481,96 @@ export default class reversionParser extends Parser {
   }
 
   public static readonly _serializedATN: number[] = [
-    4, 1, 44, 190, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4,
-    2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7, 10, 1,
-    0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    4, 1, 66, 204, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4,
+    2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7, 10, 2,
+    11, 7, 11, 2, 12, 7, 12, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 53, 8, 1, 11, 1, 12, 1, 54, 1, 1, 1, 1, 1,
-    1, 4, 1, 60, 8, 1, 11, 1, 12, 1, 61, 1, 1, 1, 1, 1, 1, 4, 1, 67, 8, 1, 11,
-    1, 12, 1, 68, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 75, 8, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 90, 8, 1, 11,
-    1, 12, 1, 91, 5, 1, 94, 8, 1, 10, 1, 12, 1, 97, 9, 1, 1, 2, 1, 2, 1, 2, 1,
-    2, 3, 2, 103, 8, 2, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
-    4, 1, 4, 1, 4, 4, 4, 117, 8, 4, 11, 4, 12, 4, 118, 1, 4, 1, 4, 1, 4, 4, 4,
-    124, 8, 4, 11, 4, 12, 4, 125, 1, 4, 1, 4, 1, 4, 1, 4, 4, 4, 132, 8, 4, 11,
-    4, 12, 4, 133, 3, 4, 136, 8, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5,
-    144, 8, 5, 1, 5, 3, 5, 147, 8, 5, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7,
-    4, 7, 156, 8, 7, 11, 7, 12, 7, 157, 1, 7, 3, 7, 161, 8, 7, 1, 8, 1, 8, 1, 8,
-    1, 8, 1, 8, 5, 8, 168, 8, 8, 10, 8, 12, 8, 171, 9, 8, 1, 8, 1, 8, 1, 8, 3,
-    8, 176, 8, 8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 10, 1, 10, 1, 10, 1, 10, 3, 10,
-    186, 8, 10, 3, 10, 188, 8, 10, 1, 10, 1, 157, 1, 2, 11, 0, 2, 4, 6, 8, 10,
-    12, 14, 16, 18, 20, 0, 4, 1, 0, 15, 16, 2, 0, 38, 38, 42, 42, 3, 0, 14, 14,
-    16, 16, 23, 23, 2, 0, 27, 27, 31, 31, 224, 0, 22, 1, 0, 0, 0, 2, 74, 1, 0,
-    0, 0, 4, 102, 1, 0, 0, 0, 6, 104, 1, 0, 0, 0, 8, 135, 1, 0, 0, 0, 10, 146,
-    1, 0, 0, 0, 12, 148, 1, 0, 0, 0, 14, 160, 1, 0, 0, 0, 16, 175, 1, 0, 0, 0,
-    18, 177, 1, 0, 0, 0, 20, 181, 1, 0, 0, 0, 22, 23, 3, 2, 1, 0, 23, 24, 5, 0,
-    0, 1, 24, 1, 1, 0, 0, 0, 25, 26, 6, 1, -1, 0, 26, 75, 3, 4, 2, 0, 27, 75, 3,
-    8, 4, 0, 28, 29, 5, 1, 0, 0, 29, 30, 5, 2, 0, 0, 30, 75, 3, 16, 8, 0, 31,
-    32, 5, 3, 0, 0, 32, 33, 5, 2, 0, 0, 33, 75, 3, 16, 8, 0, 34, 35, 5, 4, 0, 0,
-    35, 36, 5, 2, 0, 0, 36, 75, 3, 16, 8, 0, 37, 38, 5, 5, 0, 0, 38, 39, 5, 2,
-    0, 0, 39, 75, 5, 31, 0, 0, 40, 41, 5, 6, 0, 0, 41, 42, 5, 2, 0, 0, 42, 75,
-    3, 16, 8, 0, 43, 44, 5, 7, 0, 0, 44, 45, 5, 2, 0, 0, 45, 75, 3, 16, 8, 0,
-    46, 47, 5, 8, 0, 0, 47, 48, 5, 2, 0, 0, 48, 75, 3, 16, 8, 0, 49, 50, 5, 9,
-    0, 0, 50, 52, 5, 2, 0, 0, 51, 53, 5, 42, 0, 0, 52, 51, 1, 0, 0, 0, 53, 54,
-    1, 0, 0, 0, 54, 52, 1, 0, 0, 0, 54, 55, 1, 0, 0, 0, 55, 75, 1, 0, 0, 0, 56,
-    57, 5, 10, 0, 0, 57, 59, 5, 2, 0, 0, 58, 60, 5, 42, 0, 0, 59, 58, 1, 0, 0,
-    0, 60, 61, 1, 0, 0, 0, 61, 59, 1, 0, 0, 0, 61, 62, 1, 0, 0, 0, 62, 75, 1, 0,
-    0, 0, 63, 64, 5, 11, 0, 0, 64, 66, 5, 2, 0, 0, 65, 67, 5, 42, 0, 0, 66, 65,
-    1, 0, 0, 0, 67, 68, 1, 0, 0, 0, 68, 66, 1, 0, 0, 0, 68, 69, 1, 0, 0, 0, 69,
-    75, 1, 0, 0, 0, 70, 71, 5, 12, 0, 0, 71, 75, 3, 2, 1, 2, 72, 73, 5, 13, 0,
-    0, 73, 75, 3, 2, 1, 1, 74, 25, 1, 0, 0, 0, 74, 27, 1, 0, 0, 0, 74, 28, 1, 0,
-    0, 0, 74, 31, 1, 0, 0, 0, 74, 34, 1, 0, 0, 0, 74, 37, 1, 0, 0, 0, 74, 40, 1,
-    0, 0, 0, 74, 43, 1, 0, 0, 0, 74, 46, 1, 0, 0, 0, 74, 49, 1, 0, 0, 0, 74, 56,
-    1, 0, 0, 0, 74, 63, 1, 0, 0, 0, 74, 70, 1, 0, 0, 0, 74, 72, 1, 0, 0, 0, 75,
-    95, 1, 0, 0, 0, 76, 77, 10, 4, 0, 0, 77, 78, 5, 12, 0, 0, 78, 94, 3, 2, 1,
-    5, 79, 80, 10, 3, 0, 0, 80, 81, 5, 13, 0, 0, 81, 94, 3, 2, 1, 4, 82, 83, 10,
-    7, 0, 0, 83, 94, 5, 12, 0, 0, 84, 85, 10, 6, 0, 0, 85, 94, 5, 13, 0, 0, 86,
-    89, 10, 5, 0, 0, 87, 88, 5, 38, 0, 0, 88, 90, 3, 2, 1, 0, 89, 87, 1, 0, 0,
-    0, 90, 91, 1, 0, 0, 0, 91, 89, 1, 0, 0, 0, 91, 92, 1, 0, 0, 0, 92, 94, 1, 0,
-    0, 0, 93, 76, 1, 0, 0, 0, 93, 79, 1, 0, 0, 0, 93, 82, 1, 0, 0, 0, 93, 84, 1,
-    0, 0, 0, 93, 86, 1, 0, 0, 0, 94, 97, 1, 0, 0, 0, 95, 93, 1, 0, 0, 0, 95, 96,
-    1, 0, 0, 0, 96, 3, 1, 0, 0, 0, 97, 95, 1, 0, 0, 0, 98, 103, 3, 6, 3, 0, 99,
-    103, 5, 32, 0, 0, 100, 101, 5, 14, 0, 0, 101, 103, 3, 4, 2, 0, 102, 98, 1,
-    0, 0, 0, 102, 99, 1, 0, 0, 0, 102, 100, 1, 0, 0, 0, 103, 5, 1, 0, 0, 0, 104,
-    105, 7, 0, 0, 0, 105, 7, 1, 0, 0, 0, 106, 107, 3, 4, 2, 0, 107, 108, 3, 12,
-    6, 0, 108, 109, 3, 10, 5, 0, 109, 136, 1, 0, 0, 0, 110, 111, 3, 4, 2, 0,
-    111, 112, 3, 12, 6, 0, 112, 113, 5, 31, 0, 0, 113, 136, 1, 0, 0, 0, 114,
-    116, 5, 17, 0, 0, 115, 117, 7, 1, 0, 0, 116, 115, 1, 0, 0, 0, 117, 118, 1,
-    0, 0, 0, 118, 116, 1, 0, 0, 0, 118, 119, 1, 0, 0, 0, 119, 136, 1, 0, 0, 0,
-    120, 121, 3, 4, 2, 0, 121, 123, 5, 18, 0, 0, 122, 124, 5, 42, 0, 0, 123,
-    122, 1, 0, 0, 0, 124, 125, 1, 0, 0, 0, 125, 123, 1, 0, 0, 0, 125, 126, 1, 0,
-    0, 0, 126, 136, 1, 0, 0, 0, 127, 128, 5, 18, 0, 0, 128, 129, 5, 31, 0, 0,
-    129, 131, 5, 18, 0, 0, 130, 132, 5, 42, 0, 0, 131, 130, 1, 0, 0, 0, 132,
-    133, 1, 0, 0, 0, 133, 131, 1, 0, 0, 0, 133, 134, 1, 0, 0, 0, 134, 136, 1, 0,
-    0, 0, 135, 106, 1, 0, 0, 0, 135, 110, 1, 0, 0, 0, 135, 114, 1, 0, 0, 0, 135,
-    120, 1, 0, 0, 0, 135, 127, 1, 0, 0, 0, 136, 9, 1, 0, 0, 0, 137, 147, 5, 16,
-    0, 0, 138, 147, 5, 19, 0, 0, 139, 147, 5, 30, 0, 0, 140, 147, 5, 20, 0, 0,
-    141, 143, 5, 21, 0, 0, 142, 144, 3, 14, 7, 0, 143, 142, 1, 0, 0, 0, 143,
-    144, 1, 0, 0, 0, 144, 145, 1, 0, 0, 0, 145, 147, 5, 22, 0, 0, 146, 137, 1,
-    0, 0, 0, 146, 138, 1, 0, 0, 0, 146, 139, 1, 0, 0, 0, 146, 140, 1, 0, 0, 0,
-    146, 141, 1, 0, 0, 0, 147, 11, 1, 0, 0, 0, 148, 149, 7, 2, 0, 0, 149, 13, 1,
-    0, 0, 0, 150, 161, 3, 16, 8, 0, 151, 161, 5, 30, 0, 0, 152, 161, 5, 31, 0,
-    0, 153, 155, 5, 24, 0, 0, 154, 156, 9, 0, 0, 0, 155, 154, 1, 0, 0, 0, 156,
-    157, 1, 0, 0, 0, 157, 158, 1, 0, 0, 0, 157, 155, 1, 0, 0, 0, 158, 161, 1, 0,
-    0, 0, 159, 161, 3, 20, 10, 0, 160, 150, 1, 0, 0, 0, 160, 151, 1, 0, 0, 0,
-    160, 152, 1, 0, 0, 0, 160, 153, 1, 0, 0, 0, 160, 159, 1, 0, 0, 0, 161, 15,
-    1, 0, 0, 0, 162, 176, 5, 25, 0, 0, 163, 176, 5, 26, 0, 0, 164, 169, 3, 18,
-    9, 0, 165, 166, 5, 38, 0, 0, 166, 168, 3, 18, 9, 0, 167, 165, 1, 0, 0, 0,
-    168, 171, 1, 0, 0, 0, 169, 167, 1, 0, 0, 0, 169, 170, 1, 0, 0, 0, 170, 172,
-    1, 0, 0, 0, 171, 169, 1, 0, 0, 0, 172, 173, 5, 38, 0, 0, 173, 174, 5, 29, 0,
-    0, 174, 176, 1, 0, 0, 0, 175, 162, 1, 0, 0, 0, 175, 163, 1, 0, 0, 0, 175,
-    164, 1, 0, 0, 0, 176, 17, 1, 0, 0, 0, 177, 178, 7, 3, 0, 0, 178, 179, 5, 38,
-    0, 0, 179, 180, 5, 28, 0, 0, 180, 19, 1, 0, 0, 0, 181, 187, 5, 35, 0, 0,
-    182, 183, 5, 38, 0, 0, 183, 185, 5, 36, 0, 0, 184, 186, 5, 37, 0, 0, 185,
-    184, 1, 0, 0, 0, 185, 186, 1, 0, 0, 0, 186, 188, 1, 0, 0, 0, 187, 182, 1, 0,
-    0, 0, 187, 188, 1, 0, 0, 0, 188, 21, 1, 0, 0, 0, 20, 54, 61, 68, 74, 91, 93,
-    95, 102, 118, 125, 133, 135, 143, 146, 157, 160, 169, 175, 185, 187,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 57, 8, 1, 11, 1,
+    12, 1, 58, 1, 1, 1, 1, 1, 1, 4, 1, 64, 8, 1, 11, 1, 12, 1, 65, 1, 1, 1, 1,
+    1, 1, 4, 1, 71, 8, 1, 11, 1, 12, 1, 72, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 79, 8,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 4, 1, 94, 8, 1, 11, 1, 12, 1, 95, 5, 1, 98, 8, 1, 10, 1, 12, 1, 101,
+    9, 1, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 107, 8, 2, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4,
+    1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 4, 4, 121, 8, 4, 11, 4, 12, 4,
+    122, 1, 4, 1, 4, 1, 4, 4, 4, 128, 8, 4, 11, 4, 12, 4, 129, 1, 4, 1, 4, 1, 4,
+    1, 4, 4, 4, 136, 8, 4, 11, 4, 12, 4, 137, 3, 4, 140, 8, 4, 1, 5, 1, 5, 1, 5,
+    1, 5, 1, 5, 1, 5, 3, 5, 148, 8, 5, 1, 5, 3, 5, 151, 8, 5, 1, 6, 1, 6, 1, 7,
+    1, 7, 1, 7, 1, 7, 1, 7, 4, 7, 160, 8, 7, 11, 7, 12, 7, 161, 1, 7, 3, 7, 165,
+    8, 7, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 5, 8, 173, 8, 8, 10, 8, 12, 8,
+    176, 9, 8, 1, 8, 1, 8, 1, 8, 3, 8, 181, 8, 8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9,
+    1, 9, 1, 9, 3, 9, 190, 8, 9, 1, 10, 1, 10, 1, 11, 1, 11, 1, 12, 1, 12, 1,
+    12, 1, 12, 3, 12, 200, 8, 12, 3, 12, 202, 8, 12, 1, 12, 1, 161, 1, 2, 13, 0,
+    2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 0, 5, 1, 0, 15, 16, 2, 0, 60,
+    60, 64, 64, 3, 0, 14, 14, 16, 16, 23, 23, 1, 0, 27, 36, 1, 0, 37, 50, 238,
+    0, 26, 1, 0, 0, 0, 2, 78, 1, 0, 0, 0, 4, 106, 1, 0, 0, 0, 6, 108, 1, 0, 0,
+    0, 8, 139, 1, 0, 0, 0, 10, 150, 1, 0, 0, 0, 12, 152, 1, 0, 0, 0, 14, 164, 1,
+    0, 0, 0, 16, 180, 1, 0, 0, 0, 18, 189, 1, 0, 0, 0, 20, 191, 1, 0, 0, 0, 22,
+    193, 1, 0, 0, 0, 24, 195, 1, 0, 0, 0, 26, 27, 3, 2, 1, 0, 27, 28, 5, 0, 0,
+    1, 28, 1, 1, 0, 0, 0, 29, 30, 6, 1, -1, 0, 30, 79, 3, 4, 2, 0, 31, 79, 3, 8,
+    4, 0, 32, 33, 5, 1, 0, 0, 33, 34, 5, 2, 0, 0, 34, 79, 3, 16, 8, 0, 35, 36,
+    5, 3, 0, 0, 36, 37, 5, 2, 0, 0, 37, 79, 3, 16, 8, 0, 38, 39, 5, 4, 0, 0, 39,
+    40, 5, 2, 0, 0, 40, 79, 3, 16, 8, 0, 41, 42, 5, 5, 0, 0, 42, 43, 5, 2, 0, 0,
+    43, 79, 5, 53, 0, 0, 44, 45, 5, 6, 0, 0, 45, 46, 5, 2, 0, 0, 46, 79, 3, 16,
+    8, 0, 47, 48, 5, 7, 0, 0, 48, 49, 5, 2, 0, 0, 49, 79, 3, 16, 8, 0, 50, 51,
+    5, 8, 0, 0, 51, 52, 5, 2, 0, 0, 52, 79, 3, 16, 8, 0, 53, 54, 5, 9, 0, 0, 54,
+    56, 5, 2, 0, 0, 55, 57, 5, 64, 0, 0, 56, 55, 1, 0, 0, 0, 57, 58, 1, 0, 0, 0,
+    58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 79, 1, 0, 0, 0, 60, 61, 5, 10,
+    0, 0, 61, 63, 5, 2, 0, 0, 62, 64, 5, 64, 0, 0, 63, 62, 1, 0, 0, 0, 64, 65,
+    1, 0, 0, 0, 65, 63, 1, 0, 0, 0, 65, 66, 1, 0, 0, 0, 66, 79, 1, 0, 0, 0, 67,
+    68, 5, 11, 0, 0, 68, 70, 5, 2, 0, 0, 69, 71, 5, 64, 0, 0, 70, 69, 1, 0, 0,
+    0, 71, 72, 1, 0, 0, 0, 72, 70, 1, 0, 0, 0, 72, 73, 1, 0, 0, 0, 73, 79, 1, 0,
+    0, 0, 74, 75, 5, 12, 0, 0, 75, 79, 3, 2, 1, 2, 76, 77, 5, 13, 0, 0, 77, 79,
+    3, 2, 1, 1, 78, 29, 1, 0, 0, 0, 78, 31, 1, 0, 0, 0, 78, 32, 1, 0, 0, 0, 78,
+    35, 1, 0, 0, 0, 78, 38, 1, 0, 0, 0, 78, 41, 1, 0, 0, 0, 78, 44, 1, 0, 0, 0,
+    78, 47, 1, 0, 0, 0, 78, 50, 1, 0, 0, 0, 78, 53, 1, 0, 0, 0, 78, 60, 1, 0, 0,
+    0, 78, 67, 1, 0, 0, 0, 78, 74, 1, 0, 0, 0, 78, 76, 1, 0, 0, 0, 79, 99, 1, 0,
+    0, 0, 80, 81, 10, 4, 0, 0, 81, 82, 5, 12, 0, 0, 82, 98, 3, 2, 1, 5, 83, 84,
+    10, 3, 0, 0, 84, 85, 5, 13, 0, 0, 85, 98, 3, 2, 1, 4, 86, 87, 10, 7, 0, 0,
+    87, 98, 5, 12, 0, 0, 88, 89, 10, 6, 0, 0, 89, 98, 5, 13, 0, 0, 90, 93, 10,
+    5, 0, 0, 91, 92, 5, 60, 0, 0, 92, 94, 3, 2, 1, 0, 93, 91, 1, 0, 0, 0, 94,
+    95, 1, 0, 0, 0, 95, 93, 1, 0, 0, 0, 95, 96, 1, 0, 0, 0, 96, 98, 1, 0, 0, 0,
+    97, 80, 1, 0, 0, 0, 97, 83, 1, 0, 0, 0, 97, 86, 1, 0, 0, 0, 97, 88, 1, 0, 0,
+    0, 97, 90, 1, 0, 0, 0, 98, 101, 1, 0, 0, 0, 99, 97, 1, 0, 0, 0, 99, 100, 1,
+    0, 0, 0, 100, 3, 1, 0, 0, 0, 101, 99, 1, 0, 0, 0, 102, 107, 3, 6, 3, 0, 103,
+    107, 5, 54, 0, 0, 104, 105, 5, 14, 0, 0, 105, 107, 3, 4, 2, 0, 106, 102, 1,
+    0, 0, 0, 106, 103, 1, 0, 0, 0, 106, 104, 1, 0, 0, 0, 107, 5, 1, 0, 0, 0,
+    108, 109, 7, 0, 0, 0, 109, 7, 1, 0, 0, 0, 110, 111, 3, 4, 2, 0, 111, 112, 3,
+    12, 6, 0, 112, 113, 3, 10, 5, 0, 113, 140, 1, 0, 0, 0, 114, 115, 3, 4, 2, 0,
+    115, 116, 3, 12, 6, 0, 116, 117, 5, 53, 0, 0, 117, 140, 1, 0, 0, 0, 118,
+    120, 5, 17, 0, 0, 119, 121, 7, 1, 0, 0, 120, 119, 1, 0, 0, 0, 121, 122, 1,
+    0, 0, 0, 122, 120, 1, 0, 0, 0, 122, 123, 1, 0, 0, 0, 123, 140, 1, 0, 0, 0,
+    124, 125, 3, 4, 2, 0, 125, 127, 5, 18, 0, 0, 126, 128, 5, 64, 0, 0, 127,
+    126, 1, 0, 0, 0, 128, 129, 1, 0, 0, 0, 129, 127, 1, 0, 0, 0, 129, 130, 1, 0,
+    0, 0, 130, 140, 1, 0, 0, 0, 131, 132, 5, 18, 0, 0, 132, 133, 5, 53, 0, 0,
+    133, 135, 5, 18, 0, 0, 134, 136, 5, 64, 0, 0, 135, 134, 1, 0, 0, 0, 136,
+    137, 1, 0, 0, 0, 137, 135, 1, 0, 0, 0, 137, 138, 1, 0, 0, 0, 138, 140, 1, 0,
+    0, 0, 139, 110, 1, 0, 0, 0, 139, 114, 1, 0, 0, 0, 139, 118, 1, 0, 0, 0, 139,
+    124, 1, 0, 0, 0, 139, 131, 1, 0, 0, 0, 140, 9, 1, 0, 0, 0, 141, 151, 5, 16,
+    0, 0, 142, 151, 5, 19, 0, 0, 143, 151, 5, 52, 0, 0, 144, 151, 5, 20, 0, 0,
+    145, 147, 5, 21, 0, 0, 146, 148, 3, 14, 7, 0, 147, 146, 1, 0, 0, 0, 147,
+    148, 1, 0, 0, 0, 148, 149, 1, 0, 0, 0, 149, 151, 5, 22, 0, 0, 150, 141, 1,
+    0, 0, 0, 150, 142, 1, 0, 0, 0, 150, 143, 1, 0, 0, 0, 150, 144, 1, 0, 0, 0,
+    150, 145, 1, 0, 0, 0, 151, 11, 1, 0, 0, 0, 152, 153, 7, 2, 0, 0, 153, 13, 1,
+    0, 0, 0, 154, 165, 3, 16, 8, 0, 155, 165, 5, 52, 0, 0, 156, 165, 5, 53, 0,
+    0, 157, 159, 5, 24, 0, 0, 158, 160, 9, 0, 0, 0, 159, 158, 1, 0, 0, 0, 160,
+    161, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 161, 159, 1, 0, 0, 0, 162, 165, 1, 0,
+    0, 0, 163, 165, 3, 24, 12, 0, 164, 154, 1, 0, 0, 0, 164, 155, 1, 0, 0, 0,
+    164, 156, 1, 0, 0, 0, 164, 157, 1, 0, 0, 0, 164, 163, 1, 0, 0, 0, 165, 15,
+    1, 0, 0, 0, 166, 181, 5, 25, 0, 0, 167, 181, 5, 26, 0, 0, 168, 181, 3, 24,
+    12, 0, 169, 174, 3, 18, 9, 0, 170, 171, 5, 60, 0, 0, 171, 173, 3, 18, 9, 0,
+    172, 170, 1, 0, 0, 0, 173, 176, 1, 0, 0, 0, 174, 172, 1, 0, 0, 0, 174, 175,
+    1, 0, 0, 0, 175, 177, 1, 0, 0, 0, 176, 174, 1, 0, 0, 0, 177, 178, 5, 60, 0,
+    0, 178, 179, 5, 51, 0, 0, 179, 181, 1, 0, 0, 0, 180, 166, 1, 0, 0, 0, 180,
+    167, 1, 0, 0, 0, 180, 168, 1, 0, 0, 0, 180, 169, 1, 0, 0, 0, 181, 17, 1, 0,
+    0, 0, 182, 183, 3, 20, 10, 0, 183, 184, 5, 60, 0, 0, 184, 185, 3, 22, 11, 0,
+    185, 190, 1, 0, 0, 0, 186, 187, 5, 53, 0, 0, 187, 188, 5, 60, 0, 0, 188,
+    190, 3, 22, 11, 0, 189, 182, 1, 0, 0, 0, 189, 186, 1, 0, 0, 0, 190, 19, 1,
+    0, 0, 0, 191, 192, 7, 3, 0, 0, 192, 21, 1, 0, 0, 0, 193, 194, 7, 4, 0, 0,
+    194, 23, 1, 0, 0, 0, 195, 201, 5, 57, 0, 0, 196, 197, 5, 60, 0, 0, 197, 199,
+    5, 58, 0, 0, 198, 200, 5, 59, 0, 0, 199, 198, 1, 0, 0, 0, 199, 200, 1, 0, 0,
+    0, 200, 202, 1, 0, 0, 0, 201, 196, 1, 0, 0, 0, 201, 202, 1, 0, 0, 0, 202,
+    25, 1, 0, 0, 0, 21, 58, 65, 72, 78, 95, 97, 99, 106, 122, 129, 137, 139,
+    147, 150, 161, 164, 174, 180, 189, 199, 201,
   ];
 
   private static __ATN: ATN;
@@ -2123,6 +2323,18 @@ export class Rev_expressionContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_rev_expression;
+  }
+  public copyFrom(ctx: Rev_expressionContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class ExprPosContext extends Rev_expressionContext {
+  constructor(parser: reversionParser, ctx: Rev_expressionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
   public rev(): RevContext {
     return this.getTypedRuleContext(RevContext, 0) as RevContext;
   }
@@ -2138,8 +2350,98 @@ export class Rev_expressionContext extends ParserRuleContext {
       0,
     ) as Rev_positionContext;
   }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterExprPos) {
+      listener.enterExprPos(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitExprPos) {
+      listener.exitExprPos(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitExprPos) {
+      return visitor.visitExprPos(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class ExprDigitContext extends Rev_expressionContext {
+  constructor(parser: reversionParser, ctx: Rev_expressionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rev(): RevContext {
+    return this.getTypedRuleContext(RevContext, 0) as RevContext;
+  }
+  public rev_direction(): Rev_directionContext {
+    return this.getTypedRuleContext(
+      Rev_directionContext,
+      0,
+    ) as Rev_directionContext;
+  }
   public DIGIT(): TerminalNode {
     return this.getToken(reversionParser.DIGIT, 0);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterExprDigit) {
+      listener.enterExprDigit(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitExprDigit) {
+      listener.exitExprDigit(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitExprDigit) {
+      return visitor.visitExprDigit(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class ExprRevTextContext extends Rev_expressionContext {
+  constructor(parser: reversionParser, ctx: Rev_expressionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rev(): RevContext {
+    return this.getTypedRuleContext(RevContext, 0) as RevContext;
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterExprRevText) {
+      listener.enterExprRevText(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitExprRevText) {
+      listener.exitExprRevText(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitExprRevText) {
+      return visitor.visitExprRevText(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class ExprTextContext extends Rev_expressionContext {
+  constructor(parser: reversionParser, ctx: Rev_expressionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public ANY_list(): TerminalNode[] {
     return this.getTokens(reversionParser.ANY);
@@ -2153,23 +2455,53 @@ export class Rev_expressionContext extends ParserRuleContext {
   public SPACE(i: number): TerminalNode {
     return this.getToken(reversionParser.SPACE, i);
   }
-  public get ruleIndex(): number {
-    return reversionParser.RULE_rev_expression;
-  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterRev_expression) {
-      listener.enterRev_expression(this);
+    if (listener.enterExprText) {
+      listener.enterExprText(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitRev_expression) {
-      listener.exitRev_expression(this);
+    if (listener.exitExprText) {
+      listener.exitExprText(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitRev_expression) {
-      return visitor.visitRev_expression(this);
+    if (visitor.visitExprText) {
+      return visitor.visitExprText(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class ExprDigitTextContext extends Rev_expressionContext {
+  constructor(parser: reversionParser, ctx: Rev_expressionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.DIGIT, 0);
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterExprDigitText) {
+      listener.enterExprDigitText(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitExprDigitText) {
+      listener.exitExprDigitText(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitExprDigitText) {
+      return visitor.visitExprDigitText(this);
     } else {
       return visitor.visitChildren(this);
     }
@@ -2185,29 +2517,134 @@ export class Rev_positionContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
-  public SIGNED_DIGIT(): TerminalNode {
-    return this.getToken(reversionParser.SIGNED_DIGIT, 0);
-  }
-  public ref_anchor(): Ref_anchorContext {
-    return this.getTypedRuleContext(Ref_anchorContext, 0) as Ref_anchorContext;
-  }
   public get ruleIndex(): number {
     return reversionParser.RULE_rev_position;
   }
+  public copyFrom(ctx: Rev_positionContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class PosReverseContext extends Rev_positionContext {
+  constructor(parser: reversionParser, ctx: Rev_positionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterRev_position) {
-      listener.enterRev_position(this);
+    if (listener.enterPosReverse) {
+      listener.enterPosReverse(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitRev_position) {
-      listener.exitRev_position(this);
+    if (listener.exitPosReverse) {
+      listener.exitPosReverse(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitRev_position) {
-      return visitor.visitRev_position(this);
+    if (visitor.visitPosReverse) {
+      return visitor.visitPosReverse(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class PosExcludeContext extends Rev_positionContext {
+  constructor(parser: reversionParser, ctx: Rev_positionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterPosExclude) {
+      listener.enterPosExclude(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitPosExclude) {
+      listener.exitPosExclude(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitPosExclude) {
+      return visitor.visitPosExclude(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class PosNegContext extends Rev_positionContext {
+  constructor(parser: reversionParser, ctx: Rev_positionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public SIGNED_DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.SIGNED_DIGIT, 0);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterPosNeg) {
+      listener.enterPosNeg(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitPosNeg) {
+      listener.exitPosNeg(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitPosNeg) {
+      return visitor.visitPosNeg(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class PosHeadContext extends Rev_positionContext {
+  constructor(parser: reversionParser, ctx: Rev_positionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterPosHead) {
+      listener.enterPosHead(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitPosHead) {
+      listener.exitPosHead(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitPosHead) {
+      return visitor.visitPosHead(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class PosAnchorContext extends Rev_positionContext {
+  constructor(parser: reversionParser, ctx: Rev_positionContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public ref_anchor(): Ref_anchorContext {
+    return this.getTypedRuleContext(Ref_anchorContext, 0) as Ref_anchorContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterPosAnchor) {
+      listener.enterPosAnchor(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitPosAnchor) {
+      listener.exitPosAnchor(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitPosAnchor) {
+      return visitor.visitPosAnchor(this);
     } else {
       return visitor.visitChildren(this);
     }
@@ -2411,55 +2848,7 @@ export class DateContext extends ParserRuleContext {
     super.copyFrom(ctx);
   }
 }
-export class YesterdayContext extends DateContext {
-  constructor(parser: reversionParser, ctx: DateContext) {
-    super(parser, ctx.parentCtx, ctx.invokingState);
-    super.copyFrom(ctx);
-  }
-  public enterRule(listener: reversionListener): void {
-    if (listener.enterYesterday) {
-      listener.enterYesterday(this);
-    }
-  }
-  public exitRule(listener: reversionListener): void {
-    if (listener.exitYesterday) {
-      listener.exitYesterday(this);
-    }
-  }
-  // @Override
-  public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitYesterday) {
-      return visitor.visitYesterday(this);
-    } else {
-      return visitor.visitChildren(this);
-    }
-  }
-}
-export class TodayContext extends DateContext {
-  constructor(parser: reversionParser, ctx: DateContext) {
-    super(parser, ctx.parentCtx, ctx.invokingState);
-    super.copyFrom(ctx);
-  }
-  public enterRule(listener: reversionListener): void {
-    if (listener.enterToday) {
-      listener.enterToday(this);
-    }
-  }
-  public exitRule(listener: reversionListener): void {
-    if (listener.exitToday) {
-      listener.exitToday(this);
-    }
-  }
-  // @Override
-  public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitToday) {
-      return visitor.visitToday(this);
-    } else {
-      return visitor.visitChildren(this);
-    }
-  }
-}
-export class TimepointContext extends DateContext {
+export class DateTimePointContext extends DateContext {
   constructor(parser: reversionParser, ctx: DateContext) {
     super(parser, ctx.parentCtx, ctx.invokingState);
     super.copyFrom(ctx);
@@ -2480,19 +2869,94 @@ export class TimepointContext extends DateContext {
     return this.getToken(reversionParser.TIME_DIRECTION, 0);
   }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterTimepoint) {
-      listener.enterTimepoint(this);
+    if (listener.enterDateTimePoint) {
+      listener.enterDateTimePoint(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitTimepoint) {
-      listener.exitTimepoint(this);
+    if (listener.exitDateTimePoint) {
+      listener.exitDateTimePoint(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitTimepoint) {
-      return visitor.visitTimepoint(this);
+    if (visitor.visitDateTimePoint) {
+      return visitor.visitDateTimePoint(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class DateYesterdayContext extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterDateYesterday) {
+      listener.enterDateYesterday(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitDateYesterday) {
+      listener.exitDateYesterday(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitDateYesterday) {
+      return visitor.visitDateYesterday(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class DateIso8601Context extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public iso_8601(): Iso_8601Context {
+    return this.getTypedRuleContext(Iso_8601Context, 0) as Iso_8601Context;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterDateIso8601) {
+      listener.enterDateIso8601(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitDateIso8601) {
+      listener.exitDateIso8601(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitDateIso8601) {
+      return visitor.visitDateIso8601(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class DateTodayContext extends DateContext {
+  constructor(parser: reversionParser, ctx: DateContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterDateToday) {
+      listener.enterDateToday(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitDateToday) {
+      listener.exitDateToday(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitDateToday) {
+      return visitor.visitDateToday(this);
     } else {
       return visitor.visitChildren(this);
     }
@@ -2508,35 +2972,138 @@ export class Time_pointContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
-  public SPACE(): TerminalNode {
-    return this.getToken(reversionParser.SPACE, 0);
-  }
-  public TIME_UINT(): TerminalNode {
-    return this.getToken(reversionParser.TIME_UINT, 0);
-  }
-  public TIME_VALUE(): TerminalNode {
-    return this.getToken(reversionParser.TIME_VALUE, 0);
-  }
-  public DIGIT(): TerminalNode {
-    return this.getToken(reversionParser.DIGIT, 0);
-  }
   public get ruleIndex(): number {
     return reversionParser.RULE_time_point;
   }
+  public copyFrom(ctx: Time_pointContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class TimePointValueContext extends Time_pointContext {
+  constructor(parser: reversionParser, ctx: Time_pointContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public time_value(): Time_valueContext {
+    return this.getTypedRuleContext(Time_valueContext, 0) as Time_valueContext;
+  }
+  public SPACE(): TerminalNode {
+    return this.getToken(reversionParser.SPACE, 0);
+  }
+  public time_unit(): Time_unitContext {
+    return this.getTypedRuleContext(Time_unitContext, 0) as Time_unitContext;
+  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterTime_point) {
-      listener.enterTime_point(this);
+    if (listener.enterTimePointValue) {
+      listener.enterTimePointValue(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitTime_point) {
-      listener.exitTime_point(this);
+    if (listener.exitTimePointValue) {
+      listener.exitTimePointValue(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitTime_point) {
-      return visitor.visitTime_point(this);
+    if (visitor.visitTimePointValue) {
+      return visitor.visitTimePointValue(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class TimePointDigitContext extends Time_pointContext {
+  constructor(parser: reversionParser, ctx: Time_pointContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public DIGIT(): TerminalNode {
+    return this.getToken(reversionParser.DIGIT, 0);
+  }
+  public SPACE(): TerminalNode {
+    return this.getToken(reversionParser.SPACE, 0);
+  }
+  public time_unit(): Time_unitContext {
+    return this.getTypedRuleContext(Time_unitContext, 0) as Time_unitContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterTimePointDigit) {
+      listener.enterTimePointDigit(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitTimePointDigit) {
+      listener.exitTimePointDigit(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitTimePointDigit) {
+      return visitor.visitTimePointDigit(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+
+export class Time_valueContext extends ParserRuleContext {
+  constructor(
+    parser?: reversionParser,
+    parent?: ParserRuleContext,
+    invokingState?: number,
+  ) {
+    super(parent, invokingState);
+    this.parser = parser;
+  }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_time_value;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterTime_value) {
+      listener.enterTime_value(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitTime_value) {
+      listener.exitTime_value(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitTime_value) {
+      return visitor.visitTime_value(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+
+export class Time_unitContext extends ParserRuleContext {
+  constructor(
+    parser?: reversionParser,
+    parent?: ParserRuleContext,
+    invokingState?: number,
+  ) {
+    super(parent, invokingState);
+    this.parser = parser;
+  }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_time_unit;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterTime_unit) {
+      listener.enterTime_unit(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitTime_unit) {
+      listener.exitTime_unit(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitTime_unit) {
+      return visitor.visitTime_unit(this);
     } else {
       return visitor.visitChildren(this);
     }

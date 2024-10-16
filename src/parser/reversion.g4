@@ -39,18 +39,18 @@ refname: 'HEAD'
     | '@'
     ;
 
-rev_expression: rev rev_direction rev_position
-    | rev rev_direction DIGIT
-    | ':/' (ANY | ' ')+
-    | rev ':' ANY+ // path
-    | ':' DIGIT ':' ANY+
+rev_expression: rev rev_direction rev_position # exprPos
+    | rev rev_direction DIGIT # exprDigit
+    | ':/' (ANY | ' ')+ # exprText
+    | rev ':' ANY+ # exprRevText
+    | ':' DIGIT ':' ANY+ # exprDigitText
     ;
 
-rev_position: '@'
-    | '!'
-    | SIGNED_DIGIT
-    | '-'
-    | '{' ref_anchor? '}'
+rev_position: '@' # posHead
+    | '!' # posExclude
+    | SIGNED_DIGIT # posNeg
+    | '-' # posReverse
+    | '{' ref_anchor? '}' # posAnchor
     ;
 
 rev_direction: '@'
@@ -65,14 +65,17 @@ ref_anchor: date # anchorDate
     | iso_8601 # anchorIso
     ;
 
-date: 'yesterday' # yesterday
-    | 'today' # today
-    | time_point (' ' time_point)* ' ' TIME_DIRECTION # timepoint
+date: 'yesterday' # dateYesterday
+    | 'today' # dateToday
+    | iso_8601 # dateIso8601
+    | time_point (' ' time_point)* ' ' TIME_DIRECTION # dateTimePoint
     ;
 
-time_point: (TIME_VALUE | DIGIT) ' ' TIME_UINT;
+time_point: time_value ' ' time_unit # timePointValue
+    | DIGIT ' ' time_unit # timePointDigit
+    ;
 
-TIME_VALUE: 'one'
+time_value: 'one'
     | 'two'
     | 'three'
     | 'four'
@@ -84,7 +87,7 @@ TIME_VALUE: 'one'
     | 'ten'
     ;
 
-TIME_UINT: 'second'
+time_unit: 'second'
     | 'minute'
     | 'hour'
     | 'day'

@@ -24,7 +24,9 @@ import { RevMaxAgeContext } from './reversionParser';
 import { RevMultiContext } from './reversionParser';
 import { RevMinAgeContext } from './reversionParser';
 import { RevRange2Context } from './reversionParser';
-import { RevContext } from './reversionParser';
+import { RefNameContext } from './reversionParser';
+import { RefOIDContext } from './reversionParser';
+import { RevExcludeContext } from './reversionParser';
 import { RefnameContext } from './reversionParser';
 import { Rev_expressionContext } from './reversionParser';
 import { Rev_positionContext } from './reversionParser';
@@ -284,15 +286,41 @@ export default class reversionListener extends ParseTreeListener {
    */
   exitRevRange2?: (ctx: RevRange2Context) => void;
   /**
-   * Enter a parse tree produced by `reversionParser.rev`.
+   * Enter a parse tree produced by the `refName`
+   * labeled alternative in `reversionParser.rev`.
    * @param ctx the parse tree
    */
-  enterRev?: (ctx: RevContext) => void;
+  enterRefName?: (ctx: RefNameContext) => void;
   /**
-   * Exit a parse tree produced by `reversionParser.rev`.
+   * Exit a parse tree produced by the `refName`
+   * labeled alternative in `reversionParser.rev`.
    * @param ctx the parse tree
    */
-  exitRev?: (ctx: RevContext) => void;
+  exitRefName?: (ctx: RefNameContext) => void;
+  /**
+   * Enter a parse tree produced by the `refOID`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   */
+  enterRefOID?: (ctx: RefOIDContext) => void;
+  /**
+   * Exit a parse tree produced by the `refOID`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   */
+  exitRefOID?: (ctx: RefOIDContext) => void;
+  /**
+   * Enter a parse tree produced by the `revExclude`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   */
+  enterRevExclude?: (ctx: RevExcludeContext) => void;
+  /**
+   * Exit a parse tree produced by the `revExclude`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   */
+  exitRevExclude?: (ctx: RevExcludeContext) => void;
   /**
    * Enter a parse tree produced by `reversionParser.refname`.
    * @param ctx the parse tree

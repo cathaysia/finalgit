@@ -2,6 +2,7 @@ import { CharStream, CommonTokenStream } from 'antlr4';
 import { expect, test } from 'vitest';
 import reversionLexer from './impl/reversionLexer';
 import reversionParser from './impl/reversionParser';
+import { parseReversion as P } from './parser';
 
 function parseReversion(reversion: string) {
   const value = new CharStream(reversion);
@@ -69,3 +70,9 @@ test('simple', () => {
     parseReversion(item);
   }
 });
+
+// test('saa', () => {
+//   console.log(P('^HEAD'));
+//   console.log(P('since=today'));
+//   console.log(P('since=yesterday'));
+// });

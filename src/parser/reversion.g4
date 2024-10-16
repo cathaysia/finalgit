@@ -30,9 +30,9 @@ rules: rev # revSingle
     | '...' rules # revRangeBefore2
     ;
 
-rev: refname
-    | OID
-    | '^' rev
+rev: refname # refName
+    | OID # refOID
+    | '^' rev # revExclude
     ;
 
 refname: 'HEAD'

@@ -682,6 +682,7 @@ export default class reversionParser extends Parser {
       switch (this._input.LA(1)) {
         case 15:
         case 16:
+          localctx = new RefNameContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
             this.state = 98;
@@ -689,6 +690,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 32:
+          localctx = new RefOIDContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
             this.state = 99;
@@ -696,6 +698,7 @@ export default class reversionParser extends Parser {
           }
           break;
         case 14:
+          localctx = new RevExcludeContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
             this.state = 100;
@@ -1990,32 +1993,89 @@ export class RevContext extends ParserRuleContext {
     super(parent, invokingState);
     this.parser = parser;
   }
-  public refname(): RefnameContext {
-    return this.getTypedRuleContext(RefnameContext, 0) as RefnameContext;
+  public get ruleIndex(): number {
+    return reversionParser.RULE_rev;
+  }
+  public copyFrom(ctx: RevContext): void {
+    super.copyFrom(ctx);
+  }
+}
+export class RefOIDContext extends RevContext {
+  constructor(parser: reversionParser, ctx: RevContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
   }
   public OID(): TerminalNode {
     return this.getToken(reversionParser.OID, 0);
   }
-  public rev(): RevContext {
-    return this.getTypedRuleContext(RevContext, 0) as RevContext;
-  }
-  public get ruleIndex(): number {
-    return reversionParser.RULE_rev;
-  }
   public enterRule(listener: reversionListener): void {
-    if (listener.enterRev) {
-      listener.enterRev(this);
+    if (listener.enterRefOID) {
+      listener.enterRefOID(this);
     }
   }
   public exitRule(listener: reversionListener): void {
-    if (listener.exitRev) {
-      listener.exitRev(this);
+    if (listener.exitRefOID) {
+      listener.exitRefOID(this);
     }
   }
   // @Override
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
-    if (visitor.visitRev) {
-      return visitor.visitRev(this);
+    if (visitor.visitRefOID) {
+      return visitor.visitRefOID(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RefNameContext extends RevContext {
+  constructor(parser: reversionParser, ctx: RevContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public refname(): RefnameContext {
+    return this.getTypedRuleContext(RefnameContext, 0) as RefnameContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRefName) {
+      listener.enterRefName(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRefName) {
+      listener.exitRefName(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRefName) {
+      return visitor.visitRefName(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+export class RevExcludeContext extends RevContext {
+  constructor(parser: reversionParser, ctx: RevContext) {
+    super(parser, ctx.parentCtx, ctx.invokingState);
+    super.copyFrom(ctx);
+  }
+  public rev(): RevContext {
+    return this.getTypedRuleContext(RevContext, 0) as RevContext;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterRevExclude) {
+      listener.enterRevExclude(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitRevExclude) {
+      listener.exitRevExclude(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitRevExclude) {
+      return visitor.visitRevExclude(this);
     } else {
       return visitor.visitChildren(this);
     }

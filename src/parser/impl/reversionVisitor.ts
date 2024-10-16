@@ -24,7 +24,9 @@ import { RevMaxAgeContext } from './reversionParser';
 import { RevMultiContext } from './reversionParser';
 import { RevMinAgeContext } from './reversionParser';
 import { RevRange2Context } from './reversionParser';
-import { RevContext } from './reversionParser';
+import { RefNameContext } from './reversionParser';
+import { RefOIDContext } from './reversionParser';
+import { RevExcludeContext } from './reversionParser';
 import { RefnameContext } from './reversionParser';
 import { Rev_expressionContext } from './reversionParser';
 import { Rev_positionContext } from './reversionParser';
@@ -188,11 +190,26 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    */
   visitRevRange2?: (ctx: RevRange2Context) => Result;
   /**
-   * Visit a parse tree produced by `reversionParser.rev`.
+   * Visit a parse tree produced by the `refName`
+   * labeled alternative in `reversionParser.rev`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitRev?: (ctx: RevContext) => Result;
+  visitRefName?: (ctx: RefNameContext) => Result;
+  /**
+   * Visit a parse tree produced by the `refOID`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitRefOID?: (ctx: RefOIDContext) => Result;
+  /**
+   * Visit a parse tree produced by the `revExclude`
+   * labeled alternative in `reversionParser.rev`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitRevExclude?: (ctx: RevExcludeContext) => Result;
   /**
    * Visit a parse tree produced by `reversionParser.refname`.
    * @param ctx the parse tree

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
 import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
+import { cn } from '@/lib/utils';
 import { RevKind, type Rule, parseReversion } from '@/parser/parser';
 import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
@@ -44,7 +45,9 @@ export default function Commit() {
     NOTIFY.error(headErr.message);
   }
 
-  const [filter, setFilter] = useState<string>();
+  const [filter, setFilter] = useState<string>('');
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const [isHighOrder, setIsHighOrder] = useState<boolean>(false);
   const [debounce] = useDebounce(filter, 200);
 
   useEffect(() => {
@@ -71,13 +74,18 @@ export default function Commit() {
     if (!debounce) {
       return currentHistory;
     }
-    if (debounce.startsWith('$')) {
-      try {
-        const expr = debounce.slice(1).trim();
-        const res = filterCommits(expr, currentHistory);
-        return res;
-      } catch {}
+    if (isHighOrder) {
+      if (debounce.length !== 0) {
+        try {
+          const res = filterCommits(debounce, currentHistory);
+          setIsValid(true);
+          return res;
+        } catch {
+          setIsValid(false);
+        }
+      }
     } else {
+      setIsValid(true);
       return currentHistory.filter(item => {
         return item.message.includes(debounce) || item.hash.includes(debounce);
       });
@@ -88,23 +96,44 @@ export default function Commit() {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        {isHighOrder && (
+          <span className="absolute ml-2 h-6 w-6 rounded bg-gray-800 text-center">
+            $
+          </span>
+        )}
         <Input
           value={filter}
+          className={cn(!isValid && 'text-red-600', isHighOrder && 'pl-10')}
           spellCheck={false}
           onChange={e => {
+            if (!isHighOrder) {
+              if (e.target.value.startsWith('$')) {
+                setFilter(e.target.value.replace('$', ''));
+                setIsHighOrder(true);
+                return;
+              }
+            }
             setFilter(e.target.value);
+          }}
+          onKeyUp={e => {
+            if (e.key === 'Backspace' && filter.length === 0) {
+              setIsHighOrder(false);
+            }
           }}
         />
         <Button
           onClick={() => {
-            setFilter(undefined);
+            setFilter('');
           }}
         >
           {t('Cancel')}
         </Button>
       </div>
-      <GitHistory history={filteredData} filter={filter} />
+      <GitHistory
+        history={filteredData}
+        filter={filter.startsWith('$') ? undefined : filter}
+      />
     </div>
   );
 }

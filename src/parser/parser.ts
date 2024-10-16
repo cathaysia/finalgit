@@ -203,20 +203,35 @@ function createVisitor() {
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
-    return date.getTime() as any;
+    return {
+      data: date.getTime() / 1000,
+      isBefore: false,
+    } as any;
   };
   visitor.visitDateYesterday = ctx => {
     let date = new Date();
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
-    const yesterday = date.getTime() - 24 * 60 * 60;
-    return yesterday as any;
+    const yesterday = date.getTime() / 1000 - 24 * 60 * 60;
+    return {
+      data: yesterday,
+      isBefore: false,
+    } as any;
+  };
+  visitor.visitAnchorIso = ctx => {
+    return visitor.visit(ctx.getChild(0));
+  };
+  visitor.visitDateIso8601 = ctx => {
+    return visitor.visit(ctx.getChild(0));
   };
   visitor.visitIso_8601 = ctx => {
     const date = new Date(ctx.getText());
 
-    return date.getTime() as any;
+    return {
+      data: date.getTime() / 1000,
+      isBefore: false,
+    } as any;
   };
   // parse time unit
   visitor.visitTime_value = ctx => {
@@ -364,7 +379,7 @@ function createVisitor() {
   visitor.visitExprDigit = ctx => {
     const rev = visitor.visit(ctx.rev());
     const skip = Number(ctx.DIGIT());
-    if (!isMatching({ kind: 'rev' }, rev)) {
+    if (!isMatching({ kind: RevKind.Single }, rev)) {
       throw new Error('bad rev');
     }
     return {
@@ -385,25 +400,22 @@ function createVisitor() {
       kind: RevKind.TODO,
     };
   };
+  visitor.visitRevExpression = ctx => {
+    const item = visitor.visit(ctx.getChild(0));
+    console.assert(ctx.getChildCount() === 1);
+    console.log(item);
+    return item;
+  };
   visitor.visitReversion = ctx => {
     const item = visitor.visit(ctx.rules());
-    // TODO: why here has array?
-    if (item instanceof Array) {
-      const arr = item as any as Rule[];
-      if (arr.length === 1) {
-        return arr[0];
-      }
-      return {
-        kind: RevKind.RevMulti,
-        rules: arr,
-      };
-    }
     return item;
   };
   return visitor;
 }
 
 export function parseReversion(reversion: string) {
+  const error = console.error;
+  console.error = () => {};
   const value = new CharStream(reversion);
   const lexer = new reversionLexer(value);
   const stream = new CommonTokenStream(lexer);
@@ -411,6 +423,7 @@ export function parseReversion(reversion: string) {
   const tree = parser.reversion();
   const visitor = createVisitor();
   const result = visitor.visit(tree);
+  console.error = error;
 
   return result;
 }

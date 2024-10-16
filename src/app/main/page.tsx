@@ -75,15 +75,15 @@ export default function Commit() {
       try {
         const expr = debounce.slice(1).trim();
         const res = filterCommits(expr, currentHistory);
-        if (res) {
-          return res;
-        }
+        return res;
       } catch {}
+    } else {
+      return currentHistory.filter(item => {
+        return item.message.includes(debounce) || item.hash.includes(debounce);
+      });
     }
 
-    return currentHistory.filter(item => {
-      return item.message.includes(debounce) || item.hash.includes(debounce);
-    });
+    return currentHistory;
   }, [currentHistory, debounce]);
 
   return (
@@ -140,18 +140,18 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
   if (expr.kind === RevKind.Since) {
     return commits.filter(item => {
       if (expr.data.isBefore) {
-        return expr.data.data < item.time;
+        return item.time < expr.data.data;
       }
-      return expr.data.data > item.time;
+      return item.time > expr.data.data;
     });
   }
 
   if (expr.kind === RevKind.Until) {
     return commits.filter(item => {
       if (expr.data.isBefore) {
-        return expr.data.data > item.time;
+        return item.time > expr.data.data;
       }
-      return expr.data.data < item.time;
+      return item.time < expr.data.data;
     });
   }
 

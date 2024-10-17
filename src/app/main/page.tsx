@@ -5,7 +5,7 @@ import NOTIFY from '@/lib/notify';
 import { useBranches, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
-import { RevKind, type Rule, parseReversion } from '@/parser/parser';
+import { filterCommits } from '@/parser/commitFilter';
 import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
@@ -144,73 +144,4 @@ function DiffView() {
       <div>TODO</div>
     </div>
   );
-}
-
-function filterCommits(filter: string, commits: CommitInfo[]) {
-  const expr = parseReversion(filter);
-  return expressionFilter(expr, commits);
-}
-
-function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
-  if (expr.kind === RevKind.Single) {
-    return commits.filter(item => {
-      let hash = expr.data.slice(0, 6);
-      if (expr.data === 'HEAD') {
-        hash = commits[0].hash.slice(0, 6);
-      }
-
-      if (expr.isExclude) {
-        return item.hash.slice(0, 6) !== hash;
-      }
-      return item.hash.slice(0, 6) === hash;
-    });
-  }
-
-  if (expr.kind === RevKind.Since) {
-    return commits.filter(item => {
-      if (expr.data.isBefore) {
-        return item.time < expr.data.data;
-      }
-      return item.time > expr.data.data;
-    });
-  }
-
-  if (expr.kind === RevKind.Until) {
-    return commits.filter(item => {
-      if (expr.data.isBefore) {
-        return item.time > expr.data.data;
-      }
-      return item.time < expr.data.data;
-    });
-  }
-
-  if (expr.kind === RevKind.Skip) {
-    return commits.slice(expr.data);
-  }
-  if (expr.kind === RevKind.Author) {
-    return commits.filter(item => {
-      return item.author.name.includes(expr.data);
-    });
-  }
-  if (expr.kind === RevKind.Commiter) {
-    return commits.filter(item => {
-      return item.commiter.name.includes(expr.data);
-    });
-  }
-  if (expr.kind === RevKind.Grep) {
-    return commits.filter(item => {
-      const pat = new RegExp(expr.data);
-      return pat.test(item.message);
-    });
-  }
-  if (expr.kind === RevKind.RevRange) {
-    // TODO
-  }
-  if (expr.kind === RevKind.RevMulti) {
-    return expr.rules.flatMap(expr => {
-      return expressionFilter(expr, commits);
-    });
-  }
-
-  return [];
 }

@@ -21,6 +21,7 @@ rules: rev # revSingle
     | 'author' '=' ANY+ # revAuthor
     | 'commiter' '=' ANY+ # revCommiter
     | 'grep' '=' ANY+ # revGrep
+    | 'exclude' '=' rules # revExclude
     | rules '..' # revRangeAfter1
     | rules '...' # revRangeAfter2
     | rules (' ' rules)+ # revMulti
@@ -32,7 +33,7 @@ rules: rev # revSingle
 
 rev: refname # refName
     | OID # refOID
-    | '^' rev # revExclude
+    | '^' rev # refExclude
     ;
 
 refname: 'HEAD'

@@ -15,6 +15,7 @@ import { RevBeforeContext } from './reversionParser';
 import { RevSinceContext } from './reversionParser';
 import { RevRangeAfter1Context } from './reversionParser';
 import { RevAuthorContext } from './reversionParser';
+import { RevExcludeContext } from './reversionParser';
 import { RevRange1Context } from './reversionParser';
 import { RevRangeAfter2Context } from './reversionParser';
 import { RevCommiterContext } from './reversionParser';
@@ -26,7 +27,7 @@ import { RevMinAgeContext } from './reversionParser';
 import { RevRange2Context } from './reversionParser';
 import { RefNameContext } from './reversionParser';
 import { RefOIDContext } from './reversionParser';
-import { RevExcludeContext } from './reversionParser';
+import { RefExcludeContext } from './reversionParser';
 import { RefnameContext } from './reversionParser';
 import { ExprPosContext } from './reversionParser';
 import { ExprDigitContext } from './reversionParser';
@@ -139,6 +140,13 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    */
   visitRevAuthor?: (ctx: RevAuthorContext) => Result;
   /**
+   * Visit a parse tree produced by the `revExclude`
+   * labeled alternative in `reversionParser.rules`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitRevExclude?: (ctx: RevExcludeContext) => Result;
+  /**
    * Visit a parse tree produced by the `revRange1`
    * labeled alternative in `reversionParser.rules`.
    * @param ctx the parse tree
@@ -216,12 +224,12 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    */
   visitRefOID?: (ctx: RefOIDContext) => Result;
   /**
-   * Visit a parse tree produced by the `revExclude`
+   * Visit a parse tree produced by the `refExclude`
    * labeled alternative in `reversionParser.rev`.
    * @param ctx the parse tree
    * @return the visitor result
    */
-  visitRevExclude?: (ctx: RevExcludeContext) => Result;
+  visitRefExclude?: (ctx: RefExcludeContext) => Result;
   /**
    * Visit a parse tree produced by `reversionParser.refname`.
    * @param ctx the parse tree

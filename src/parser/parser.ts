@@ -75,46 +75,46 @@ export enum RevKind {
   Text = 12,
 }
 
-interface RevSingle {
+export interface RevSingle {
   kind: RevKind.Single;
   data: String;
   isExclude: boolean;
 }
 
-interface RevDate {
+export interface RevDate {
   data: number;
   isBefore: boolean;
 }
-interface SinceDate {
+export interface SinceDate {
   kind: RevKind.Since;
   data: RevDate;
 }
 
-interface UntilDate {
+export interface UntilDate {
   kind: RevKind.Until;
   data: RevDate;
 }
-interface RevSkip {
+export interface RevSkip {
   kind: RevKind.Skip;
   data: number;
 }
 
-interface RevAuthor {
+export interface RevAuthor {
   kind: RevKind.Author;
   data: string;
 }
 
-interface RevCommiter {
+export interface RevCommiter {
   kind: RevKind.Commiter;
   data: string;
 }
 
-interface RevGrep {
+export interface RevGrep {
   kind: RevKind.Grep;
   data: string;
 }
 
-interface RevRange {
+export interface RevRange {
   kind: RevKind.RevRange;
   starts: Rule | undefined;
   ends: Rule | undefined;
@@ -122,30 +122,30 @@ interface RevRange {
   containsEnds: boolean;
 }
 
-interface RevMulti {
+export interface RevMulti {
   kind: RevKind.RevMulti;
   rules: Rule[];
 }
 
-interface RevSkipGrep {
+export interface RevSkipGrep {
   kind: RevKind.SkipGrep;
   skip: number;
   grep?: string;
 }
 
-interface RevSkipPos {
+export interface RevSkipPos {
   kind: RevKind.SkipPos;
   rev: RevSingle;
   skip: number;
 }
 
-interface RevPos {
+export interface RevPos {
   kind: RevKind.Pos;
   rev: RevSingle;
   data: PosExpr;
 }
 
-interface RevText {
+export interface RevText {
   kind: RevKind.Text;
   data: string;
 }
@@ -195,12 +195,19 @@ function createVisitor() {
       isExclude: false,
     };
   };
-  visitor.visitRevExclude = ctx => {
+  visitor.visitRefExclude = ctx => {
     const v = visitor.visit(ctx.rev());
     if (!isMatching({ kind: RevKind.Single }, v)) {
       throw new Error('bad kind');
     }
-    v.isExclude = !v.isExclude;
+    v.isExclude = true;
+    return v;
+  };
+  visitor.visitRevExclude = ctx => {
+    const v = visitor.visit(ctx.rules());
+    if (!isMatching({ kind: RevKind.Single }, v)) {
+      throw new Error('bad kind');
+    }
     return v;
   };
   visitor.visitRevUntil = ctx => {

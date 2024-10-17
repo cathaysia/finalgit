@@ -6,7 +6,8 @@ use log::debug;
 use tauri_derive::export_ts;
 
 use crate::{
-    AppError, AppResult, Author, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree, TagInfo,
+    AppError, AppResult, BranchInfo, BranchType, CommitInfo, FileStatus, FileTree, Signature,
+    TagInfo,
 };
 
 pub trait RepoExt {
@@ -141,20 +142,22 @@ impl RepoExt for git2::Repository {
         for id in walker {
             let id = id?;
             let commit = self.find_commit(id)?;
-            let author = Author {
+            let author = Signature {
                 name: commit.author().name().unwrap().into(),
                 email: commit.author().email().unwrap().into(),
+                time: commit.author().when().seconds() as u32,
             };
-            let commiter = Author {
+            let commiter = Signature {
                 name: commit.committer().name().unwrap().into(),
                 email: commit.committer().email().unwrap().into(),
+                time: commit.author().when().seconds() as u32,
             };
             let info = commit.message().unwrap();
             let summary = commit.summary().unwrap();
-            let hash = commit.id().to_string();
+            let oid = commit.id().to_string();
             let date = commit.time().seconds();
             commits.push(CommitInfo {
-                hash,
+                oid,
                 author,
                 commiter,
                 message: info.into(),
@@ -263,14 +266,16 @@ impl RepoExt for git2::Repository {
             let commit = self.find_commit(item)?;
 
             res.push(CommitInfo {
-                hash: commit.id().to_string(),
-                author: Author {
+                oid: commit.id().to_string(),
+                author: Signature {
                     name: commit.author().name().unwrap().to_string(),
                     email: commit.author().email().unwrap().to_string(),
+                    time: commit.author().when().seconds() as u32,
                 },
-                commiter: Author {
+                commiter: Signature {
                     name: commit.committer().name().unwrap().to_string(),
                     email: commit.committer().email().unwrap().to_string(),
+                    time: commit.committer().when().seconds() as u32,
                 },
                 message: commit.message().unwrap().to_string(),
                 summary: commit.summary().unwrap().to_string(),

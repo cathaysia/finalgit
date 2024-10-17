@@ -89,7 +89,7 @@ export default function Commit() {
     } else {
       setIsValid(true);
       return currentHistory.filter(item => {
-        return item.message.includes(debounce) || item.hash.includes(debounce);
+        return item.message.includes(debounce) || item.oid.includes(debounce);
       });
     }
 

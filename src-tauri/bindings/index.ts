@@ -542,7 +542,6 @@ export const commands = {
 
 /** user-defined types **/
 
-export type Author = { name: string; email: string };
 export type BlameHunk = {
   final_commit_id: string;
   final_start_line: number;
@@ -568,9 +567,9 @@ export type Commit = {
   time: number;
 };
 export type CommitInfo = {
-  hash: string;
-  author: Author;
-  commiter: Author;
+  oid: string;
+  author: Signature;
+  commiter: Signature;
   message: string;
   summary: string;
   time: number;

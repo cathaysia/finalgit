@@ -20,13 +20,13 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
     return commits.filter(item => {
       let hash = expr.data.slice(0, 6);
       if (expr.data === 'HEAD') {
-        hash = commits[0].hash.slice(0, 6);
+        hash = commits[0].oid.slice(0, 6);
       }
 
       if (expr.isExclude) {
-        return item.hash.slice(0, 6) !== hash;
+        return item.oid.slice(0, 6) !== hash;
       }
-      return item.hash.slice(0, 6) === hash;
+      return item.oid.slice(0, 6) === hash;
     });
   }
 
@@ -84,7 +84,7 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
   }
   if (expr.kind === RevKind.SkipPos) {
     const pos = commits.findIndex(item => {
-      return item.hash.slice(0, 6) === expr.rev.data.slice(0, 6);
+      return item.oid.slice(0, 6) === expr.rev.data.slice(0, 6);
     });
     if (pos == -1) {
       return [];
@@ -115,7 +115,7 @@ function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
   const rev = expr.rev.data.slice(0, 6);
   const posExpr = expr.data;
   const idx = commits.findIndex(item => {
-    item.hash.slice(0, 6) === rev;
+    item.oid.slice(0, 6) === rev;
   });
   const filtered = commits.slice(idx);
 
@@ -124,7 +124,7 @@ function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
   }
   if (posExpr.kind === PosKind.Exclude) {
     return filtered.filter(item => {
-      item.hash.slice(0, 6) !== rev;
+      item.oid.slice(0, 6) !== rev;
     });
   }
   if (posExpr.kind === PosKind.Digit) {

@@ -53,7 +53,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
           head?.is_detached &&
-            head?.oid === commit.hash &&
+            head?.oid === commit.oid &&
             'border border-green-600 dark:border-green-600',
           className,
         )}
@@ -66,24 +66,24 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             filter={filter}
             onClick={() => {
               if (repoPath && !isDirty) {
-                checkoutCommit(repoPath, commit.hash);
+                checkoutCommit(repoPath, commit.oid);
                 refreshBranches();
               }
             }}
           />
           <Badge
-            title={commit.hash}
+            title={commit.oid}
             className="font-mono"
             onClick={async () => {
-              const _ = await writeText(commit.hash);
+              const _ = await writeText(commit.oid);
               NOTIFY.info(
                 t('commit.copy_to_clipboard', {
-                  val: commit.hash,
+                  val: commit.oid,
                 }),
               );
             }}
           >
-            {commit.hash.slice(0, 6)}
+            {commit.oid.slice(0, 6)}
           </Badge>
           <UserAvatar userName={names} className="w-4" />
         </div>
@@ -100,7 +100,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 <Link
                   to="/filetree/$commit"
                   params={{
-                    commit: commit.hash,
+                    commit: commit.oid,
                   }}
                 >
                   {t('commit.viewtree')}
@@ -109,7 +109,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <DropdownMenuItem
                 onClick={() => {
                   if (repoPath && !isDirty) {
-                    checkoutCommit(repoPath, commit.hash);
+                    checkoutCommit(repoPath, commit.oid);
                     refreshBranches();
                   }
                 }}

@@ -41,7 +41,7 @@ export default function GitHistory({
             getItem={(idx: number) => {
               const item = history[idx];
               return (
-                <Draggable key={item.hash} index={idx} draggableId={item.hash}>
+                <Draggable key={item.oid} index={idx} draggableId={item.oid}>
                   {(provided, _) => {
                     return (
                       <CommitItem

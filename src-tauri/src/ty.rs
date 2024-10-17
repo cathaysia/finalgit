@@ -148,16 +148,10 @@ pub struct FileStatus {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
-pub struct Author {
-    pub name: String,
-    pub email: String,
-}
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
 pub struct CommitInfo {
-    pub hash: String,
-    pub author: Author,
-    pub commiter: Author,
+    pub oid: String,
+    pub author: Signature,
+    pub commiter: Signature,
     pub message: String,
     pub summary: String,
     pub time: u32,

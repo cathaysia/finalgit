@@ -1146,7 +1146,7 @@ export default class reversionParser extends Parser {
                   {
                     {
                       this.state = 158;
-                      this.matchWildcard();
+                      this.match(reversionParser.ANY);
                     }
                   }
                   break;
@@ -1552,7 +1552,7 @@ export default class reversionParser extends Parser {
     0, 0, 0, 150, 142, 1, 0, 0, 0, 150, 143, 1, 0, 0, 0, 150, 144, 1, 0, 0, 0,
     150, 145, 1, 0, 0, 0, 151, 11, 1, 0, 0, 0, 152, 153, 7, 2, 0, 0, 153, 13, 1,
     0, 0, 0, 154, 165, 3, 16, 8, 0, 155, 165, 5, 52, 0, 0, 156, 165, 5, 53, 0,
-    0, 157, 159, 5, 24, 0, 0, 158, 160, 9, 0, 0, 0, 159, 158, 1, 0, 0, 0, 160,
+    0, 157, 159, 5, 24, 0, 0, 158, 160, 5, 64, 0, 0, 159, 158, 1, 0, 0, 0, 160,
     161, 1, 0, 0, 0, 161, 162, 1, 0, 0, 0, 161, 159, 1, 0, 0, 0, 162, 165, 1, 0,
     0, 0, 163, 165, 3, 24, 12, 0, 164, 154, 1, 0, 0, 0, 164, 155, 1, 0, 0, 0,
     164, 156, 1, 0, 0, 0, 164, 157, 1, 0, 0, 0, 164, 163, 1, 0, 0, 0, 165, 15,
@@ -2730,6 +2730,12 @@ export class AnchorTextContext extends Ref_anchorContext {
   constructor(parser: reversionParser, ctx: Ref_anchorContext) {
     super(parser, ctx.parentCtx, ctx.invokingState);
     super.copyFrom(ctx);
+  }
+  public ANY_list(): TerminalNode[] {
+    return this.getTokens(reversionParser.ANY);
+  }
+  public ANY(i: number): TerminalNode {
+    return this.getToken(reversionParser.ANY, i);
   }
   public enterRule(listener: reversionListener): void {
     if (listener.enterAnchorText) {

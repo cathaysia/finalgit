@@ -61,7 +61,7 @@ rev_direction: '@'
 ref_anchor: date # anchorDate
     | SIGNED_DIGIT # anchorSignedDigit
     | DIGIT # anchorDigit
-    | '/' .+? # anchorText
+    | '/' ANY+? # anchorText
     | iso_8601 # anchorIso
     ;
 

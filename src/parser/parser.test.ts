@@ -74,12 +74,50 @@ test('simple', () => {
 });
 
 test('saa', () => {
-  console.log(P('^HEAD'));
-  console.log(P('since=today'));
-  console.log(P('since=yesterday'));
-  console.log(P('since=2024-01-01'));
-  console.log(P('since=2024-01-01 00:00:00'));
-  console.log(P('since=1 day ago'));
-  console.log(P('@~10'));
-  console.log(P(':10:README.md'));
+  const oid = '0a297b';
+  const OID = '0a297b7c3a5df1c9a864577f76535aca588a3bca';
+  const exps = [
+    'HEAD~1..HEAD~10',
+    'HEAD...@',
+    `${oid}...${oid}~1`,
+    'HEAD~1...',
+    `HEAD~1..`,
+    `${oid}..`,
+    `..${oid}`,
+    '...HEAD~1',
+    `^${oid}`,
+    `${oid} ${oid}`,
+    `${oid}^@`,
+    `${oid}^{-10}`,
+    `${oid}^-10`,
+    `${oid}^-`,
+    'HEAD~!',
+    // `v0.4^1`,
+    'HEAD~{-1}',
+    'HEAD~{}',
+    'HEAD~{yesterday}',
+    'HEAD~{2024-01-01}',
+    'HEAD~{5 minutes ago}',
+    'HEAD~{1 month 2 weeks 3 days 1 hour 1 second ago}',
+    'HEAD~{one weeks ago}',
+    'HEAD~{1979-02-26 18:30:00}',
+    `${oid} ${OID}`,
+    `HEAD~{} HEAD~{10}`,
+    `since=yesterday`,
+    `since=5 minutes ago`,
+    `since=1 days 5 minutes ago`,
+    `since=2024-01-01`,
+    `since=2024-01-01 00:00:00`,
+    `author=Bob`,
+    'grep=.*',
+    `:/some text`,
+    `HEAD~{/text}`,
+    `:10:README`,
+    `HEAD:README`,
+  ];
+
+  for (const item of exps) {
+    const v = P(item);
+    console.log('%j', v);
+  }
 });

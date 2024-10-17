@@ -4,6 +4,61 @@ import reversionLexer from './impl/reversionLexer';
 import reversionParser, { RevSinceContext } from './impl/reversionParser';
 import Visitor from './impl/reversionVisitor';
 
+export enum AnchorKind {
+  Date,
+  Digit,
+  Text,
+}
+
+export interface AnchorDate {
+  kind: AnchorKind.Date;
+  date: RevDate;
+}
+
+export interface AnchorDigit {
+  kind: AnchorKind.Digit;
+  data: number;
+}
+
+export interface AnchorText {
+  kind: AnchorKind.Text;
+  data: string;
+}
+
+export type AnchorType = AnchorDate | AnchorDigit | AnchorText;
+
+export enum PosKind {
+  Head,
+  Exclude,
+  Digit,
+  Reverse,
+  Anchor,
+}
+
+export interface PosHead {
+  kind: PosKind.Head;
+}
+
+export interface PosExclude {
+  kind: PosKind.Exclude;
+}
+
+export interface PosDigit {
+  kind: PosKind.Digit;
+  data: number;
+}
+
+export interface PosReverse {
+  kind: PosKind.Reverse;
+}
+
+export interface PosAnchor {
+  kind: PosKind.Anchor;
+  data?: AnchorType;
+}
+
+export type PosExpr = PosHead | PosExclude | PosDigit | PosReverse | PosAnchor;
+
 export enum RevKind {
   Single = 0,
   Since = 1,
@@ -16,7 +71,8 @@ export enum RevKind {
   RevMulti = 8,
   SkipGrep = 9,
   SkipPos = 10,
-  TODO = 999,
+  Pos = 11,
+  Text = 12,
 }
 
 interface RevSingle {
@@ -83,8 +139,15 @@ interface RevSkipPos {
   skip: number;
 }
 
-interface RevTodo {
-  kind: RevKind.TODO;
+interface RevPos {
+  kind: RevKind.Pos;
+  rev: RevSingle;
+  data: PosExpr;
+}
+
+interface RevText {
+  kind: RevKind.Text;
+  data: string;
 }
 
 export type Rule =
@@ -99,7 +162,8 @@ export type Rule =
   | RevMulti
   | RevSkipGrep
   | RevSkipPos
-  | RevTodo;
+  | RevPos
+  | RevText;
 
 export type Filter = Rule;
 
@@ -218,9 +282,6 @@ function createVisitor() {
       data: yesterday,
       isBefore: false,
     } as any;
-  };
-  visitor.visitAnchorIso = ctx => {
-    return visitor.visit(ctx.getChild(0));
   };
   visitor.visitDateIso8601 = ctx => {
     return visitor.visit(ctx.getChild(0));
@@ -372,8 +433,13 @@ function createVisitor() {
     };
   };
   visitor.visitExprPos = ctx => {
+    const rev = visitor.visit(ctx.rev()) as any as RevSingle;
+    const pos = visitor.visit(ctx.rev_position()) as any as PosExpr;
+
     return {
-      kind: RevKind.TODO,
+      kind: RevKind.Pos,
+      rev: rev,
+      data: pos,
     };
   };
   visitor.visitExprDigit = ctx => {
@@ -396,19 +462,102 @@ function createVisitor() {
     };
   };
   visitor.visitExprRevText = ctx => {
+    const text = ctx
+      .ANY_list()
+      .map(item => item.getText())
+      .join('');
     return {
-      kind: RevKind.TODO,
+      kind: RevKind.Text,
+      data: text,
     };
   };
   visitor.visitRevExpression = ctx => {
     const item = visitor.visit(ctx.getChild(0));
     console.assert(ctx.getChildCount() === 1);
-    console.log(item);
     return item;
   };
   visitor.visitReversion = ctx => {
     const item = visitor.visit(ctx.rules());
     return item;
+  };
+
+  visitor.visitAnchorDate = ctx => {
+    const date = visitor.visit(ctx.date()) as any as RevDate;
+    return {
+      kind: AnchorKind.Date,
+      date: date,
+    } as any;
+  };
+  visitor.visitAnchorSignedDigit = ctx => {
+    const digit = Number(ctx.SIGNED_DIGIT());
+
+    return {
+      kind: AnchorKind.Digit,
+      data: digit,
+    } as any;
+  };
+  visitor.visitAnchorDigit = ctx => {
+    const digit = Number(ctx.DIGIT());
+
+    return {
+      kind: AnchorKind.Digit,
+      data: digit,
+    } as any;
+  };
+  visitor.visitAnchorText = ctx => {
+    const text = ctx
+      .ANY_list()
+      .map(item => item.getText())
+      .join('');
+
+    return {
+      kind: AnchorKind.Text,
+
+      data: text,
+    } as any;
+  };
+  visitor.visitAnchorIso = ctx => {
+    const date = visitor.visit(ctx.getChild(0)) as any as RevDate;
+
+    return {
+      kind: AnchorKind.Date,
+      date: date,
+    } as any;
+  };
+  visitor.visitPosAnchor = ctx => {
+    if (ctx.ref_anchor() === null) {
+      return {
+        kind: PosKind.Anchor,
+        data: undefined,
+      } as any;
+    }
+    const anchor = visitor.visit(ctx.ref_anchor());
+    return {
+      kind: PosKind.Anchor,
+      data: anchor,
+    } as any;
+  };
+  visitor.visitPosHead = ctx => {
+    return {
+      kind: PosKind.Head,
+    } as any;
+  };
+  visitor.visitPosExclude = ctx => {
+    return {
+      kind: PosKind.Exclude,
+    } as any;
+  };
+  visitor.visitPosReverse = ctx => {
+    return {
+      kind: PosKind.Reverse,
+    } as any;
+  };
+  visitor.visitPosNeg = ctx => {
+    const data = Number(ctx.SIGNED_DIGIT().getText());
+    return {
+      kind: PosKind.Reverse,
+      data: data,
+    } as any;
   };
   return visitor;
 }

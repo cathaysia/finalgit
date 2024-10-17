@@ -10,6 +10,7 @@ import GitHistory from '@/stories/lists/GitHistory';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
 import { createFileRoute } from '@tanstack/react-router';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
@@ -49,6 +50,7 @@ export default function Commit() {
   const [isValid, setIsValid] = useState<boolean>(true);
   const [isHighOrder, setIsHighOrder] = useState<boolean>(false);
   const [debounce] = useDebounce(filter, 200);
+  const [keyDown, setKeyDown] = useState<number>();
 
   useEffect(() => {
     let trueHead = branches?.find(item => {
@@ -97,11 +99,20 @@ export default function Commit() {
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
       <div className="flex items-center gap-2">
-        {isHighOrder && (
-          <span className="absolute ml-2 h-6 w-6 rounded bg-gray-800 text-center">
-            $
-          </span>
-        )}
+        <AnimatePresence>
+          {isHighOrder && (
+            <motion.span
+              className="absolute ml-2 h-6 w-6 rounded bg-gray-800 text-center"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              hidden={false}
+              transition={{ duration: 0.2 }}
+            >
+              $
+            </motion.span>
+          )}
+        </AnimatePresence>
         <Input
           value={filter}
           className={cn(!isValid && 'text-red-600', isHighOrder && 'pl-10')}
@@ -116,10 +127,19 @@ export default function Commit() {
             }
             setFilter(e.target.value);
           }}
-          onKeyUp={e => {
-            if (e.key === 'Backspace' && filter.length === 0) {
-              setIsHighOrder(false);
+          onKeyDown={e => {
+            if (!keyDown && filter.length === 0 && e.key === 'Backspace') {
+              setKeyDown(new Date().getTime());
             }
+          }}
+          onKeyUp={e => {
+            if (e.key === 'Backspace' && filter.length === 0 && keyDown) {
+              const duration = new Date().getTime() - keyDown;
+              if (duration <= 200) {
+                setIsHighOrder(false);
+              }
+            }
+            setKeyDown(undefined);
           }}
         />
         <Button

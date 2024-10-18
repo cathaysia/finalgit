@@ -12,7 +12,7 @@ pub trait ConfigExt {
     fn get_configes(&self) -> AppResult<HashMap<String, String>>;
 }
 
-#[export_ts]
+#[export_ts(scope = "config")]
 impl ConfigExt for git2::Repository {
     fn get_config(&self, key: &str) -> AppResult<String> {
         let output = self.exec_git(["config", "--get", key])?;

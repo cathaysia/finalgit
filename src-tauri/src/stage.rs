@@ -11,7 +11,7 @@ pub trait StageExt {
     fn restore_file(&self, files: Vec<FileStatus>, commit: Option<&str>) -> AppResult<()>;
 }
 
-#[export_ts]
+#[export_ts(scope = "stage")]
 impl StageExt for git2::Repository {
     fn add_to_stage(&self, files: Vec<FileStatus>) -> AppResult<()> {
         let mut index = self.index()?;

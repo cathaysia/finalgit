@@ -32,7 +32,7 @@ impl TryFrom<&git2::BlameHunk<'_>> for BlameHunk {
     }
 }
 
-#[export_ts]
+#[export_ts(scope = "blame")]
 impl BlameExt for git2::Repository {
     fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
         let mut opt = BlameOptions::new();

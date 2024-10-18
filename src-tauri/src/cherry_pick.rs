@@ -6,7 +6,7 @@ pub trait CherryPickExt {
     fn cherrypick(&self, commit: &str) -> AppResult<()>;
 }
 
-#[export_ts]
+#[export_ts(scope = "cherry_pick")]
 impl CherryPickExt for git2::Repository {
     /// Cherry-pick the given commit, producing changes in the index and working directory.
     fn cherrypick(&self, commit: &str) -> AppResult<()> {

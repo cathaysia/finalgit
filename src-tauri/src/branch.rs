@@ -2,7 +2,7 @@ use std::{path::Path, process::Stdio};
 
 use git2::build::CheckoutBuilder;
 use itertools::Itertools;
-use log::debug;
+use log::{debug, info};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_derive::export_ts;
@@ -50,9 +50,10 @@ pub trait RepoExt {
 
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
     fn open_repo(repo_path: &str) -> AppResult<()>;
+    fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
 }
 
-#[export_ts]
+#[export_ts(scope = "branch")]
 impl RepoExt for git2::Repository {
     fn open_repo(repo_path: &str) -> AppResult<()> {
         git2::Repository::open(repo_path)?;
@@ -293,6 +294,28 @@ impl RepoExt for git2::Repository {
         let upstream = local.upstream()?.get().target().unwrap().to_string();
         let mut v = self.find_remote(&upstream)?;
         v.fetch(&[branch], None, None)?;
+
+        Ok(())
+    }
+
+    fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
+        info!("checkout remote {branch}");
+        open_repo(repo_path)?;
+        let output = std::process::Command::new("git")
+            .stdout(Stdio::null())
+            .stderr(Stdio::piped())
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .arg("checkout")
+            .arg(branch)
+            .arg("--force")
+            .current_dir(repo_path)
+            .spawn()?
+            .wait_with_output()?;
+
+        if output.status.code().unwrap() != 0 {
+            let err = std::str::from_utf8(&output.stderr)?;
+            return Err(AppError::Spawn(err.to_string()));
+        }
 
         Ok(())
     }

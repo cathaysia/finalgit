@@ -1,3 +1,6 @@
+use std::sync::RwLock;
+
+use darling::FromMeta;
 use proc_macro::TokenStream;
 use quote::quote;
 
@@ -42,8 +45,18 @@ macro_rules! parse_meta {
     };
 }
 
+static FUNCS: RwLock<Vec<String>> = RwLock::new(Vec::new());
+
+#[derive(Debug, Default, darling::FromMeta)]
+#[darling(default)]
+struct TSAttr {
+    pub scope: String,
+}
+
 #[proc_macro_attribute]
-pub fn export_ts(_attr: TokenStream, input: TokenStream) -> TokenStream {
+pub fn export_ts(attr: TokenStream, input: TokenStream) -> TokenStream {
+    let attr = parse_meta!(attr as TSAttr);
+
     let input = parse_macro_input!(input as ItemImpl);
     let input_bak = input.clone();
 
@@ -69,16 +82,18 @@ pub fn export_ts(_attr: TokenStream, input: TokenStream) -> TokenStream {
             .contains("&mut self");
 
         let mut args = quote! {};
-        signature
-            .inputs
-            .clone()
-            .into_iter()
-            .skip(1)
-            .for_each(|item| {
-                args.extend(quote! {
-                    #item,
-                });
+        let mut has_self = false;
+        signature.inputs.clone().into_iter().for_each(|item| {
+            if item.to_token_stream().to_string().contains("self") {
+                has_self = true;
+                return;
+            }
+
+            args.extend(quote! {
+                #item,
             });
+        });
+
         let ret = signature.output.clone();
 
         let mut body = quote! {};
@@ -102,12 +117,28 @@ pub fn export_ts(_attr: TokenStream, input: TokenStream) -> TokenStream {
             });
         });
 
+        FUNCS
+            .write()
+            .unwrap()
+            .push(format!("{}::{}", attr.scope, name));
+
+        let (args, open_repo) = if has_self {
+            (
+                quote! {repo_path:&str, #args},
+                quote! {
+                    #[allow(unused_mut)]
+                    let mut repo = crate::utils::open_repo(repo_path)?;
+                },
+            )
+        } else {
+            (quote! {#args}, quote! {})
+        };
+
         res.extend(quote! {
             #[tauri::command]
             #[specta::specta]
-            pub fn #name(repo_path: &str, #args)  #ret {
-                #[allow(unused_mut)]
-                let mut repo = crate::utils::open_repo(repo_path)?;
+            pub fn #name(#args)  #ret {
+                #open_repo
 
                 #body
             }
@@ -118,6 +149,34 @@ pub fn export_ts(_attr: TokenStream, input: TokenStream) -> TokenStream {
         #input_bak
 
         #res
+    }
+    .into()
+}
+
+#[proc_macro]
+pub fn specta_commands(_input: TokenStream) -> TokenStream {
+    let mut args = quote! {};
+    FUNCS.read().unwrap().iter().for_each(|item| {
+        let ident = syn::TypePath::from_string(item).unwrap();
+        args.extend(quote! { #ident, });
+    });
+
+    quote! {
+        tauri_specta::collect_commands![ #args ]
+    }
+    .into()
+}
+
+#[proc_macro]
+pub fn tauri_commands(_input: TokenStream) -> TokenStream {
+    let mut args = quote! {};
+    FUNCS.read().unwrap().iter().for_each(|item| {
+        let ident = syn::TypePath::from_string(item).unwrap();
+        args.extend(quote! { #ident, });
+    });
+
+    quote! {
+        tauri::generate_handler![ #args ]
     }
     .into()
 }

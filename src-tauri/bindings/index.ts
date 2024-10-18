@@ -3,6 +3,21 @@
 /** user-defined commands **/
 
 export const commands = {
+  async blameOfFile(
+    repoPath: string,
+    commit: string,
+    path: string,
+  ): Promise<Result<BlameHunk[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('blame_of_file', { repoPath, commit, path }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async openRepo(repoPath: string): Promise<Result<null, string>> {
     try {
       return {
@@ -19,17 +34,6 @@ export const commands = {
       return {
         status: 'ok',
         data: await TAURI_INVOKE('get_branch_info', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async getTagInfo(repoPath: string): Promise<Result<TagInfo[], string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('get_tag_info', { repoPath }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -94,6 +98,19 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async getCurrentStatus(
+    repoPath: string,
+  ): Promise<Result<FileStatus[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('get_current_status', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async getFileTree(
     repoPath: string,
     commit: string,
@@ -127,13 +144,191 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async getCurrentStatus(
-    repoPath: string,
-  ): Promise<Result<FileStatus[], string>> {
+  async getTagInfo(repoPath: string): Promise<Result<TagInfo[], string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('get_current_status', { repoPath }),
+        data: await TAURI_INVOKE('get_tag_info', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async branchStatus(
+    repoPath: string,
+    branch: string,
+  ): Promise<Result<PushStatus, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('branch_status', { repoPath, branch }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async branchPush(
+    repoPath: string,
+    force: boolean,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('branch_push', { repoPath, force }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async getRepoHead(repoPath: string): Promise<Result<HeadInfo, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('get_repo_head', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async branchFetch(
+    repoPath: string,
+    branch: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('branch_fetch', { repoPath, branch }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async checkoutRemote(
+    repoPath: string,
+    branch: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('checkout_remote', { repoPath, branch }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async cherrypick(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('cherrypick', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async commitCheckout(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_checkout', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async checkoutFile(
+    repoPath: string,
+    commit: string,
+    path: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('checkout_file', { repoPath, commit, path }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async commitInfo(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<Commit, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_info', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async commitResetAuthor(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_reset_author', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async commitAmend(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_amend', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async getHistory(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<CommitInfo[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('get_history', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async createCommit(
+    repoPath: string,
+    msg: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('create_commit', { repoPath, msg }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -155,107 +350,11 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async checkoutRemote(
-    repoPath: string,
-    branch: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('checkout_remote', { repoPath, branch }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async addToStage(
-    repoPath: string,
-    files: FileStatus[],
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('add_to_stage', { repoPath, files }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async removeFromStage(
-    repoPath: string,
-    files: string[],
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('remove_from_stage', { repoPath, files }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async restoreFile(
-    repoPath: string,
-    files: FileStatus[],
-    commit: string | null,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('restore_file', { repoPath, files, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async createCommit(
-    repoPath: string,
-    msg: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('create_commit', { repoPath, msg }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
   async createPatch(repoPath: string): Promise<Result<string, string>> {
     try {
       return {
         status: 'ok',
         data: await TAURI_INVOKE('create_patch', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async getHeadModifyTime(repoPath: string): Promise<Result<number, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('get_head_modify_time', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async getHistory(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<CommitInfo[], string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('get_history', { repoPath, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -304,13 +403,54 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async assumeLanguage(
-    fileName: string,
-  ): Promise<Result<string | null, string>> {
+  async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('assume_language', { fileName }),
+        data: await TAURI_INVOKE('rebase_abort', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async addToStage(
+    repoPath: string,
+    files: FileStatus[],
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('add_to_stage', { repoPath, files }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async removeFromStage(
+    repoPath: string,
+    files: string[],
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remove_from_stage', { repoPath, files }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async restoreFile(
+    repoPath: string,
+    files: FileStatus[],
+    commit: string | null,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('restore_file', { repoPath, files, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -370,164 +510,24 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async getRepoHead(repoPath: string): Promise<Result<HeadInfo, string>> {
+  async getHeadModifyTime(repoPath: string): Promise<Result<number, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('get_repo_head', { repoPath }),
+        data: await TAURI_INVOKE('get_head_modify_time', { repoPath }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async branchFetch(
-    repoPath: string,
-    branch: string,
-  ): Promise<Result<null, string>> {
+  async assumeLanguage(
+    fileName: string,
+  ): Promise<Result<string | null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('branch_fetch', { repoPath, branch }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async branchPush(
-    repoPath: string,
-    force: boolean,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('branch_push', { repoPath, force }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async branchStatus(
-    repoPath: string,
-    branch: string,
-  ): Promise<Result<PushStatus, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('branch_status', { repoPath, branch }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async commitCheckout(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('commit_checkout', { repoPath, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async checkoutFile(
-    repoPath: string,
-    commit: string,
-    path: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('checkout_file', { repoPath, commit, path }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async blameOfFile(
-    repoPath: string,
-    commit: string,
-    path: string,
-  ): Promise<Result<BlameHunk[], string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('blame_of_file', { repoPath, commit, path }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async commitInfo(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<Commit, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('commit_info', { repoPath, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async commitResetAuthor(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('commit_reset_author', { repoPath, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async cherrypick(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('cherrypick', { repoPath, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async commitAmend(
-    repoPath: string,
-    commit: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('commit_amend', { repoPath, commit }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('rebase_abort', { repoPath }),
+        data: await TAURI_INVOKE('assume_language', { fileName }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;

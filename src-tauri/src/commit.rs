@@ -48,7 +48,7 @@ pub trait CommitExt {
     fn create_patch(&self) -> AppResult<String>;
 }
 
-#[export_ts]
+#[export_ts(scope = "commit")]
 impl CommitExt for git2::Repository {
     fn commit_checkout(&self, commit: &str) -> AppResult<()> {
         let oid = Oid::from_str(commit)?;

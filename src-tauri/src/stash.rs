@@ -18,7 +18,7 @@ pub trait StashExt {
     fn stash_list(&mut self) -> AppResult<Vec<StashInfo>>;
 }
 
-#[export_ts]
+#[export_ts(scope = "stash")]
 impl StashExt for git2::Repository {
     fn stash_save(&self, message: Option<String>) -> AppResult<()> {
         match message {

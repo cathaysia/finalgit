@@ -15,6 +15,7 @@ mod utils;
 pub use error::*;
 pub use ty::*;
 
+use tauri_derive::tauri_commands;
 use tauri_plugin_log::{Target, TargetKind};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -45,99 +46,21 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_window_state::Builder::default().build())
         .plugin(tauri_plugin_clipboard_manager::init())
-        .invoke_handler(tauri::generate_handler![
-            branch::open_repo,
-            branch::get_branch_info,
-            branch::get_tag_info,
-            branch::rename_branch,
-            branch::remove_branch,
-            branch::create_branch,
-            branch::checkout_branch,
-            branch::get_file_tree,
-            branch::get_file_content,
-            branch::get_current_status,
-            commit::get_commits,
-            utils::checkout_remote,
-            stage::add_to_stage,
-            stage::remove_from_stage,
-            stage::restore_file,
-            commit::create_commit,
-            commit::create_patch,
-            utils::get_head_modify_time,
-            commit::get_history,
-            config::get_config,
-            config::set_config,
-            config::get_configes,
-            utils::assume_language,
-            stash::stash_save,
-            stash::stash_apply,
-            stash::stash_remove,
-            stash::stash_list,
-            branch::get_repo_head,
-            branch::branch_fetch,
-            branch::branch_push,
-            branch::branch_status,
-            commit::commit_checkout,
-            commit::checkout_file,
-            blame::blame_of_file,
-            commit::commit_info,
-            commit::commit_reset_author,
-            cherry_pick::cherrypick,
-            commit::commit_amend,
-            rebase::rebase_abort,
-        ])
+        .invoke_handler(tauri_commands!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
 #[cfg(test)]
 mod test {
+
+    use tauri_derive::specta_commands;
+
     use super::*;
 
     #[test]
     fn generate_bindings() {
-        let builder =
-            tauri_specta::Builder::<tauri::Wry>::new().commands(tauri_specta::collect_commands![
-                branch::open_repo,
-                branch::get_branch_info,
-                branch::get_tag_info,
-                branch::rename_branch,
-                branch::remove_branch,
-                branch::create_branch,
-                branch::checkout_branch,
-                branch::get_file_tree,
-                branch::get_file_content,
-                branch::get_current_status,
-                commit::get_commits,
-                utils::checkout_remote,
-                stage::add_to_stage,
-                stage::remove_from_stage,
-                stage::restore_file,
-                commit::create_commit,
-                commit::create_patch,
-                utils::get_head_modify_time,
-                commit::get_history,
-                config::get_config,
-                config::set_config,
-                config::get_configes,
-                utils::assume_language,
-                stash::stash_save,
-                stash::stash_apply,
-                stash::stash_remove,
-                stash::stash_list,
-                branch::get_repo_head,
-                branch::branch_fetch,
-                branch::branch_push,
-                branch::branch_status,
-                commit::commit_checkout,
-                commit::checkout_file,
-                blame::blame_of_file,
-                commit::commit_info,
-                commit::commit_reset_author,
-                cherry_pick::cherrypick,
-                commit::commit_amend,
-                rebase::rebase_abort,
-            ]);
+        let builder = tauri_specta::Builder::<tauri::Wry>::new().commands(specta_commands!());
 
         builder
             .export(

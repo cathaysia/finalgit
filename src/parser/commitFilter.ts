@@ -33,18 +33,18 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
   if (expr.kind === RevKind.Since) {
     return commits.filter(item => {
       if (expr.data.isBefore) {
-        return item.time < expr.data.data;
+        return item.time <= expr.data.data;
       }
-      return item.time > expr.data.data;
+      return item.time >= expr.data.data;
     });
   }
 
   if (expr.kind === RevKind.Until) {
     return commits.filter(item => {
       if (expr.data.isBefore) {
-        return item.time > expr.data.data;
+        return item.time >= expr.data.data;
       }
-      return item.time < expr.data.data;
+      return item.time <= expr.data.data;
     });
   }
 
@@ -68,8 +68,15 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
     });
   }
   if (expr.kind === RevKind.RevMulti) {
-    return expr.rules.flatMap(expr => {
+    const arr = expr.rules.flatMap(expr => {
       return expressionFilter(expr, commits);
+    });
+    const map = new Map<string, CommitInfo>();
+    arr.forEach(item => {
+      map.set(item.oid, item);
+    });
+    return Array.from(map.values()).sort((a, b) => {
+      return a.commiter.time - b.commiter.time;
     });
   }
   if (expr.kind === RevKind.SkipGrep) {
@@ -83,9 +90,12 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
     });
   }
   if (expr.kind === RevKind.SkipPos) {
-    const pos = commits.findIndex(item => {
+    let pos = commits.findIndex(item => {
       return item.oid.slice(0, 6) === expr.rev.data.slice(0, 6);
     });
+    if (expr.rev.data === 'HEAD') {
+      pos = 0;
+    }
     if (pos == -1) {
       return [];
     }
@@ -108,30 +118,127 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
 }
 
 function filterRevRange(expr: RevRange, commits: CommitInfo[]): CommitInfo[] {
-  return [];
+  let commit = commits;
+  if (expr.starts) {
+    const starts = expr.starts;
+    switch (starts.kind) {
+      case RevKind.Single: {
+        let startPos = commit.findIndex(item => {
+          return item.oid.slice(0, 6) === starts.data.slice(0.6);
+        });
+        if (starts.data === 'HEAD') {
+          startPos = 0;
+        }
+        if (startPos === -1) {
+          return [];
+        }
+        if (expr.containStarts) {
+          commit = commit.slice(startPos);
+        } else {
+          commit = commit.slice(startPos + 1);
+        }
+        break;
+      }
+      case RevKind.Since: {
+        const startPos = commit.findIndex(
+          item => item.time >= starts.data.data,
+        );
+        if (startPos === -1) {
+          return [];
+        }
+        if (expr.containStarts) {
+          commit = commit.slice(startPos);
+        } else {
+          commit = commit.slice(startPos + 1);
+        }
+        break;
+      }
+      case RevKind.Skip: {
+        const startPos = starts.data;
+        if (expr.containStarts) {
+          commit = commit.slice(startPos);
+        } else {
+          commit = commit.slice(startPos + 1);
+        }
+        break;
+      }
+      default: {
+        return [];
+      }
+    }
+  }
+  if (expr.ends) {
+    const ends = expr.ends;
+    switch (ends.kind) {
+      case RevKind.Single: {
+        let endPos = commit.findIndex(item => {
+          return item.oid.slice(0, 6) === ends.data.slice(0.6);
+        });
+        if (ends.data === 'HEAD') {
+          endPos = 0;
+        }
+        if (endPos === -1) {
+          return [];
+        }
+        if (expr.containsEnds) {
+          commit = commit.slice(0, endPos - 1 <= 0 ? 1 : endPos - 1);
+        } else {
+          commit = commit.slice(0, endPos);
+        }
+        break;
+      }
+      case RevKind.Since: {
+        const endPos = commit.findIndex(item => item.time >= ends.data.data);
+        if (endPos === -1) {
+          return [];
+        }
+        if (expr.containsEnds) {
+          commit = commit.slice(0, endPos - 1 < 0 ? 0 : endPos - 1);
+        } else {
+          commit = commit.slice(0, endPos);
+        }
+        break;
+      }
+      case RevKind.Skip: {
+        const endPos = ends.data;
+        if (expr.containsEnds) {
+          commit = commit.slice(0, endPos - 1 < 0 ? 0 : endPos - 1);
+        } else {
+          commit = commit.slice(0, endPos);
+        }
+        break;
+      }
+      default: {
+        return [];
+      }
+    }
+  }
+  return commit;
 }
 
 function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
   const rev = expr.rev.data.slice(0, 6);
   const posExpr = expr.data;
-  const idx = commits.findIndex(item => {
-    item.oid.slice(0, 6) === rev;
+  let idx = commits.findIndex(item => {
+    return item.oid.slice(0, 6) === rev;
   });
+  if (rev === 'HEAD') {
+    idx = 0;
+  }
   const filtered = commits.slice(idx);
 
   if (posExpr.kind === PosKind.Head) {
-    return filtered.slice(0, 1);
+    return filtered;
   }
   if (posExpr.kind === PosKind.Exclude) {
-    return filtered.filter(item => {
-      item.oid.slice(0, 6) !== rev;
-    });
+    return filtered.slice(1);
   }
   if (posExpr.kind === PosKind.Digit) {
-    return commits.slice(idx + posExpr.kind);
+    const pos = saturating_sub(idx, Math.abs(posExpr.data));
+    return commits.slice(pos);
   }
   if (posExpr.kind === PosKind.Reverse) {
-    return commits.slice(0, idx);
+    return filtered.slice(0, idx);
   }
   if (posExpr.kind === PosKind.Anchor) {
     if (!posExpr.data) {
@@ -144,13 +251,26 @@ function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
       });
     }
     if (expr.kind === AnchorKind.Digit) {
-      return commits.slice(idx + expr.data);
+      const pos = idx + expr.data;
+      if (pos < 0) {
+        return commits;
+      } else {
+        return commits.slice(pos);
+      }
     }
     if (expr.kind === AnchorKind.Date) {
       return filtered.filter(item => {
-        expr.date.data < item.time;
+        if (expr.date.isBefore) {
+          return item.commiter.time <= expr.date.data;
+        } else {
+          return item.commiter.time >= expr.date.data;
+        }
       });
     }
   }
   return [];
+}
+
+export function saturating_sub(a: number, b: number) {
+  return a - b < 0 ? 0 : a - b;
 }

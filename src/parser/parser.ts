@@ -5,9 +5,9 @@ import reversionParser, { RevSinceContext } from './impl/reversionParser';
 import Visitor from './impl/reversionVisitor';
 
 export enum AnchorKind {
-  Date,
-  Digit,
-  Text,
+  Date = 0,
+  Digit = 1,
+  Text = 2,
 }
 
 export interface AnchorDate {
@@ -28,11 +28,11 @@ export interface AnchorText {
 export type AnchorType = AnchorDate | AnchorDigit | AnchorText;
 
 export enum PosKind {
-  Head,
-  Exclude,
-  Digit,
-  Reverse,
-  Anchor,
+  Head = 0,
+  Exclude = 1,
+  Digit = 2,
+  Reverse = 3,
+  Anchor = 4,
 }
 
 export interface PosHead {
@@ -77,7 +77,7 @@ export enum RevKind {
 
 export interface RevSingle {
   kind: RevKind.Single;
-  data: String;
+  data: string;
   isExclude: boolean;
 }
 
@@ -356,7 +356,7 @@ function createVisitor() {
     const isBefore = ctx.TIME_DIRECTION().getText() === 'ago';
 
     return {
-      date: date,
+      data: new Date().getTime() / 1000 - date,
       isBefore: isBefore,
     } as any;
   };
@@ -385,10 +385,10 @@ function createVisitor() {
       starts: undefined,
       ends: visitor.visit(ctx.rules()),
       containStarts: false,
-      containsEnds: true,
+      containsEnds: false,
     };
   };
-  visitor.visitRevRangeAfter2 = ctx => {
+  visitor.visitRevRangeBefore2 = ctx => {
     return {
       kind: RevKind.RevRange,
       starts: undefined,
@@ -403,7 +403,7 @@ function createVisitor() {
       starts: visitor.visit(ctx.rules_list()[0]),
       ends: visitor.visit(ctx.rules_list()[1]),
       containStarts: false,
-      containsEnds: true,
+      containsEnds: false,
     };
   };
   visitor.visitRevRange2 = ctx => {
@@ -412,7 +412,7 @@ function createVisitor() {
       starts: visitor.visit(ctx.rules_list()[0]),
       ends: visitor.visit(ctx.rules_list()[1]),
       containStarts: true,
-      containsEnds: true,
+      containsEnds: false,
     };
   };
   visitor.visitRevMulti = ctx => {
@@ -562,7 +562,7 @@ function createVisitor() {
   visitor.visitPosNeg = ctx => {
     const data = Number(ctx.SIGNED_DIGIT().getText());
     return {
-      kind: PosKind.Reverse,
+      kind: PosKind.Digit,
       data: data,
     } as any;
   };

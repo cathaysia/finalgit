@@ -1,6 +1,7 @@
+use crate::branch::RepoExt;
 use tauri_derive::export_ts;
 
-use crate::{AppResult, RepoExt};
+use crate::AppResult;
 
 pub trait RebaseExt {
     fn rebase_abort(&self) -> AppResult<()>;

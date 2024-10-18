@@ -1,5 +1,8 @@
-use crate::AppResult;
+use std::process::Stdio;
+
+use crate::{AppError, AppResult};
 use filetime::FileTime;
+use log::info;
 
 pub fn open_repo(repo_path: &str) -> AppResult<git2::Repository> {
     Ok(git2::Repository::open(repo_path)?)
@@ -18,6 +21,30 @@ pub fn get_head_modify_time(repo_path: &str) -> AppResult<f64> {
     let mtime = FileTime::from_last_modification_time(&meta);
 
     Ok(mtime.seconds() as f64)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
+    info!("checkout remote {branch}");
+    let _ = open_repo(repo_path)?;
+    let output = std::process::Command::new("git")
+        .stdout(Stdio::null())
+        .stderr(Stdio::piped())
+        .env("GIT_TERMINAL_PROMPT", "0")
+        .arg("checkout")
+        .arg(branch)
+        .arg("--force")
+        .current_dir(repo_path)
+        .spawn()?
+        .wait_with_output()?;
+
+    if output.status.code().unwrap() != 0 {
+        let err = std::str::from_utf8(&output.stderr)?;
+        return Err(AppError::Spawn(err.to_string()));
+    }
+
+    Ok(())
 }
 
 static LANGUAGE_DEFINES: [(&str, &str); 18] = [

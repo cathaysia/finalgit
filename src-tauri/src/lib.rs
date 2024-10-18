@@ -4,8 +4,8 @@ mod blame;
 mod branch;
 mod cherry_pick;
 mod commit;
+mod config;
 mod error;
-mod ext;
 mod rebase;
 mod stage;
 mod stash;
@@ -13,7 +13,6 @@ mod ty;
 mod utils;
 
 pub use error::*;
-pub use ext::*;
 pub use ty::*;
 
 use tauri_plugin_log::{Target, TargetKind};
@@ -57,18 +56,18 @@ pub fn run() {
             branch::get_file_tree,
             branch::get_file_content,
             branch::get_current_status,
-            branch::get_commits,
-            branch::checkout_remote,
+            commit::get_commits,
+            utils::checkout_remote,
             stage::add_to_stage,
             stage::remove_from_stage,
             stage::restore_file,
-            branch::create_commit,
-            branch::create_patch,
+            commit::create_commit,
+            commit::create_patch,
             utils::get_head_modify_time,
-            branch::get_history,
-            branch::get_config,
-            branch::set_config,
-            branch::get_configes,
+            commit::get_history,
+            config::get_config,
+            config::set_config,
+            config::get_configes,
             utils::assume_language,
             stash::stash_save,
             stash::stash_apply,
@@ -109,18 +108,18 @@ mod test {
                 branch::get_file_tree,
                 branch::get_file_content,
                 branch::get_current_status,
-                branch::get_commits,
-                branch::checkout_remote,
+                commit::get_commits,
+                utils::checkout_remote,
                 stage::add_to_stage,
                 stage::remove_from_stage,
                 stage::restore_file,
-                branch::create_commit,
-                branch::create_patch,
+                commit::create_commit,
+                commit::create_patch,
                 utils::get_head_modify_time,
-                branch::get_history,
-                branch::get_config,
-                branch::set_config,
-                branch::get_configes,
+                commit::get_history,
+                config::get_config,
+                config::set_config,
+                config::get_configes,
                 utils::assume_language,
                 stash::stash_save,
                 stash::stash_apply,

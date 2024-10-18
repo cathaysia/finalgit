@@ -1,6 +1,6 @@
 use tauri_derive::export_ts;
 
-use crate::ext::RepoExt;
+use crate::branch::RepoExt;
 
 use crate::AppResult;
 

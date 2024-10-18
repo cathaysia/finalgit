@@ -76,7 +76,7 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
       map.set(item.oid, item);
     });
     return Array.from(map.values()).sort((a, b) => {
-      return a.commiter.time - b.commiter.time;
+      return b.commiter.time - a.commiter.time;
     });
   }
   if (expr.kind === RevKind.SkipGrep) {

@@ -84,7 +84,7 @@ export default class reversionParser extends Parser {
   public static readonly T__48 = 49;
   public static readonly T__49 = 50;
   public static readonly T__50 = 51;
-  public static readonly TIME_DIRECTION = 52;
+  public static readonly T__51 = 52;
   public static readonly SIGNED_DIGIT = 53;
   public static readonly DIGIT = 54;
   public static readonly OID = 55;
@@ -113,7 +113,8 @@ export default class reversionParser extends Parser {
   public static readonly RULE_time_point = 9;
   public static readonly RULE_time_value = 10;
   public static readonly RULE_time_unit = 11;
-  public static readonly RULE_iso_8601 = 12;
+  public static readonly RULE_time_direction = 12;
+  public static readonly RULE_iso_8601 = 13;
   public static readonly literalNames: (string | null)[] = [
     null,
     "'since'",
@@ -167,7 +168,7 @@ export default class reversionParser extends Parser {
     "'weeks'",
     "'months'",
     "'years'",
-    null,
+    "'ago'",
     null,
     null,
     null,
@@ -231,7 +232,7 @@ export default class reversionParser extends Parser {
     null,
     null,
     null,
-    'TIME_DIRECTION',
+    null,
     'SIGNED_DIGIT',
     'DIGIT',
     'OID',
@@ -262,6 +263,7 @@ export default class reversionParser extends Parser {
     'time_point',
     'time_value',
     'time_unit',
+    'time_direction',
     'iso_8601',
   ];
   public get grammarFileName(): string {
@@ -307,9 +309,9 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 26;
+        this.state = 28;
         this.rules(0);
-        this.state = 27;
+        this.state = 29;
         this.match(reversionParser.EOF);
       }
     } catch (re) {
@@ -348,7 +350,7 @@ export default class reversionParser extends Parser {
       let _alt: number;
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 81;
+        this.state = 83;
         this._errHandler.sync(this);
         switch (this._interp.adaptivePredict(this._input, 3, this._ctx)) {
           case 1:
@@ -357,7 +359,7 @@ export default class reversionParser extends Parser {
               this._ctx = localctx;
               _prevctx = localctx;
 
-              this.state = 30;
+              this.state = 32;
               this.rev();
             }
             break;
@@ -366,7 +368,7 @@ export default class reversionParser extends Parser {
               localctx = new RevExpressionContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 31;
+              this.state = 33;
               this.rev_expression();
             }
             break;
@@ -375,11 +377,11 @@ export default class reversionParser extends Parser {
               localctx = new RevSinceContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 32;
-              this.match(reversionParser.T__0);
-              this.state = 33;
-              this.match(reversionParser.T__1);
               this.state = 34;
+              this.match(reversionParser.T__0);
+              this.state = 35;
+              this.match(reversionParser.T__1);
+              this.state = 36;
               this.date();
             }
             break;
@@ -388,11 +390,11 @@ export default class reversionParser extends Parser {
               localctx = new RevUntilContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 35;
-              this.match(reversionParser.T__2);
-              this.state = 36;
-              this.match(reversionParser.T__1);
               this.state = 37;
+              this.match(reversionParser.T__2);
+              this.state = 38;
+              this.match(reversionParser.T__1);
+              this.state = 39;
               this.date();
             }
             break;
@@ -401,11 +403,11 @@ export default class reversionParser extends Parser {
               localctx = new RevAfterContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 38;
-              this.match(reversionParser.T__3);
-              this.state = 39;
-              this.match(reversionParser.T__1);
               this.state = 40;
+              this.match(reversionParser.T__3);
+              this.state = 41;
+              this.match(reversionParser.T__1);
+              this.state = 42;
               this.date();
             }
             break;
@@ -414,11 +416,11 @@ export default class reversionParser extends Parser {
               localctx = new RevSkipContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 41;
-              this.match(reversionParser.T__4);
-              this.state = 42;
-              this.match(reversionParser.T__1);
               this.state = 43;
+              this.match(reversionParser.T__4);
+              this.state = 44;
+              this.match(reversionParser.T__1);
+              this.state = 45;
               this.match(reversionParser.DIGIT);
             }
             break;
@@ -427,11 +429,11 @@ export default class reversionParser extends Parser {
               localctx = new RevBeforeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 44;
-              this.match(reversionParser.T__5);
-              this.state = 45;
-              this.match(reversionParser.T__1);
               this.state = 46;
+              this.match(reversionParser.T__5);
+              this.state = 47;
+              this.match(reversionParser.T__1);
+              this.state = 48;
               this.date();
             }
             break;
@@ -440,11 +442,11 @@ export default class reversionParser extends Parser {
               localctx = new RevMaxAgeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 47;
-              this.match(reversionParser.T__6);
-              this.state = 48;
-              this.match(reversionParser.T__1);
               this.state = 49;
+              this.match(reversionParser.T__6);
+              this.state = 50;
+              this.match(reversionParser.T__1);
+              this.state = 51;
               this.date();
             }
             break;
@@ -453,11 +455,11 @@ export default class reversionParser extends Parser {
               localctx = new RevMinAgeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 50;
-              this.match(reversionParser.T__7);
-              this.state = 51;
-              this.match(reversionParser.T__1);
               this.state = 52;
+              this.match(reversionParser.T__7);
+              this.state = 53;
+              this.match(reversionParser.T__1);
+              this.state = 54;
               this.date();
             }
             break;
@@ -466,11 +468,11 @@ export default class reversionParser extends Parser {
               localctx = new RevAuthorContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 53;
+              this.state = 55;
               this.match(reversionParser.T__8);
-              this.state = 54;
-              this.match(reversionParser.T__1);
               this.state = 56;
+              this.match(reversionParser.T__1);
+              this.state = 58;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -478,7 +480,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 55;
+                        this.state = 57;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -486,7 +488,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 58;
+                this.state = 60;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 0, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -497,11 +499,11 @@ export default class reversionParser extends Parser {
               localctx = new RevCommiterContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 60;
+              this.state = 62;
               this.match(reversionParser.T__9);
-              this.state = 61;
-              this.match(reversionParser.T__1);
               this.state = 63;
+              this.match(reversionParser.T__1);
+              this.state = 65;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -509,7 +511,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 62;
+                        this.state = 64;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -517,7 +519,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 65;
+                this.state = 67;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 1, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -528,11 +530,11 @@ export default class reversionParser extends Parser {
               localctx = new RevGrepContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 67;
+              this.state = 69;
               this.match(reversionParser.T__10);
-              this.state = 68;
-              this.match(reversionParser.T__1);
               this.state = 70;
+              this.match(reversionParser.T__1);
+              this.state = 72;
               this._errHandler.sync(this);
               _alt = 1;
               do {
@@ -540,7 +542,7 @@ export default class reversionParser extends Parser {
                   case 1:
                     {
                       {
-                        this.state = 69;
+                        this.state = 71;
                         this.match(reversionParser.ANY);
                       }
                     }
@@ -548,7 +550,7 @@ export default class reversionParser extends Parser {
                   default:
                     throw new NoViableAltException(this);
                 }
-                this.state = 72;
+                this.state = 74;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input, 2, this._ctx);
               } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -559,11 +561,11 @@ export default class reversionParser extends Parser {
               localctx = new RevExcludeContext(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 74;
-              this.match(reversionParser.T__11);
-              this.state = 75;
-              this.match(reversionParser.T__1);
               this.state = 76;
+              this.match(reversionParser.T__11);
+              this.state = 77;
+              this.match(reversionParser.T__1);
+              this.state = 78;
               this.rules(8);
             }
             break;
@@ -572,9 +574,9 @@ export default class reversionParser extends Parser {
               localctx = new RevRangeBefore1Context(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 77;
+              this.state = 79;
               this.match(reversionParser.T__12);
-              this.state = 78;
+              this.state = 80;
               this.rules(2);
             }
             break;
@@ -583,15 +585,15 @@ export default class reversionParser extends Parser {
               localctx = new RevRangeBefore2Context(this, localctx);
               this._ctx = localctx;
               _prevctx = localctx;
-              this.state = 79;
+              this.state = 81;
               this.match(reversionParser.T__13);
-              this.state = 80;
+              this.state = 82;
               this.rules(1);
             }
             break;
         }
         this._ctx.stop = this._input.LT(-1);
-        this.state = 102;
+        this.state = 104;
         this._errHandler.sync(this);
         _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
         while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -601,7 +603,7 @@ export default class reversionParser extends Parser {
             }
             _prevctx = localctx;
             {
-              this.state = 100;
+              this.state = 102;
               this._errHandler.sync(this);
               switch (this._interp.adaptivePredict(this._input, 5, this._ctx)) {
                 case 1:
@@ -615,15 +617,15 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 83;
+                    this.state = 85;
                     if (!this.precpred(this._ctx, 4)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 4)',
                       );
                     }
-                    this.state = 84;
+                    this.state = 86;
                     this.match(reversionParser.T__12);
-                    this.state = 85;
+                    this.state = 87;
                     this.rules(5);
                   }
                   break;
@@ -638,15 +640,15 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 86;
+                    this.state = 88;
                     if (!this.precpred(this._ctx, 3)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 3)',
                       );
                     }
-                    this.state = 87;
+                    this.state = 89;
                     this.match(reversionParser.T__13);
-                    this.state = 88;
+                    this.state = 90;
                     this.rules(4);
                   }
                   break;
@@ -661,13 +663,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 89;
+                    this.state = 91;
                     if (!this.precpred(this._ctx, 7)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 7)',
                       );
                     }
-                    this.state = 90;
+                    this.state = 92;
                     this.match(reversionParser.T__12);
                   }
                   break;
@@ -682,13 +684,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 91;
+                    this.state = 93;
                     if (!this.precpred(this._ctx, 6)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 6)',
                       );
                     }
-                    this.state = 92;
+                    this.state = 94;
                     this.match(reversionParser.T__13);
                   }
                   break;
@@ -703,13 +705,13 @@ export default class reversionParser extends Parser {
                       _startState,
                       reversionParser.RULE_rules,
                     );
-                    this.state = 93;
+                    this.state = 95;
                     if (!this.precpred(this._ctx, 5)) {
                       throw this.createFailedPredicateException(
                         'this.precpred(this._ctx, 5)',
                       );
                     }
-                    this.state = 96;
+                    this.state = 98;
                     this._errHandler.sync(this);
                     _alt = 1;
                     do {
@@ -717,9 +719,9 @@ export default class reversionParser extends Parser {
                         case 1:
                           {
                             {
-                              this.state = 94;
+                              this.state = 96;
                               this.match(reversionParser.SPACE);
-                              this.state = 95;
+                              this.state = 97;
                               this.rules(0);
                             }
                           }
@@ -727,7 +729,7 @@ export default class reversionParser extends Parser {
                         default:
                           throw new NoViableAltException(this);
                       }
-                      this.state = 98;
+                      this.state = 100;
                       this._errHandler.sync(this);
                       _alt = this._interp.adaptivePredict(
                         this._input,
@@ -740,7 +742,7 @@ export default class reversionParser extends Parser {
               }
             }
           }
-          this.state = 104;
+          this.state = 106;
           this._errHandler.sync(this);
           _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
         }
@@ -763,7 +765,7 @@ export default class reversionParser extends Parser {
     let localctx: RevContext = new RevContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, reversionParser.RULE_rev);
     try {
-      this.state = 109;
+      this.state = 111;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 16:
@@ -771,7 +773,7 @@ export default class reversionParser extends Parser {
           localctx = new RefNameContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 105;
+            this.state = 107;
             this.refname();
           }
           break;
@@ -779,7 +781,7 @@ export default class reversionParser extends Parser {
           localctx = new RefOIDContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 106;
+            this.state = 108;
             this.match(reversionParser.OID);
           }
           break;
@@ -787,9 +789,9 @@ export default class reversionParser extends Parser {
           localctx = new RefExcludeContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 107;
+            this.state = 109;
             this.match(reversionParser.T__14);
-            this.state = 108;
+            this.state = 110;
             this.rev();
           }
           break;
@@ -821,7 +823,7 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 111;
+        this.state = 113;
         _la = this._input.LA(1);
         if (!(_la === 16 || _la === 17)) {
           this._errHandler.recoverInline(this);
@@ -854,18 +856,18 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       let _alt: number;
-      this.state = 142;
+      this.state = 144;
       this._errHandler.sync(this);
       switch (this._interp.adaptivePredict(this._input, 11, this._ctx)) {
         case 1:
           localctx = new ExprPosContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 113;
-            this.rev();
-            this.state = 114;
-            this.rev_direction();
             this.state = 115;
+            this.rev();
+            this.state = 116;
+            this.rev_direction();
+            this.state = 117;
             this.rev_position();
           }
           break;
@@ -873,11 +875,11 @@ export default class reversionParser extends Parser {
           localctx = new ExprDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 117;
-            this.rev();
-            this.state = 118;
-            this.rev_direction();
             this.state = 119;
+            this.rev();
+            this.state = 120;
+            this.rev_direction();
+            this.state = 121;
             this.match(reversionParser.DIGIT);
           }
           break;
@@ -885,9 +887,9 @@ export default class reversionParser extends Parser {
           localctx = new ExprTextContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 121;
-            this.match(reversionParser.T__17);
             this.state = 123;
+            this.match(reversionParser.T__17);
+            this.state = 125;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -895,7 +897,7 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 122;
+                      this.state = 124;
                       _la = this._input.LA(1);
                       if (!(_la === 61 || _la === 65)) {
                         this._errHandler.recoverInline(this);
@@ -909,7 +911,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 125;
+              this.state = 127;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 8, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -919,11 +921,11 @@ export default class reversionParser extends Parser {
           localctx = new ExprRevTextContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 127;
+            this.state = 129;
             this.rev();
-            this.state = 128;
-            this.match(reversionParser.T__18);
             this.state = 130;
+            this.match(reversionParser.T__18);
+            this.state = 132;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -931,7 +933,7 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 129;
+                      this.state = 131;
                       this.match(reversionParser.ANY);
                     }
                   }
@@ -939,7 +941,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 132;
+              this.state = 134;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 9, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -949,13 +951,13 @@ export default class reversionParser extends Parser {
           localctx = new ExprDigitTextContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 134;
-            this.match(reversionParser.T__18);
-            this.state = 135;
-            this.match(reversionParser.DIGIT);
             this.state = 136;
             this.match(reversionParser.T__18);
+            this.state = 137;
+            this.match(reversionParser.DIGIT);
             this.state = 138;
+            this.match(reversionParser.T__18);
+            this.state = 140;
             this._errHandler.sync(this);
             _alt = 1;
             do {
@@ -963,7 +965,7 @@ export default class reversionParser extends Parser {
                 case 1:
                   {
                     {
-                      this.state = 137;
+                      this.state = 139;
                       this.match(reversionParser.ANY);
                     }
                   }
@@ -971,7 +973,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 140;
+              this.state = 142;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 10, this._ctx);
             } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -1001,14 +1003,14 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 10, reversionParser.RULE_rev_position);
     let _la: number;
     try {
-      this.state = 153;
+      this.state = 155;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 17:
           localctx = new PosHeadContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 144;
+            this.state = 146;
             this.match(reversionParser.T__16);
           }
           break;
@@ -1016,7 +1018,7 @@ export default class reversionParser extends Parser {
           localctx = new PosExcludeContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 145;
+            this.state = 147;
             this.match(reversionParser.T__19);
           }
           break;
@@ -1024,7 +1026,7 @@ export default class reversionParser extends Parser {
           localctx = new PosNegContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 146;
+            this.state = 148;
             this.match(reversionParser.SIGNED_DIGIT);
           }
           break;
@@ -1032,7 +1034,7 @@ export default class reversionParser extends Parser {
           localctx = new PosReverseContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 147;
+            this.state = 149;
             this.match(reversionParser.T__20);
           }
           break;
@@ -1040,9 +1042,9 @@ export default class reversionParser extends Parser {
           localctx = new PosAnchorContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 148;
-            this.match(reversionParser.T__21);
             this.state = 150;
+            this.match(reversionParser.T__21);
+            this.state = 152;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             if (
@@ -1051,12 +1053,12 @@ export default class reversionParser extends Parser {
                 ((1 << (_la - 32)) & 73400383) !== 0)
             ) {
               {
-                this.state = 149;
+                this.state = 151;
                 this.ref_anchor();
               }
             }
 
-            this.state = 152;
+            this.state = 154;
             this.match(reversionParser.T__22);
           }
           break;
@@ -1088,7 +1090,7 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 155;
+        this.state = 157;
         _la = this._input.LA(1);
         if (!((_la & ~0x1f) === 0 && ((1 << _la) & 16941056) !== 0)) {
           this._errHandler.recoverInline(this);
@@ -1120,14 +1122,14 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 14, reversionParser.RULE_ref_anchor);
     try {
       let _alt: number;
-      this.state = 167;
+      this.state = 169;
       this._errHandler.sync(this);
       switch (this._interp.adaptivePredict(this._input, 15, this._ctx)) {
         case 1:
           localctx = new AnchorDateContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 157;
+            this.state = 159;
             this.date();
           }
           break;
@@ -1135,7 +1137,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorSignedDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 158;
+            this.state = 160;
             this.match(reversionParser.SIGNED_DIGIT);
           }
           break;
@@ -1143,7 +1145,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 159;
+            this.state = 161;
             this.match(reversionParser.DIGIT);
           }
           break;
@@ -1151,9 +1153,9 @@ export default class reversionParser extends Parser {
           localctx = new AnchorTextContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 160;
-            this.match(reversionParser.T__24);
             this.state = 162;
+            this.match(reversionParser.T__24);
+            this.state = 164;
             this._errHandler.sync(this);
             _alt = 1 + 1;
             do {
@@ -1161,7 +1163,7 @@ export default class reversionParser extends Parser {
                 case 1 + 1:
                   {
                     {
-                      this.state = 161;
+                      this.state = 163;
                       this.match(reversionParser.ANY);
                     }
                   }
@@ -1169,7 +1171,7 @@ export default class reversionParser extends Parser {
                 default:
                   throw new NoViableAltException(this);
               }
-              this.state = 164;
+              this.state = 166;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 14, this._ctx);
             } while (_alt !== 1 && _alt !== ATN.INVALID_ALT_NUMBER);
@@ -1179,7 +1181,7 @@ export default class reversionParser extends Parser {
           localctx = new AnchorIsoContext(this, localctx);
           this.enterOuterAlt(localctx, 5);
           {
-            this.state = 166;
+            this.state = 168;
             this.iso_8601();
           }
           break;
@@ -1203,14 +1205,14 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 16, reversionParser.RULE_date);
     try {
       let _alt: number;
-      this.state = 183;
+      this.state = 185;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 26:
           localctx = new DateYesterdayContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 169;
+            this.state = 171;
             this.match(reversionParser.T__25);
           }
           break;
@@ -1218,7 +1220,7 @@ export default class reversionParser extends Parser {
           localctx = new DateTodayContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 170;
+            this.state = 172;
             this.match(reversionParser.T__26);
           }
           break;
@@ -1226,7 +1228,7 @@ export default class reversionParser extends Parser {
           localctx = new DateIso8601Context(this, localctx);
           this.enterOuterAlt(localctx, 3);
           {
-            this.state = 171;
+            this.state = 173;
             this.iso_8601();
           }
           break;
@@ -1244,30 +1246,30 @@ export default class reversionParser extends Parser {
           localctx = new DateTimePointContext(this, localctx);
           this.enterOuterAlt(localctx, 4);
           {
-            this.state = 172;
+            this.state = 174;
             this.time_point();
-            this.state = 177;
+            this.state = 179;
             this._errHandler.sync(this);
             _alt = this._interp.adaptivePredict(this._input, 16, this._ctx);
             while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
               if (_alt === 1) {
                 {
                   {
-                    this.state = 173;
+                    this.state = 175;
                     this.match(reversionParser.SPACE);
-                    this.state = 174;
+                    this.state = 176;
                     this.time_point();
                   }
                 }
               }
-              this.state = 179;
+              this.state = 181;
               this._errHandler.sync(this);
               _alt = this._interp.adaptivePredict(this._input, 16, this._ctx);
             }
-            this.state = 180;
+            this.state = 182;
             this.match(reversionParser.SPACE);
-            this.state = 181;
-            this.match(reversionParser.TIME_DIRECTION);
+            this.state = 183;
+            this.time_direction();
           }
           break;
         default:
@@ -1295,7 +1297,7 @@ export default class reversionParser extends Parser {
     );
     this.enterRule(localctx, 18, reversionParser.RULE_time_point);
     try {
-      this.state = 192;
+      this.state = 194;
       this._errHandler.sync(this);
       switch (this._input.LA(1)) {
         case 28:
@@ -1311,11 +1313,11 @@ export default class reversionParser extends Parser {
           localctx = new TimePointValueContext(this, localctx);
           this.enterOuterAlt(localctx, 1);
           {
-            this.state = 185;
-            this.time_value();
-            this.state = 186;
-            this.match(reversionParser.SPACE);
             this.state = 187;
+            this.time_value();
+            this.state = 188;
+            this.match(reversionParser.SPACE);
+            this.state = 189;
             this.time_unit();
           }
           break;
@@ -1323,11 +1325,11 @@ export default class reversionParser extends Parser {
           localctx = new TimePointDigitContext(this, localctx);
           this.enterOuterAlt(localctx, 2);
           {
-            this.state = 189;
-            this.match(reversionParser.DIGIT);
-            this.state = 190;
-            this.match(reversionParser.SPACE);
             this.state = 191;
+            this.match(reversionParser.DIGIT);
+            this.state = 192;
+            this.match(reversionParser.SPACE);
+            this.state = 193;
             this.time_unit();
           }
           break;
@@ -1359,7 +1361,7 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 194;
+        this.state = 196;
         _la = this._input.LA(1);
         if (!(((_la - 28) & ~0x1f) === 0 && ((1 << (_la - 28)) & 1023) !== 0)) {
           this._errHandler.recoverInline(this);
@@ -1393,11 +1395,45 @@ export default class reversionParser extends Parser {
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 196;
+        this.state = 198;
         _la = this._input.LA(1);
         if (
           !(((_la - 38) & ~0x1f) === 0 && ((1 << (_la - 38)) & 16383) !== 0)
         ) {
+          this._errHandler.recoverInline(this);
+        } else {
+          this._errHandler.reportMatch(this);
+          this.consume();
+        }
+      }
+    } catch (re) {
+      if (re instanceof RecognitionException) {
+        localctx.exception = re;
+        this._errHandler.reportError(this, re);
+        this._errHandler.recover(this, re);
+      } else {
+        throw re;
+      }
+    } finally {
+      this.exitRule();
+    }
+    return localctx;
+  }
+  // @RuleVersion(0)
+  public time_direction(): Time_directionContext {
+    let localctx: Time_directionContext = new Time_directionContext(
+      this,
+      this._ctx,
+      this.state,
+    );
+    this.enterRule(localctx, 24, reversionParser.RULE_time_direction);
+    let _la: number;
+    try {
+      this.enterOuterAlt(localctx, 1);
+      {
+        this.state = 200;
+        _la = this._input.LA(1);
+        if (!(_la === 4 || _la === 52)) {
           this._errHandler.recoverInline(this);
         } else {
           this._errHandler.reportMatch(this);
@@ -1424,29 +1460,29 @@ export default class reversionParser extends Parser {
       this._ctx,
       this.state,
     );
-    this.enterRule(localctx, 24, reversionParser.RULE_iso_8601);
+    this.enterRule(localctx, 26, reversionParser.RULE_iso_8601);
     try {
       this.enterOuterAlt(localctx, 1);
       {
-        this.state = 198;
+        this.state = 202;
         this.match(reversionParser.ISO_DATE);
-        this.state = 204;
+        this.state = 208;
         this._errHandler.sync(this);
         switch (this._interp.adaptivePredict(this._input, 20, this._ctx)) {
           case 1:
             {
-              this.state = 199;
+              this.state = 203;
               this.match(reversionParser.SPACE);
-              this.state = 200;
+              this.state = 204;
               this.match(reversionParser.ISO_TIME);
-              this.state = 202;
+              this.state = 206;
               this._errHandler.sync(this);
               switch (
                 this._interp.adaptivePredict(this._input, 19, this._ctx)
               ) {
                 case 1:
                   {
-                    this.state = 201;
+                    this.state = 205;
                     this.match(reversionParser.IS_TIME_POSTFIX);
                   }
                   break;
@@ -1497,97 +1533,99 @@ export default class reversionParser extends Parser {
   }
 
   public static readonly _serializedATN: number[] = [
-    4, 1, 67, 207, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4,
+    4, 1, 67, 211, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7, 4,
     2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7, 10, 2,
-    11, 7, 11, 2, 12, 7, 12, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    11, 7, 11, 2, 12, 7, 12, 2, 13, 7, 13, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 57, 8, 1, 11, 1,
-    12, 1, 58, 1, 1, 1, 1, 1, 1, 4, 1, 64, 8, 1, 11, 1, 12, 1, 65, 1, 1, 1, 1,
-    1, 1, 4, 1, 71, 8, 1, 11, 1, 12, 1, 72, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 3, 1, 82, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 97, 8, 1, 11, 1, 12, 1, 98, 5, 1, 101, 8, 1,
-    10, 1, 12, 1, 104, 9, 1, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 110, 8, 2, 1, 3, 1,
-    3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 4, 4, 124, 8,
-    4, 11, 4, 12, 4, 125, 1, 4, 1, 4, 1, 4, 4, 4, 131, 8, 4, 11, 4, 12, 4, 132,
-    1, 4, 1, 4, 1, 4, 1, 4, 4, 4, 139, 8, 4, 11, 4, 12, 4, 140, 3, 4, 143, 8, 4,
-    1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 151, 8, 5, 1, 5, 3, 5, 154, 8, 5,
-    1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 4, 7, 163, 8, 7, 11, 7, 12, 7,
-    164, 1, 7, 3, 7, 168, 8, 7, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 5, 8, 176,
-    8, 8, 10, 8, 12, 8, 179, 9, 8, 1, 8, 1, 8, 1, 8, 3, 8, 184, 8, 8, 1, 9, 1,
-    9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 3, 9, 193, 8, 9, 1, 10, 1, 10, 1, 11, 1,
-    11, 1, 12, 1, 12, 1, 12, 1, 12, 3, 12, 203, 8, 12, 3, 12, 205, 8, 12, 1, 12,
-    1, 164, 1, 2, 13, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 0, 5, 1, 0,
-    16, 17, 2, 0, 61, 61, 65, 65, 3, 0, 15, 15, 17, 17, 24, 24, 1, 0, 28, 37, 1,
-    0, 38, 51, 242, 0, 26, 1, 0, 0, 0, 2, 81, 1, 0, 0, 0, 4, 109, 1, 0, 0, 0, 6,
-    111, 1, 0, 0, 0, 8, 142, 1, 0, 0, 0, 10, 153, 1, 0, 0, 0, 12, 155, 1, 0, 0,
-    0, 14, 167, 1, 0, 0, 0, 16, 183, 1, 0, 0, 0, 18, 192, 1, 0, 0, 0, 20, 194,
-    1, 0, 0, 0, 22, 196, 1, 0, 0, 0, 24, 198, 1, 0, 0, 0, 26, 27, 3, 2, 1, 0,
-    27, 28, 5, 0, 0, 1, 28, 1, 1, 0, 0, 0, 29, 30, 6, 1, -1, 0, 30, 82, 3, 4, 2,
-    0, 31, 82, 3, 8, 4, 0, 32, 33, 5, 1, 0, 0, 33, 34, 5, 2, 0, 0, 34, 82, 3,
-    16, 8, 0, 35, 36, 5, 3, 0, 0, 36, 37, 5, 2, 0, 0, 37, 82, 3, 16, 8, 0, 38,
-    39, 5, 4, 0, 0, 39, 40, 5, 2, 0, 0, 40, 82, 3, 16, 8, 0, 41, 42, 5, 5, 0, 0,
-    42, 43, 5, 2, 0, 0, 43, 82, 5, 54, 0, 0, 44, 45, 5, 6, 0, 0, 45, 46, 5, 2,
-    0, 0, 46, 82, 3, 16, 8, 0, 47, 48, 5, 7, 0, 0, 48, 49, 5, 2, 0, 0, 49, 82,
-    3, 16, 8, 0, 50, 51, 5, 8, 0, 0, 51, 52, 5, 2, 0, 0, 52, 82, 3, 16, 8, 0,
-    53, 54, 5, 9, 0, 0, 54, 56, 5, 2, 0, 0, 55, 57, 5, 65, 0, 0, 56, 55, 1, 0,
-    0, 0, 57, 58, 1, 0, 0, 0, 58, 56, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 82, 1,
-    0, 0, 0, 60, 61, 5, 10, 0, 0, 61, 63, 5, 2, 0, 0, 62, 64, 5, 65, 0, 0, 63,
-    62, 1, 0, 0, 0, 64, 65, 1, 0, 0, 0, 65, 63, 1, 0, 0, 0, 65, 66, 1, 0, 0, 0,
-    66, 82, 1, 0, 0, 0, 67, 68, 5, 11, 0, 0, 68, 70, 5, 2, 0, 0, 69, 71, 5, 65,
-    0, 0, 70, 69, 1, 0, 0, 0, 71, 72, 1, 0, 0, 0, 72, 70, 1, 0, 0, 0, 72, 73, 1,
-    0, 0, 0, 73, 82, 1, 0, 0, 0, 74, 75, 5, 12, 0, 0, 75, 76, 5, 2, 0, 0, 76,
-    82, 3, 2, 1, 8, 77, 78, 5, 13, 0, 0, 78, 82, 3, 2, 1, 2, 79, 80, 5, 14, 0,
-    0, 80, 82, 3, 2, 1, 1, 81, 29, 1, 0, 0, 0, 81, 31, 1, 0, 0, 0, 81, 32, 1, 0,
-    0, 0, 81, 35, 1, 0, 0, 0, 81, 38, 1, 0, 0, 0, 81, 41, 1, 0, 0, 0, 81, 44, 1,
-    0, 0, 0, 81, 47, 1, 0, 0, 0, 81, 50, 1, 0, 0, 0, 81, 53, 1, 0, 0, 0, 81, 60,
-    1, 0, 0, 0, 81, 67, 1, 0, 0, 0, 81, 74, 1, 0, 0, 0, 81, 77, 1, 0, 0, 0, 81,
-    79, 1, 0, 0, 0, 82, 102, 1, 0, 0, 0, 83, 84, 10, 4, 0, 0, 84, 85, 5, 13, 0,
-    0, 85, 101, 3, 2, 1, 5, 86, 87, 10, 3, 0, 0, 87, 88, 5, 14, 0, 0, 88, 101,
-    3, 2, 1, 4, 89, 90, 10, 7, 0, 0, 90, 101, 5, 13, 0, 0, 91, 92, 10, 6, 0, 0,
-    92, 101, 5, 14, 0, 0, 93, 96, 10, 5, 0, 0, 94, 95, 5, 61, 0, 0, 95, 97, 3,
-    2, 1, 0, 96, 94, 1, 0, 0, 0, 97, 98, 1, 0, 0, 0, 98, 96, 1, 0, 0, 0, 98, 99,
-    1, 0, 0, 0, 99, 101, 1, 0, 0, 0, 100, 83, 1, 0, 0, 0, 100, 86, 1, 0, 0, 0,
-    100, 89, 1, 0, 0, 0, 100, 91, 1, 0, 0, 0, 100, 93, 1, 0, 0, 0, 101, 104, 1,
-    0, 0, 0, 102, 100, 1, 0, 0, 0, 102, 103, 1, 0, 0, 0, 103, 3, 1, 0, 0, 0,
-    104, 102, 1, 0, 0, 0, 105, 110, 3, 6, 3, 0, 106, 110, 5, 55, 0, 0, 107, 108,
-    5, 15, 0, 0, 108, 110, 3, 4, 2, 0, 109, 105, 1, 0, 0, 0, 109, 106, 1, 0, 0,
-    0, 109, 107, 1, 0, 0, 0, 110, 5, 1, 0, 0, 0, 111, 112, 7, 0, 0, 0, 112, 7,
-    1, 0, 0, 0, 113, 114, 3, 4, 2, 0, 114, 115, 3, 12, 6, 0, 115, 116, 3, 10, 5,
-    0, 116, 143, 1, 0, 0, 0, 117, 118, 3, 4, 2, 0, 118, 119, 3, 12, 6, 0, 119,
-    120, 5, 54, 0, 0, 120, 143, 1, 0, 0, 0, 121, 123, 5, 18, 0, 0, 122, 124, 7,
-    1, 0, 0, 123, 122, 1, 0, 0, 0, 124, 125, 1, 0, 0, 0, 125, 123, 1, 0, 0, 0,
-    125, 126, 1, 0, 0, 0, 126, 143, 1, 0, 0, 0, 127, 128, 3, 4, 2, 0, 128, 130,
-    5, 19, 0, 0, 129, 131, 5, 65, 0, 0, 130, 129, 1, 0, 0, 0, 131, 132, 1, 0, 0,
-    0, 132, 130, 1, 0, 0, 0, 132, 133, 1, 0, 0, 0, 133, 143, 1, 0, 0, 0, 134,
-    135, 5, 19, 0, 0, 135, 136, 5, 54, 0, 0, 136, 138, 5, 19, 0, 0, 137, 139, 5,
-    65, 0, 0, 138, 137, 1, 0, 0, 0, 139, 140, 1, 0, 0, 0, 140, 138, 1, 0, 0, 0,
-    140, 141, 1, 0, 0, 0, 141, 143, 1, 0, 0, 0, 142, 113, 1, 0, 0, 0, 142, 117,
-    1, 0, 0, 0, 142, 121, 1, 0, 0, 0, 142, 127, 1, 0, 0, 0, 142, 134, 1, 0, 0,
-    0, 143, 9, 1, 0, 0, 0, 144, 154, 5, 17, 0, 0, 145, 154, 5, 20, 0, 0, 146,
-    154, 5, 53, 0, 0, 147, 154, 5, 21, 0, 0, 148, 150, 5, 22, 0, 0, 149, 151, 3,
-    14, 7, 0, 150, 149, 1, 0, 0, 0, 150, 151, 1, 0, 0, 0, 151, 152, 1, 0, 0, 0,
-    152, 154, 5, 23, 0, 0, 153, 144, 1, 0, 0, 0, 153, 145, 1, 0, 0, 0, 153, 146,
-    1, 0, 0, 0, 153, 147, 1, 0, 0, 0, 153, 148, 1, 0, 0, 0, 154, 11, 1, 0, 0, 0,
-    155, 156, 7, 2, 0, 0, 156, 13, 1, 0, 0, 0, 157, 168, 3, 16, 8, 0, 158, 168,
-    5, 53, 0, 0, 159, 168, 5, 54, 0, 0, 160, 162, 5, 25, 0, 0, 161, 163, 5, 65,
-    0, 0, 162, 161, 1, 0, 0, 0, 163, 164, 1, 0, 0, 0, 164, 165, 1, 0, 0, 0, 164,
-    162, 1, 0, 0, 0, 165, 168, 1, 0, 0, 0, 166, 168, 3, 24, 12, 0, 167, 157, 1,
-    0, 0, 0, 167, 158, 1, 0, 0, 0, 167, 159, 1, 0, 0, 0, 167, 160, 1, 0, 0, 0,
-    167, 166, 1, 0, 0, 0, 168, 15, 1, 0, 0, 0, 169, 184, 5, 26, 0, 0, 170, 184,
-    5, 27, 0, 0, 171, 184, 3, 24, 12, 0, 172, 177, 3, 18, 9, 0, 173, 174, 5, 61,
-    0, 0, 174, 176, 3, 18, 9, 0, 175, 173, 1, 0, 0, 0, 176, 179, 1, 0, 0, 0,
-    177, 175, 1, 0, 0, 0, 177, 178, 1, 0, 0, 0, 178, 180, 1, 0, 0, 0, 179, 177,
-    1, 0, 0, 0, 180, 181, 5, 61, 0, 0, 181, 182, 5, 52, 0, 0, 182, 184, 1, 0, 0,
-    0, 183, 169, 1, 0, 0, 0, 183, 170, 1, 0, 0, 0, 183, 171, 1, 0, 0, 0, 183,
-    172, 1, 0, 0, 0, 184, 17, 1, 0, 0, 0, 185, 186, 3, 20, 10, 0, 186, 187, 5,
-    61, 0, 0, 187, 188, 3, 22, 11, 0, 188, 193, 1, 0, 0, 0, 189, 190, 5, 54, 0,
-    0, 190, 191, 5, 61, 0, 0, 191, 193, 3, 22, 11, 0, 192, 185, 1, 0, 0, 0, 192,
-    189, 1, 0, 0, 0, 193, 19, 1, 0, 0, 0, 194, 195, 7, 3, 0, 0, 195, 21, 1, 0,
-    0, 0, 196, 197, 7, 4, 0, 0, 197, 23, 1, 0, 0, 0, 198, 204, 5, 58, 0, 0, 199,
-    200, 5, 61, 0, 0, 200, 202, 5, 59, 0, 0, 201, 203, 5, 60, 0, 0, 202, 201, 1,
-    0, 0, 0, 202, 203, 1, 0, 0, 0, 203, 205, 1, 0, 0, 0, 204, 199, 1, 0, 0, 0,
-    204, 205, 1, 0, 0, 0, 205, 25, 1, 0, 0, 0, 21, 58, 65, 72, 81, 98, 100, 102,
-    109, 125, 132, 140, 142, 150, 153, 164, 167, 177, 183, 192, 202, 204,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1,
+    59, 8, 1, 11, 1, 12, 1, 60, 1, 1, 1, 1, 1, 1, 4, 1, 66, 8, 1, 11, 1, 12, 1,
+    67, 1, 1, 1, 1, 1, 1, 4, 1, 73, 8, 1, 11, 1, 12, 1, 74, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 3, 1, 84, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 99, 8, 1, 11, 1, 12, 1, 100, 5,
+    1, 103, 8, 1, 10, 1, 12, 1, 106, 9, 1, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 112, 8,
+    2, 1, 3, 1, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4,
+    4, 4, 126, 8, 4, 11, 4, 12, 4, 127, 1, 4, 1, 4, 1, 4, 4, 4, 133, 8, 4, 11,
+    4, 12, 4, 134, 1, 4, 1, 4, 1, 4, 1, 4, 4, 4, 141, 8, 4, 11, 4, 12, 4, 142,
+    3, 4, 145, 8, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 153, 8, 5, 1, 5,
+    3, 5, 156, 8, 5, 1, 6, 1, 6, 1, 7, 1, 7, 1, 7, 1, 7, 1, 7, 4, 7, 165, 8, 7,
+    11, 7, 12, 7, 166, 1, 7, 3, 7, 170, 8, 7, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8, 1,
+    8, 5, 8, 178, 8, 8, 10, 8, 12, 8, 181, 9, 8, 1, 8, 1, 8, 1, 8, 3, 8, 186, 8,
+    8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 3, 9, 195, 8, 9, 1, 10, 1, 10,
+    1, 11, 1, 11, 1, 12, 1, 12, 1, 13, 1, 13, 1, 13, 1, 13, 3, 13, 207, 8, 13,
+    3, 13, 209, 8, 13, 1, 13, 1, 166, 1, 2, 14, 0, 2, 4, 6, 8, 10, 12, 14, 16,
+    18, 20, 22, 24, 26, 0, 6, 1, 0, 16, 17, 2, 0, 61, 61, 65, 65, 3, 0, 15, 15,
+    17, 17, 24, 24, 1, 0, 28, 37, 1, 0, 38, 51, 2, 0, 4, 4, 52, 52, 245, 0, 28,
+    1, 0, 0, 0, 2, 83, 1, 0, 0, 0, 4, 111, 1, 0, 0, 0, 6, 113, 1, 0, 0, 0, 8,
+    144, 1, 0, 0, 0, 10, 155, 1, 0, 0, 0, 12, 157, 1, 0, 0, 0, 14, 169, 1, 0, 0,
+    0, 16, 185, 1, 0, 0, 0, 18, 194, 1, 0, 0, 0, 20, 196, 1, 0, 0, 0, 22, 198,
+    1, 0, 0, 0, 24, 200, 1, 0, 0, 0, 26, 202, 1, 0, 0, 0, 28, 29, 3, 2, 1, 0,
+    29, 30, 5, 0, 0, 1, 30, 1, 1, 0, 0, 0, 31, 32, 6, 1, -1, 0, 32, 84, 3, 4, 2,
+    0, 33, 84, 3, 8, 4, 0, 34, 35, 5, 1, 0, 0, 35, 36, 5, 2, 0, 0, 36, 84, 3,
+    16, 8, 0, 37, 38, 5, 3, 0, 0, 38, 39, 5, 2, 0, 0, 39, 84, 3, 16, 8, 0, 40,
+    41, 5, 4, 0, 0, 41, 42, 5, 2, 0, 0, 42, 84, 3, 16, 8, 0, 43, 44, 5, 5, 0, 0,
+    44, 45, 5, 2, 0, 0, 45, 84, 5, 54, 0, 0, 46, 47, 5, 6, 0, 0, 47, 48, 5, 2,
+    0, 0, 48, 84, 3, 16, 8, 0, 49, 50, 5, 7, 0, 0, 50, 51, 5, 2, 0, 0, 51, 84,
+    3, 16, 8, 0, 52, 53, 5, 8, 0, 0, 53, 54, 5, 2, 0, 0, 54, 84, 3, 16, 8, 0,
+    55, 56, 5, 9, 0, 0, 56, 58, 5, 2, 0, 0, 57, 59, 5, 65, 0, 0, 58, 57, 1, 0,
+    0, 0, 59, 60, 1, 0, 0, 0, 60, 58, 1, 0, 0, 0, 60, 61, 1, 0, 0, 0, 61, 84, 1,
+    0, 0, 0, 62, 63, 5, 10, 0, 0, 63, 65, 5, 2, 0, 0, 64, 66, 5, 65, 0, 0, 65,
+    64, 1, 0, 0, 0, 66, 67, 1, 0, 0, 0, 67, 65, 1, 0, 0, 0, 67, 68, 1, 0, 0, 0,
+    68, 84, 1, 0, 0, 0, 69, 70, 5, 11, 0, 0, 70, 72, 5, 2, 0, 0, 71, 73, 5, 65,
+    0, 0, 72, 71, 1, 0, 0, 0, 73, 74, 1, 0, 0, 0, 74, 72, 1, 0, 0, 0, 74, 75, 1,
+    0, 0, 0, 75, 84, 1, 0, 0, 0, 76, 77, 5, 12, 0, 0, 77, 78, 5, 2, 0, 0, 78,
+    84, 3, 2, 1, 8, 79, 80, 5, 13, 0, 0, 80, 84, 3, 2, 1, 2, 81, 82, 5, 14, 0,
+    0, 82, 84, 3, 2, 1, 1, 83, 31, 1, 0, 0, 0, 83, 33, 1, 0, 0, 0, 83, 34, 1, 0,
+    0, 0, 83, 37, 1, 0, 0, 0, 83, 40, 1, 0, 0, 0, 83, 43, 1, 0, 0, 0, 83, 46, 1,
+    0, 0, 0, 83, 49, 1, 0, 0, 0, 83, 52, 1, 0, 0, 0, 83, 55, 1, 0, 0, 0, 83, 62,
+    1, 0, 0, 0, 83, 69, 1, 0, 0, 0, 83, 76, 1, 0, 0, 0, 83, 79, 1, 0, 0, 0, 83,
+    81, 1, 0, 0, 0, 84, 104, 1, 0, 0, 0, 85, 86, 10, 4, 0, 0, 86, 87, 5, 13, 0,
+    0, 87, 103, 3, 2, 1, 5, 88, 89, 10, 3, 0, 0, 89, 90, 5, 14, 0, 0, 90, 103,
+    3, 2, 1, 4, 91, 92, 10, 7, 0, 0, 92, 103, 5, 13, 0, 0, 93, 94, 10, 6, 0, 0,
+    94, 103, 5, 14, 0, 0, 95, 98, 10, 5, 0, 0, 96, 97, 5, 61, 0, 0, 97, 99, 3,
+    2, 1, 0, 98, 96, 1, 0, 0, 0, 99, 100, 1, 0, 0, 0, 100, 98, 1, 0, 0, 0, 100,
+    101, 1, 0, 0, 0, 101, 103, 1, 0, 0, 0, 102, 85, 1, 0, 0, 0, 102, 88, 1, 0,
+    0, 0, 102, 91, 1, 0, 0, 0, 102, 93, 1, 0, 0, 0, 102, 95, 1, 0, 0, 0, 103,
+    106, 1, 0, 0, 0, 104, 102, 1, 0, 0, 0, 104, 105, 1, 0, 0, 0, 105, 3, 1, 0,
+    0, 0, 106, 104, 1, 0, 0, 0, 107, 112, 3, 6, 3, 0, 108, 112, 5, 55, 0, 0,
+    109, 110, 5, 15, 0, 0, 110, 112, 3, 4, 2, 0, 111, 107, 1, 0, 0, 0, 111, 108,
+    1, 0, 0, 0, 111, 109, 1, 0, 0, 0, 112, 5, 1, 0, 0, 0, 113, 114, 7, 0, 0, 0,
+    114, 7, 1, 0, 0, 0, 115, 116, 3, 4, 2, 0, 116, 117, 3, 12, 6, 0, 117, 118,
+    3, 10, 5, 0, 118, 145, 1, 0, 0, 0, 119, 120, 3, 4, 2, 0, 120, 121, 3, 12, 6,
+    0, 121, 122, 5, 54, 0, 0, 122, 145, 1, 0, 0, 0, 123, 125, 5, 18, 0, 0, 124,
+    126, 7, 1, 0, 0, 125, 124, 1, 0, 0, 0, 126, 127, 1, 0, 0, 0, 127, 125, 1, 0,
+    0, 0, 127, 128, 1, 0, 0, 0, 128, 145, 1, 0, 0, 0, 129, 130, 3, 4, 2, 0, 130,
+    132, 5, 19, 0, 0, 131, 133, 5, 65, 0, 0, 132, 131, 1, 0, 0, 0, 133, 134, 1,
+    0, 0, 0, 134, 132, 1, 0, 0, 0, 134, 135, 1, 0, 0, 0, 135, 145, 1, 0, 0, 0,
+    136, 137, 5, 19, 0, 0, 137, 138, 5, 54, 0, 0, 138, 140, 5, 19, 0, 0, 139,
+    141, 5, 65, 0, 0, 140, 139, 1, 0, 0, 0, 141, 142, 1, 0, 0, 0, 142, 140, 1,
+    0, 0, 0, 142, 143, 1, 0, 0, 0, 143, 145, 1, 0, 0, 0, 144, 115, 1, 0, 0, 0,
+    144, 119, 1, 0, 0, 0, 144, 123, 1, 0, 0, 0, 144, 129, 1, 0, 0, 0, 144, 136,
+    1, 0, 0, 0, 145, 9, 1, 0, 0, 0, 146, 156, 5, 17, 0, 0, 147, 156, 5, 20, 0,
+    0, 148, 156, 5, 53, 0, 0, 149, 156, 5, 21, 0, 0, 150, 152, 5, 22, 0, 0, 151,
+    153, 3, 14, 7, 0, 152, 151, 1, 0, 0, 0, 152, 153, 1, 0, 0, 0, 153, 154, 1,
+    0, 0, 0, 154, 156, 5, 23, 0, 0, 155, 146, 1, 0, 0, 0, 155, 147, 1, 0, 0, 0,
+    155, 148, 1, 0, 0, 0, 155, 149, 1, 0, 0, 0, 155, 150, 1, 0, 0, 0, 156, 11,
+    1, 0, 0, 0, 157, 158, 7, 2, 0, 0, 158, 13, 1, 0, 0, 0, 159, 170, 3, 16, 8,
+    0, 160, 170, 5, 53, 0, 0, 161, 170, 5, 54, 0, 0, 162, 164, 5, 25, 0, 0, 163,
+    165, 5, 65, 0, 0, 164, 163, 1, 0, 0, 0, 165, 166, 1, 0, 0, 0, 166, 167, 1,
+    0, 0, 0, 166, 164, 1, 0, 0, 0, 167, 170, 1, 0, 0, 0, 168, 170, 3, 26, 13, 0,
+    169, 159, 1, 0, 0, 0, 169, 160, 1, 0, 0, 0, 169, 161, 1, 0, 0, 0, 169, 162,
+    1, 0, 0, 0, 169, 168, 1, 0, 0, 0, 170, 15, 1, 0, 0, 0, 171, 186, 5, 26, 0,
+    0, 172, 186, 5, 27, 0, 0, 173, 186, 3, 26, 13, 0, 174, 179, 3, 18, 9, 0,
+    175, 176, 5, 61, 0, 0, 176, 178, 3, 18, 9, 0, 177, 175, 1, 0, 0, 0, 178,
+    181, 1, 0, 0, 0, 179, 177, 1, 0, 0, 0, 179, 180, 1, 0, 0, 0, 180, 182, 1, 0,
+    0, 0, 181, 179, 1, 0, 0, 0, 182, 183, 5, 61, 0, 0, 183, 184, 3, 24, 12, 0,
+    184, 186, 1, 0, 0, 0, 185, 171, 1, 0, 0, 0, 185, 172, 1, 0, 0, 0, 185, 173,
+    1, 0, 0, 0, 185, 174, 1, 0, 0, 0, 186, 17, 1, 0, 0, 0, 187, 188, 3, 20, 10,
+    0, 188, 189, 5, 61, 0, 0, 189, 190, 3, 22, 11, 0, 190, 195, 1, 0, 0, 0, 191,
+    192, 5, 54, 0, 0, 192, 193, 5, 61, 0, 0, 193, 195, 3, 22, 11, 0, 194, 187,
+    1, 0, 0, 0, 194, 191, 1, 0, 0, 0, 195, 19, 1, 0, 0, 0, 196, 197, 7, 3, 0, 0,
+    197, 21, 1, 0, 0, 0, 198, 199, 7, 4, 0, 0, 199, 23, 1, 0, 0, 0, 200, 201, 7,
+    5, 0, 0, 201, 25, 1, 0, 0, 0, 202, 208, 5, 58, 0, 0, 203, 204, 5, 61, 0, 0,
+    204, 206, 5, 59, 0, 0, 205, 207, 5, 60, 0, 0, 206, 205, 1, 0, 0, 0, 206,
+    207, 1, 0, 0, 0, 207, 209, 1, 0, 0, 0, 208, 203, 1, 0, 0, 0, 208, 209, 1, 0,
+    0, 0, 209, 27, 1, 0, 0, 0, 21, 60, 67, 74, 83, 100, 102, 104, 111, 127, 134,
+    142, 144, 152, 155, 166, 169, 179, 185, 194, 206, 208,
   ];
 
   private static __ATN: ATN;
@@ -2915,8 +2953,11 @@ export class DateTimePointContext extends DateContext {
   public SPACE(i: number): TerminalNode {
     return this.getToken(reversionParser.SPACE, i);
   }
-  public TIME_DIRECTION(): TerminalNode {
-    return this.getToken(reversionParser.TIME_DIRECTION, 0);
+  public time_direction(): Time_directionContext {
+    return this.getTypedRuleContext(
+      Time_directionContext,
+      0,
+    ) as Time_directionContext;
   }
   public enterRule(listener: reversionListener): void {
     if (listener.enterDateTimePoint) {
@@ -3154,6 +3195,38 @@ export class Time_unitContext extends ParserRuleContext {
   public accept<Result>(visitor: reversionVisitor<Result>): Result {
     if (visitor.visitTime_unit) {
       return visitor.visitTime_unit(this);
+    } else {
+      return visitor.visitChildren(this);
+    }
+  }
+}
+
+export class Time_directionContext extends ParserRuleContext {
+  constructor(
+    parser?: reversionParser,
+    parent?: ParserRuleContext,
+    invokingState?: number,
+  ) {
+    super(parent, invokingState);
+    this.parser = parser;
+  }
+  public get ruleIndex(): number {
+    return reversionParser.RULE_time_direction;
+  }
+  public enterRule(listener: reversionListener): void {
+    if (listener.enterTime_direction) {
+      listener.enterTime_direction(this);
+    }
+  }
+  public exitRule(listener: reversionListener): void {
+    if (listener.exitTime_direction) {
+      listener.exitTime_direction(this);
+    }
+  }
+  // @Override
+  public accept<Result>(visitor: reversionVisitor<Result>): Result {
+    if (visitor.visitTime_direction) {
+      return visitor.visitTime_direction(this);
     } else {
       return visitor.visitChildren(this);
     }

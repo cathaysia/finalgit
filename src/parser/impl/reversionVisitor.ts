@@ -53,6 +53,7 @@ import { TimePointValueContext } from './reversionParser';
 import { TimePointDigitContext } from './reversionParser';
 import { Time_valueContext } from './reversionParser';
 import { Time_unitContext } from './reversionParser';
+import { Time_directionContext } from './reversionParser';
 import { Iso_8601Context } from './reversionParser';
 
 /**
@@ -401,6 +402,12 @@ export default class reversionVisitor<Result> extends ParseTreeVisitor<Result> {
    * @return the visitor result
    */
   visitTime_unit?: (ctx: Time_unitContext) => Result;
+  /**
+   * Visit a parse tree produced by `reversionParser.time_direction`.
+   * @param ctx the parse tree
+   * @return the visitor result
+   */
+  visitTime_direction?: (ctx: Time_directionContext) => Result;
   /**
    * Visit a parse tree produced by `reversionParser.iso_8601`.
    * @param ctx the parse tree

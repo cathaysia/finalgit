@@ -53,6 +53,7 @@ import { TimePointValueContext } from './reversionParser';
 import { TimePointDigitContext } from './reversionParser';
 import { Time_valueContext } from './reversionParser';
 import { Time_unitContext } from './reversionParser';
+import { Time_directionContext } from './reversionParser';
 import { Iso_8601Context } from './reversionParser';
 
 /**
@@ -638,6 +639,16 @@ export default class reversionListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   exitTime_unit?: (ctx: Time_unitContext) => void;
+  /**
+   * Enter a parse tree produced by `reversionParser.time_direction`.
+   * @param ctx the parse tree
+   */
+  enterTime_direction?: (ctx: Time_directionContext) => void;
+  /**
+   * Exit a parse tree produced by `reversionParser.time_direction`.
+   * @param ctx the parse tree
+   */
+  exitTime_direction?: (ctx: Time_directionContext) => void;
   /**
    * Enter a parse tree produced by `reversionParser.iso_8601`.
    * @param ctx the parse tree

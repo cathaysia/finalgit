@@ -65,6 +65,7 @@ test('filter', () => {
     ['HEAD~{-10}', 20],
     ['HEAD~{}', 20],
     ['HEAD~{one day ago}', 20],
+    ['HEAD~{one day after}', 0],
   ];
 
   for (const [expr, res] of v) {

@@ -353,7 +353,7 @@ function createVisitor() {
       })
       .reduce((pre, cur) => pre + cur);
 
-    const isBefore = ctx.TIME_DIRECTION().getText() === 'ago';
+    const isBefore = ctx.time_direction().getText() === 'ago';
 
     return {
       data: new Date().getTime() / 1000 - date,

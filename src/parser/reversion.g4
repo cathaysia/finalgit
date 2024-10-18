@@ -69,7 +69,7 @@ ref_anchor: date # anchorDate
 date: 'yesterday' # dateYesterday
     | 'today' # dateToday
     | iso_8601 # dateIso8601
-    | time_point (' ' time_point)* ' ' TIME_DIRECTION # dateTimePoint
+    | time_point (' ' time_point)* ' ' time_direction # dateTimePoint
     ;
 
 time_point: time_value ' ' time_unit # timePointValue
@@ -104,7 +104,7 @@ time_unit: 'second'
     | 'years'
     ;
 
-TIME_DIRECTION: 'ago' | 'after' ;
+time_direction: 'ago' | 'after' ;
 
 // iso 8061
 iso_8601: ISO_DATE (' ' ISO_TIME IS_TIME_POSTFIX?)?

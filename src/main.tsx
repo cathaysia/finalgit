@@ -1,7 +1,6 @@
 import React from 'react';
 import reactDom from 'react-dom/client';
 import './locales.ts';
-import { DragDropContext } from '@hello-pangea/dnd';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
@@ -29,16 +28,10 @@ reactDom.createRoot(document.getElementById('root') as HTMLElement).render(
       storageKey="vite-ui-theme"
       attribute="class"
     >
-      <DragDropContext
-        onDragEnd={() => {
-          console.log('drag end');
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </DragDropContext>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

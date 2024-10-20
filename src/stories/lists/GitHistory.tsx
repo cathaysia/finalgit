@@ -1,5 +1,4 @@
 import type { CommitInfo } from '@/bindings';
-import { Draggable, Droppable } from '@hello-pangea/dnd';
 import CommitItem from '../atoms/CommitItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
@@ -16,52 +15,15 @@ export default function GitHistory({
   ...props
 }: Omit<GitHistoryProps, 'count' | 'height' | 'getItem'>) {
   return (
-    <Droppable
-      droppableId="history"
-      mode="virtual"
-      renderClone={(provided, _, rubic) => {
-        const item = history[rubic.source.index];
-        return (
-          <CommitItem
-            ref={provided.innerRef}
-            filter={filter}
-            commit={item}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          />
-        );
+    <VirtualScrollArea
+      count={history.length}
+      height={75}
+      getItem={(idx: number) => {
+        const item = history[idx];
+        return <CommitItem filter={filter} commit={item} />;
       }}
-    >
-      {(provided, _) => {
-        return (
-          <VirtualScrollArea
-            count={history.length}
-            height={75}
-            ref={provided.innerRef}
-            getItem={(idx: number) => {
-              const item = history[idx];
-              return (
-                <Draggable key={item.oid} index={idx} draggableId={item.oid}>
-                  {(provided, _) => {
-                    return (
-                      <CommitItem
-                        ref={provided.innerRef}
-                        filter={filter}
-                        commit={item}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      />
-                    );
-                  }}
-                </Draggable>
-              );
-            }}
-            className={className}
-            {...provided.droppableProps}
-            {...props}
-          />
-        );
-      }}
-    </Droppable>
+      className={className}
+      {...props}
+    />
   );
 }

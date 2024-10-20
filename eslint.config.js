@@ -7,11 +7,13 @@ import tseslint from 'typescript-eslint';
 export default [
   {
     ignores: [
-      './src/components/ui/*',
+      'src/components/ui/*',
       'src-tauri/**',
       '**/dist/**',
       'tailwind.config.ts',
-      './vite.config.ts',
+      'vite.config.ts',
+      'src/parser/impl/**',
+      'src/routeTree.gen.ts',
     ],
   },
   {
@@ -42,6 +44,7 @@ export default [
       // 'react/display-name': 'warn',
       '@typescript-eslint/no-unused-expressions': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];

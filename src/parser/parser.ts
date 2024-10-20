@@ -270,7 +270,7 @@ function createVisitor() {
 
   // parse date
   visitor.visitDateToday = ctx => {
-    let date = new Date();
+    const date = new Date();
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
@@ -280,7 +280,7 @@ function createVisitor() {
     } as any;
   };
   visitor.visitDateYesterday = ctx => {
-    let date = new Date();
+    const date = new Date();
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
@@ -345,7 +345,7 @@ function createVisitor() {
   };
 
   visitor.visitDateTimePoint = ctx => {
-    let date = ctx
+    const date = ctx
       .time_point_list()
       .map(item => {
         const v = visitor.visit(item) as any as number;

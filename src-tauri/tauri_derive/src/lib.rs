@@ -69,7 +69,7 @@ pub fn export_ts(attr: TokenStream, input: TokenStream) -> TokenStream {
 
         if matches!(
             func.sig.ident.to_string().as_str(),
-            "exec_git" | "git_version"
+            "exec_git" | "git_get_version"
         ) {
             continue;
         }

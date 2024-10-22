@@ -1,4 +1,4 @@
-use std::{path::Path, process::Stdio, str::FromStr};
+use std::{path::Path, process::Stdio};
 
 use git2::build::CheckoutBuilder;
 use itertools::Itertools;
@@ -51,8 +51,6 @@ pub trait RepoExt {
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
     fn open_repo(repo_path: &str) -> AppResult<()>;
     fn branch_checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
-
-    fn git_version(&self) -> AppResult<semver::Version>;
 }
 
 #[export_ts(scope = "branch")]
@@ -321,16 +319,6 @@ impl RepoExt for git2::Repository {
 
         Ok(())
     }
-
-    fn git_version(&self) -> AppResult<semver::Version> {
-        let version = self.exec_git(["--version", "--no-build-options"])?;
-        let version = String::from_utf8(version.stdout)?;
-        let v = version.split(' ').collect_vec();
-        if v.len() != 3 {
-            return Err(AppError::BadStatus);
-        }
-        Ok(semver::Version::from_str(v[2].trim())?)
-    }
 }
 
 fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
@@ -365,16 +353,5 @@ fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
                 }
             }
         }
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_version() {
-        let repo = crate::utils::open_repo("../").unwrap();
-        repo.git_version().unwrap();
     }
 }

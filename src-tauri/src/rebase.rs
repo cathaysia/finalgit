@@ -1,4 +1,4 @@
-use crate::branch::RepoExt;
+use crate::{branch::RepoExt, utils::UtilExt};
 use tauri_derive::export_ts;
 
 use crate::AppResult;
@@ -17,7 +17,7 @@ impl RebaseExt for git2::Repository {
     }
 
     fn rebase_interactive_begin(&self) -> AppResult<()> {
-        let git_ver = self.git_version()?;
+        let git_ver = self.git_get_version()?;
         let mut args = vec![
             "rebase",
             "--interactive",

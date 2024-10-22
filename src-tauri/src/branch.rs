@@ -329,7 +329,7 @@ impl RepoExt for git2::Repository {
         if v.len() != 3 {
             return Err(AppError::BadStatus);
         }
-        Ok(semver::Version::from_str(v[2])?)
+        Ok(semver::Version::from_str(v[2].trim())?)
     }
 }
 
@@ -365,5 +365,16 @@ fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_version() {
+        let repo = crate::utils::open_repo("../").unwrap();
+        repo.git_version().unwrap();
     }
 }

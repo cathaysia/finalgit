@@ -41,3 +41,16 @@ impl ConfigExt for git2::Repository {
         Ok(res)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn get_config() {
+        let repo = crate::utils::open_repo("../").unwrap();
+        repo.git_get_config("user.name").unwrap();
+        repo.git_get_config("user.email").unwrap();
+        repo.git_get_config("commit.gpgsign").unwrap();
+    }
+}

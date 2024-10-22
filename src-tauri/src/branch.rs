@@ -355,3 +355,23 @@ fn walk_cb(repo: &git2::Repository, item: git2::TreeEntry) -> Option<FileTree> {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::RepoExt;
+
+    #[test]
+    fn test_open_repo() {
+        git2::Repository::open_repo("..").unwrap();
+    }
+
+    #[test]
+    fn test_get_branch() {
+        let repo = crate::utils::open_repo("..").unwrap();
+        assert!(!repo.get_branch_info().unwrap().is_empty());
+        assert!(!repo.get_tag_info().unwrap().is_empty());
+
+        let head = repo.get_repo_head().unwrap();
+        assert!(!repo.get_file_tree(&head.oid).unwrap().is_empty());
+    }
+}

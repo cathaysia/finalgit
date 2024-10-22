@@ -2,6 +2,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum AppError {
+    #[error("bad semver: {0}")]
+    Semver(#[from] semver::Error),
     #[error("git error: {0}")]
     Git(#[from] git2::Error),
     #[error("io error: {0}")]

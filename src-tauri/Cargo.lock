@@ -1342,6 +1342,7 @@ dependencies = [
  "glob-match",
  "itertools 0.13.0",
  "log",
+ "semver",
  "serde",
  "serde_json",
  "specta",

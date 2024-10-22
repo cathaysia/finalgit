@@ -67,7 +67,10 @@ pub fn export_ts(attr: TokenStream, input: TokenStream) -> TokenStream {
             continue;
         };
 
-        if func.sig.ident == "exec_git" {
+        if matches!(
+            func.sig.ident.to_string().as_str(),
+            "exec_git" | "git_version"
+        ) {
             continue;
         }
 

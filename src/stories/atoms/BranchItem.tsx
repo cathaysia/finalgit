@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
-import { checkoutBranch, removeBranch } from '@/lib/operator';
+import { branchCheckout, branchRemove } from '@/lib/operator';
 import { refreshBranches, useChanges } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
@@ -65,7 +65,7 @@ export default function BranchItem({
       return;
     }
     if (opState === OpState.Renaming) {
-      const res = await commands?.renameBranch(repoPath, info, newName);
+      const res = await commands?.branchRename(repoPath, info, newName);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshBranches();
@@ -74,7 +74,7 @@ export default function BranchItem({
           NOTIFY.error(err.error);
         });
     } else {
-      const res = await commands?.createBranch(repoPath, newName, info.commit);
+      const res = await commands?.branchCreate(repoPath, newName, info.commit);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshBranches();
@@ -124,7 +124,7 @@ export default function BranchItem({
           className="flex w-full flex-col gap-2"
           onClick={() => {
             if (repoPath && info.kind === 'Local' && !isHead) {
-              checkoutBranch(repoPath, info);
+              branchCheckout(repoPath, info);
             }
           }}
         >
@@ -159,7 +159,7 @@ export default function BranchItem({
                 disabled={isDirty}
                 onClick={() => {
                   if (repoPath) {
-                    checkoutBranch(repoPath, info);
+                    branchCheckout(repoPath, info);
                   }
                 }}
                 className={cn(
@@ -202,7 +202,7 @@ export default function BranchItem({
               className="text-red-600"
               onClick={() => {
                 if (repoPath) {
-                  removeBranch(repoPath, info);
+                  branchRemove(repoPath, info);
                 }
               }}
             >

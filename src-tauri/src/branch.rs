@@ -27,14 +27,14 @@ pub struct HeadInfo {
 pub trait RepoExt {
     fn get_branch_info(&self) -> AppResult<Vec<BranchInfo>>;
 
-    fn rename_branch(&self, info: BranchInfo, to: &str) -> AppResult<()>;
+    fn branch_rename(&self, info: BranchInfo, to: &str) -> AppResult<()>;
 
-    fn remove_branch(&self, info: BranchInfo) -> AppResult<()>;
+    fn branch_remove(&self, info: BranchInfo) -> AppResult<()>;
 
-    fn create_branch(&self, name: &str, commit: &str) -> AppResult<()>;
+    fn branch_create(&self, name: &str, commit: &str) -> AppResult<()>;
 
     /// https://stackoverflow.com/a/46758861
-    fn checkout_branch(&self, name: &str) -> AppResult<()>;
+    fn branch_checkout(&self, name: &str) -> AppResult<()>;
     fn get_current_status(&self) -> AppResult<Vec<FileStatus>>;
     fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<String>;
@@ -50,7 +50,7 @@ pub trait RepoExt {
 
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
     fn open_repo(repo_path: &str) -> AppResult<()>;
-    fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
+    fn branch_checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
 
     fn git_version(&self) -> AppResult<semver::Version>;
 }
@@ -118,21 +118,21 @@ impl RepoExt for git2::Repository {
         Ok(branches)
     }
 
-    fn rename_branch(&self, info: BranchInfo, to: &str) -> AppResult<()> {
+    fn branch_rename(&self, info: BranchInfo, to: &str) -> AppResult<()> {
         debug!("rename_branch: {info:?} ==> {to:?}");
         let mut branch = self.find_branch(&info.name, info.kind)?;
         let _ = branch.rename(to, true)?;
         Ok(())
     }
 
-    fn remove_branch(&self, info: BranchInfo) -> AppResult<()> {
+    fn branch_remove(&self, info: BranchInfo) -> AppResult<()> {
         let mut branch = self.find_branch(&info.name, info.kind)?;
         branch.delete()?;
 
         Ok(())
     }
 
-    fn create_branch(&self, name: &str, commit: &str) -> AppResult<()> {
+    fn branch_create(&self, name: &str, commit: &str) -> AppResult<()> {
         let commit = self.find_commit_by_prefix(commit)?;
 
         let _ = self.branch(name, &commit, true)?;
@@ -141,7 +141,7 @@ impl RepoExt for git2::Repository {
     }
 
     /// https://stackoverflow.com/a/46758861
-    fn checkout_branch(&self, name: &str) -> AppResult<()> {
+    fn branch_checkout(&self, name: &str) -> AppResult<()> {
         let branch = self.revparse_single(name)?;
         let mut opts = CheckoutBuilder::new();
         let opts = opts.safe().force();
@@ -259,8 +259,8 @@ impl RepoExt for git2::Repository {
         let (_, upstream) = upstream.split_once('/').unwrap();
         let (_, upstream) = upstream.split_once('/').unwrap();
 
-        let local = self.get_commits(branch, BranchType::Local)?;
-        let remote = self.get_commits(upstream, BranchType::Remote)?;
+        let local = self.get_commits_by_branch(branch, BranchType::Local)?;
+        let remote = self.get_commits_by_branch(upstream, BranchType::Remote)?;
 
         Ok(PushStatus {
             unpush: local.len().saturating_sub(remote.len()) as u32,
@@ -300,7 +300,7 @@ impl RepoExt for git2::Repository {
         Ok(())
     }
 
-    fn checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
+    fn branch_checkout_remote(repo_path: &str, branch: &str) -> AppResult<()> {
         info!("checkout remote {branch}");
         open_repo(repo_path)?;
         let output = std::process::Command::new("git")

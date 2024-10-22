@@ -42,9 +42,9 @@ pub trait CommitExt {
     fn commit_info(&self, commit: &str) -> AppResult<Commit>;
     fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
     fn commit_amend(&self, commit: &str) -> AppResult<()>;
-    fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
+    fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
-    fn get_commits(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>>;
+    fn get_commits_by_branch(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>>;
     fn create_patch(&self) -> AppResult<String>;
 }
 
@@ -90,7 +90,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn get_history(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
+    fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
         let commit = self.find_commit_by_prefix(commit)?;
         let mut revwalk = self.revwalk()?;
         revwalk.push(commit.id())?;
@@ -128,7 +128,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn get_commits(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
+    fn get_commits_by_branch(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
         let branch = self.find_branch(branch, kind.into())?;
         let oid = branch.get().target().unwrap();
 

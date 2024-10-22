@@ -11,7 +11,7 @@ import {
 import { Label } from '@/components/ui/label';
 import GitFileStatus from '@/lib/file_status';
 import NOTIFY from '@/lib/notify';
-import { addFileToStage, discardChanges } from '@/lib/operator';
+import { stageAddFile, stageDiscardFile } from '@/lib/operator';
 import { refreshChanges } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
@@ -98,7 +98,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   className={cn(isChecked && 'hidden')}
-                  onClick={() => repoPath && addFileToStage(repoPath, item)}
+                  onClick={() => repoPath && stageAddFile(repoPath, item)}
                 >
                   <VscDiffAdded className="mr-2 h-4 w-4" />
                   {t('changes.add')}
@@ -109,7 +109,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                     if (!repoPath) {
                       return;
                     }
-                    const v = await commands.removeFromStage(repoPath, [
+                    const v = await commands.stageRemoveFiles(repoPath, [
                       item.path,
                     ]);
                     match(v)
@@ -128,7 +128,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-red-600"
-                  onClick={() => repoPath && discardChanges(repoPath, item)}
+                  onClick={() => repoPath && stageDiscardFile(repoPath, item)}
                 >
                   <VscDiffRemoved className="mr-2 h-4 w-4" />
                   {t('changes.discard')}
@@ -148,10 +148,10 @@ async function handleCheckedChange(
   item: FileStatus,
 ) {
   if (e === true) {
-    addFileToStage(repoPath, item);
+    stageAddFile(repoPath, item);
   }
   if (e === false) {
-    const v = await commands?.removeFromStage(repoPath, [item.path]);
+    const v = await commands?.stageRemoveFiles(repoPath, [item.path]);
     match(v)
       .with({ status: 'ok' }, () => {
         refreshChanges();

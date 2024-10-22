@@ -3,15 +3,15 @@ import { match } from 'ts-pattern';
 import NOTIFY from './notify';
 import { refreshBranches, refreshChanges } from './query';
 
-export async function addFileToStage(repoPath: string, item: FileStatus) {
-  const v = await commands.addToStage(repoPath, [item]);
+export async function stageAddFile(repoPath: string, item: FileStatus) {
+  const v = await commands.stageAddFiles(repoPath, [item]);
   match(v)
     .with({ status: 'ok' }, () => refreshChanges())
     .with({ status: 'error' }, err => NOTIFY.error(err.error));
 }
 
-export async function discardChanges(repoPath: string, item: FileStatus) {
-  const v = await commands?.restoreFile(repoPath, [item], null);
+export async function stageDiscardFile(repoPath: string, item: FileStatus) {
+  const v = await commands?.stageRestoreFiles(repoPath, [item], null);
   match(v)
     .with({ status: 'ok' }, () => {
       refreshChanges();
@@ -21,12 +21,12 @@ export async function discardChanges(repoPath: string, item: FileStatus) {
     });
 }
 
-export async function removeBranch(repoPath: string, info: BranchInfo) {
+export async function branchRemove(repoPath: string, info: BranchInfo) {
   if (info.kind !== 'Local') {
     return;
   }
 
-  const v = await commands?.removeBranch(repoPath, info);
+  const v = await commands?.branchRemove(repoPath, info);
   match(v)
     .with({ status: 'ok' }, () => {
       refreshBranches();
@@ -36,9 +36,9 @@ export async function removeBranch(repoPath: string, info: BranchInfo) {
     });
 }
 
-export async function checkoutBranch(repoPath: string, info: BranchInfo) {
+export async function branchCheckout(repoPath: string, info: BranchInfo) {
   if (info.kind === 'Local') {
-    const v = await commands?.checkoutBranch(repoPath, info.name);
+    const v = await commands?.branchCheckout(repoPath, info.name);
     match(v)
       .with({ status: 'ok' }, () => {
         refreshBranches();
@@ -47,7 +47,7 @@ export async function checkoutBranch(repoPath: string, info: BranchInfo) {
         NOTIFY.error(err.error);
       });
   } else {
-    const v = await commands?.checkoutRemote(repoPath, info.name);
+    const v = await commands?.branchCheckoutRemote(repoPath, info.name);
     match(v)
       .with({ status: 'ok' }, () => {
         refreshBranches();

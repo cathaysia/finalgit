@@ -40,7 +40,7 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async renameBranch(
+  async branchRename(
     repoPath: string,
     info: BranchInfo,
     to: string,
@@ -48,28 +48,28 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('rename_branch', { repoPath, info, to }),
+        data: await TAURI_INVOKE('branch_rename', { repoPath, info, to }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async removeBranch(
+  async branchRemove(
     repoPath: string,
     info: BranchInfo,
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('remove_branch', { repoPath, info }),
+        data: await TAURI_INVOKE('branch_remove', { repoPath, info }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async createBranch(
+  async branchCreate(
     repoPath: string,
     name: string,
     commit: string,
@@ -77,21 +77,21 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('create_branch', { repoPath, name, commit }),
+        data: await TAURI_INVOKE('branch_create', { repoPath, name, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async checkoutBranch(
+  async branchCheckout(
     repoPath: string,
     name: string,
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('checkout_branch', { repoPath, name }),
+        data: await TAURI_INVOKE('branch_checkout', { repoPath, name }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -208,14 +208,17 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async checkoutRemote(
+  async branchCheckoutRemote(
     repoPath: string,
     branch: string,
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('checkout_remote', { repoPath, branch }),
+        data: await TAURI_INVOKE('branch_checkout_remote', {
+          repoPath,
+          branch,
+        }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -307,14 +310,14 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async getHistory(
+  async getCommitsFrom(
     repoPath: string,
     commit: string,
   ): Promise<Result<CommitInfo[], string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('get_history', { repoPath, commit }),
+        data: await TAURI_INVOKE('get_commits_from', { repoPath, commit }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -335,7 +338,7 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async getCommits(
+  async getCommitsByBranch(
     repoPath: string,
     branch: string,
     kind: BranchType,
@@ -343,7 +346,11 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('get_commits', { repoPath, branch, kind }),
+        data: await TAURI_INVOKE('get_commits_by_branch', {
+          repoPath,
+          branch,
+          kind,
+        }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -414,35 +421,59 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async addToStage(
+  async rebaseInteractiveBegin(
+    repoPath: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('rebase_interactive_begin', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async rebaseContinue(repoPath: string): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('rebase_continue', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async stageAddFiles(
     repoPath: string,
     files: FileStatus[],
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('add_to_stage', { repoPath, files }),
+        data: await TAURI_INVOKE('stage_add_files', { repoPath, files }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async removeFromStage(
+  async stageRemoveFiles(
     repoPath: string,
     files: string[],
   ): Promise<Result<null, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('remove_from_stage', { repoPath, files }),
+        data: await TAURI_INVOKE('stage_remove_files', { repoPath, files }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async restoreFile(
+  async stageRestoreFiles(
     repoPath: string,
     files: FileStatus[],
     commit: string | null,
@@ -450,7 +481,11 @@ export const commands = {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('restore_file', { repoPath, files, commit }),
+        data: await TAURI_INVOKE('stage_restore_files', {
+          repoPath,
+          files,
+          commit,
+        }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -604,7 +639,7 @@ type __EventObj__<T> = {
   once: (
     cb: TAURI_API_EVENT.EventCallback<T>,
   ) => ReturnType<typeof TAURI_API_EVENT.once<T>>;
-  emit: T extends null
+  emit: null extends T
     ? (payload?: T) => ReturnType<typeof TAURI_API_EVENT.emit>
     : (payload: T) => ReturnType<typeof TAURI_API_EVENT.emit>;
 };

@@ -81,7 +81,7 @@ async function toggleAllChecked(
   const changed = changeSet.map(item => item.path);
 
   if (allChecked) {
-    const res = await commands.removeFromStage(repoPath, changed);
+    const res = await commands.stageRemoveFiles(repoPath, changed);
     match(res)
       .with({ status: 'ok' }, () => {
         refreshChanges();
@@ -90,7 +90,7 @@ async function toggleAllChecked(
         NOTIFY.error(err.error);
       });
   } else {
-    const res = await commands.addToStage(repoPath, changeSet);
+    const res = await commands.stageAddFiles(repoPath, changeSet);
     match(res)
       .with({ status: 'ok' }, () => {
         refreshChanges();

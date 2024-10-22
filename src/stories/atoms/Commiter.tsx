@@ -78,7 +78,7 @@ export default function Commiter({
       if (allfiles.length === 0) {
         return;
       }
-      const res = await commands?.addToStage(repoPath, allfiles);
+      const res = await commands?.stageAddFiles(repoPath, allfiles);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshChanges();
@@ -125,10 +125,10 @@ export default function Commiter({
 
     const res = await (async () => {
       if (wtFiles.length !== 0) {
-        return await commands.restoreFile(repoPath, wtFiles, null);
+        return await commands.stageRestoreFiles(repoPath, wtFiles, null);
       }
 
-      return await commands.restoreFile(repoPath, indexFiles, null);
+      return await commands.stageRestoreFiles(repoPath, indexFiles, null);
     })();
 
     match(res)

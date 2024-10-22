@@ -60,7 +60,7 @@ export default function Commit() {
       trueHead = head?.oid;
     }
     if (repoPath && trueHead) {
-      commands?.getHistory(repoPath, trueHead).then(v => {
+      commands?.getCommitsFrom(repoPath, trueHead).then(v => {
         match(v)
           .with({ status: 'ok' }, v => {
             setCurrentHisotry(v.data);

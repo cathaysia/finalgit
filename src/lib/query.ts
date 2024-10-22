@@ -199,7 +199,7 @@ export function useHistory(commit: string) {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getHistory(repoPath, commit);
+      const res = await commands.getCommitsFrom(repoPath, commit);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;

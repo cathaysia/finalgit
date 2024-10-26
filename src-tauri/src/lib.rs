@@ -9,17 +9,27 @@ mod error;
 mod rebase;
 mod stage;
 mod stash;
+mod state;
 mod ty;
 mod utils;
 
+use std::process::exit;
+
+use clap::Parser;
 pub use error::*;
 pub use ty::*;
 
 use tauri_derive::tauri_commands;
 use tauri_plugin_log::{Target, TargetKind};
 
+#[derive(Parser)]
+struct Args {
+    dir: Option<String>,
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let args = Args::parse();
     let max_log = std::env::var("RUST_LOG").unwrap_or("OFF".to_string());
     let log_level = match max_log.to_uppercase().as_str() {
         "TRACE" => log::LevelFilter::Trace,
@@ -29,6 +39,18 @@ pub fn run() {
         "ERROR" => log::LevelFilter::Error,
         _ => log::LevelFilter::Off,
     };
+    if let Some(dir) = args.dir {
+        let Ok(pat) = std::path::Path::new(&dir).canonicalize() else {
+            eprintln!("path doesn't exist");
+            exit(-1);
+        };
+        let dir = pat.to_str().unwrap().to_string();
+        if utils::open_repo(&dir).is_err() {
+            eprintln!("path doesn't contain a git repository");
+            exit(-1);
+        };
+        state::set_repo_path(dir);
+    }
 
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())

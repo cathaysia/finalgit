@@ -545,6 +545,9 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async takeRepoPath(): Promise<string | null> {
+    return await TAURI_INVOKE('take_repo_path');
+  },
   async getHeadModifyTime(repoPath: string): Promise<Result<number, string>> {
     try {
       return {

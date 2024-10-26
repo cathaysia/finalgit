@@ -1,8 +1,10 @@
+import { useAppState } from '@/lib/state';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import * as React from 'react';
 
 import '@/app/global.css';
 import '@/locales';
+import { commands } from '@/bindings';
 import NOTIFY from '@/lib/notify';
 import {
   refreshBranches,
@@ -38,6 +40,17 @@ export default function RootLayout() {
   if (typeof window !== 'undefined') {
     attachConsole();
   }
+
+  const [setRepoPath] = useAppState(s => [s.setRepoPath]);
+  async function initCmdLine() {
+    const repoPath = await commands.takeRepoPath();
+    if (repoPath) {
+      setRepoPath(repoPath);
+    }
+  }
+
+  initCmdLine();
+
   const { error, data } = useModifyTimes();
   if (error) {
     NOTIFY.error(error.message);

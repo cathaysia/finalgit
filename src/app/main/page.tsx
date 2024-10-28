@@ -21,13 +21,16 @@ export const Route = createFileRoute('/main/')({
 });
 
 function Layout() {
-  const [isDiffview] = useAppState(s => [s.isDiffView]);
+  const [repoPath, isDiffview] = useAppState(s => [s.repoPath, s.isDiffView]);
 
   return (
-    <div className="grid h-screen w-screen grid-cols-4 gap-2 p-2">
+    <div
+      className="grid h-screen w-screen grid-cols-4 gap-2 p-2"
+      data-tauri-drag-region={true}
+    >
       {!isDiffview && <ControlPanel className="h-full" />}
       <MainPanel className="mr-2 h-full grow" />
-      {!isDiffview && <Commit />}
+      {repoPath && !isDiffview && <Commit />}
       {isDiffview && <DiffView />}
     </div>
   );

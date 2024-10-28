@@ -105,26 +105,26 @@ importers:
         specifier: ^3.10.8
         version: 3.10.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tauri-apps/api':
-        specifier: 2.0.0-rc.5
-        version: 2.0.0-rc.5
+        specifier: 2.0.1
+        version: 2.0.1
       '@tauri-apps/plugin-clipboard-manager':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.0.0
+        version: 2.0.0
       '@tauri-apps/plugin-dialog':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.0.1
+        version: 2.0.1
       '@tauri-apps/plugin-fs':
-        specifier: 2.0.0-rc.2
-        version: 2.0.0-rc.2
+        specifier: 2.0.1
+        version: 2.0.1
       '@tauri-apps/plugin-log':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.0.0
+        version: 2.0.0
       '@tauri-apps/plugin-shell':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.0.1
+        version: 2.0.1
       '@tauri-apps/plugin-store':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.1.0
+        version: 2.1.0
       '@uiw/codemirror-extensions-langs':
         specifier: ^4.23.5
         version: 4.23.5(@codemirror/autocomplete@6.18.1(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.1)(@lezer/common@1.2.2))(@codemirror/language-data@6.5.1(@codemirror/view@6.34.1))(@codemirror/language@6.10.3)(@codemirror/legacy-modes@6.4.1)(@codemirror/state@6.4.1)(@codemirror/view@6.34.1)(@lezer/common@1.2.2)(@lezer/highlight@1.2.1)(@lezer/javascript@1.4.19)(@lezer/lr@1.4.2)
@@ -262,8 +262,8 @@ importers:
         specifier: ^1.63.5
         version: 1.63.5(vite@5.4.8(@types/node@22.7.5)(terser@5.33.0))(webpack-sources@3.2.3)(webpack@5.94.0(esbuild@0.23.1))
       '@tauri-apps/cli':
-        specifier: 2.0.0-rc.16
-        version: 2.0.0-rc.16
+        specifier: 2.0.1
+        version: 2.0.1
       '@types/antlr4':
         specifier: ^4.11.6
         version: 4.11.6
@@ -454,8 +454,16 @@ packages:
     resolution: {integrity: sha512-CbkjYdsJNHFk8uqpEkpCvRs3YRp9tY6FmFY7wLMSYuGYkrdUi7r2lc4/wqsvlHoMznX3WJ9IP8giGPq68T/Y6g==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-string-parser@7.25.9':
+    resolution: {integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-validator-identifier@7.25.7':
     resolution: {integrity: sha512-AM6TzwYqGChO45oiuPqwL2t20/HdMC1rTPAesnBCgPCSF1x3oN9MVUwQV2iyz4xqWrctwK5RNC8LV22kaQCNYg==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/helper-validator-identifier@7.25.9':
+    resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-validator-option@7.25.7':
@@ -472,6 +480,11 @@ packages:
 
   '@babel/parser@7.25.7':
     resolution: {integrity: sha512-aZn7ETtQsjjGG5HruveUK06cU3Hljuhd9Iojm4M8WWv3wLE6OkE5PWbDUkItmMgegmccaITudyuW5RPYrYlgWw==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  '@babel/parser@7.26.1':
+    resolution: {integrity: sha512-reoQYNiAJreZNsJzyrDNzFQ+IQ5JFiIzAHJg9bn94S3l+4++J7RsIhNMoB+lgP/9tpmiAQqspv+xfdxTSzREOw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -503,6 +516,10 @@ packages:
     resolution: {integrity: sha512-vwIVdXG+j+FOpkwqHRcBgHLYNL7XMkufrlaFvL9o6Ai9sJn9+PdyIL5qa0XzTZw084c+u9LOls53eoZWP/W5WQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/types@7.26.0':
+    resolution: {integrity: sha512-Z/yiTPj+lDVnF7lWeKCIJzaIkI0vYO87dMpZ4bg4TDrFe4XXLFWL1TbXU27gBP3QccxV9mZICCrnjnYlJjXHOA==}
+    engines: {node: '>=6.9.0'}
+
   '@base2/pretty-print-object@1.0.1':
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
 
@@ -520,6 +537,9 @@ packages:
 
   '@codemirror/commands@6.7.0':
     resolution: {integrity: sha512-+cduIZ2KbesDhbykV02K25A5xIVrquSPz4UxxYBemRlAT2aW8dhwUgLDwej7q/RJUHKk4nALYcR1puecDvbdqw==}
+
+  '@codemirror/commands@6.7.1':
+    resolution: {integrity: sha512-llTrboQYw5H4THfhN4U3qCnSZ1SOJ60ohhz+SzU0ADGtwlc533DtklQP0vSFaQuCPDn3BPpOd1GbbnUtwNjsrw==}
 
   '@codemirror/lang-angular@0.1.3':
     resolution: {integrity: sha512-xgeWGJQQl1LyStvndWtruUvb4SnBZDAu/gvFH/ZU+c0W25tQR8e5hq7WTwiIY2dNxnf+49mRiGI/9yxIwB6f5w==}
@@ -2385,91 +2405,91 @@ packages:
     resolution: {integrity: sha512-fBUj+lbSaw+VxoBN4J/WFE7dTx8x4XCTRAQvbiIyPJ8MY1KRVkdZV6cbLvg7MeDP6CxUcj6XNvWU6h0ic1Ipyg==}
     engines: {node: '>=12'}
 
-  '@tauri-apps/api@2.0.0-rc.5':
-    resolution: {integrity: sha512-JWs69pE9NsQdcqTpEVBepAZ08+jgQWuthIiTiaWRq/YlCLgnqq0KfC9sDem55uJ0YpgsytZuyj+m6b6q8oiD2g==}
+  '@tauri-apps/api@2.0.1':
+    resolution: {integrity: sha512-eoQWT+Tq1qSwQpHV+nw1eNYe5B/nm1PoRjQCRiEOS12I1b+X4PUcREfXVX8dPcBT6GrzWGDtaecY0+1p0Rfqlw==}
 
-  '@tauri-apps/cli-darwin-arm64@2.0.0-rc.16':
-    resolution: {integrity: sha512-lISZU4gG0c9PbY7h/j/gW7nJLxZEygNBrYEET6zN8R99Znf5rSO+CfjenaMcJUUj6yTAd8gzdakRpLqNSAWegA==}
+  '@tauri-apps/cli-darwin-arm64@2.0.1':
+    resolution: {integrity: sha512-oWjCZoFbm57V0eLEkIbc6aUmB4iW65QF7J8JVh5sNzH4xHGP9rzlQarbkg7LOn89z7mFSZpaLJAWlaaZwoV2Ug==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@tauri-apps/cli-darwin-x64@2.0.0-rc.16':
-    resolution: {integrity: sha512-D9uxPCxpyYcTSQulJGFX3POAKPOJd8WcWHFH8x6YVM1cIx6EWRXIE1sZnPUOjFr7qCg+bSdYdr8/BFHcZGcApQ==}
+  '@tauri-apps/cli-darwin-x64@2.0.1':
+    resolution: {integrity: sha512-bARd5yAnDGpG/FPhSh87+tzQ6D0TPyP2mZ5bg6cioeoXDmry68nT/FBzp87ySR1/KHvuhEQYWM/4RPrDjvI1Yg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@tauri-apps/cli-linux-arm-gnueabihf@2.0.0-rc.16':
-    resolution: {integrity: sha512-WsVdKm4D1I1XV8I9yRnmOINZRwwWfh6xcLV3m19+B9g6TohK8RkRxWfxvs3TLQlWOLQ6lo8BzS9rzXB+KtjDpg==}
+  '@tauri-apps/cli-linux-arm-gnueabihf@2.0.1':
+    resolution: {integrity: sha512-OK3/RpxujoZAUbV7GHe4IPAUsIO6IuWEHT++jHXP+YW5Y7QezGGjQRc43IlWaQYej/yE8wfcrwrbqisc5wtiCw==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
 
-  '@tauri-apps/cli-linux-arm64-gnu@2.0.0-rc.16':
-    resolution: {integrity: sha512-2jpZDagNs6rrqposHJihHBayttgOl5aB2+bYiVEC6ye+haiFtmYmpdaPOaVIw+YVQs6lepf5PVrisCoU9DmYsg==}
+  '@tauri-apps/cli-linux-arm64-gnu@2.0.1':
+    resolution: {integrity: sha512-MGSQJduiMEApspMK97mFt4kr6ig0OtxO5SUFpPDfYPw/XmY9utaRa9CEG6LcH8e0GN9xxYMhCv+FeU48spYPhA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@tauri-apps/cli-linux-arm64-musl@2.0.0-rc.16':
-    resolution: {integrity: sha512-SNEDcB+sWOls/B0a+UpUHVa/oegvlXXKYWsTxuXtgWIr5VbWG7rXLZ3fZpLLP3SpRVGTGTnABcyqshFbWSqqKQ==}
+  '@tauri-apps/cli-linux-arm64-musl@2.0.1':
+    resolution: {integrity: sha512-R6+vgxaPpxgGi4suMkQgGuhjMbZzMJfVyWfv2DOE/xxOzSK1BAOc54/HOjfOLxlnkA6uD6V69MwCwXgxW00A2g==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@tauri-apps/cli-linux-x64-gnu@2.0.0-rc.16':
-    resolution: {integrity: sha512-Zsq29MM1ooeH1+chQBa7ffDFnzAZebBBFdsvs4e05tS1H8gn4oKE+PSMn9p/okzVXykEk9ri2/n7BG1XFeifMA==}
+  '@tauri-apps/cli-linux-x64-gnu@2.0.1':
+    resolution: {integrity: sha512-xrasYQnUZVhKJhBxHAeu4KxZbofaQlsG9KfZ9p1Bx+hmjs5BuujzwMnXsVD2a4l6GPW6gwblf2a6d600rySmWQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@tauri-apps/cli-linux-x64-musl@2.0.0-rc.16':
-    resolution: {integrity: sha512-g+pwSuis2YMxhJJ/pJYwp/Nps5CWvlv/5MV5UfDvClkCkeAyzIqVX+HbBLPcs5S0CePUQNeP0j4d4jBWUqZZQg==}
+  '@tauri-apps/cli-linux-x64-musl@2.0.1':
+    resolution: {integrity: sha512-SPk+EzRTlbvk46p5aURc7O4GihzxbqG80m74vstm0rolnmQ0FX3qqIh3as3cQpDiZWLod4j6EEmX0mTU3QpvXA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@tauri-apps/cli-win32-arm64-msvc@2.0.0-rc.16':
-    resolution: {integrity: sha512-PpPqdMTwJSDAK4KnNjvh77ShSkY+7pih1f6e50EtXar8bjC17e3XcEqFhDNne5mxEVTLYhibs6p1JLPad0ZjRA==}
+  '@tauri-apps/cli-win32-arm64-msvc@2.0.1':
+    resolution: {integrity: sha512-LAELK01eOMyEt+JZLmx4EUOdRuPYr1a+mHjlxAxCnCaS3dpeg/c5/NMZfbRAJbAH4id+STRHIfPXTdCT2zUNAw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@tauri-apps/cli-win32-ia32-msvc@2.0.0-rc.16':
-    resolution: {integrity: sha512-io2yIcEcG7YLP+9n13NbilB93SjcB7jIl8GbURC4XZT4/4t9D1PWHpJr5hySVsGRLCz5e8NzwC5RlnenNzmpPQ==}
+  '@tauri-apps/cli-win32-ia32-msvc@2.0.1':
+    resolution: {integrity: sha512-eMUgOS4mAusk5njU2TBxBjCUO1P4cV4uzY5CHihysoXSL2TVQdWrXT42VGeoahJh+yeQWkYFka2s4Bu0iWDMXg==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
 
-  '@tauri-apps/cli-win32-x64-msvc@2.0.0-rc.16':
-    resolution: {integrity: sha512-Rfkmxe3k+cBVA/kVYt8O25QrQqWKJlH9AiH7Q3C6xBzzG9PCSRMBszCp+JhBF8jhVlwNmOBv6UG+lm85kspwGg==}
+  '@tauri-apps/cli-win32-x64-msvc@2.0.1':
+    resolution: {integrity: sha512-U9esAOcFIv80/slzlpwjkG31Wx1OqbfDgC5KjGT1Dd9iUOSuJZCwbiY7m3rYG2I6RWLfd9zhNu86CVohsKjBfA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
 
-  '@tauri-apps/cli@2.0.0-rc.16':
-    resolution: {integrity: sha512-wdjZg/M3dcxiqgWG6VRnABpX0dYxRww93t0d1MYoZxFDrnyoUz5kYwFQ0v4J9u0qenEgskjoypvon7V/Nj9qrg==}
+  '@tauri-apps/cli@2.0.1':
+    resolution: {integrity: sha512-fCheW0iWYWUtFV3ui3HlMhk3ZJpAQ5KJr7B7UmfhDzBSy1h5JBdrCtvDwy+3AcPN+Fg5Ey3JciF8zEP8eBx+vQ==}
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@tauri-apps/plugin-clipboard-manager@2.0.0-rc.1':
-    resolution: {integrity: sha512-hFgUABMmQuVGKwHb8PR9fuqfk0WRkedbWUt/ZV5sL4Q6kLrsp3JYJvtzVPeMYdeBvMqHl8WXNxAc/zwSld2h9w==}
+  '@tauri-apps/plugin-clipboard-manager@2.0.0':
+    resolution: {integrity: sha512-V1sXmbjnwfXt/r48RJMwfUmDMSaP/8/YbH4CLNxt+/sf1eHlIP8PRFdFDQwLN0cNQKu2rqQVbG/Wc/Ps6cDUhw==}
 
-  '@tauri-apps/plugin-dialog@2.0.0-rc.1':
-    resolution: {integrity: sha512-H28gh6BfZtjflHQ+HrmWwunDriBI3AQLAKnMs50GA6zeNUULqbQr7VXbAAKeJL/0CmWcecID4PKXVoSlaWRhEg==}
+  '@tauri-apps/plugin-dialog@2.0.1':
+    resolution: {integrity: sha512-fnUrNr6EfvTqdls/ufusU7h6UbNFzLKvHk/zTuOiBq01R3dTODqwctZlzakdbfSp/7pNwTKvgKTAgl/NAP/Z0Q==}
 
-  '@tauri-apps/plugin-fs@2.0.0-rc.2':
-    resolution: {integrity: sha512-TFjCfso3tN4b5s2EBjqP8N2gYrPh93Ds3VNKj8pCXv4wbvnItyfG0aHO0haUsedBOHQryDwv9vDAdPX6/T0a+g==}
+  '@tauri-apps/plugin-fs@2.0.1':
+    resolution: {integrity: sha512-PkeZG2WAob9Xpmr66aPvj+McDVgFjV2a7YBzYVZjiCvbGeMs6Yk09tlXhCe3EyZdT/pwWMSi8lXUace+hlsjsw==}
 
-  '@tauri-apps/plugin-log@2.0.0-rc.1':
-    resolution: {integrity: sha512-+Tz0zo4FDtC/5j7neeIq5ievgKbUXBV2+X5HtbaR8ZZ2bcksCp8UqeHd6cyyN+FSk4qaU01LIGkuExtxk1h/FA==}
+  '@tauri-apps/plugin-log@2.0.0':
+    resolution: {integrity: sha512-C+NII9vzswqnOQE8k7oRtnaw0z5TZsMmnirRhXkCKDEhQQH9841Us/PC1WHtGiAaJ8za1A1JB2xXndEq/47X/w==}
 
-  '@tauri-apps/plugin-shell@2.0.0-rc.1':
-    resolution: {integrity: sha512-JtNROc0rqEwN/g93ig5pK4cl1vUo2yn+osCpY9de64cy/d9hRzof7AuYOgvt/Xcd5VPQmlgo2AGvUh5sQRSR1A==}
+  '@tauri-apps/plugin-shell@2.0.1':
+    resolution: {integrity: sha512-akU1b77sw3qHiynrK0s930y8zKmcdrSD60htjH+mFZqv5WaakZA/XxHR3/sF1nNv9Mgmt/Shls37HwnOr00aSw==}
 
-  '@tauri-apps/plugin-store@2.0.0-rc.1':
-    resolution: {integrity: sha512-rW71Tkr7OifxoL8NkWgPy5Os4Gn3oJTbv/j/nJ03HDuYsq+F4+8kU8o4epRFJnr6VKmgB/2CtiacSC3dnSSRnA==}
+  '@tauri-apps/plugin-store@2.1.0':
+    resolution: {integrity: sha512-GADqrc17opUKYIAKnGHIUgEeTZ2wJGu1ZITKQ1WMuOFdv8fvXRFBAqsqPjE3opgWohbczX6e1NpwmZK1AnuWVw==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -2572,6 +2592,9 @@ packages:
 
   '@types/node@22.7.5':
     resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
+
+  '@types/node@22.8.1':
+    resolution: {integrity: sha512-k6Gi8Yyo8EtrNtkHXutUu2corfDf9su95VYVP10aGYMMROM6SAItZi0w1XszA6RtWTHSVp5OeFof37w0IEqCQg==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -2871,6 +2894,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.14.0:
+    resolution: {integrity: sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   ai@3.4.9:
     resolution: {integrity: sha512-wmVzpIHNGjCEjIJ/3945a/DIkz+gwObjC767ZRgO8AmtIZMO5KqvqNr7n2KF+gQrCPCMC8fM1ICQFXSvBZnBlA==}
     engines: {node: '>=18'}
@@ -3080,6 +3108,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
+  browserslist@4.24.2:
+    resolution: {integrity: sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
@@ -3108,6 +3141,9 @@ packages:
 
   caniuse-lite@1.0.30001667:
     resolution: {integrity: sha512-7LTwJjcRkzKFmtqGsibMeuXmvFDfZq/nzIjnmgCGzKKRVzjD72selLDK1oPF/Oxzmt4fNcPvTDvGqSDG4tCALw==}
+
+  caniuse-lite@1.0.30001673:
+    resolution: {integrity: sha512-WTrjUCSMp3LYX0nE12ECkV0a+e6LC85E0Auz75555/qr78Oc8YWhEPNfDd6SHdtlCMSzqtuXY0uyEMNRcsKpKw==}
 
   canvas-renderer@2.2.1:
     resolution: {integrity: sha512-RrBgVL5qCEDIXpJ6NrzyRNoTnXxYarqm/cS/W6ERhUJts5UQtt/XPEosGN3rqUkZ4fjBArlnCbsISJ+KCFnIAg==}
@@ -3423,6 +3459,9 @@ packages:
 
   electron-to-chromium@1.5.33:
     resolution: {integrity: sha512-+cYTcFB1QqD4j4LegwLfpCNxifb6dDFUAwk6RsLusCwIaZI6or2f+q8rs5tTB2YC53HhOlIbEaqHMAAC8IOIwA==}
+
+  electron-to-chromium@1.5.47:
+    resolution: {integrity: sha512-zS5Yer0MOYw4rtK2iq43cJagHZ8sXN0jDHDKzB+86gSBSAI4v07S97mcq+Gs2vclAxSh1j7vOAHxSVgduiiuVQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4247,6 +4286,9 @@ packages:
 
   magic-string@0.30.11:
     resolution: {integrity: sha512-+Wri9p0QHMy+545hKww7YAu5NyzF8iomPL/RQazugQ9+Ez4Ic3mERMd8ZTX5rfK944j+560ZJi8iAwgak1Ac7A==}
+
+  magic-string@0.30.12:
+    resolution: {integrity: sha512-Ea8I3sQMVXr8JhN4z+H/d8zwo+tYDgHE9+5G4Wnrwhs0gaK9fXTKx0Tw5Xwsd/bCPTTZNRAdpyzvoeORe9LYpw==}
 
   make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -5270,6 +5312,9 @@ packages:
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
+  tslib@2.8.0:
+    resolution: {integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==}
+
   tsx@4.19.1:
     resolution: {integrity: sha512-0flMz1lh74BR4wOvBjuh9olbnwqCPc35OOlfyzHba0Dc+QNUeWX/Gq2YTbnwcWPO3BMd8fkzRVrHcsR+a7z7rA==}
     engines: {node: '>=18.0.0'}
@@ -5822,7 +5867,11 @@ snapshots:
 
   '@babel/helper-string-parser@7.25.7': {}
 
+  '@babel/helper-string-parser@7.25.9': {}
+
   '@babel/helper-validator-identifier@7.25.7': {}
+
+  '@babel/helper-validator-identifier@7.25.9': {}
 
   '@babel/helper-validator-option@7.25.7': {}
 
@@ -5841,6 +5890,10 @@ snapshots:
   '@babel/parser@7.25.7':
     dependencies:
       '@babel/types': 7.25.7
+
+  '@babel/parser@7.26.1':
+    dependencies:
+      '@babel/types': 7.26.0
 
   '@babel/plugin-syntax-jsx@7.25.7(@babel/core@7.25.7)':
     dependencies:
@@ -5880,6 +5933,11 @@ snapshots:
       '@babel/helper-validator-identifier': 7.25.7
       to-fast-properties: 2.0.0
 
+  '@babel/types@7.26.0':
+    dependencies:
+      '@babel/helper-string-parser': 7.25.9
+      '@babel/helper-validator-identifier': 7.25.9
+
   '@base2/pretty-print-object@1.0.1': {}
 
   '@chromatic-com/storybook@2.0.2(react@18.3.1)':
@@ -5902,6 +5960,13 @@ snapshots:
       '@lezer/common': 1.2.2
 
   '@codemirror/commands@6.7.0':
+    dependencies:
+      '@codemirror/language': 6.10.3
+      '@codemirror/state': 6.4.1
+      '@codemirror/view': 6.34.1
+      '@lezer/common': 1.2.2
+
+  '@codemirror/commands@6.7.1':
     dependencies:
       '@codemirror/language': 6.10.3
       '@codemirror/state': 6.4.1
@@ -7827,7 +7892,7 @@ snapshots:
   '@swc/helpers@0.5.5':
     dependencies:
       '@swc/counter': 0.1.3
-      tslib: 2.7.0
+      tslib: 2.8.0
     optional: true
 
   '@swc/types@0.1.12':
@@ -7937,74 +8002,74 @@ snapshots:
 
   '@tanstack/virtual-file-routes@1.56.0': {}
 
-  '@tauri-apps/api@2.0.0-rc.5': {}
+  '@tauri-apps/api@2.0.1': {}
 
-  '@tauri-apps/cli-darwin-arm64@2.0.0-rc.16':
+  '@tauri-apps/cli-darwin-arm64@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-darwin-x64@2.0.0-rc.16':
+  '@tauri-apps/cli-darwin-x64@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-linux-arm-gnueabihf@2.0.0-rc.16':
+  '@tauri-apps/cli-linux-arm-gnueabihf@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-linux-arm64-gnu@2.0.0-rc.16':
+  '@tauri-apps/cli-linux-arm64-gnu@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-linux-arm64-musl@2.0.0-rc.16':
+  '@tauri-apps/cli-linux-arm64-musl@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-linux-x64-gnu@2.0.0-rc.16':
+  '@tauri-apps/cli-linux-x64-gnu@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-linux-x64-musl@2.0.0-rc.16':
+  '@tauri-apps/cli-linux-x64-musl@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-win32-arm64-msvc@2.0.0-rc.16':
+  '@tauri-apps/cli-win32-arm64-msvc@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-win32-ia32-msvc@2.0.0-rc.16':
+  '@tauri-apps/cli-win32-ia32-msvc@2.0.1':
     optional: true
 
-  '@tauri-apps/cli-win32-x64-msvc@2.0.0-rc.16':
+  '@tauri-apps/cli-win32-x64-msvc@2.0.1':
     optional: true
 
-  '@tauri-apps/cli@2.0.0-rc.16':
+  '@tauri-apps/cli@2.0.1':
     optionalDependencies:
-      '@tauri-apps/cli-darwin-arm64': 2.0.0-rc.16
-      '@tauri-apps/cli-darwin-x64': 2.0.0-rc.16
-      '@tauri-apps/cli-linux-arm-gnueabihf': 2.0.0-rc.16
-      '@tauri-apps/cli-linux-arm64-gnu': 2.0.0-rc.16
-      '@tauri-apps/cli-linux-arm64-musl': 2.0.0-rc.16
-      '@tauri-apps/cli-linux-x64-gnu': 2.0.0-rc.16
-      '@tauri-apps/cli-linux-x64-musl': 2.0.0-rc.16
-      '@tauri-apps/cli-win32-arm64-msvc': 2.0.0-rc.16
-      '@tauri-apps/cli-win32-ia32-msvc': 2.0.0-rc.16
-      '@tauri-apps/cli-win32-x64-msvc': 2.0.0-rc.16
+      '@tauri-apps/cli-darwin-arm64': 2.0.1
+      '@tauri-apps/cli-darwin-x64': 2.0.1
+      '@tauri-apps/cli-linux-arm-gnueabihf': 2.0.1
+      '@tauri-apps/cli-linux-arm64-gnu': 2.0.1
+      '@tauri-apps/cli-linux-arm64-musl': 2.0.1
+      '@tauri-apps/cli-linux-x64-gnu': 2.0.1
+      '@tauri-apps/cli-linux-x64-musl': 2.0.1
+      '@tauri-apps/cli-win32-arm64-msvc': 2.0.1
+      '@tauri-apps/cli-win32-ia32-msvc': 2.0.1
+      '@tauri-apps/cli-win32-x64-msvc': 2.0.1
 
-  '@tauri-apps/plugin-clipboard-manager@2.0.0-rc.1':
+  '@tauri-apps/plugin-clipboard-manager@2.0.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
-  '@tauri-apps/plugin-dialog@2.0.0-rc.1':
+  '@tauri-apps/plugin-dialog@2.0.1':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
-  '@tauri-apps/plugin-fs@2.0.0-rc.2':
+  '@tauri-apps/plugin-fs@2.0.1':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
-  '@tauri-apps/plugin-log@2.0.0-rc.1':
+  '@tauri-apps/plugin-log@2.0.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
-  '@tauri-apps/plugin-shell@2.0.0-rc.1':
+  '@tauri-apps/plugin-shell@2.0.1':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
-  '@tauri-apps/plugin-store@2.0.0-rc.1':
+  '@tauri-apps/plugin-store@2.1.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.5
+      '@tauri-apps/api': 2.0.1
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -8128,6 +8193,11 @@ snapshots:
   '@types/node@22.7.5':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/node@22.8.1':
+    dependencies:
+      undici-types: 6.19.8
+    optional: true
 
   '@types/parse-json@4.0.2': {}
 
@@ -8413,7 +8483,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.5':
     dependencies:
-      '@babel/parser': 7.25.7
+      '@babel/parser': 7.26.1
       '@vue/shared': 3.5.5
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -8426,13 +8496,13 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.5':
     dependencies:
-      '@babel/parser': 7.25.7
+      '@babel/parser': 7.26.1
       '@vue/compiler-core': 3.5.5
       '@vue/compiler-dom': 3.5.5
       '@vue/compiler-ssr': 3.5.5
       '@vue/shared': 3.5.5
       estree-walker: 2.0.2
-      magic-string: 0.30.11
+      magic-string: 0.30.12
       postcss: 8.4.47
       source-map-js: 1.2.1
 
@@ -8567,9 +8637,9 @@ snapshots:
       mime-types: 2.1.35
       negotiator: 0.6.3
 
-  acorn-import-attributes@1.9.5(acorn@8.12.1):
+  acorn-import-attributes@1.9.5(acorn@8.14.0):
     dependencies:
-      acorn: 8.12.1
+      acorn: 8.14.0
     optional: true
 
   acorn-jsx@5.3.2(acorn@7.4.1):
@@ -8585,6 +8655,8 @@ snapshots:
   acorn@7.4.1: {}
 
   acorn@8.12.1: {}
+
+  acorn@8.14.0: {}
 
   ai@3.4.9(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.5(typescript@5.6.3))(zod@3.23.8):
     dependencies:
@@ -8845,6 +8917,14 @@ snapshots:
       node-releases: 2.0.18
       update-browserslist-db: 1.1.1(browserslist@4.24.0)
 
+  browserslist@4.24.2:
+    dependencies:
+      caniuse-lite: 1.0.30001673
+      electron-to-chromium: 1.5.47
+      node-releases: 2.0.18
+      update-browserslist-db: 1.1.1(browserslist@4.24.2)
+    optional: true
+
   buffer-from@1.1.2:
     optional: true
 
@@ -8870,6 +8950,9 @@ snapshots:
   camelcase-css@2.0.1: {}
 
   caniuse-lite@1.0.30001667: {}
+
+  caniuse-lite@1.0.30001673:
+    optional: true
 
   canvas-renderer@2.2.1:
     dependencies:
@@ -8979,7 +9062,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
       '@types/estree': 1.0.6
-      acorn: 8.12.1
+      acorn: 8.14.0
       estree-walker: 3.0.3
       periscopic: 3.1.0
 
@@ -8992,7 +9075,7 @@ snapshots:
   codemirror@6.0.1(@lezer/common@1.2.2):
     dependencies:
       '@codemirror/autocomplete': 6.18.1(@codemirror/language@6.10.3)(@codemirror/state@6.4.1)(@codemirror/view@6.34.1)(@lezer/common@1.2.2)
-      '@codemirror/commands': 6.7.0
+      '@codemirror/commands': 6.7.1
       '@codemirror/language': 6.10.3
       '@codemirror/lint': 6.8.2
       '@codemirror/search': 6.5.6
@@ -9193,6 +9276,9 @@ snapshots:
   ee-first@1.1.1: {}
 
   electron-to-chromium@1.5.33: {}
+
+  electron-to-chromium@1.5.47:
+    optional: true
 
   emoji-regex@8.0.0: {}
 
@@ -10078,7 +10164,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 22.8.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
     optional: true
@@ -10191,6 +10277,10 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   magic-string@0.30.11:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.0
+
+  magic-string@0.30.12:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
@@ -11112,7 +11202,7 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
       '@jridgewell/trace-mapping': 0.3.25
       '@types/estree': 1.0.6
-      acorn: 8.12.1
+      acorn: 8.14.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
       code-red: 1.0.4
@@ -11120,7 +11210,7 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.2
       locate-character: 3.0.0
-      magic-string: 0.30.11
+      magic-string: 0.30.12
       periscopic: 3.1.0
 
   svgo@3.3.2:
@@ -11211,7 +11301,7 @@ snapshots:
   terser@5.33.0:
     dependencies:
       '@jridgewell/source-map': 0.3.6
-      acorn: 8.12.1
+      acorn: 8.14.0
       commander: 2.20.3
       source-map-support: 0.5.21
     optional: true
@@ -11278,6 +11368,9 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.7.0: {}
+
+  tslib@2.8.0:
+    optional: true
 
   tsx@4.19.1:
     dependencies:
@@ -11393,6 +11486,13 @@ snapshots:
       browserslist: 4.24.0
       escalade: 3.2.0
       picocolors: 1.1.0
+
+  update-browserslist-db@1.1.1(browserslist@4.24.2):
+    dependencies:
+      browserslist: 4.24.2
+      escalade: 3.2.0
+      picocolors: 1.1.0
+    optional: true
 
   uri-js@4.4.1:
     dependencies:
@@ -11583,9 +11683,9 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@webassemblyjs/wasm-edit': 1.12.1
       '@webassemblyjs/wasm-parser': 1.12.1
-      acorn: 8.12.1
-      acorn-import-attributes: 1.9.5(acorn@8.12.1)
-      browserslist: 4.24.0
+      acorn: 8.14.0
+      acorn-import-attributes: 1.9.5(acorn@8.14.0)
+      browserslist: 4.24.2
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.17.1
       es-module-lexer: 1.5.4

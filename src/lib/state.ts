@@ -1,4 +1,4 @@
-import { Store } from '@tauri-apps/plugin-store';
+import { LazyStore } from '@tauri-apps/plugin-store';
 import { create } from 'zustand';
 import {
   type StateStorage,
@@ -30,7 +30,7 @@ const storeStorage: StateStorage = {
   },
   getItem: async k => {
     const store = getSettingsStore();
-    return await store.get(k);
+    return (await store.get<string>(k)) || null;
   },
   removeItem: async k => {
     const store = getSettingsStore();
@@ -156,5 +156,5 @@ export const useAiState = create<AiStateProps>()(
 );
 
 function getSettingsStore() {
-  return new Store('settings.bin');
+  return new LazyStore('settings.json');
 }

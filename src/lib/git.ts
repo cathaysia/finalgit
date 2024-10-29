@@ -1,17 +1,12 @@
 import { commands } from '@/bindings';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 import NOTIFY from './notify';
 
 export async function getGitConfig(repoPath: string, opt: string) {
   const res = await commands?.gitGetConfig(repoPath, opt);
-  return match(res)
-    .with({ status: 'ok' }, val => {
-      return val.data;
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    })
-    .exhaustive();
+  if (isMatching({ status: 'ok' }, res)) {
+    return res.data;
+  }
 }
 
 export async function setGitConfig(

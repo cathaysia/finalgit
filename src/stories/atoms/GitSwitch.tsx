@@ -5,7 +5,7 @@ import NOTIFY from '@/lib/notify';
 import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export interface GitSwitchProps
@@ -60,21 +60,13 @@ export default function GitSwitch({
 
 async function getBooleanConfig(repoPath: string, opt: string) {
   const res = await commands?.gitGetConfig(repoPath, opt);
+  if (isMatching({ status: 'ok' }, res)) {
+    if (res.data === 'true') {
+      return true;
+    }
+  }
 
-  return match(res)
-    .with({ status: 'ok' }, val => {
-      if (val.data === 'true') {
-        return true;
-      }
-      if (val.data === 'false') {
-        return false;
-      }
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-      return undefined;
-    })
-    .exhaustive();
+  return false;
 }
 
 async function setBooleanConfig(repoPath: string, opt: string, value: boolean) {

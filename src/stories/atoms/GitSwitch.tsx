@@ -6,7 +6,6 @@ import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { isMatching, match } from 'ts-pattern';
-import { useDebounce } from 'use-debounce';
 
 export interface GitSwitchProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -24,7 +23,6 @@ export default function GitSwitch({
 }: GitSwitchProps) {
   const [repoPath] = useAppState(s => [s.repoPath]);
   const [value, setValue] = useState<boolean>(false);
-  const [debounce] = useDebounce(value, 1000);
 
   useEffect(() => {
     if (!repoPath) {
@@ -37,21 +35,17 @@ export default function GitSwitch({
     });
   }, [repoPath, opt]);
 
-  useEffect(() => {
-    if (!debounce || !repoPath || !debounce) {
-      return;
-    }
-    setBooleanConfig(repoPath, opt, debounce);
-  }, [debounce, repoPath, opt]);
-
   return (
     <div className={cn('flex justify-between', className)} {...props}>
       <Label htmlFor={id}>{name}</Label>
       <Switch
         id={id}
         checked={value}
-        onCheckedChange={e => {
-          setValue(e.valueOf);
+        onCheckedChange={async e => {
+          if (repoPath) {
+            await setBooleanConfig(repoPath, opt, e.valueOf());
+            setValue(e.valueOf());
+          }
         }}
       />
     </div>

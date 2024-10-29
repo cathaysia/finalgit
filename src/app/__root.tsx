@@ -14,6 +14,7 @@ import {
   refreshTags,
   useModifyTimes,
 } from '@/lib/query';
+import i18n from '@/locales';
 import { attachConsole } from '@tauri-apps/plugin-log';
 import { useEffect } from 'react';
 import { Toaster } from 'sonner';
@@ -41,7 +42,8 @@ export default function RootLayout() {
     attachConsole();
   }
 
-  const [setRepoPath] = useAppState(s => [s.setRepoPath]);
+  const [setRepoPath, lang] = useAppState(s => [s.setRepoPath, s.lang]);
+  i18n.changeLanguage(lang);
   async function initCmdLine() {
     const repoPath = await commands.takeRepoPath();
     if (repoPath) {

@@ -1,11 +1,11 @@
 {
   "ai": {
-    "prompt": "ai.prompt"
+    "prompt": "Prompt"
   },
   "branch": {
     "apply": "branch.apply",
-    "branches": "branch.branches",
-    "checkout": "branch.checkout",
+    "branches": "分支",
+    "checkout": "检出",
     "checkout_remote": "branch.checkout_remote",
     "create_new_branch": "branch.create_new_branch",
     "delete": "branch.delete",
@@ -15,29 +15,30 @@
     "pull": "branch.pull",
     "push": "branch.push",
     "remote": "branch.remote",
-    "rename": "branch.rename",
-    "set_upstream": "branch.set_upstream",
-    "tags": "branch.tags",
-    "view_tree": "branch.view_tree"
+    "rename": "重命名",
+    "set_upstream": "设置上游",
+    "tags": "标签",
+    "view_tree": "查看文件"
   },
   "Cancel": "取消",
   "change": {
-    "deleted": "change.deleted",
-    "modified": "change.modified",
-    "new_file": "change.new_file"
+    "deleted": "删除",
+    "modified": "修改",
+    "new_file": "新增"
   },
   "changes": {
-    "add": "changes.add",
-    "diff": "changes.diff",
-    "discard": "changes.discard",
-    "unstage": "changes.unstage"
+    "add": "新增",
+    "diff": "差异",
+    "discard": "丢弃",
+    "unstage": "取消暂存"
   },
   "commit": {
-    "copy": "commit.copy",
-    "copy_to_clipboard": "commit.copy_to_clipboard",
-    "cut": "commit.cut",
-    "delete": "commit.delete",
-    "details": "commit.details",
+    "checkout": "检出",
+    "copy": "拷贝",
+    "copy_to_clipboard": "拷贝到粘贴板",
+    "cut": "剪切",
+    "delete": "删除",
+    "details": "详情",
     "insert_after": "commit.insert_after",
     "insert_before": "commit.insert_before",
     "viewtree": "commit.viewtree"
@@ -51,6 +52,13 @@
   },
   "controlbar": {
     "preference": "controlbar.preference"
+  },
+  "fileItem": {
+    "checkout": "fileItem.checkout",
+    "compareHead": "fileItem.compareHead",
+    "compareWith": "fileItem.compareWith",
+    "copy": "fileItem.copy",
+    "copy_path": "fileItem.copy_path"
   },
   "ollama": {
     "add_model": "ollama.add_model",
@@ -69,11 +77,10 @@
       "core": "profile.git.core",
       "defaultBranch": "profile.git.defaultBranch",
       "email": "profile.git.email",
-      "ff": "profile.git.ff",
-      "noff": "profile.git.noff",
-      "norebase": "profile.git.norebase",
-      "pull": "profile.git.pull",
-      "rebase": "profile.git.rebase",
+      "pull": {
+        "ff": "profile.git.pull.ff",
+        "rebase": "profile.git.pull.rebase"
+      },
       "signingKey": "profile.git.signingKey",
       "tag": {
         "gpgsign": "profile.git.tag.gpgsign"
@@ -114,7 +121,7 @@
     "discard_all": "workspace.discard_all",
     "generate_patch": "workspace.generate_patch",
     "patch_save_path": "workspace.patch_save_path",
-    "set_as_default": "workspace.set_as_default",
+    "set_as_default": "设为默认认知",
     "stash": "workspace.stash"
   },
   "Workspace": "工作区"

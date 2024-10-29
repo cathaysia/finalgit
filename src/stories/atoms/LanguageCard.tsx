@@ -16,13 +16,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 
 export function LanguageCard() {
+  const [setLang] = useAppState(s => [s.setLang]);
   const lang = i18n.language;
   const languages = [
     { label: 'English', value: 'en_US' },
-    { label: 'Chinese', value: 'zh_CN' },
+    { label: '中文', value: 'zh_CN' },
   ];
   const { t } = useTranslation();
 
@@ -55,6 +57,7 @@ export function LanguageCard() {
                   key={language.value}
                   onSelect={() => {
                     i18n.changeLanguage(language.value);
+                    setLang(language.value);
                   }}
                 >
                   <Check

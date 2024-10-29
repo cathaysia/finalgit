@@ -33,6 +33,7 @@
     "unstage": "Remove from stage"
   },
   "commit": {
+    "checkout": "commit.checkout",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {{ val }}",
     "cut": "Cut",
@@ -52,6 +53,13 @@
   "controlbar": {
     "preference": "Perference"
   },
+  "fileItem": {
+    "checkout": "fileItem.checkout",
+    "compareHead": "fileItem.compareHead",
+    "compareWith": "fileItem.compareWith",
+    "copy": "fileItem.copy",
+    "copy_path": "fileItem.copy_path"
+  },
   "ollama": {
     "add_model": "Add model",
     "endpoint": "Endpoint",
@@ -69,11 +77,10 @@
       "core": "Core",
       "defaultBranch": "Default branch",
       "email": "Email",
-      "ff": "Fast-forwarding",
-      "noff": "No fast-forwarding",
-      "norebase": "No rebase",
-      "pull": "Pull method",
-      "rebase": "Rebase",
+      "pull": {
+        "ff": "profile.git.pull.ff",
+        "rebase": "profile.git.pull.rebase"
+      },
       "signingKey": "signingKey",
       "tag": {
         "gpgsign": "profile.git.tag.gpgsign"

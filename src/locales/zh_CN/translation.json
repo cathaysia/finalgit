@@ -82,6 +82,7 @@
         "header": "Pull",
         "rebase": "Rebase"
       },
+      "select_gpg": "profile.git.select_gpg",
       "signingKey": "profile.git.signingKey",
       "tag": {
         "gpgsign": "GPG 密钥"
@@ -90,7 +91,8 @@
       "username": "用户名"
     },
     "language": "Language",
-    "stash_before_checkout": "检出前暂存更改"
+    "stash_before_checkout": "检出前暂存更改",
+    "use_emoji": "在分支和提交界面使用 Emjoi 替换纯文本"
   },
   "project": {
     "add_local_repository": "project.add_local_repository",

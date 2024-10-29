@@ -7,11 +7,13 @@ export const Route = createFileRoute('/settings/')({
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { useAppState } from '@/lib/state';
 import ThemeCard from '@/stories/settings/ThemeCard';
 import { useTranslation } from 'react-i18next';
 
 export default function ProfileComponent() {
   const { t } = useTranslation();
+  const [useEmoji, setUseEmoji] = useAppState(s => [s.useEmoji, s.setUseEmoji]);
   return (
     <>
       <ThemeCard className="w-full" />
@@ -31,6 +33,21 @@ export default function ProfileComponent() {
               {t('profile.add_before_discard')}
             </Label>
             <Checkbox id="profile.discard" />
+          </div>
+          <div className="flex justify-between">
+            <Label htmlFor="profile.use_emoji">{t('profile.use_emoji')}</Label>
+            <Checkbox
+              id="profile.use_emoji"
+              checked={useEmoji}
+              onCheckedChange={v => {
+                if (v === true) {
+                  setUseEmoji(true);
+                }
+                if (v === false) {
+                  setUseEmoji(false);
+                }
+              }}
+            />
           </div>
         </CardContent>
       </Card>

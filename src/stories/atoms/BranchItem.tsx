@@ -52,7 +52,7 @@ export default function BranchItem({
   const branchName = info.name;
   const upstream = info.remote;
   const isLocal = info.kind === 'Local';
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
 
   const { error: changeErr, data: changes } = useChanges();
   if (changeErr) {
@@ -129,7 +129,8 @@ export default function BranchItem({
           }}
         >
           <HighLightLabel
-            text={branchName}
+            text={replaceEmoji(branchName, useEmoji)}
+            value={branchName}
             filter={filter}
             className="overflow-hidden text-ellipsis whitespace-nowrap"
           />
@@ -213,4 +214,37 @@ export default function BranchItem({
       </DropdownMenu>
     </div>
   );
+}
+
+function replaceEmoji(text: string, replace: boolean) {
+  if (!replace) {
+    return text;
+  }
+
+  if (text.startsWith('dev/')) {
+    return text.replace('dev/', '🔧');
+  }
+  if (text.startsWith('feature/')) {
+    return text.replace('feature/', '✨');
+  }
+  if (text.startsWith('feat/')) {
+    return text.replace('feat/', '✨');
+  }
+  if (text.startsWith('bugfix/')) {
+    return text.replace('bugfix/', '🐛');
+  }
+  if (text.startsWith('fix/')) {
+    return text.replace('fix/', '🐛');
+  }
+  if (text.startsWith('hotfix/')) {
+    return text.replace('hotfix/', '🚑');
+  }
+  if (text.startsWith('release/')) {
+    return text.replace('release/', '🔖');
+  }
+  if (text.startsWith('dependabot/')) {
+    return text.replace('dependabot/', '🤖');
+  }
+
+  return text;
 }

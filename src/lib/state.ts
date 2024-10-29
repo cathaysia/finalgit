@@ -41,9 +41,11 @@ const storeStorage: StateStorage = {
 export interface AppState {
   repoPath?: string;
   lang: string;
+  useEmoji: boolean;
   project: string[];
   isDiffView: boolean;
   setLang: (lang: string) => void;
+  setUseEmoji: (use: boolean) => void;
   setRepoPath: (isOpened: string) => void;
   setProject: (project: string[]) => void;
   setIsDiffView: (enabled: boolean) => void;
@@ -55,6 +57,7 @@ export const useAppState = create<AppState>()(
     set => ({
       repoPath: undefined,
       lang: 'en_US',
+      useEmoji: true,
       project: [],
       isDiffView: false,
       setRepoPath: (repoPath: string) => {
@@ -68,13 +71,18 @@ export const useAppState = create<AppState>()(
       },
       setProject: (project: string[]) => set({ project: project }),
       setLang: (lang: string) => set({ lang: lang }),
+      setUseEmoji: (lang: boolean) => set({ useEmoji: lang }),
       setIsDiffView: (enabled: boolean) => set({ isDiffView: enabled }),
       toggleDiffView: () => set(s => ({ isDiffView: !s.isDiffView })),
     }),
     {
       name: 'app',
       storage: createJSONStorage(() => storeStorage),
-      partialize: s => ({ repoPath: s.repoPath, lang: s.lang }),
+      partialize: s => ({
+        repoPath: s.repoPath,
+        lang: s.lang,
+        useEmoji: s.useEmoji,
+      }),
     },
   ),
 );

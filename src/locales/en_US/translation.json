@@ -82,6 +82,7 @@
         "header": "Pull",
         "rebase": "Rebase"
       },
+      "select_gpg": "profile.git.select_gpg",
       "signingKey": "signingKey",
       "tag": {
         "gpgsign": "sign tag by GPG"
@@ -90,7 +91,8 @@
       "username": "Name"
     },
     "language": "Language",
-    "stash_before_checkout": "Enable smart stash"
+    "stash_before_checkout": "Enable smart stash",
+    "use_emoji": "using emoji replace plaintext in branch and commit"
   },
   "project": {
     "add_local_repository": "add local repository",

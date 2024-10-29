@@ -1,3 +1,4 @@
+import { useGhAvatar } from '@/lib/gh';
 import { stringToColor } from '@/lib/stringColor';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarGroup } from '@mui/material';
@@ -44,9 +45,9 @@ export default function UserAvatar({
 }: UserAvatarProps) {
   if (userName.length === 1) {
     return (
-      <Avatar
+      <UserAvatarItem
         className={cn(className)}
-        {...stringAvatar(userName[0])}
+        userName={userName[0]}
         {...props}
       />
     );
@@ -55,16 +56,25 @@ export default function UserAvatar({
   return (
     <AvatarGroup>
       {userName.map(item => {
-        return (
-          <Avatar
-            key={item}
-            {...stringAvatar(item)}
-            title={item}
-            alt={item}
-            {...props}
-          />
-        );
+        return <UserAvatarItem key={item} userName={item} {...props} />;
       })}
     </AvatarGroup>
+  );
+}
+
+interface UserAvatarItemProps extends React.ComponentProps<typeof Avatar> {
+  userName: string;
+}
+
+function UserAvatarItem({ userName, ...props }: UserAvatarItemProps) {
+  const { data: src } = useGhAvatar(userName);
+  return (
+    <Avatar
+      {...stringAvatar(userName)}
+      title={userName}
+      alt={userName}
+      src={src}
+      {...props}
+    />
   );
 }

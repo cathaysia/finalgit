@@ -572,6 +572,14 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async gpgGetSecretList(): Promise<Result<string[], string>> {
+    try {
+      return { status: 'ok', data: await TAURI_INVOKE('gpg_get_secret_list') };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
 };
 
 /** user-defined events **/

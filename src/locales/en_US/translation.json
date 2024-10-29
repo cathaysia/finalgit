@@ -33,7 +33,7 @@
     "unstage": "Remove from stage"
   },
   "commit": {
-    "checkout": "commit.checkout",
+    "checkout": "checkout",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {{ val }}",
     "cut": "Cut",
@@ -72,23 +72,24 @@
     "behaviour": "Behaviour",
     "git": {
       "commit": {
-        "gpgsign": "profile.git.commit.gpgsign"
+        "gpgsign": "sign commit by GPG"
       },
       "core": "Core",
       "defaultBranch": "Default branch",
       "email": "Email",
       "pull": {
-        "ff": "profile.git.pull.ff",
-        "rebase": "profile.git.pull.rebase"
+        "ff": "Fast-Forward",
+        "header": "Pull",
+        "rebase": "Rebase"
       },
       "signingKey": "signingKey",
       "tag": {
-        "gpgsign": "profile.git.tag.gpgsign"
+        "gpgsign": "sign tag by GPG"
       },
       "user": "User",
       "username": "Name"
     },
-    "language": "profile.language",
+    "language": "Language",
     "stash_before_checkout": "Enable smart stash"
   },
   "project": {

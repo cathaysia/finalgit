@@ -7,14 +7,14 @@
     "branches": "分支",
     "checkout": "检出",
     "checkout_remote": "branch.checkout_remote",
-    "create_new_branch": "branch.create_new_branch",
-    "delete": "branch.delete",
-    "details": "branch.details",
+    "create_new_branch": "创建分支",
+    "delete": "删除",
+    "details": "详情",
     "disable_dirty": "branch.disable_dirty",
-    "local": "branch.local",
-    "pull": "branch.pull",
-    "push": "branch.push",
-    "remote": "branch.remote",
+    "local": "本地",
+    "pull": "拉取",
+    "push": "推送",
+    "remote": "远程",
     "rename": "重命名",
     "set_upstream": "设置上游",
     "tags": "标签",
@@ -39,57 +39,58 @@
     "cut": "剪切",
     "delete": "删除",
     "details": "详情",
-    "insert_after": "commit.insert_after",
-    "insert_before": "commit.insert_before",
-    "viewtree": "commit.viewtree"
+    "insert_after": "在前面插入",
+    "insert_before": "在后面插入",
+    "viewtree": "查看文件"
   },
   "commiter": {
-    "commit": "commiter.commit",
-    "commit_summary": "commiter.commit_summary",
-    "generate_message": "commiter.generate_message",
-    "generating": "commiter.generating",
-    "start_commit": "commiter.start_commit"
+    "commit": "提交",
+    "commit_summary": "摘要",
+    "generate_message": "生成消息",
+    "generating": "正在生成",
+    "start_commit": "开始提交"
   },
   "controlbar": {
-    "preference": "controlbar.preference"
+    "preference": "偏好"
   },
   "fileItem": {
-    "checkout": "fileItem.checkout",
-    "compareHead": "fileItem.compareHead",
+    "checkout": "检出",
+    "compareHead": "与 Head 进行比较",
     "compareWith": "fileItem.compareWith",
-    "copy": "fileItem.copy",
-    "copy_path": "fileItem.copy_path"
+    "copy": "复制到粘贴板",
+    "copy_path": "复制路径"
   },
   "ollama": {
-    "add_model": "ollama.add_model",
-    "endpoint": "ollama.endpoint",
-    "model": "ollama.model"
+    "add_model": "添加模型",
+    "endpoint": "API",
+    "model": "模型"
   },
   "Ollama": "Ollama",
   "profile": {
-    "add_before_discard": "profile.add_before_discard",
-    "ai_provider": "profile.ai_provider",
-    "behaviour": "profile.behaviour",
+    "add_before_discard": "丢弃更改前添加更改到暂存",
+    "ai_provider": "AI",
+    "behaviour": "行为",
     "git": {
       "commit": {
-        "gpgsign": "profile.git.commit.gpgsign"
+        "gpgsign": "使用 GPG 签名提交"
       },
-      "core": "profile.git.core",
-      "defaultBranch": "profile.git.defaultBranch",
-      "email": "profile.git.email",
+      "core": "Core",
+      "defaultBranch": "默认分支",
+      "email": "邮件",
       "pull": {
-        "ff": "profile.git.pull.ff",
-        "rebase": "profile.git.pull.rebase"
+        "ff": "Fast-Forward",
+        "header": "Pull",
+        "rebase": "Rebase"
       },
       "signingKey": "profile.git.signingKey",
       "tag": {
-        "gpgsign": "profile.git.tag.gpgsign"
+        "gpgsign": "GPG 密钥"
       },
-      "user": "profile.git.user",
-      "username": "profile.git.username"
+      "user": "用户",
+      "username": "用户名"
     },
-    "language": "profile.language",
-    "stash_before_checkout": "profile.stash_before_checkout"
+    "language": "Language",
+    "stash_before_checkout": "检出前暂存更改"
   },
   "project": {
     "add_local_repository": "project.add_local_repository",
@@ -99,30 +100,30 @@
     "kind": "rename.kind"
   },
   "settings": {
-    "ai": "settings.ai",
-    "git": "settings.git",
-    "profile": "settings.profile",
-    "search_langing": "settings.search_langing"
+    "ai": "Ai",
+    "git": "Git",
+    "profile": "Profile",
+    "search_langing": "Search language"
   },
   "stash": {
-    "apply": "stash.apply",
-    "delete": "stash.delete"
+    "apply": "应用",
+    "delete": "丢弃"
   },
   "tag": {
-    "delete": "tag.delete"
+    "delete": "删除"
   },
   "tags": {
-    "create_branch": "tags.create_branch"
+    "create_branch": "创建分支"
   },
   "workspace": {
-    "changed_files": "workspace.changed_files",
-    "create_pr": "workspace.create_pr",
-    "discard": "workspace.discard",
-    "discard_all": "workspace.discard_all",
-    "generate_patch": "workspace.generate_patch",
+    "changed_files": "变更列表",
+    "create_pr": "创建 PR",
+    "discard": "丢弃更改",
+    "discard_all": "丢弃全部更改",
+    "generate_patch": "生成补丁文件",
     "patch_save_path": "workspace.patch_save_path",
-    "set_as_default": "设为默认认知",
-    "stash": "workspace.stash"
+    "set_as_default": "设为默认分支",
+    "stash": "暂存更改"
   },
   "Workspace": "工作区"
 }

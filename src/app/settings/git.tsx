@@ -16,7 +16,7 @@ export default function GitComponent() {
       <GitCore />
       <GitUser />
       <Card className="w-full">
-        <CardHeader>{t('profile.git.pull')}</CardHeader>
+        <CardHeader>{t('profile.git.pull.header')}</CardHeader>
         <CardContent className="flex flex-col gap-2">
           <GitSwitch
             name={t('profile.git.pull.rebase')}

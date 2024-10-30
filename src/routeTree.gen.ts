@@ -26,56 +26,67 @@ import { Route as FiletreeCommitImport } from './app/filetree/$commit';
 // Create/Update Routes
 
 const SettingsLayoutRoute = SettingsLayoutImport.update({
+  id: '/settings',
   path: '/settings',
   getParentRoute: () => rootRoute,
 } as any);
 
 const FiletreeLayoutRoute = FiletreeLayoutImport.update({
+  id: '/filetree',
   path: '/filetree',
   getParentRoute: () => rootRoute,
 } as any);
 
 const DiffLayoutRoute = DiffLayoutImport.update({
+  id: '/diff',
   path: '/diff',
   getParentRoute: () => rootRoute,
 } as any);
 
 const PageRoute = PageImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any);
 
 const SettingsPageRoute = SettingsPageImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => SettingsLayoutRoute,
 } as any);
 
 const MainPageRoute = MainPageImport.update({
+  id: '/main/',
   path: '/main/',
   getParentRoute: () => rootRoute,
 } as any);
 
 const FiletreePageRoute = FiletreePageImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => FiletreeLayoutRoute,
 } as any);
 
 const DiffPageRoute = DiffPageImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => DiffLayoutRoute,
 } as any);
 
 const SettingsGitRoute = SettingsGitImport.update({
+  id: '/git',
   path: '/git',
   getParentRoute: () => SettingsLayoutRoute,
 } as any);
 
 const SettingsAiRoute = SettingsAiImport.update({
+  id: '/ai',
   path: '/ai',
   getParentRoute: () => SettingsLayoutRoute,
 } as any);
 
 const FiletreeCommitRoute = FiletreeCommitImport.update({
+  id: '/$commit',
   path: '/$commit',
   getParentRoute: () => FiletreeLayoutRoute,
 } as any);

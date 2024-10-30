@@ -1,10 +1,19 @@
 import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   darkMode: ['class'],
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'Inter Variable',
+          'Noto Sans SC Variable',
+          ...defaultTheme.fontFamily.sans,
+        ],
+        mono: ['Fira Code Variable', ...defaultTheme.fontFamily.mono],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

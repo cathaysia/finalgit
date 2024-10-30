@@ -8,6 +8,9 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { ThemeProvider } from 'next-themes';
 import { queryClient } from './lib/query.js';
 import { routeTree } from './routeTree.gen';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/noto-sans-sc';
+import '@fontsource-variable/fira-code';
 
 // Set up a Router instance
 const router = createRouter({

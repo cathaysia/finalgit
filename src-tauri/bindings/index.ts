@@ -3,6 +3,19 @@
 /** user-defined commands **/
 
 export const commands = {
+  async headGetStatus(
+    repoPath: string,
+  ): Promise<Result<RepositoryState, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('head_get_status', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async bisectStart(repoPath: string): Promise<Result<null, string>> {
     try {
       return {
@@ -719,6 +732,19 @@ export type HeadInfo = {
   is_rebasing: boolean;
 };
 export type PushStatus = { unpush: number; unpull: number };
+export type RepositoryState =
+  | 'Clean'
+  | 'Merge'
+  | 'Revert'
+  | 'RevertSequence'
+  | 'CherryPick'
+  | 'CherryPickSequence'
+  | 'Bisect'
+  | 'Rebase'
+  | 'RebaseInteractive'
+  | 'RebaseMerge'
+  | 'ApplyMailbox'
+  | 'ApplyMailboxOrRebase';
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
 export type TagInfo = { name: string; commit: string; ref_hash: string };

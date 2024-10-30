@@ -7,6 +7,7 @@ mod cherry_pick;
 mod commit;
 mod config;
 mod error;
+mod head;
 mod rebase;
 mod stage;
 mod stash;

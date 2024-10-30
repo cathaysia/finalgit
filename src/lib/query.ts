@@ -2,7 +2,7 @@ import { commands } from '@/bindings';
 import { queryModels } from '@/lib/ai';
 import { useAiState } from '@/lib/state';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 import { useAppState } from './state';
 
 export const queryClient = new QueryClient({
@@ -96,7 +96,7 @@ export function refreshChanges() {
 
 export function useFiles() {
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const { data: head } = useHeadState();
+  const { data: head } = useHeadOid();
 
   return useQuery({
     queryKey: ['changes', repoPath, head],
@@ -223,7 +223,7 @@ export function refreshHistory() {
   queryClient.invalidateQueries({ queryKey: ['history'] });
 }
 
-export function useHeadState() {
+export function useHeadOid() {
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   return useQuery({
@@ -246,7 +246,7 @@ export function useHeadState() {
   });
 }
 
-export function refreshHead() {
+export function refreshHeadOid() {
   queryClient.invalidateQueries({ queryKey: ['head'] });
 }
 
@@ -294,4 +294,97 @@ export function useCommitInfo(commit: string) {
     },
     enabled: repoPath !== undefined,
   });
+}
+
+export function useHeadState() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['head_state', repoPath],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.headGetStatus(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshHeadState() {
+  queryClient.invalidateQueries({ queryKey: ['head_state'] });
+}
+
+export function useBisectRange() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+  const { data: state } = useHeadState();
+
+  return useQuery({
+    queryKey: ['bisect_range', repoPath],
+    queryFn: async () => {
+      if (state) {
+        if (!isMatching('Bisect', state)) {
+          return null;
+        }
+      }
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.bisectGetRange(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshBisectRange() {
+  queryClient.invalidateQueries({ queryKey: ['bisect_range'] });
+}
+
+export function useBisectNext() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+  const { data: state } = useHeadState();
+
+  return useQuery({
+    queryKey: ['bisect_next', repoPath],
+    queryFn: async () => {
+      if (state) {
+        if (!isMatching('Bisect', state)) {
+          return null;
+        }
+      }
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.bisectGetNext(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshBisectNext() {
+  queryClient.invalidateQueries({ queryKey: ['bisect_next'] });
 }

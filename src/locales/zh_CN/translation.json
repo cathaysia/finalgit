@@ -33,6 +33,9 @@
     "unstage": "取消暂存"
   },
   "commit": {
+    "bisect_mark_bad": "标记为坏提交",
+    "bisect_mark_good": "标记为好提交",
+    "bisect_stop": "停止二份查找",
     "checkout": "检出",
     "copy": "拷贝",
     "copy_to_clipboard": "拷贝到粘贴板",

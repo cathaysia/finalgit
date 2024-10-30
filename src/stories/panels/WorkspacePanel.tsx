@@ -27,10 +27,10 @@ export interface WorkspacePanelProps
 
 import {
   refreshChanges,
-  refreshHead,
+  refreshHeadOid,
   useBranches,
   useFiles,
-  useHeadState,
+  useHeadOid,
   useStashList,
   useTags,
 } from '@/lib/query';
@@ -55,7 +55,7 @@ export default function WorkspacePanel({
     NOTIFY.error(fileErr.message);
   }
 
-  const { error: headErr, data: current } = useHeadState();
+  const { error: headErr, data: current } = useHeadOid();
   if (headErr) {
     NOTIFY.error(headErr.message);
   }
@@ -91,7 +91,7 @@ export default function WorkspacePanel({
     if (!repoPath) {
       return;
     }
-    refreshHead();
+    refreshHeadOid();
     if (!branches) {
       return;
     }

@@ -33,6 +33,9 @@
     "unstage": "Remove from stage"
   },
   "commit": {
+    "bisect_mark_bad": "Mark bad commit",
+    "bisect_mark_good": "Mark good commit",
+    "bisect_stop": "Stop bisect",
     "checkout": "checkout",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {{ val }}",
@@ -106,7 +109,7 @@
     "ai": "AI",
     "git": "GIT",
     "profile": "PROFILE",
-    "search_langing": "settings.search_langing"
+    "search_langing": "Search language"
   },
   "stash": {
     "apply": "stash.apply",

@@ -12,9 +12,12 @@ import NOTIFY from '@/lib/notify';
 import {
   refreshBranches,
   refreshChanges,
-  refreshHead,
+  refreshHeadOid,
   refreshHistory,
+  useBisectNext,
+  useBisectRange,
   useChanges,
+  useHeadOid,
   useHeadState,
 } from '@/lib/query';
 import { useAppState } from '@/lib/state';
@@ -41,9 +44,17 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const { t } = useTranslation();
     const names = [commit.author.name];
     const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
-    const { data: head } = useHeadState();
+    const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;
+    const { data: range } = useBisectRange();
+    const { data: bisectNext } = useBisectNext();
+    const { data: state } = useHeadState();
+
+    const isBad = range?.bad === commit.oid;
+    const isGood = range?.good === commit.oid;
+    const isNext = bisectNext === commit.oid;
+    const isBisect = isMatching('Bisect', state);
 
     if (commit.author.name !== commit.commiter.name) {
       names.push(commit.commiter.name);
@@ -53,9 +64,13 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         className={cn(
           'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
-          head?.is_detached &&
+          isBad && 'border-red-600 dark:border-red-600',
+          isGood && 'border-green-600 dark:border-green-600',
+          isNext && 'border-pink-600 dark:border-pink-600',
+          !isBisect &&
+            head?.is_detached &&
             head?.oid === commit.oid &&
-            'border border-green-600 dark:border-green-600',
+            'border-green-600 dark:border-green-600',
           className,
         )}
         ref={ref}
@@ -135,6 +150,35 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.revert')}
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (repoPath) {
+                    markGood(repoPath, isBisect, commit.oid);
+                  }
+                }}
+              >
+                {t('commit.bisect_mark_good')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (repoPath) {
+                    markBad(repoPath, isBisect, commit.oid);
+                  }
+                }}
+              >
+                {t('commit.bisect_mark_bad')}
+              </DropdownMenuItem>
+              {isBisect && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    if (repoPath) {
+                      bisectStop(repoPath);
+                    }
+                  }}
+                >
+                  {t('commit.bisect_stop')}
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -149,7 +193,7 @@ async function checkoutCommit(repoPath: string, commit: string) {
   const res = await commands?.commitCheckout(repoPath, commit);
   match(res)
     .with({ status: 'ok' }, () => {
-      refreshHead();
+      refreshHeadOid();
       refreshChanges();
     })
     .with({ status: 'error' }, err => {
@@ -221,4 +265,48 @@ async function revertCommit(repoPath: string, commit: string) {
   }
 
   refreshHistory();
+}
+
+async function markGood(
+  repoPath: string,
+  isBisecting: boolean,
+  commit: string,
+) {
+  if (!isBisecting) {
+    const res = await commands.bisectStart(repoPath);
+    if (isMatching({ status: 'error' }, res)) {
+      NOTIFY.error(res.error);
+      return;
+    }
+  }
+
+  const res = await commands.bisectMarkGood(repoPath, commit);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+    return;
+  }
+}
+
+async function markBad(repoPath: string, isBisecting: boolean, commit: string) {
+  if (!isBisecting) {
+    const res = await commands.bisectStart(repoPath);
+    if (isMatching({ status: 'error' }, res)) {
+      NOTIFY.error(res.error);
+      return;
+    }
+  }
+
+  const res = await commands.bisectMarkBad(repoPath, commit);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+    return;
+  }
+}
+
+async function bisectStop(repoPath: string) {
+  const res = await commands.bisectStop(repoPath);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+    return;
+  }
 }

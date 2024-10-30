@@ -8,7 +8,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges, useHeadState } from '@/lib/query';
+import { refreshChanges, useHeadOid } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import {
   TreeItem2,
@@ -51,7 +51,7 @@ export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
       disabled,
       rootRef: ref,
     });
-    const { data: head } = useHeadState();
+    const { data: head } = useHeadOid();
     const item = publicAPI.getItem(itemId);
     const isDir = item.isDir;
     const fileName = item.fileName;

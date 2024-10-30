@@ -2,7 +2,7 @@ import { type CommitInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
-import { useBranches, useHeadState } from '@/lib/query';
+import { useBranches, useHeadOid } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { filterCommits } from '@/parser/commitFilter';
@@ -44,7 +44,7 @@ export default function Commit() {
   if (error) {
     NOTIFY.error(error.message);
   }
-  const { error: headErr, data: head } = useHeadState();
+  const { error: headErr, data: head } = useHeadOid();
   if (headErr) {
     NOTIFY.error(headErr.message);
   }

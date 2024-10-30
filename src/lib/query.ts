@@ -5,7 +5,13 @@ import { QueryClient, useQuery } from '@tanstack/react-query';
 import { match } from 'ts-pattern';
 import { useAppState } from './state';
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+});
 
 export function useBranches() {
   const [repoPath] = useAppState(s => [s.repoPath]);

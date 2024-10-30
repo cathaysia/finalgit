@@ -24,14 +24,14 @@ export function useGhAvatar(userName: string) {
         `https://api.github.com/search/users?q=${userName}`,
       );
       const body = JSON.parse(await res.text()) as SearchResult;
-      if (isMatching({ status: P.select() }, body)) {
-        throw new Error(`query avatar for ${userName} failed`);
+      if (isMatching({ items: P.select() }, body)) {
+        if (body.items.length === 0) {
+          return '';
+        }
+        return body.items[0].avatar_url;
       }
 
-      if (body.items.length === 0) {
-        return '';
-      }
-      return body.items[0].avatar_url;
+      throw new Error(`query avatar for ${userName} failed`);
     },
   });
 }

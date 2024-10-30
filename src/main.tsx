@@ -1,8 +1,9 @@
 import React from 'react';
 import reactDom from 'react-dom/client';
 import './locales.ts';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { ThemeProvider } from 'next-themes';
 import { queryClient } from './lib/query.js';
@@ -20,6 +21,9 @@ declare module '@tanstack/react-router' {
     router: typeof router;
   }
 }
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
 
 reactDom.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -28,10 +32,13 @@ reactDom.createRoot(document.getElementById('root') as HTMLElement).render(
       storageKey="vite-ui-theme"
       attribute="class"
     >
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister }}
+      >
         <RouterProvider router={router} />
         <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

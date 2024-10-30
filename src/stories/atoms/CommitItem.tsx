@@ -13,6 +13,7 @@ import {
   refreshBranches,
   refreshChanges,
   refreshHead,
+  refreshHistory,
   useChanges,
   useHeadState,
 } from '@/lib/query';
@@ -25,7 +26,7 @@ import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from './HighlightLabel';
 
 export interface CommitItemProps
@@ -124,6 +125,16 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <DropdownMenuItem className="text-red-600">
                 {t('commit.delete')}
               </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-yellow-600"
+                onClick={() => {
+                  if (repoPath) {
+                    revertCommit(repoPath, commit.oid);
+                  }
+                }}
+              >
+                {t('commit.revert')}
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -185,20 +196,29 @@ function replaceEmoji(text: string, replace: boolean) {
     return text.replace('style', '🎨');
   }
   if (text.startsWith('chore')) {
-    return text.replace('chore', '⬆️');
+    return text.replace('chore', '⬆');
   }
   if (text.startsWith('bump')) {
-    return text.replace('bump', '⬆️');
+    return text.replace('bump', '⬆');
   }
   if (text.startsWith('Bump')) {
-    return text.replace('Bump', '⬆️');
+    return text.replace('Bump', '⬆');
   }
   if (text.startsWith('Update')) {
-    return text.replace('Update', '⬆️');
+    return text.replace('Update', '⬆');
   }
   if (text.startsWith('Upgrade')) {
-    return text.replace('Upgrade', '⬆️');
+    return text.replace('Upgrade', '⬆');
   }
 
   return text;
+}
+
+async function revertCommit(repoPath: string, commit: string) {
+  const res = await commands.commitRevert(repoPath, commit);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+  }
+
+  refreshHistory();
 }

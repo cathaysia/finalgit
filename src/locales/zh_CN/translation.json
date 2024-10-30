@@ -41,6 +41,7 @@
     "details": "详情",
     "insert_after": "在前面插入",
     "insert_before": "在后面插入",
+    "revert": "撤销",
     "viewtree": "查看文件"
   },
   "commiter": {

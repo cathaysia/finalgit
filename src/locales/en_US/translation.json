@@ -41,6 +41,7 @@
     "details": "Details",
     "insert_after": "Insert After",
     "insert_before": "Insert Before",
+    "revert": "Revert",
     "viewtree": "Browse files"
   },
   "commiter": {

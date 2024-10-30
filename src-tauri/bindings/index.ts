@@ -442,6 +442,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async commitRevert(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_revert', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async gitGetConfig(
     repoPath: string,
     key: string,

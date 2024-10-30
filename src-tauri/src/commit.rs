@@ -42,6 +42,7 @@ pub trait CommitExt {
     fn commit_info(&self, commit: &str) -> AppResult<Commit>;
     fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
     fn commit_amend(&self, commit: &str) -> AppResult<()>;
+    fn commit_revert(&self, commit: &str) -> AppResult<()>;
     fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
     fn get_commits_by_branch(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>>;
@@ -172,5 +173,10 @@ impl CommitExt for git2::Repository {
 
         let out = String::from_utf8(output.stdout)?;
         Ok(out)
+    }
+
+    fn commit_revert(&self, commit: &str) -> AppResult<()> {
+        self.exec_git(["revert", commit])?;
+        Ok(())
     }
 }

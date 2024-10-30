@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 
+mod bisect;
 mod blame;
 mod branch;
 mod cherry_pick;

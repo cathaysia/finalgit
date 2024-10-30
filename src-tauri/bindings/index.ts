@@ -3,6 +3,80 @@
 /** user-defined commands **/
 
 export const commands = {
+  async bisectStart(repoPath: string): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_start', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async bisectStop(repoPath: string): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_stop', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async bisectMarkGood(
+    repoPath: string,
+    oid: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_mark_good', { repoPath, oid }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async bisectMarkBad(
+    repoPath: string,
+    oid: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_mark_bad', { repoPath, oid }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async bisectGetNext(
+    repoPath: string,
+  ): Promise<Result<string | null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_get_next', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async bisectGetRange(repoPath: string): Promise<Result<BisectRange, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('bisect_get_range', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async blameOfFile(
     repoPath: string,
     commit: string,
@@ -588,6 +662,7 @@ export const commands = {
 
 /** user-defined types **/
 
+export type BisectRange = { good: string | null; bad: string | null };
 export type BlameHunk = {
   final_commit_id: string;
   final_start_line: number;

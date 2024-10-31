@@ -97,7 +97,7 @@
     },
     "language": "Language",
     "stash_before_checkout": "检出前暂存更改",
-    "use_emoji": "在分支和提交界面使用 Emjoi 替换纯文本"
+    "use_emoji": "在分支和提交界面使用 Emoji 替换纯文本"
   },
   "project": {
     "add_local_repository": "project.add_local_repository",

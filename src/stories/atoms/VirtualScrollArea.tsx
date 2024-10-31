@@ -43,10 +43,10 @@ const VirtualScrollArea = React.forwardRef<
             return (
               <div
                 key={item.key}
-                className={'absolute top-0 left-0 w-full'}
+                className={'absolute left-0 w-full'}
                 style={{
                   height: `${item.size}px`,
-                  transform: `translateY(${item.start}px)`,
+                  top: item.start,
                 }}
               >
                 {getItem(item.index)}

@@ -35,6 +35,7 @@
   "commit": {
     "bisect_mark_bad": "Mark bad commit",
     "bisect_mark_good": "Mark good commit",
+    "bisect_start": "Start bisect",
     "bisect_stop": "Stop bisect",
     "checkout": "checkout",
     "copy": "Copy",

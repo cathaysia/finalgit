@@ -10,9 +10,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import NOTIFY from '@/lib/notify';
 import {
+  refreshBisectNext,
+  refreshBisectRange,
   refreshBranches,
   refreshChanges,
   refreshHeadOid,
+  refreshHeadState,
   refreshHistory,
   useBisectNext,
   useBisectRange,
@@ -27,6 +30,7 @@ import UserAvatar from '@/stories/atoms/UserAvatar';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching, match } from 'ts-pattern';
@@ -62,11 +66,12 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     return (
       <div
         className={cn(
-          'flex h-16 items-center justify-between text-wrap border px-2 py-4 font-medium text-sm',
+          'flex h-16 items-center justify-between gap-2 text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
-          isBad && 'border-red-600 dark:border-red-600',
-          isGood && 'border-green-600 dark:border-green-600',
-          isNext && 'border-pink-600 dark:border-pink-600',
+          isBisect && 'border-l-2 border-l-gray-600 dark:border-l-gray-600',
+          isBad && 'border-l-red-600 dark:border-l-red-600',
+          isGood && 'border-l-green-600 dark:border-l-green-600',
+          isNext && 'border-l-pink-600 dark:border-l-pink-600',
           !isBisect &&
             head?.is_detached &&
             head?.oid === commit.oid &&
@@ -76,8 +81,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         ref={ref}
         {...props}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex grow items-center gap-2 overflow-hidden">
           <HighLightLabel
+            className="min-w-0 grow overflow-hidden"
             text={replaceEmoji(summary, useEmoji)}
             value={summary}
             filter={filter}
@@ -102,7 +108,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           >
             {commit.oid.slice(0, 6)}
           </Badge>
-          <UserAvatar userName={names} className="w-4" />
+          <UserAvatar userName={names} className="max-h-8 max-w-8" />
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -150,26 +156,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.revert')}
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  if (repoPath) {
-                    markGood(repoPath, isBisect, commit.oid);
-                  }
-                }}
-              >
-                {t('commit.bisect_mark_good')}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => {
-                  if (repoPath) {
-                    markBad(repoPath, isBisect, commit.oid);
-                  }
-                }}
-              >
-                {t('commit.bisect_mark_bad')}
-              </DropdownMenuItem>
-              {isBisect && (
+              {isBisect ? (
                 <DropdownMenuItem
+                  className="rounded-b-none border-t border-r border-l dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800"
                   onClick={() => {
                     if (repoPath) {
                       bisectStop(repoPath);
@@ -178,7 +167,64 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 >
                   {t('commit.bisect_stop')}
                 </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  className="border-transparent border-t border-r border-l"
+                  onClick={e => {
+                    if (repoPath) {
+                      bisectStart(repoPath);
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  {t('commit.bisect_start')}
+                </DropdownMenuItem>
               )}
+              <motion.div
+                className={cn(
+                  'overflow-hidden border-r border-b border-l dark:border-zinc-800',
+                  !isBisect && 'border-transparent dark:border-transparent',
+                )}
+                variants={{
+                  visible: {
+                    height: 'auto',
+                    transition: { duration: 0.2 },
+                  },
+                  hidden: {
+                    height: 0,
+                    transition: { duration: 0.2 },
+                  },
+                }}
+                initial="hidden"
+                animate={isBisect ? 'visible' : 'hidden'}
+              >
+                <DropdownMenuItem
+                  className={
+                    'flex justify-between gap-2 rounded-none dark:bg-zinc-900 dark:hover:bg-zinc-800'
+                  }
+                  onClick={() => {
+                    if (repoPath) {
+                      markGood(repoPath, commit.oid);
+                    }
+                  }}
+                >
+                  {t('commit.bisect_mark_good')}
+                  <div className="h-2 w-2 bg-green-600" />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className={
+                    'flex justify-between gap-2 dark:bg-zinc-900 dark:hover:bg-zinc-800'
+                  }
+                  onClick={() => {
+                    if (repoPath) {
+                      markBad(repoPath, commit.oid);
+                    }
+                  }}
+                >
+                  {t('commit.bisect_mark_bad')}
+                  <div className="h-2 w-2 bg-red-600" />
+                </DropdownMenuItem>
+              </motion.div>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -267,40 +313,34 @@ async function revertCommit(repoPath: string, commit: string) {
   refreshHistory();
 }
 
-async function markGood(
-  repoPath: string,
-  isBisecting: boolean,
-  commit: string,
-) {
-  if (!isBisecting) {
-    const res = await commands.bisectStart(repoPath);
-    if (isMatching({ status: 'error' }, res)) {
-      NOTIFY.error(res.error);
-      return;
-    }
-  }
-
+async function markGood(repoPath: string, commit: string) {
   const res = await commands.bisectMarkGood(repoPath, commit);
   if (isMatching({ status: 'error' }, res)) {
     NOTIFY.error(res.error);
     return;
   }
+  refreshBisectRange();
+  refreshBisectNext();
 }
 
-async function markBad(repoPath: string, isBisecting: boolean, commit: string) {
-  if (!isBisecting) {
-    const res = await commands.bisectStart(repoPath);
-    if (isMatching({ status: 'error' }, res)) {
-      NOTIFY.error(res.error);
-      return;
-    }
-  }
-
+async function markBad(repoPath: string, commit: string) {
   const res = await commands.bisectMarkBad(repoPath, commit);
   if (isMatching({ status: 'error' }, res)) {
     NOTIFY.error(res.error);
     return;
   }
+  refreshBisectRange();
+  refreshBisectNext();
+}
+
+async function bisectStart(repoPath: string) {
+  const res = await commands.bisectStart(repoPath);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+    return;
+  }
+  refreshHeadState();
+  refreshBisectNext();
 }
 
 async function bisectStop(repoPath: string) {
@@ -309,4 +349,8 @@ async function bisectStop(repoPath: string) {
     NOTIFY.error(res.error);
     return;
   }
+  refreshHeadState();
+  refreshBisectRange();
+  refreshBisectNext();
+  refreshHeadOid();
 }

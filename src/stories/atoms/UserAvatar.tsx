@@ -56,7 +56,14 @@ export default function UserAvatar({
   return (
     <AvatarGroup>
       {userName.map(item => {
-        return <UserAvatarItem key={item} userName={item} {...props} />;
+        return (
+          <UserAvatarItem
+            className={className}
+            key={item}
+            userName={item}
+            {...props}
+          />
+        );
       })}
     </AvatarGroup>
   );

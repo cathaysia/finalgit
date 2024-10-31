@@ -109,7 +109,6 @@ export default function Commit() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
-              hidden={false}
               transition={{ duration: 0.2 }}
             >
               $

@@ -1,10 +1,10 @@
 import { type FileStatus, commands } from '@/bindings';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import GitFileStatus from '@/lib/file_status';
+import { refreshChanges } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
+import GitFileStatus from '@/lib/gitFileStatus';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges } from '@/lib/query';
-import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';

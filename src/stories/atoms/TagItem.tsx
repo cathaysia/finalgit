@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { refreshBranches, useHeadOid } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { refreshBranches, useHeadOid } from '@/lib/query';
-import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';

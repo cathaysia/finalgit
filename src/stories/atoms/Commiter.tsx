@@ -17,11 +17,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { refreshChanges } from '@/hooks/query';
+import { useAiState, useAppState, useRefreshRequest } from '@/hooks/state';
 import { generateCommit } from '@/lib/ai';
-import GitFileStatus from '@/lib/file_status';
+import GitFileStatus from '@/lib/gitFileStatus';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges } from '@/lib/query';
-import { useAiState, useAppState, useRefreshRequest } from '@/lib/state';
 import { debug } from '@tauri-apps/plugin-log';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';

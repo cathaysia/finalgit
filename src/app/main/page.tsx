@@ -1,12 +1,12 @@
 import { type CommitInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useBranches, useHeadOid, useHeadState } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { useBranches, useHeadOid, useHeadState } from '@/lib/query';
-import { useAppState } from '@/lib/state';
+import { filterCommits } from '@/lib/parser/commitFilter';
 import { cn } from '@/lib/utils';
-import { filterCommits } from '@/parser/commitFilter';
-import GitHistory from '@/stories/lists/GitHistory';
+import CommitList from '@/stories/lists/CommitList';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
 import { createFileRoute } from '@tanstack/react-router';
@@ -189,7 +189,7 @@ export default function Commit() {
           {t('Cancel')}
         </Button>
       </div>
-      <GitHistory
+      <CommitList
         history={filteredData}
         filter={filter.startsWith('$') ? undefined : filter}
       />

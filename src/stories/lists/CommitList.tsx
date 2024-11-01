@@ -2,18 +2,18 @@ import type { CommitInfo } from '@/bindings';
 import CommitItem from '../atoms/CommitItem';
 import VirtualScrollArea from '../atoms/VirtualScrollArea';
 
-export interface GitHistoryProps
+export interface CommitListProps
   extends React.ComponentProps<typeof VirtualScrollArea> {
   filter?: string;
   history: CommitInfo[];
 }
 
-export default function GitHistory({
+export default function CommitList({
   className,
   filter,
   history,
   ...props
-}: Omit<GitHistoryProps, 'count' | 'height' | 'getItem'>) {
+}: Omit<CommitListProps, 'count' | 'height' | 'getItem'>) {
   return (
     <VirtualScrollArea
       count={history.length}

@@ -7,9 +7,9 @@ import {
   ContextMenuLabel,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
+import { refreshChanges, useHeadOid } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { refreshChanges, useHeadOid } from '@/lib/query';
-import { useAppState } from '@/lib/state';
 import {
   TreeItem2,
   TreeItem2Label,

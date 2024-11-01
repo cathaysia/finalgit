@@ -1,12 +1,11 @@
-import { CommitInfo } from '@/bindings';
+import type { CommitInfo } from '@/bindings';
 import {
   AnchorKind,
-  PosExpr,
   PosKind,
   RevKind,
-  RevPos,
-  RevRange,
-  Rule,
+  type RevPos,
+  type RevRange,
+  type Rule,
   parseReversion,
 } from './parser';
 
@@ -81,7 +80,7 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
   }
   if (expr.kind === RevKind.SkipGrep) {
     const commit = commits.slice(expr.skip);
-    return commits.filter(item => {
+    return commit.filter(item => {
       if (!expr.grep) {
         return true;
       }
@@ -96,12 +95,12 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
     if (expr.rev.data === 'HEAD') {
       pos = 0;
     }
-    if (pos == -1) {
+    if (pos === -1) {
       return [];
     }
     return commits.slice(pos + expr.skip);
   }
-  if (expr.kind == RevKind.Text) {
+  if (expr.kind === RevKind.Text) {
     return commits.filter(item => {
       item.message.includes(expr.data);
     });
@@ -234,7 +233,7 @@ function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
     return filtered.slice(1);
   }
   if (posExpr.kind === PosKind.Digit) {
-    const pos = saturating_sub(idx, Math.abs(posExpr.data));
+    const pos = saturatingSub(idx, Math.abs(posExpr.data));
     return commits.slice(pos);
   }
   if (posExpr.kind === PosKind.Reverse) {
@@ -254,23 +253,21 @@ function filterByPos(expr: RevPos, commits: CommitInfo[]): CommitInfo[] {
       const pos = idx + expr.data;
       if (pos < 0) {
         return commits;
-      } else {
-        return commits.slice(pos);
       }
+      return commits.slice(pos);
     }
     if (expr.kind === AnchorKind.Date) {
       return filtered.filter(item => {
         if (expr.date.isBefore) {
           return item.commiter.time <= expr.date.data;
-        } else {
-          return item.commiter.time >= expr.date.data;
         }
+        return item.commiter.time >= expr.date.data;
       });
     }
   }
   return [];
 }
 
-export function saturating_sub(a: number, b: number) {
+export function saturatingSub(a: number, b: number) {
   return a - b < 0 ? 0 : a - b;
 }

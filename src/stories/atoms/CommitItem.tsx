@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import NOTIFY from '@/lib/notify';
 import {
   refreshBisectNext,
   refreshBisectRange,
@@ -22,8 +21,9 @@ import {
   useChanges,
   useHeadOid,
   useHeadState,
-} from '@/lib/query';
-import { useAppState } from '@/lib/state';
+} from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
+import NOTIFY from '@/lib/notify';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/stories/atoms/UserAvatar';

@@ -1,6 +1,6 @@
 import { commands } from '@/bindings';
+import { useAiState } from '@/hooks/state';
 import { queryModels } from '@/lib/ai';
-import { useAiState } from '@/lib/state';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { isMatching, match } from 'ts-pattern';
 import { useAppState } from './state';

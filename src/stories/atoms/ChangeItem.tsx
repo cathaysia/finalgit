@@ -9,11 +9,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
-import GitFileStatus from '@/lib/file_status';
+import { refreshChanges } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
+import GitFileStatus from '@/lib/gitFileStatus';
 import NOTIFY from '@/lib/notify';
 import { stageAddFile, stageDiscardFile } from '@/lib/operator';
-import { refreshChanges } from '@/lib/query';
-import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import type { CheckedState } from '@radix-ui/react-checkbox';

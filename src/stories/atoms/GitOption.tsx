@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAppState } from '@/hooks/state';
 import { getGitConfig, setGitConfig } from '@/lib/git';
-import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';

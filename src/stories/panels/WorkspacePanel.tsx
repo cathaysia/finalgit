@@ -6,8 +6,8 @@ import { FaFolderTree } from 'react-icons/fa6';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { useAppState } from '@/lib/state';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/lists/ChangeList';
@@ -33,7 +33,7 @@ import {
   useHeadOid,
   useStashList,
   useTags,
-} from '@/lib/query';
+} from '@/hooks/query';
 import { Link } from '@tanstack/react-router';
 import StashCard from '../card/StashCard';
 

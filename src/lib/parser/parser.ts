@@ -1,7 +1,7 @@
 import { CharStream, CommonTokenStream } from 'antlr4';
 import { isMatching } from 'ts-pattern';
 import reversionLexer from './impl/reversionLexer';
-import reversionParser, { RevSinceContext } from './impl/reversionParser';
+import reversionParser from './impl/reversionParser';
 import Visitor from './impl/reversionVisitor';
 
 export enum AnchorKind {

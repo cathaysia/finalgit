@@ -15,9 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useOllamaModels } from '@/hooks/query';
+import { useAiState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { useOllamaModels } from '@/lib/query';
-import { useAiState } from '@/lib/state';
 import { useTranslation } from 'react-i18next';
 
 export default function AiCard() {

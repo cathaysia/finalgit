@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useAppState } from '@/lib/state';
+import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 
 export function LanguageCard() {

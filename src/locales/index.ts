@@ -1,19 +1,17 @@
-// biome-ignore lint/style/useNamingConvention: <explanation>
-import * as en_US from '@/locales/en_US/translation.json';
-// biome-ignore lint/style/useNamingConvention: <explanation>
-import * as zh_CN from '@/locales/zh_CN/translation.json';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+import * as enUs from './en_US/translation.json';
+import * as zhCn from './zh_CN/translation.json';
 
 const resources = {
   // biome-ignore lint/style/useNamingConvention: <explanation>
   en_US: {
-    translation: en_US,
+    translation: enUs,
   },
   // biome-ignore lint/style/useNamingConvention: <explanation>
   zh_CN: {
-    translation: zh_CN,
+    translation: zhCn,
   },
 };
 

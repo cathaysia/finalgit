@@ -8,8 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-dialog';
 import { useTranslation } from 'react-i18next';

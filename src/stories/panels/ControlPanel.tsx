@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { useBranches, useTags } from '@/hooks/query';
 import NOTIFY from '@/lib/notify';
-import { useBranches, useTags } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import Project from '@/stories/atoms/Project';
 import { Link, useLocation } from '@tanstack/react-router';

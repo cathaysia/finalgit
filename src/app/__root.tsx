@@ -1,11 +1,9 @@
-import { useAppState } from '@/lib/state';
+import { useAppState } from '@/hooks/state';
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 import * as React from 'react';
 
-import '@/app/global.css';
 import '@/locales';
 import { commands } from '@/bindings';
-import NOTIFY from '@/lib/notify';
 import {
   refreshBranches,
   refreshChanges,
@@ -13,7 +11,8 @@ import {
   refreshStashList,
   refreshTags,
   useModifyTimes,
-} from '@/lib/query';
+} from '@/hooks/query';
+import NOTIFY from '@/lib/notify';
 import i18n from '@/locales';
 import { attachConsole } from '@tauri-apps/plugin-log';
 import { useEffect } from 'react';

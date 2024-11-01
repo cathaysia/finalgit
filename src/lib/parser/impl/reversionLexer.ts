@@ -1,15 +1,14 @@
 // Generated from reversion.g4 by ANTLR 4.13.0
 // noinspection ES6UnusedImports,JSUnusedGlobalSymbols,JSUnusedLocalSymbols
 import {
-  ATN,
+  type ATN,
   ATNDeserializer,
-  CharStream,
+  type CharStream,
   DFA,
-  DecisionState,
+  type DecisionState,
   Lexer,
   LexerATNSimulator,
   PredictionContextCache,
-  RuleContext,
   Token,
 } from 'antlr4';
 

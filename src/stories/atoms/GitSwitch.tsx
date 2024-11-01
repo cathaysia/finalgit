@@ -1,8 +1,8 @@
 import { commands } from '@/bindings';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { isMatching, match } from 'ts-pattern';

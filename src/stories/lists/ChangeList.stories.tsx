@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import GitFileStatus from '@/lib/file_status';
+import GitFileStatus from '@/lib/gitFileStatus';
 import ChangeList from './ChangeList';
 
 const meta = {

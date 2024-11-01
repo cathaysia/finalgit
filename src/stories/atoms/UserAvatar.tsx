@@ -1,6 +1,6 @@
-import { useGhAvatar } from '@/lib/gh';
-import { stringToColor } from '@/lib/stringColor';
+import { useGhAvatar } from '@/hooks/gh';
 import { cn } from '@/lib/utils';
+import { stringToColor } from '@/utils/stringColor';
 import { Avatar, AvatarGroup } from '@mui/material';
 
 function stringAvatar(name: string) {

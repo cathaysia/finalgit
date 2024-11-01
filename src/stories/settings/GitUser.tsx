@@ -8,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useAppState } from '@/hooks/state';
 import { getGitConfig, setGitConfig } from '@/lib/git';
-import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

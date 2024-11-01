@@ -1,5 +1,5 @@
+import { useBranches, useChanges, useFiles } from '@/hooks/query';
 import NOTIFY from '@/lib/notify';
-import { useBranches, useChanges, useFiles } from '@/lib/query';
 import { cn } from '@/lib/utils';
 import WorkspacePanel from './WorkspacePanel';
 

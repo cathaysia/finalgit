@@ -4,31 +4,26 @@
 import {
   ATN,
   ATNDeserializer,
-  BailErrorStrategy,
   DFA,
-  DecisionState,
+  type DecisionState,
   FailedPredicateException,
-  Interval,
-  IntervalSet,
   NoViableAltException,
   Parser,
   ParserATNSimulator,
   ParserRuleContext,
   PredictionContextCache,
-  PredictionMode,
   RecognitionException,
-  RuleContext,
-  RuleNode,
-  TerminalNode,
+  type RuleContext,
+  type TerminalNode,
   Token,
-  TokenStream,
+  type TokenStream,
 } from 'antlr4';
-import reversionListener from './reversionListener.js';
-import reversionVisitor from './reversionVisitor.js';
+import type reversionListener from './reversionListener.js';
+import type reversionVisitor from './reversionVisitor.js';
 
 // for running tests with parameters, TODO: discuss strategy for typed parameters in CI
 // eslint-disable-next-line no-unused-vars
-type int = number;
+type Int = number;
 
 // @ts-ignore
 
@@ -300,7 +295,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public reversion(): ReversionContext {
-    let localctx: ReversionContext = new ReversionContext(
+    const localctx: ReversionContext = new ReversionContext(
       this,
       this._ctx,
       this.state,
@@ -308,12 +303,10 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 0, reversionParser.RULE_reversion);
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 28;
-        this.rules(0);
-        this.state = 29;
-        this.match(reversionParser.EOF);
-      }
+      this.state = 28;
+      this.rules(0);
+      this.state = 29;
+      this.match(reversionParser.EOF);
     } catch (re) {
       if (re instanceof RecognitionException) {
         localctx.exception = re;
@@ -336,416 +329,404 @@ export default class reversionParser extends Parser {
       _p = 0;
     }
 
-    let _parentctx: ParserRuleContext = this._ctx;
-    let _parentState: number = this.state;
+    const _parentctx: ParserRuleContext = this._ctx;
+    const _parentState: number = this.state;
     let localctx: RulesContext = new RulesContext(
       this,
       this._ctx,
       _parentState,
     );
     let _prevctx: RulesContext = localctx;
-    let _startState: number = 2;
+    const _startState = 2;
     this.enterRecursionRule(localctx, 2, reversionParser.RULE_rules, _p);
     try {
       let _alt: number;
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 83;
-        this._errHandler.sync(this);
-        switch (this._interp.adaptivePredict(this._input, 3, this._ctx)) {
-          case 1:
-            {
-              localctx = new RevSingleContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-
-              this.state = 32;
-              this.rev();
-            }
-            break;
-          case 2:
-            {
-              localctx = new RevExpressionContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 33;
-              this.rev_expression();
-            }
-            break;
-          case 3:
-            {
-              localctx = new RevSinceContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 34;
-              this.match(reversionParser.T__0);
-              this.state = 35;
-              this.match(reversionParser.T__1);
-              this.state = 36;
-              this.date();
-            }
-            break;
-          case 4:
-            {
-              localctx = new RevUntilContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 37;
-              this.match(reversionParser.T__2);
-              this.state = 38;
-              this.match(reversionParser.T__1);
-              this.state = 39;
-              this.date();
-            }
-            break;
-          case 5:
-            {
-              localctx = new RevAfterContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 40;
-              this.match(reversionParser.T__3);
-              this.state = 41;
-              this.match(reversionParser.T__1);
-              this.state = 42;
-              this.date();
-            }
-            break;
-          case 6:
-            {
-              localctx = new RevSkipContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 43;
-              this.match(reversionParser.T__4);
-              this.state = 44;
-              this.match(reversionParser.T__1);
-              this.state = 45;
-              this.match(reversionParser.DIGIT);
-            }
-            break;
-          case 7:
-            {
-              localctx = new RevBeforeContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 46;
-              this.match(reversionParser.T__5);
-              this.state = 47;
-              this.match(reversionParser.T__1);
-              this.state = 48;
-              this.date();
-            }
-            break;
-          case 8:
-            {
-              localctx = new RevMaxAgeContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 49;
-              this.match(reversionParser.T__6);
-              this.state = 50;
-              this.match(reversionParser.T__1);
-              this.state = 51;
-              this.date();
-            }
-            break;
-          case 9:
-            {
-              localctx = new RevMinAgeContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 52;
-              this.match(reversionParser.T__7);
-              this.state = 53;
-              this.match(reversionParser.T__1);
-              this.state = 54;
-              this.date();
-            }
-            break;
-          case 10:
-            {
-              localctx = new RevAuthorContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 55;
-              this.match(reversionParser.T__8);
-              this.state = 56;
-              this.match(reversionParser.T__1);
-              this.state = 58;
-              this._errHandler.sync(this);
-              _alt = 1;
-              do {
-                switch (_alt) {
-                  case 1:
-                    {
-                      {
-                        this.state = 57;
-                        this.match(reversionParser.ANY);
-                      }
-                    }
-                    break;
-                  default:
-                    throw new NoViableAltException(this);
-                }
-                this.state = 60;
-                this._errHandler.sync(this);
-                _alt = this._interp.adaptivePredict(this._input, 0, this._ctx);
-              } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
-            }
-            break;
-          case 11:
-            {
-              localctx = new RevCommiterContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 62;
-              this.match(reversionParser.T__9);
-              this.state = 63;
-              this.match(reversionParser.T__1);
-              this.state = 65;
-              this._errHandler.sync(this);
-              _alt = 1;
-              do {
-                switch (_alt) {
-                  case 1:
-                    {
-                      {
-                        this.state = 64;
-                        this.match(reversionParser.ANY);
-                      }
-                    }
-                    break;
-                  default:
-                    throw new NoViableAltException(this);
-                }
-                this.state = 67;
-                this._errHandler.sync(this);
-                _alt = this._interp.adaptivePredict(this._input, 1, this._ctx);
-              } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
-            }
-            break;
-          case 12:
-            {
-              localctx = new RevGrepContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 69;
-              this.match(reversionParser.T__10);
-              this.state = 70;
-              this.match(reversionParser.T__1);
-              this.state = 72;
-              this._errHandler.sync(this);
-              _alt = 1;
-              do {
-                switch (_alt) {
-                  case 1:
-                    {
-                      {
-                        this.state = 71;
-                        this.match(reversionParser.ANY);
-                      }
-                    }
-                    break;
-                  default:
-                    throw new NoViableAltException(this);
-                }
-                this.state = 74;
-                this._errHandler.sync(this);
-                _alt = this._interp.adaptivePredict(this._input, 2, this._ctx);
-              } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
-            }
-            break;
-          case 13:
-            {
-              localctx = new RevExcludeContext(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 76;
-              this.match(reversionParser.T__11);
-              this.state = 77;
-              this.match(reversionParser.T__1);
-              this.state = 78;
-              this.rules(8);
-            }
-            break;
-          case 14:
-            {
-              localctx = new RevRangeBefore1Context(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 79;
-              this.match(reversionParser.T__12);
-              this.state = 80;
-              this.rules(2);
-            }
-            break;
-          case 15:
-            {
-              localctx = new RevRangeBefore2Context(this, localctx);
-              this._ctx = localctx;
-              _prevctx = localctx;
-              this.state = 81;
-              this.match(reversionParser.T__13);
-              this.state = 82;
-              this.rules(1);
-            }
-            break;
-        }
-        this._ctx.stop = this._input.LT(-1);
-        this.state = 104;
-        this._errHandler.sync(this);
-        _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
-        while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
-          if (_alt === 1) {
-            if (this._parseListeners != null) {
-              this.triggerExitRuleEvent();
-            }
+      this.state = 83;
+      this._errHandler.sync(this);
+      switch (this._interp.adaptivePredict(this._input, 3, this._ctx)) {
+        case 1:
+          {
+            localctx = new RevSingleContext(this, localctx);
+            this._ctx = localctx;
             _prevctx = localctx;
-            {
-              this.state = 102;
-              this._errHandler.sync(this);
-              switch (this._interp.adaptivePredict(this._input, 5, this._ctx)) {
+
+            this.state = 32;
+            this.rev();
+          }
+          break;
+        case 2:
+          {
+            localctx = new RevExpressionContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 33;
+            this.rev_expression();
+          }
+          break;
+        case 3:
+          {
+            localctx = new RevSinceContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 34;
+            this.match(reversionParser.T__0);
+            this.state = 35;
+            this.match(reversionParser.T__1);
+            this.state = 36;
+            this.date();
+          }
+          break;
+        case 4:
+          {
+            localctx = new RevUntilContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 37;
+            this.match(reversionParser.T__2);
+            this.state = 38;
+            this.match(reversionParser.T__1);
+            this.state = 39;
+            this.date();
+          }
+          break;
+        case 5:
+          {
+            localctx = new RevAfterContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 40;
+            this.match(reversionParser.T__3);
+            this.state = 41;
+            this.match(reversionParser.T__1);
+            this.state = 42;
+            this.date();
+          }
+          break;
+        case 6:
+          {
+            localctx = new RevSkipContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 43;
+            this.match(reversionParser.T__4);
+            this.state = 44;
+            this.match(reversionParser.T__1);
+            this.state = 45;
+            this.match(reversionParser.DIGIT);
+          }
+          break;
+        case 7:
+          {
+            localctx = new RevBeforeContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 46;
+            this.match(reversionParser.T__5);
+            this.state = 47;
+            this.match(reversionParser.T__1);
+            this.state = 48;
+            this.date();
+          }
+          break;
+        case 8:
+          {
+            localctx = new RevMaxAgeContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 49;
+            this.match(reversionParser.T__6);
+            this.state = 50;
+            this.match(reversionParser.T__1);
+            this.state = 51;
+            this.date();
+          }
+          break;
+        case 9:
+          {
+            localctx = new RevMinAgeContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 52;
+            this.match(reversionParser.T__7);
+            this.state = 53;
+            this.match(reversionParser.T__1);
+            this.state = 54;
+            this.date();
+          }
+          break;
+        case 10:
+          {
+            localctx = new RevAuthorContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 55;
+            this.match(reversionParser.T__8);
+            this.state = 56;
+            this.match(reversionParser.T__1);
+            this.state = 58;
+            this._errHandler.sync(this);
+            _alt = 1;
+            do {
+              switch (_alt) {
                 case 1:
                   {
-                    localctx = new RevRange1Context(
-                      this,
-                      new RulesContext(this, _parentctx, _parentState),
-                    );
-                    this.pushNewRecursionContext(
-                      localctx,
-                      _startState,
-                      reversionParser.RULE_rules,
-                    );
-                    this.state = 85;
-                    if (!this.precpred(this._ctx, 4)) {
-                      throw this.createFailedPredicateException(
-                        'this.precpred(this._ctx, 4)',
-                      );
-                    }
-                    this.state = 86;
-                    this.match(reversionParser.T__12);
-                    this.state = 87;
-                    this.rules(5);
+                    this.state = 57;
+                    this.match(reversionParser.ANY);
                   }
                   break;
-                case 2:
-                  {
-                    localctx = new RevRange2Context(
-                      this,
-                      new RulesContext(this, _parentctx, _parentState),
-                    );
-                    this.pushNewRecursionContext(
-                      localctx,
-                      _startState,
-                      reversionParser.RULE_rules,
-                    );
-                    this.state = 88;
-                    if (!this.precpred(this._ctx, 3)) {
-                      throw this.createFailedPredicateException(
-                        'this.precpred(this._ctx, 3)',
-                      );
-                    }
-                    this.state = 89;
-                    this.match(reversionParser.T__13);
-                    this.state = 90;
-                    this.rules(4);
-                  }
-                  break;
-                case 3:
-                  {
-                    localctx = new RevRangeAfter1Context(
-                      this,
-                      new RulesContext(this, _parentctx, _parentState),
-                    );
-                    this.pushNewRecursionContext(
-                      localctx,
-                      _startState,
-                      reversionParser.RULE_rules,
-                    );
-                    this.state = 91;
-                    if (!this.precpred(this._ctx, 7)) {
-                      throw this.createFailedPredicateException(
-                        'this.precpred(this._ctx, 7)',
-                      );
-                    }
-                    this.state = 92;
-                    this.match(reversionParser.T__12);
-                  }
-                  break;
-                case 4:
-                  {
-                    localctx = new RevRangeAfter2Context(
-                      this,
-                      new RulesContext(this, _parentctx, _parentState),
-                    );
-                    this.pushNewRecursionContext(
-                      localctx,
-                      _startState,
-                      reversionParser.RULE_rules,
-                    );
-                    this.state = 93;
-                    if (!this.precpred(this._ctx, 6)) {
-                      throw this.createFailedPredicateException(
-                        'this.precpred(this._ctx, 6)',
-                      );
-                    }
-                    this.state = 94;
-                    this.match(reversionParser.T__13);
-                  }
-                  break;
-                case 5:
-                  {
-                    localctx = new RevMultiContext(
-                      this,
-                      new RulesContext(this, _parentctx, _parentState),
-                    );
-                    this.pushNewRecursionContext(
-                      localctx,
-                      _startState,
-                      reversionParser.RULE_rules,
-                    );
-                    this.state = 95;
-                    if (!this.precpred(this._ctx, 5)) {
-                      throw this.createFailedPredicateException(
-                        'this.precpred(this._ctx, 5)',
-                      );
-                    }
-                    this.state = 98;
-                    this._errHandler.sync(this);
-                    _alt = 1;
-                    do {
-                      switch (_alt) {
-                        case 1:
-                          {
-                            {
-                              this.state = 96;
-                              this.match(reversionParser.SPACE);
-                              this.state = 97;
-                              this.rules(0);
-                            }
-                          }
-                          break;
-                        default:
-                          throw new NoViableAltException(this);
-                      }
-                      this.state = 100;
-                      this._errHandler.sync(this);
-                      _alt = this._interp.adaptivePredict(
-                        this._input,
-                        4,
-                        this._ctx,
-                      );
-                    } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
-                  }
-                  break;
+                default:
+                  throw new NoViableAltException(this);
               }
-            }
+              this.state = 60;
+              this._errHandler.sync(this);
+              _alt = this._interp.adaptivePredict(this._input, 0, this._ctx);
+            } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
           }
-          this.state = 106;
+          break;
+        case 11:
+          {
+            localctx = new RevCommiterContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 62;
+            this.match(reversionParser.T__9);
+            this.state = 63;
+            this.match(reversionParser.T__1);
+            this.state = 65;
+            this._errHandler.sync(this);
+            _alt = 1;
+            do {
+              switch (_alt) {
+                case 1:
+                  {
+                    this.state = 64;
+                    this.match(reversionParser.ANY);
+                  }
+                  break;
+                default:
+                  throw new NoViableAltException(this);
+              }
+              this.state = 67;
+              this._errHandler.sync(this);
+              _alt = this._interp.adaptivePredict(this._input, 1, this._ctx);
+            } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
+          }
+          break;
+        case 12:
+          {
+            localctx = new RevGrepContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 69;
+            this.match(reversionParser.T__10);
+            this.state = 70;
+            this.match(reversionParser.T__1);
+            this.state = 72;
+            this._errHandler.sync(this);
+            _alt = 1;
+            do {
+              switch (_alt) {
+                case 1:
+                  {
+                    this.state = 71;
+                    this.match(reversionParser.ANY);
+                  }
+                  break;
+                default:
+                  throw new NoViableAltException(this);
+              }
+              this.state = 74;
+              this._errHandler.sync(this);
+              _alt = this._interp.adaptivePredict(this._input, 2, this._ctx);
+            } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
+          }
+          break;
+        case 13:
+          {
+            localctx = new RevExcludeContext(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 76;
+            this.match(reversionParser.T__11);
+            this.state = 77;
+            this.match(reversionParser.T__1);
+            this.state = 78;
+            this.rules(8);
+          }
+          break;
+        case 14:
+          {
+            localctx = new RevRangeBefore1Context(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 79;
+            this.match(reversionParser.T__12);
+            this.state = 80;
+            this.rules(2);
+          }
+          break;
+        case 15:
+          {
+            localctx = new RevRangeBefore2Context(this, localctx);
+            this._ctx = localctx;
+            _prevctx = localctx;
+            this.state = 81;
+            this.match(reversionParser.T__13);
+            this.state = 82;
+            this.rules(1);
+          }
+          break;
+      }
+      this._ctx.stop = this._input.LT(-1);
+      this.state = 104;
+      this._errHandler.sync(this);
+      _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+      while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+        if (_alt === 1) {
+          if (this._parseListeners != null) {
+            this.triggerExitRuleEvent();
+          }
+          _prevctx = localctx;
+          this.state = 102;
           this._errHandler.sync(this);
-          _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
+          switch (this._interp.adaptivePredict(this._input, 5, this._ctx)) {
+            case 1:
+              {
+                localctx = new RevRange1Context(
+                  this,
+                  new RulesContext(this, _parentctx, _parentState),
+                );
+                this.pushNewRecursionContext(
+                  localctx,
+                  _startState,
+                  reversionParser.RULE_rules,
+                );
+                this.state = 85;
+                if (!this.precpred(this._ctx, 4)) {
+                  throw this.createFailedPredicateException(
+                    'this.precpred(this._ctx, 4)',
+                  );
+                }
+                this.state = 86;
+                this.match(reversionParser.T__12);
+                this.state = 87;
+                this.rules(5);
+              }
+              break;
+            case 2:
+              {
+                localctx = new RevRange2Context(
+                  this,
+                  new RulesContext(this, _parentctx, _parentState),
+                );
+                this.pushNewRecursionContext(
+                  localctx,
+                  _startState,
+                  reversionParser.RULE_rules,
+                );
+                this.state = 88;
+                if (!this.precpred(this._ctx, 3)) {
+                  throw this.createFailedPredicateException(
+                    'this.precpred(this._ctx, 3)',
+                  );
+                }
+                this.state = 89;
+                this.match(reversionParser.T__13);
+                this.state = 90;
+                this.rules(4);
+              }
+              break;
+            case 3:
+              {
+                localctx = new RevRangeAfter1Context(
+                  this,
+                  new RulesContext(this, _parentctx, _parentState),
+                );
+                this.pushNewRecursionContext(
+                  localctx,
+                  _startState,
+                  reversionParser.RULE_rules,
+                );
+                this.state = 91;
+                if (!this.precpred(this._ctx, 7)) {
+                  throw this.createFailedPredicateException(
+                    'this.precpred(this._ctx, 7)',
+                  );
+                }
+                this.state = 92;
+                this.match(reversionParser.T__12);
+              }
+              break;
+            case 4:
+              {
+                localctx = new RevRangeAfter2Context(
+                  this,
+                  new RulesContext(this, _parentctx, _parentState),
+                );
+                this.pushNewRecursionContext(
+                  localctx,
+                  _startState,
+                  reversionParser.RULE_rules,
+                );
+                this.state = 93;
+                if (!this.precpred(this._ctx, 6)) {
+                  throw this.createFailedPredicateException(
+                    'this.precpred(this._ctx, 6)',
+                  );
+                }
+                this.state = 94;
+                this.match(reversionParser.T__13);
+              }
+              break;
+            case 5:
+              {
+                localctx = new RevMultiContext(
+                  this,
+                  new RulesContext(this, _parentctx, _parentState),
+                );
+                this.pushNewRecursionContext(
+                  localctx,
+                  _startState,
+                  reversionParser.RULE_rules,
+                );
+                this.state = 95;
+                if (!this.precpred(this._ctx, 5)) {
+                  throw this.createFailedPredicateException(
+                    'this.precpred(this._ctx, 5)',
+                  );
+                }
+                this.state = 98;
+                this._errHandler.sync(this);
+                _alt = 1;
+                do {
+                  switch (_alt) {
+                    case 1:
+                      {
+                        this.state = 96;
+                        this.match(reversionParser.SPACE);
+                        this.state = 97;
+                        this.rules(0);
+                      }
+                      break;
+                    default:
+                      throw new NoViableAltException(this);
+                  }
+                  this.state = 100;
+                  this._errHandler.sync(this);
+                  _alt = this._interp.adaptivePredict(
+                    this._input,
+                    4,
+                    this._ctx,
+                  );
+                } while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER);
+              }
+              break;
+          }
         }
+        this.state = 106;
+        this._errHandler.sync(this);
+        _alt = this._interp.adaptivePredict(this._input, 6, this._ctx);
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -813,7 +794,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public refname(): RefnameContext {
-    let localctx: RefnameContext = new RefnameContext(
+    const localctx: RefnameContext = new RefnameContext(
       this,
       this._ctx,
       this.state,
@@ -822,15 +803,13 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 113;
-        _la = this._input.LA(1);
-        if (!(_la === 16 || _la === 17)) {
-          this._errHandler.recoverInline(this);
-        } else {
-          this._errHandler.reportMatch(this);
-          this.consume();
-        }
+      this.state = 113;
+      _la = this._input.LA(1);
+      if (!(_la === 16 || _la === 17)) {
+        this._errHandler.recoverInline(this);
+      } else {
+        this._errHandler.reportMatch(this);
+        this.consume();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -896,15 +875,13 @@ export default class reversionParser extends Parser {
               switch (_alt) {
                 case 1:
                   {
-                    {
-                      this.state = 124;
-                      _la = this._input.LA(1);
-                      if (!(_la === 61 || _la === 65)) {
-                        this._errHandler.recoverInline(this);
-                      } else {
-                        this._errHandler.reportMatch(this);
-                        this.consume();
-                      }
+                    this.state = 124;
+                    _la = this._input.LA(1);
+                    if (!(_la === 61 || _la === 65)) {
+                      this._errHandler.recoverInline(this);
+                    } else {
+                      this._errHandler.reportMatch(this);
+                      this.consume();
                     }
                   }
                   break;
@@ -932,10 +909,8 @@ export default class reversionParser extends Parser {
               switch (_alt) {
                 case 1:
                   {
-                    {
-                      this.state = 131;
-                      this.match(reversionParser.ANY);
-                    }
+                    this.state = 131;
+                    this.match(reversionParser.ANY);
                   }
                   break;
                 default:
@@ -964,10 +939,8 @@ export default class reversionParser extends Parser {
               switch (_alt) {
                 case 1:
                   {
-                    {
-                      this.state = 139;
-                      this.match(reversionParser.ANY);
-                    }
+                    this.state = 139;
+                    this.match(reversionParser.ANY);
                   }
                   break;
                 default:
@@ -1052,10 +1025,8 @@ export default class reversionParser extends Parser {
               (((_la - 32) & ~0x1f) === 0 &&
                 ((1 << (_la - 32)) & 73400383) !== 0)
             ) {
-              {
-                this.state = 151;
-                this.ref_anchor();
-              }
+              this.state = 151;
+              this.ref_anchor();
             }
 
             this.state = 154;
@@ -1080,7 +1051,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public rev_direction(): Rev_directionContext {
-    let localctx: Rev_directionContext = new Rev_directionContext(
+    const localctx: Rev_directionContext = new Rev_directionContext(
       this,
       this._ctx,
       this.state,
@@ -1089,15 +1060,13 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 157;
-        _la = this._input.LA(1);
-        if (!((_la & ~0x1f) === 0 && ((1 << _la) & 16941056) !== 0)) {
-          this._errHandler.recoverInline(this);
-        } else {
-          this._errHandler.reportMatch(this);
-          this.consume();
-        }
+      this.state = 157;
+      _la = this._input.LA(1);
+      if (!((_la & ~0x1f) === 0 && ((1 << _la) & 16941056) !== 0)) {
+        this._errHandler.recoverInline(this);
+      } else {
+        this._errHandler.reportMatch(this);
+        this.consume();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -1162,10 +1131,8 @@ export default class reversionParser extends Parser {
               switch (_alt) {
                 case 1 + 1:
                   {
-                    {
-                      this.state = 163;
-                      this.match(reversionParser.ANY);
-                    }
+                    this.state = 163;
+                    this.match(reversionParser.ANY);
                   }
                   break;
                 default:
@@ -1253,14 +1220,10 @@ export default class reversionParser extends Parser {
             _alt = this._interp.adaptivePredict(this._input, 16, this._ctx);
             while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
               if (_alt === 1) {
-                {
-                  {
-                    this.state = 175;
-                    this.match(reversionParser.SPACE);
-                    this.state = 176;
-                    this.time_point();
-                  }
-                }
+                this.state = 175;
+                this.match(reversionParser.SPACE);
+                this.state = 176;
+                this.time_point();
               }
               this.state = 181;
               this._errHandler.sync(this);
@@ -1351,7 +1314,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public time_value(): Time_valueContext {
-    let localctx: Time_valueContext = new Time_valueContext(
+    const localctx: Time_valueContext = new Time_valueContext(
       this,
       this._ctx,
       this.state,
@@ -1360,15 +1323,13 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 196;
-        _la = this._input.LA(1);
-        if (!(((_la - 28) & ~0x1f) === 0 && ((1 << (_la - 28)) & 1023) !== 0)) {
-          this._errHandler.recoverInline(this);
-        } else {
-          this._errHandler.reportMatch(this);
-          this.consume();
-        }
+      this.state = 196;
+      _la = this._input.LA(1);
+      if (!(((_la - 28) & ~0x1f) === 0 && ((1 << (_la - 28)) & 1023) !== 0)) {
+        this._errHandler.recoverInline(this);
+      } else {
+        this._errHandler.reportMatch(this);
+        this.consume();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -1385,7 +1346,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public time_unit(): Time_unitContext {
-    let localctx: Time_unitContext = new Time_unitContext(
+    const localctx: Time_unitContext = new Time_unitContext(
       this,
       this._ctx,
       this.state,
@@ -1394,17 +1355,13 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 198;
-        _la = this._input.LA(1);
-        if (
-          !(((_la - 38) & ~0x1f) === 0 && ((1 << (_la - 38)) & 16383) !== 0)
-        ) {
-          this._errHandler.recoverInline(this);
-        } else {
-          this._errHandler.reportMatch(this);
-          this.consume();
-        }
+      this.state = 198;
+      _la = this._input.LA(1);
+      if (!(((_la - 38) & ~0x1f) === 0 && ((1 << (_la - 38)) & 16383) !== 0)) {
+        this._errHandler.recoverInline(this);
+      } else {
+        this._errHandler.reportMatch(this);
+        this.consume();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -1421,7 +1378,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public time_direction(): Time_directionContext {
-    let localctx: Time_directionContext = new Time_directionContext(
+    const localctx: Time_directionContext = new Time_directionContext(
       this,
       this._ctx,
       this.state,
@@ -1430,15 +1387,13 @@ export default class reversionParser extends Parser {
     let _la: number;
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 200;
-        _la = this._input.LA(1);
-        if (!(_la === 4 || _la === 52)) {
-          this._errHandler.recoverInline(this);
-        } else {
-          this._errHandler.reportMatch(this);
-          this.consume();
-        }
+      this.state = 200;
+      _la = this._input.LA(1);
+      if (!(_la === 4 || _la === 52)) {
+        this._errHandler.recoverInline(this);
+      } else {
+        this._errHandler.reportMatch(this);
+        this.consume();
       }
     } catch (re) {
       if (re instanceof RecognitionException) {
@@ -1455,7 +1410,7 @@ export default class reversionParser extends Parser {
   }
   // @RuleVersion(0)
   public iso_8601(): Iso_8601Context {
-    let localctx: Iso_8601Context = new Iso_8601Context(
+    const localctx: Iso_8601Context = new Iso_8601Context(
       this,
       this._ctx,
       this.state,
@@ -1463,33 +1418,29 @@ export default class reversionParser extends Parser {
     this.enterRule(localctx, 26, reversionParser.RULE_iso_8601);
     try {
       this.enterOuterAlt(localctx, 1);
-      {
-        this.state = 202;
-        this.match(reversionParser.ISO_DATE);
-        this.state = 208;
-        this._errHandler.sync(this);
-        switch (this._interp.adaptivePredict(this._input, 20, this._ctx)) {
-          case 1:
-            {
-              this.state = 203;
-              this.match(reversionParser.SPACE);
-              this.state = 204;
-              this.match(reversionParser.ISO_TIME);
-              this.state = 206;
-              this._errHandler.sync(this);
-              switch (
-                this._interp.adaptivePredict(this._input, 19, this._ctx)
-              ) {
-                case 1:
-                  {
-                    this.state = 205;
-                    this.match(reversionParser.IS_TIME_POSTFIX);
-                  }
-                  break;
-              }
+      this.state = 202;
+      this.match(reversionParser.ISO_DATE);
+      this.state = 208;
+      this._errHandler.sync(this);
+      switch (this._interp.adaptivePredict(this._input, 20, this._ctx)) {
+        case 1:
+          {
+            this.state = 203;
+            this.match(reversionParser.SPACE);
+            this.state = 204;
+            this.match(reversionParser.ISO_TIME);
+            this.state = 206;
+            this._errHandler.sync(this);
+            switch (this._interp.adaptivePredict(this._input, 19, this._ctx)) {
+              case 1:
+                {
+                  this.state = 205;
+                  this.match(reversionParser.IS_TIME_POSTFIX);
+                }
+                break;
             }
-            break;
-        }
+          }
+          break;
       }
     } catch (re) {
       if (re instanceof RecognitionException) {

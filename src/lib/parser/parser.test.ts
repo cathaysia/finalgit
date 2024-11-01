@@ -1,5 +1,5 @@
 import { CharStream, CommonTokenStream } from 'antlr4';
-import { expect, test } from 'vitest';
+import { test } from 'vitest';
 import reversionLexer from './impl/reversionLexer';
 import reversionParser from './impl/reversionParser';
 import { parseReversion as P } from './parser';

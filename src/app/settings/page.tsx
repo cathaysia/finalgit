@@ -7,7 +7,7 @@ export const Route = createFileRoute('/settings/')({
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { useAppState } from '@/lib/state';
+import { useAppState } from '@/hooks/state';
 import ThemeCard from '@/stories/settings/ThemeCard';
 import { useTranslation } from 'react-i18next';
 

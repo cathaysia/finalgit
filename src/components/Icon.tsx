@@ -1,7 +1,13 @@
-import languageMap from '@/lib/languageMap';
 import { cn } from '@/lib/utils';
 import type { Manifest } from 'material-icon-theme';
 import * as Dist from 'material-icon-theme/dist/material-icons.json';
+
+import languageMap_ from '@/assets/language-map.json';
+
+const languageMap = languageMap_ as {
+  fileExtensions: Record<string, string>;
+  fileNames: Record<string, string>;
+};
 
 const manifest = Dist as Manifest;
 

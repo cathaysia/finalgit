@@ -65,6 +65,9 @@
     "copy": "复制到粘贴板",
     "copy_path": "复制路径"
   },
+  "island": {
+    "bisecting": "正在二份查找..."
+  },
   "ollama": {
     "add_model": "添加模型",
     "endpoint": "API",

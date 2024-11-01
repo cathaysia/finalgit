@@ -319,6 +319,7 @@ async function markGood(repoPath: string, commit: string) {
     NOTIFY.error(res.error);
     return;
   }
+  refreshHeadState();
   refreshBisectRange();
   refreshBisectNext();
 }
@@ -329,6 +330,7 @@ async function markBad(repoPath: string, commit: string) {
     NOTIFY.error(res.error);
     return;
   }
+  refreshHeadState();
   refreshBisectRange();
   refreshBisectNext();
 }
@@ -353,4 +355,5 @@ async function bisectStop(repoPath: string) {
   refreshBisectRange();
   refreshBisectNext();
   refreshHeadOid();
+  refreshHeadState();
 }

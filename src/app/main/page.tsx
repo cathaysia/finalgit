@@ -2,7 +2,7 @@ import { type CommitInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import NOTIFY from '@/lib/notify';
-import { useBranches, useHeadOid } from '@/lib/query';
+import { useBranches, useHeadOid, useHeadState } from '@/lib/query';
 import { useAppState } from '@/lib/state';
 import { cn } from '@/lib/utils';
 import { filterCommits } from '@/parser/commitFilter';
@@ -13,7 +13,9 @@ import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { match } from 'ts-pattern';
+import { CgSpinner } from 'react-icons/cg';
+import { toast } from 'sonner';
+import { isMatching, match } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export const Route = createFileRoute('/main/')({
@@ -22,6 +24,41 @@ export const Route = createFileRoute('/main/')({
 
 function Layout() {
   const [repoPath, isDiffview] = useAppState(s => [s.repoPath, s.isDiffView]);
+  const { t } = useTranslation();
+
+  const [bisectId, setBisectId] = useState<number | string | undefined>();
+
+  const { data: state } = useHeadState();
+  useEffect(() => {
+    const isBisect = isMatching('Bisect', state);
+    if (isBisect && !bisectId) {
+      const id = toast(
+        <div
+          className={cn(
+            'flex items-center gap-2',
+            'rounded-2xl bg-primary pt-1 pr-4 pb-1 pl-4 text-white dark:text-black',
+          )}
+        >
+          <CgSpinner className="inline-block animate-spin" />
+          <span>{t('island.bisecting')}</span>
+        </div>,
+        {
+          duration: Number.POSITIVE_INFINITY,
+          unstyled: true,
+          position: 'top-center',
+        },
+      );
+      setBisectId(id);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    const isBisect = isMatching('Bisect', state);
+    if (!isBisect && bisectId) {
+      toast.dismiss(bisectId);
+      setBisectId(undefined);
+    }
+  }, [bisectId, state]);
 
   return (
     <div

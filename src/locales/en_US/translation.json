@@ -65,6 +65,9 @@
     "copy": "fileItem.copy",
     "copy_path": "fileItem.copy_path"
   },
+  "island": {
+    "bisecting": "Bisecting"
+  },
   "ollama": {
     "add_model": "Add model",
     "endpoint": "Endpoint",

@@ -52,24 +52,26 @@
     "commit": "Commit",
     "commit_summary": "Commit Summary",
     "generate_message": "Generate Message",
-    "generating": "commiter.generating",
+    "generating": "Generating",
     "start_commit": "Start Commit"
   },
   "controlbar": {
     "preference": "Perference"
   },
   "fileItem": {
-    "checkout": "fileItem.checkout",
-    "compareHead": "fileItem.compareHead",
-    "compareWith": "fileItem.compareWith",
-    "copy": "fileItem.copy",
-    "copy_path": "fileItem.copy_path"
+    "checkout": "Checkout",
+    "compareHead": "compare with HEAD",
+    "compareWith": "compareWith",
+    "copy": "Copy",
+    "copy_path": "Copy path"
   },
   "island": {
     "bisecting": "Bisecting"
   },
   "ollama": {
     "add_model": "Add model",
+    "apply": "Apply",
+    "cancel": "Cancel",
     "endpoint": "Endpoint",
     "model": "Model"
   },
@@ -90,7 +92,7 @@
         "header": "Pull",
         "rebase": "Rebase"
       },
-      "select_gpg": "profile.git.select_gpg",
+      "select_gpg": "Select GPG",
       "signingKey": "signingKey",
       "tag": {
         "gpgsign": "sign tag by GPG"
@@ -103,11 +105,11 @@
     "use_emoji": "using emoji replace plaintext in branch and commit"
   },
   "project": {
-    "add_local_repository": "add local repository",
-    "clone_repository": "clone repository"
+    "clone_repository": "Clone remote repository",
+    "open_local_repository": "Open local repository"
   },
   "rename": {
-    "kind": "rename.kind"
+    "kind": "Kind"
   },
   "settings": {
     "ai": "AI",
@@ -116,11 +118,11 @@
     "search_langing": "Search language"
   },
   "stash": {
-    "apply": "stash.apply",
-    "delete": "stash.delete"
+    "apply": "Apply",
+    "delete": "Delete"
   },
   "tag": {
-    "delete": "delete"
+    "delete": "Delete"
   },
   "tags": {
     "create_branch": "Create branch from tag"

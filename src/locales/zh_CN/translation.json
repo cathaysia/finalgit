@@ -1,16 +1,16 @@
 {
   "ai": {
-    "prompt": "Prompt"
+    "prompt": "提示"
   },
   "branch": {
-    "apply": "branch.apply",
+    "apply": "应用",
     "branches": "分支",
     "checkout": "检出",
-    "checkout_remote": "branch.checkout_remote",
+    "checkout_remote": "检出到远程分支",
     "create_new_branch": "创建分支",
     "delete": "删除",
     "details": "详情",
-    "disable_dirty": "branch.disable_dirty",
+    "disable_dirty": "工作区有修改，请先提交或 stash",
     "local": "本地",
     "pull": "拉取",
     "push": "推送",
@@ -61,7 +61,7 @@
   "fileItem": {
     "checkout": "检出",
     "compareHead": "与 Head 进行比较",
-    "compareWith": "fileItem.compareWith",
+    "compareWith": "compareWith",
     "copy": "复制到粘贴板",
     "copy_path": "复制路径"
   },
@@ -70,6 +70,8 @@
   },
   "ollama": {
     "add_model": "添加模型",
+    "apply": "ollama.apply",
+    "cancel": "ollama.cancel",
     "endpoint": "API",
     "model": "模型"
   },
@@ -90,8 +92,8 @@
         "header": "Pull",
         "rebase": "Rebase"
       },
-      "select_gpg": "profile.git.select_gpg",
-      "signingKey": "profile.git.signingKey",
+      "select_gpg": "选择 GPG",
+      "signingKey": "签名密钥",
       "tag": {
         "gpgsign": "GPG 密钥"
       },
@@ -103,8 +105,8 @@
     "use_emoji": "在分支和提交界面使用 Emoji 替换纯文本"
   },
   "project": {
-    "add_local_repository": "project.add_local_repository",
-    "clone_repository": "project.clone_repository"
+    "clone_repository": "克隆远程仓库",
+    "open_local_repository": "打开本地仓库"
   },
   "rename": {
     "kind": "rename.kind"
@@ -131,7 +133,7 @@
     "discard": "丢弃更改",
     "discard_all": "丢弃全部更改",
     "generate_patch": "生成补丁文件",
-    "patch_save_path": "workspace.patch_save_path",
+    "patch_save_path": "补丁保存路径",
     "set_as_default": "设为默认分支",
     "stash": "暂存更改"
   },

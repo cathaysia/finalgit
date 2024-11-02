@@ -49,7 +49,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
   if (!repoPath) {
     return (
       <Button className="w-full" onClick={openRepo}>
-        {t('project.add_local_repository')}
+        {t('project.open_local_repository')}
       </Button>
     );
   }
@@ -87,7 +87,7 @@ export default function Project({ projects = [], className }: ProjectProps) {
               className="flex justify-between"
               onClick={openRepo}
             >
-              <span>{t('project.add_local_repository')}</span>
+              <span>{t('project.open_local_repository')}</span>
               <IoIosAdd className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
             <DropdownMenuItem className="flex justify-between">

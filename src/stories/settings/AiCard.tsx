@@ -183,7 +183,6 @@ function OllamaPull() {
             <Button
               variant="outline"
               role="combobox"
-              aria-expanded={open}
               className={cn('justify-between', !showSelect && 'hidden')}
             >
               <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />

@@ -2,7 +2,7 @@ import { commands } from '@/bindings';
 import { useAiState } from '@/hooks/state';
 import { queryModels } from '@/lib/ai';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { isMatching, match } from 'ts-pattern';
+import { match } from 'ts-pattern';
 import { useAppState } from './state';
 
 export const queryClient = new QueryClient({
@@ -321,70 +321,4 @@ export function useHeadState() {
 
 export function refreshHeadState() {
   queryClient.invalidateQueries({ queryKey: ['head_state'] });
-}
-
-export function useBisectRange() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
-  const { data: state } = useHeadState();
-
-  return useQuery({
-    queryKey: ['bisect_range', repoPath],
-    queryFn: async () => {
-      if (state) {
-        if (!isMatching('Bisect', state)) {
-          return null;
-        }
-      }
-      if (!repoPath) {
-        throw new Error('no repoPath');
-      }
-      const res = await commands.bisectGetRange(repoPath);
-      return match(res)
-        .with({ status: 'ok' }, res => {
-          return res.data;
-        })
-        .with({ status: 'error' }, err => {
-          throw new Error(err.error);
-        })
-        .exhaustive();
-    },
-    enabled: repoPath !== undefined,
-  });
-}
-
-export function refreshBisectRange() {
-  queryClient.invalidateQueries({ queryKey: ['bisect_range'] });
-}
-
-export function useBisectNext() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
-  const { data: state } = useHeadState();
-
-  return useQuery({
-    queryKey: ['bisect_next', repoPath],
-    queryFn: async () => {
-      if (state) {
-        if (!isMatching('Bisect', state)) {
-          return null;
-        }
-      }
-      if (!repoPath) {
-        throw new Error('no repoPath');
-      }
-      const res = await commands.bisectGetNext(repoPath);
-      return match(res)
-        .with({ status: 'ok' }, res => {
-          return res.data;
-        })
-        .with({ status: 'error' }, err => {
-          throw new Error(err.error);
-        })
-        .exhaustive();
-    },
-    enabled: repoPath !== undefined,
-  });
-}
-
-export function refreshBisectNext() {
-  queryClient.invalidateQueries({ queryKey: ['bisect_next'] });
 }

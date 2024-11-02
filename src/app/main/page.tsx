@@ -1,11 +1,13 @@
 import { type CommitInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useBranches, useHeadOid, useHeadState } from '@/hooks/query';
+import { useBisectState } from '@/hooks/bisect';
+import { useBranches, useHeadOid } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { filterCommits } from '@/lib/parser/commitFilter';
 import { cn } from '@/lib/utils';
+import RebaseCard from '@/stories/card/RebaseCard';
 import CommitList from '@/stories/lists/CommitList';
 import ControlPanel from '@/stories/panels/ControlPanel';
 import MainPanel from '@/stories/panels/MainPanel';
@@ -13,9 +15,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CgSpinner } from 'react-icons/cg';
-import { toast } from 'sonner';
-import { isMatching, match } from 'ts-pattern';
+import { match } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export const Route = createFileRoute('/main/')({
@@ -24,41 +24,6 @@ export const Route = createFileRoute('/main/')({
 
 function Layout() {
   const [repoPath, isDiffview] = useAppState(s => [s.repoPath, s.isDiffView]);
-  const { t } = useTranslation();
-
-  const [bisectId, setBisectId] = useState<number | string | undefined>();
-
-  const { data: state } = useHeadState();
-  useEffect(() => {
-    const isBisect = isMatching('Bisect', state);
-    if (isBisect && !bisectId) {
-      const id = toast(
-        <div
-          className={cn(
-            'flex items-center gap-2',
-            'rounded-2xl bg-primary pt-1 pr-4 pb-1 pl-4 text-white dark:text-black',
-          )}
-        >
-          <CgSpinner className="inline-block animate-spin" />
-          <span>{t('island.bisecting')}</span>
-        </div>,
-        {
-          duration: Number.POSITIVE_INFINITY,
-          unstyled: true,
-          position: 'top-center',
-        },
-      );
-      setBisectId(id);
-    }
-  }, [state]);
-
-  useEffect(() => {
-    const isBisect = isMatching('Bisect', state);
-    if (!isBisect && bisectId) {
-      toast.dismiss(bisectId);
-      setBisectId(undefined);
-    }
-  }, [bisectId, state]);
 
   return (
     <div
@@ -112,6 +77,7 @@ export default function Commit() {
     }
   }, [repoPath, branches]);
 
+  const bisectState = useBisectState(currentHistory);
   const filteredData = useMemo(() => {
     if (!debounce) {
       return currentHistory;
@@ -191,8 +157,10 @@ export default function Commit() {
       </div>
       <CommitList
         history={filteredData}
+        bisectState={bisectState}
         filter={filter.startsWith('$') ? undefined : filter}
       />
+      <RebaseCard bisectState={bisectState} />
     </div>
   );
 }

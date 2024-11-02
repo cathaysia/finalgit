@@ -8,19 +8,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { refreshBisectNext, refreshBisectRange } from '@/hooks/bisect';
 import {
-  refreshBisectNext,
-  refreshBisectRange,
   refreshBranches,
   refreshChanges,
   refreshHeadOid,
   refreshHeadState,
   refreshHistory,
-  useBisectNext,
-  useBisectRange,
   useChanges,
   useHeadOid,
-  useHeadState,
 } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
@@ -40,10 +36,26 @@ export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
   commit: CommitInfo;
+  isGood: boolean | undefined;
+  isBad: boolean | undefined;
+  isBisecting: boolean | undefined;
+  isNext: boolean | undefined;
 }
 
 const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
-  ({ className, filter, commit, ...props }, ref) => {
+  (
+    {
+      className,
+      filter,
+      commit,
+      isGood = false,
+      isBad = false,
+      isBisecting = false,
+      isNext = false,
+      ...props
+    },
+    ref,
+  ) => {
     const summary = commit.summary.slice(0, 50);
     const { t } = useTranslation();
     const names = [commit.author.name];
@@ -51,14 +63,6 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;
-    const { data: range } = useBisectRange();
-    const { data: bisectNext } = useBisectNext();
-    const { data: state } = useHeadState();
-
-    const isBad = range?.bad === commit.oid;
-    const isGood = range?.good === commit.oid;
-    const isNext = bisectNext === commit.oid;
-    const isBisect = isMatching('Bisect', state);
 
     if (commit.author.name !== commit.commiter.name) {
       names.push(commit.commiter.name);
@@ -68,11 +72,11 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         className={cn(
           'flex h-16 items-center justify-between gap-2 text-wrap border px-2 py-4 font-medium text-sm',
           DEFAULT_STYLE,
-          isBisect && 'border-l-2 border-l-gray-600 dark:border-l-gray-600',
+          isBisecting && 'border-l-2 border-l-gray-600 dark:border-l-gray-600',
           isBad && 'border-l-red-600 dark:border-l-red-600',
           isGood && 'border-l-green-600 dark:border-l-green-600',
           isNext && 'border-l-pink-600 dark:border-l-pink-600',
-          !isBisect &&
+          !isBisecting &&
             head?.is_detached &&
             head?.oid === commit.oid &&
             'border-green-600 dark:border-green-600',
@@ -156,7 +160,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.revert')}
               </DropdownMenuItem>
-              {isBisect ? (
+              {isBisecting ? (
                 <DropdownMenuItem
                   className="rounded-b-none border-t border-r border-l dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800"
                   onClick={() => {
@@ -183,7 +187,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <motion.div
                 className={cn(
                   'overflow-hidden border-r border-b border-l dark:border-zinc-800',
-                  !isBisect && 'border-transparent dark:border-transparent',
+                  !isBisecting && 'border-transparent dark:border-transparent',
                 )}
                 variants={{
                   visible: {
@@ -196,7 +200,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                   },
                 }}
                 initial="hidden"
-                animate={isBisect ? 'visible' : 'hidden'}
+                animate={isBisecting ? 'visible' : 'hidden'}
               >
                 <DropdownMenuItem
                   className={
@@ -349,8 +353,8 @@ async function bisectStop(repoPath: string) {
   const res = await commands.bisectStop(repoPath);
   if (isMatching({ status: 'error' }, res)) {
     NOTIFY.error(res.error);
-    return;
   }
+
   refreshHeadState();
   refreshBisectRange();
   refreshBisectNext();

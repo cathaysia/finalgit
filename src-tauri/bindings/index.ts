@@ -3,19 +3,6 @@
 /** user-defined commands **/
 
 export const commands = {
-  async headGetStatus(
-    repoPath: string,
-  ): Promise<Result<RepositoryState, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('head_get_status', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
   async bisectStart(repoPath: string): Promise<Result<null, string>> {
     try {
       return {
@@ -511,6 +498,19 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async headGetStatus(
+    repoPath: string,
+  ): Promise<Result<RepositoryState, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('head_get_status', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
     try {
       return {
@@ -689,7 +689,7 @@ export const commands = {
 
 /** user-defined types **/
 
-export type BisectRange = { good: string | null; bad: string | null };
+export type BisectRange = { good: string[]; bad: string[] };
 export type BlameHunk = {
   final_commit_id: string;
   final_start_line: number;

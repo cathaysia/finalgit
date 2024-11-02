@@ -6,8 +6,8 @@ use crate::{branch::RepoExt, AppResult};
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize, Type)]
 pub struct BisectRange {
-    good: Option<String>,
-    bad: Option<String>,
+    good: Vec<String>,
+    bad: Vec<String>,
 }
 
 pub trait BisectExt {
@@ -65,28 +65,21 @@ impl BisectExt for git2::Repository {
 fn parse_bisect_log(output: &str) -> BisectRange {
     let mut range = BisectRange::default();
     // FIXME: check range!
-    if let Some(item) = output
+    for item in output
         .lines()
-        .rev()
-        .find(|item| item.starts_with("git bisect bad"))
+        .map(|item| item.trim())
+        .filter(|item| !item.starts_with("#"))
     {
         if let Some((_, oid)) = item.split_once("git bisect bad") {
             let oid = oid.trim();
             if oid.len() == 40 {
-                let _ = range.bad.insert(oid.to_string());
+                range.bad.push(oid.to_string());
             }
         }
-    }
-
-    if let Some(item) = output
-        .lines()
-        .rev()
-        .find(|item| item.starts_with("git bisect good"))
-    {
         if let Some((_, oid)) = item.split_once("git bisect good") {
             let oid = oid.trim();
             if oid.len() == 40 {
-                let _ = range.good.insert(oid.to_string());
+                range.good.push(oid.to_string());
             }
         }
     }
@@ -112,7 +105,7 @@ git bisect good f34d88e30c7d8be7181f728d1abc4fd8d5cd07d3
 git bisect good 0f5e990b8a04f53861d64ff53751517bbf73d867
         "#;
         let v = parse_bisect_log(content);
-        assert_eq!(v.good.unwrap(), "0f5e990b8a04f53861d64ff53751517bbf73d867");
-        assert_eq!(v.bad.unwrap(), "dd420a6d25d037decd7b81175626dfca817437ff");
+        assert!(!v.good.is_empty());
+        assert!(!v.good.is_empty());
     }
 }

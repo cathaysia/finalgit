@@ -32,7 +32,6 @@ export default function GitUser({ className, ...props }: GitUserProps) {
     getGitConfig(repoPath, 'user.signingkey').then(val => {
       if (val) {
         setCurGpg(val);
-        console.log(val);
       }
     });
   }, [repoPath, refreshGpg]);

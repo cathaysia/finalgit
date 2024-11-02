@@ -20,13 +20,16 @@ import { MdAddToPhotos } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
 export interface ProjectProps {
-  projects?: string[];
   className?: string;
 }
 
-export default function Project({ projects = [], className }: ProjectProps) {
+export default function Project({ className }: ProjectProps) {
   const { t } = useTranslation();
-  const [repoPath, setRepoPath] = useAppState(s => [s.repoPath, s.setRepoPath]);
+  const [repoPath, setRepoPath, projects] = useAppState(s => [
+    s.repoPath,
+    s.setRepoPath,
+    s.projects,
+  ]);
 
   async function openRepo() {
     const value = await open({
@@ -72,13 +75,16 @@ export default function Project({ projects = [], className }: ProjectProps) {
               return (
                 <DropdownMenuItem
                   key={item}
-                  className={cn(
-                    'flex justify-between',
-                    item === current && 'bg-slate-200',
-                  )}
+                  className={cn('flex justify-between')}
+                  onClick={() => {
+                    if (item === repoPath) {
+                      return;
+                    }
+                    setRepoPath(item);
+                  }}
                 >
                   <span>{item}</span>
-                  {item === current && <FaCheck className="ml-2 h-4 w-4" />}
+                  {item === repoPath && <FaCheck className="ml-2 h-4 w-4" />}
                 </DropdownMenuItem>
               );
             })}

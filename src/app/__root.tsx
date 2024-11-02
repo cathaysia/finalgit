@@ -42,9 +42,9 @@ export default function RootLayout() {
   }
 
   const [setRepoPath, lang] = useAppState(s => [s.setRepoPath, s.lang]);
-  i18n.changeLanguage(lang);
 
   useEffect(() => {
+    i18n.changeLanguage(lang);
     commands.takeRepoPath().then(v => {
       if (!v) {
         return;

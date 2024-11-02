@@ -32,10 +32,7 @@ export interface ChangeItemProps
 const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
   ({ className, item, ...props }, ref) => {
     const { t } = useTranslation();
-    const [repoPath, toggleDiffView] = useAppState(s => [
-      s.repoPath,
-      s.toggleDiffView,
-    ]);
+    const [repoPath] = useAppState(s => [s.repoPath]);
 
     function getCheckedStatus(status: number) {
       const isIndexed = GitFileStatus.isIndexed(status);
@@ -57,7 +54,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
       <div
         className={cn('flex items-center justify-between', className)}
         {...props}
-        onClick={toggleDiffView}
         ref={ref}
       >
         <div className="flex gap-2">

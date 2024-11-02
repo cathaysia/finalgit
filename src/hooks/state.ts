@@ -1,4 +1,5 @@
 import { LazyStore } from '@tauri-apps/plugin-store';
+import { enableMapSet, produce } from 'immer';
 import { create } from 'zustand';
 import {
   type StateStorage,
@@ -6,6 +7,8 @@ import {
   devtools,
   persist,
 } from 'zustand/middleware';
+
+enableMapSet();
 
 export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.
 Only respond with the commit message. Don't give any notes.
@@ -42,14 +45,10 @@ export interface AppState {
   repoPath?: string;
   lang: string;
   useEmoji: boolean;
-  project: string[];
-  isDiffView: boolean;
+  projects: string[];
   setLang: (lang: string) => void;
-  setUseEmoji: (use: boolean) => void;
+  setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
-  setProject: (project: string[]) => void;
-  setIsDiffView: (enabled: boolean) => void;
-  toggleDiffView: () => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -58,22 +57,19 @@ export const useAppState = create<AppState>()(
       repoPath: undefined,
       lang: 'en_US',
       useEmoji: true,
-      project: [],
-      isDiffView: false,
+      projects: [],
       setRepoPath: (repoPath: string) => {
-        set(s => ({
-          repoPath: repoPath,
-          projects: (() => {
-            const p = s.project;
-            return [repoPath, ...p];
-          })(),
-        }));
+        set(
+          produce(draft => {
+            draft.repoPath = repoPath;
+            if (!draft.projects.includes(repoPath)) {
+              draft.projects.push(repoPath);
+            }
+          }),
+        );
       },
-      setProject: (project: string[]) => set({ project: project }),
       setLang: (lang: string) => set({ lang: lang }),
-      setUseEmoji: (lang: boolean) => set({ useEmoji: lang }),
-      setIsDiffView: (enabled: boolean) => set({ isDiffView: enabled }),
-      toggleDiffView: () => set(s => ({ isDiffView: !s.isDiffView })),
+      setUseEmoji: (useEmoji: boolean) => set({ useEmoji: useEmoji }),
     }),
     {
       name: 'app',
@@ -81,6 +77,7 @@ export const useAppState = create<AppState>()(
       partialize: s => ({
         repoPath: s.repoPath,
         lang: s.lang,
+        projects: s.projects,
         useEmoji: s.useEmoji,
       }),
     },
@@ -142,12 +139,10 @@ export const useAiState = create<AiStateProps>()(
       ollamaCurrentModel: undefined,
       setCurrent: (name: string) => set({ current: name }),
       setPrompt: (name: string, prompt: string) =>
-        set(s =>
-          (() => {
-            const promptList = s.promptList;
-            promptList.set(name, prompt);
-            return { promptList: promptList };
-          })(),
+        set(
+          produce(draft => {
+            draft.promptList.set(name, prompt);
+          }),
         ),
       setOllamaEndpoint: (endpoint: string) =>
         set({ ollamaEndpoint: endpoint }),

@@ -14,7 +14,7 @@ import ChangeList from '@/stories/lists/ChangeList';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { VscDiff, VscRepoPull, VscRepoPush } from 'react-icons/vsc';
+import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
 
 export interface WorkspacePanelProps
@@ -153,9 +153,6 @@ export default function WorkspacePanel({
             </Avatar>
           </div>
           <div className="flex gap-2">
-            <Link to="/diff" className={cn(files?.length === 0 && 'hidden')}>
-              <VscDiff />
-            </Link>
             {current && (
               <Link
                 to="/filetree/$commit"

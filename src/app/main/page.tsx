@@ -23,17 +23,16 @@ export const Route = createFileRoute('/main/')({
 });
 
 function Layout() {
-  const [repoPath, isDiffview] = useAppState(s => [s.repoPath, s.isDiffView]);
+  const [repoPath] = useAppState(s => [s.repoPath]);
 
   return (
     <div
       className="grid h-screen w-screen grid-cols-4 gap-2 p-2"
       data-tauri-drag-region={true}
     >
-      {!isDiffview && <ControlPanel className="h-full" />}
+      <ControlPanel className="h-full" />
       <MainPanel className="mr-2 h-full grow" />
-      {repoPath && !isDiffview && <Commit />}
-      {isDiffview && <DiffView />}
+      {repoPath && <Commit />}
     </div>
   );
 }
@@ -161,14 +160,6 @@ export default function Commit() {
         filter={filter.startsWith('$') ? undefined : filter}
       />
       <RebaseCard bisectState={bisectState} />
-    </div>
-  );
-}
-
-function DiffView() {
-  return (
-    <div className="flex h-full w-full gap-2">
-      <div>TODO</div>
     </div>
   );
 }

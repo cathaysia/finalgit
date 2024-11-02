@@ -13,12 +13,10 @@
 import { Route as rootRoute } from './app/__root';
 import { Route as SettingsLayoutImport } from './app/settings/layout';
 import { Route as FiletreeLayoutImport } from './app/filetree/layout';
-import { Route as DiffLayoutImport } from './app/diff/layout';
 import { Route as PageImport } from './app/page';
 import { Route as SettingsPageImport } from './app/settings/page';
 import { Route as MainPageImport } from './app/main/page';
 import { Route as FiletreePageImport } from './app/filetree/page';
-import { Route as DiffPageImport } from './app/diff/page';
 import { Route as SettingsGitImport } from './app/settings/git';
 import { Route as SettingsAiImport } from './app/settings/ai';
 import { Route as FiletreeCommitImport } from './app/filetree/$commit';
@@ -34,12 +32,6 @@ const SettingsLayoutRoute = SettingsLayoutImport.update({
 const FiletreeLayoutRoute = FiletreeLayoutImport.update({
   id: '/filetree',
   path: '/filetree',
-  getParentRoute: () => rootRoute,
-} as any);
-
-const DiffLayoutRoute = DiffLayoutImport.update({
-  id: '/diff',
-  path: '/diff',
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -65,12 +57,6 @@ const FiletreePageRoute = FiletreePageImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FiletreeLayoutRoute,
-} as any);
-
-const DiffPageRoute = DiffPageImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DiffLayoutRoute,
 } as any);
 
 const SettingsGitRoute = SettingsGitImport.update({
@@ -100,13 +86,6 @@ declare module '@tanstack/react-router' {
       path: '/';
       fullPath: '/';
       preLoaderRoute: typeof PageImport;
-      parentRoute: typeof rootRoute;
-    };
-    '/diff': {
-      id: '/diff';
-      path: '/diff';
-      fullPath: '/diff';
-      preLoaderRoute: typeof DiffLayoutImport;
       parentRoute: typeof rootRoute;
     };
     '/filetree': {
@@ -144,13 +123,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsGitImport;
       parentRoute: typeof SettingsLayoutImport;
     };
-    '/diff/': {
-      id: '/diff/';
-      path: '/';
-      fullPath: '/diff/';
-      preLoaderRoute: typeof DiffPageImport;
-      parentRoute: typeof DiffLayoutImport;
-    };
     '/filetree/': {
       id: '/filetree/';
       path: '/';
@@ -176,18 +148,6 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
-
-interface DiffLayoutRouteChildren {
-  DiffPageRoute: typeof DiffPageRoute;
-}
-
-const DiffLayoutRouteChildren: DiffLayoutRouteChildren = {
-  DiffPageRoute: DiffPageRoute,
-};
-
-const DiffLayoutRouteWithChildren = DiffLayoutRoute._addFileChildren(
-  DiffLayoutRouteChildren,
-);
 
 interface FiletreeLayoutRouteChildren {
   FiletreeCommitRoute: typeof FiletreeCommitRoute;
@@ -221,13 +181,11 @@ const SettingsLayoutRouteWithChildren = SettingsLayoutRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof PageRoute;
-  '/diff': typeof DiffLayoutRouteWithChildren;
   '/filetree': typeof FiletreeLayoutRouteWithChildren;
   '/settings': typeof SettingsLayoutRouteWithChildren;
   '/filetree/$commit': typeof FiletreeCommitRoute;
   '/settings/ai': typeof SettingsAiRoute;
   '/settings/git': typeof SettingsGitRoute;
-  '/diff/': typeof DiffPageRoute;
   '/filetree/': typeof FiletreePageRoute;
   '/main': typeof MainPageRoute;
   '/settings/': typeof SettingsPageRoute;
@@ -238,7 +196,6 @@ export interface FileRoutesByTo {
   '/filetree/$commit': typeof FiletreeCommitRoute;
   '/settings/ai': typeof SettingsAiRoute;
   '/settings/git': typeof SettingsGitRoute;
-  '/diff': typeof DiffPageRoute;
   '/filetree': typeof FiletreePageRoute;
   '/main': typeof MainPageRoute;
   '/settings': typeof SettingsPageRoute;
@@ -247,13 +204,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   '/': typeof PageRoute;
-  '/diff': typeof DiffLayoutRouteWithChildren;
   '/filetree': typeof FiletreeLayoutRouteWithChildren;
   '/settings': typeof SettingsLayoutRouteWithChildren;
   '/filetree/$commit': typeof FiletreeCommitRoute;
   '/settings/ai': typeof SettingsAiRoute;
   '/settings/git': typeof SettingsGitRoute;
-  '/diff/': typeof DiffPageRoute;
   '/filetree/': typeof FiletreePageRoute;
   '/main/': typeof MainPageRoute;
   '/settings/': typeof SettingsPageRoute;
@@ -263,13 +218,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
-    | '/diff'
     | '/filetree'
     | '/settings'
     | '/filetree/$commit'
     | '/settings/ai'
     | '/settings/git'
-    | '/diff/'
     | '/filetree/'
     | '/main'
     | '/settings/';
@@ -279,20 +232,17 @@ export interface FileRouteTypes {
     | '/filetree/$commit'
     | '/settings/ai'
     | '/settings/git'
-    | '/diff'
     | '/filetree'
     | '/main'
     | '/settings';
   id:
     | '__root__'
     | '/'
-    | '/diff'
     | '/filetree'
     | '/settings'
     | '/filetree/$commit'
     | '/settings/ai'
     | '/settings/git'
-    | '/diff/'
     | '/filetree/'
     | '/main/'
     | '/settings/';
@@ -301,7 +251,6 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   PageRoute: typeof PageRoute;
-  DiffLayoutRoute: typeof DiffLayoutRouteWithChildren;
   FiletreeLayoutRoute: typeof FiletreeLayoutRouteWithChildren;
   SettingsLayoutRoute: typeof SettingsLayoutRouteWithChildren;
   MainPageRoute: typeof MainPageRoute;
@@ -309,7 +258,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   PageRoute: PageRoute,
-  DiffLayoutRoute: DiffLayoutRouteWithChildren,
   FiletreeLayoutRoute: FiletreeLayoutRouteWithChildren,
   SettingsLayoutRoute: SettingsLayoutRouteWithChildren,
   MainPageRoute: MainPageRoute,
@@ -328,7 +276,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/diff",
         "/filetree",
         "/settings",
         "/main/"
@@ -336,12 +283,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "page.tsx"
-    },
-    "/diff": {
-      "filePath": "diff/layout.tsx",
-      "children": [
-        "/diff/"
-      ]
     },
     "/filetree": {
       "filePath": "filetree/layout.tsx",
@@ -369,10 +310,6 @@ export const routeTree = rootRoute
     "/settings/git": {
       "filePath": "settings/git.tsx",
       "parent": "/settings"
-    },
-    "/diff/": {
-      "filePath": "diff/page.tsx",
-      "parent": "/diff"
     },
     "/filetree/": {
       "filePath": "filetree/page.tsx",

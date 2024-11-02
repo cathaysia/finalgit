@@ -43,15 +43,14 @@ export default function RootLayout() {
 
   const [setRepoPath, lang] = useAppState(s => [s.setRepoPath, s.lang]);
   i18n.changeLanguage(lang);
-  async function initCmdLine() {
-    const repoPath = await commands.takeRepoPath();
-    if (repoPath) {
-      setRepoPath(repoPath);
-    }
-  }
 
   useEffect(() => {
-    initCmdLine();
+    commands.takeRepoPath().then(v => {
+      if (!v) {
+        return;
+      }
+      setRepoPath(v);
+    });
   });
 
   const { error, data } = useModifyTimes();

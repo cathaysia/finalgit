@@ -28,5 +28,9 @@ export const Default: Story = {
       message: 'first commit.',
       summary: 'first commit.',
     },
+    isGood: false,
+    isBad: false,
+    isBisecting: false,
+    isNext: false,
   },
 };

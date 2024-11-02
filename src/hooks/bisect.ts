@@ -5,10 +5,10 @@ import { queryClient, useHeadState } from './query';
 import { useAppState } from './state';
 
 export interface BisectState {
-  bad: string | undefined;
-  good: string | undefined;
-  next: string | undefined;
-  firstBad: string | undefined;
+  bad: string | null;
+  good: string | null;
+  next: string | null;
+  firstBad: string | null;
   isBisecting: boolean;
 }
 export function useBisectState(info: CommitInfo[]): BisectState {
@@ -18,10 +18,10 @@ export function useBisectState(info: CommitInfo[]): BisectState {
   const isBisecting = isMatching('Bisect', state);
   if (!isBisecting) {
     return {
-      bad: undefined,
-      good: undefined,
-      next: undefined,
-      firstBad: undefined,
+      bad: null,
+      good: null,
+      next: null,
+      firstBad: null,
       isBisecting: false,
     };
   }
@@ -38,13 +38,10 @@ export function useBisectState(info: CommitInfo[]): BisectState {
     })
     .filter(item => item !== -1)
     .sort((a, b) => a - b);
-  const clamp: [number | undefined, number | undefined] = [
-    undefined,
-    undefined,
-  ];
-  let good: string | undefined;
-  let bad: string | undefined;
-  let firstBad: string | undefined;
+  const clamp: [number | null, number | null] = [null, null];
+  let good: string | null = null;
+  let bad: string | null = null;
+  let firstBad: string | null = null;
 
   if (goodIdx?.length) {
     clamp[0] = goodIdx[0];
@@ -55,15 +52,15 @@ export function useBisectState(info: CommitInfo[]): BisectState {
     bad = info[clamp[1]].oid;
   }
 
-  if (clamp[0] !== undefined && clamp[1] !== undefined) {
+  if (clamp[0] !== null && clamp[1] !== null) {
     if (clamp[0] - clamp[1] === 1) {
       firstBad = info[clamp[1]].oid;
     }
   }
 
-  let next = bisectNext;
+  let next = bisectNext || null;
   if (firstBad) {
-    next = undefined;
+    next = null;
   }
 
   return {
@@ -84,21 +81,23 @@ export function useBisectRange() {
     queryFn: async () => {
       if (state) {
         if (!isMatching('Bisect', state)) {
-          return;
+          return null;
         }
       }
       if (!repoPath) {
         throw new Error('no repoPath');
       }
       const res = await commands.bisectGetRange(repoPath);
-      return match(res)
-        .with({ status: 'ok' }, res => {
-          return res.data;
-        })
-        .with({ status: 'error' }, err => {
-          throw new Error(err.error);
-        })
-        .exhaustive();
+      return (
+        match(res)
+          .with({ status: 'ok' }, res => {
+            return res.data;
+          })
+          .with({ status: 'error' }, err => {
+            throw new Error(err.error);
+          })
+          .exhaustive() || null
+      );
     },
     enabled: repoPath !== undefined,
   });
@@ -117,21 +116,23 @@ export function useBisectNext() {
     queryFn: async () => {
       if (state) {
         if (!isMatching('Bisect', state)) {
-          return;
+          return null;
         }
       }
       if (!repoPath) {
         throw new Error('no repoPath');
       }
       const res = await commands.bisectGetNext(repoPath);
-      return match(res)
-        .with({ status: 'ok' }, res => {
-          return res.data || undefined;
-        })
-        .with({ status: 'error' }, err => {
-          throw new Error(err.error);
-        })
-        .exhaustive();
+      return (
+        match(res)
+          .with({ status: 'ok' }, res => {
+            return res.data || undefined;
+          })
+          .with({ status: 'error' }, err => {
+            throw new Error(err.error);
+          })
+          .exhaustive() || null
+      );
     },
     enabled: repoPath !== undefined,
   });

@@ -146,13 +146,29 @@ export default function Commit() {
             setKeyDown(undefined);
           }}
         />
-        <Button
-          onClick={() => {
-            setFilter('');
+        <motion.div
+          variants={{
+            visible: {
+              width: 'auto',
+              transition: { duration: 0.2 },
+            },
+            hidden: {
+              width: 0,
+              transition: { duration: 0.2 },
+            },
           }}
+          initial="hidden"
+          animate={filter.length !== 0 ? 'visible' : 'hidden'}
         >
-          {t('Cancel')}
-        </Button>
+          <Button
+            onClick={() => {
+              setFilter('');
+            }}
+            className={cn(filter.length === 0 && 'hidden')}
+          >
+            {t('Cancel')}
+          </Button>
+        </motion.div>
       </div>
       <CommitList
         history={filteredData}

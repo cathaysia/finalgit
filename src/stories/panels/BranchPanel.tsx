@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import BranchList from '@/stories/lists/BranchList';
 import { TagList } from '@/stories/lists/TagList';
+import { motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -59,11 +60,11 @@ export default function BranchPanel({
         <div className="flex items-center justify-between gap-2">
           <TabsList className={cn('mt-2 grid w-full grid-cols-2')}>
             <TabsTrigger value="branch">
-              <FaCodeBranch />
+              <FaCodeBranch className="mr-2" />
               {t('branch.branches')}
             </TabsTrigger>
             <TabsTrigger value="tags">
-              <FaTag />
+              <FaTag className="mr-2" />
               {t('branch.tags')}
             </TabsTrigger>
           </TabsList>
@@ -84,7 +85,22 @@ export default function BranchPanel({
             )}
           </div>
         </div>
-        {isSearching && (
+        <motion.div
+          variants={{
+            visible: {
+              height: 'auto',
+              opacity: 1,
+              transition: { duration: 0.2 },
+            },
+            hidden: {
+              height: 0,
+              opacity: 0,
+              transition: { duration: 0.2 },
+            },
+          }}
+          initial="hidden"
+          animate={isSearching ? 'visible' : 'hidden'}
+        >
           <Input
             value={filter || ''}
             spellCheck={false}
@@ -99,7 +115,7 @@ export default function BranchPanel({
               }
             }}
           />
-        )}
+        </motion.div>
       </div>
       <TabsContent value="branch" className="h-full">
         <BranchList

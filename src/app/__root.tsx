@@ -50,7 +50,9 @@ export default function RootLayout() {
     }
   }
 
-  initCmdLine();
+  useEffect(() => {
+    initCmdLine();
+  });
 
   const { error, data } = useModifyTimes();
   if (error) {

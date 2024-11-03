@@ -1,10 +1,10 @@
 import '@/assets/global.css';
 import { queryClient } from '@/hooks/query';
 import { withThemeByClassName } from '@storybook/addon-themes';
-import type { Preview } from '@storybook/react';
+import type { Preview, StoryFn } from '@storybook/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
-import { withI18next } from './i18n.tsx';
+import { withI18next } from './i18n';
 
 export const decorators = [
   withThemeByClassName({
@@ -15,7 +15,7 @@ export const decorators = [
     defaultTheme: 'light',
   }),
   withI18next,
-  (Story, _) => {
+  (Story: StoryFn) => {
     return (
       <QueryClientProvider client={queryClient}>
         <Story />
@@ -33,6 +33,7 @@ const preview: Preview = {
       },
     },
   },
+  tags: ['autodocs'],
 };
 
 export const globalTypes = {

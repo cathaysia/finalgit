@@ -1,4 +1,4 @@
-import Panel from '@/stories/settings/Panel';
+import Panel from '@/stories/settings/panel';
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/settings')({

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import GitSwitch from '@/stories/atoms/GitSwitch';
-import GitCore from '@/stories/settings/GitCore';
-import GitUser from '@/stories/settings/GitUser';
+import GitSwitch from '@/stories/atoms/git-switch';
+import GitCore from '@/stories/settings/git-core';
+import GitUser from '@/stories/settings/git-user';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 

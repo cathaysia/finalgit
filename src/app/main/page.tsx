@@ -7,8 +7,8 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { filterCommits } from '@/lib/parser/commit-filter';
 import { cn } from '@/lib/utils';
-import RebaseCard from '@/stories/card/rebase-card';
-import CommitList from '@/stories/lists/commit-list';
+import BisectCard from '@/stories/bisect/bisect-card';
+import CommitList from '@/stories/commit/commit-list';
 import ControlPanel from '@/stories/panels/control-panel';
 import MainPanel from '@/stories/panels/main-panel';
 import { createFileRoute } from '@tanstack/react-router';
@@ -175,7 +175,7 @@ export default function Commit() {
         bisectState={bisectState}
         filter={filter.startsWith('$') ? undefined : filter}
       />
-      <RebaseCard bisectState={bisectState} />
+      <BisectCard bisectState={bisectState} />
     </div>
   );
 }

@@ -3,11 +3,11 @@ import { useBranches, useTags } from '@/hooks/query';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import Project from '@/stories/atoms/project';
+import BranchPanel from '@/stories/branch/barnch-panel';
 import { Link, useLocation } from '@tanstack/react-router';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import ControlBar from '../atoms/controlbar';
-import BranchPanel from './barnch-panel';
 
 type ControlPanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 

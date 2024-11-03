@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Default as ChangeCardStories } from '@/stories/lists/change-list.stories';
+import { Default as ChangeCardStories } from '@/stories/change/change-list.stories';
 import WorkspacePanel from './workspace-panel';
 
 const meta = {

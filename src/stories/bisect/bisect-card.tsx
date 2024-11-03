@@ -13,7 +13,7 @@ export interface RebaseCardProps
   bisectState: BisectState;
 }
 
-export default function RebaseCard({
+export default function BisectCard({
   className,
   bisectState,
   ...props

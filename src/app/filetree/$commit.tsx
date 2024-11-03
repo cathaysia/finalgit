@@ -5,12 +5,12 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import { createBlamePlugin } from '@/extensions/blame';
-import { checkboxPlugin } from '@/extensions/bool-checkbox';
 import { useBlameInfo, useFiles } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { BlameCard } from '@/stories/atoms/blame-card';
+import { createBlamePlugin } from '@/stories/codemirror/blame';
+import { BlameCard } from '@/stories/codemirror/blame/blame-card';
+import { checkboxPlugin } from '@/stories/codemirror/bool-checkbox';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
 import { createFileRoute } from '@tanstack/react-router';

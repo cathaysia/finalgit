@@ -10,7 +10,7 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
-import ChangeList from '@/stories/lists/change-list';
+import ChangeList from '@/stories/change/change-list';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +35,7 @@ import {
   useTags,
 } from '@/hooks/query';
 import { Link } from '@tanstack/react-router';
-import StashCard from '../card/stash-card';
+import StashCard from '../stash/stash-card';
 
 export default function WorkspacePanel({
   className,

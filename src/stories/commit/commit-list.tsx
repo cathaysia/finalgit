@@ -10,8 +10,8 @@ import {
 } from '@tanstack/react-virtual';
 import { useEffect, useRef } from 'react';
 import React from 'react';
-import CommitItem from '../atoms/commit-item';
 import type VirtualScrollArea from '../atoms/virtualscroll-area';
+import CommitItem from './commit-item';
 
 export interface CommitListProps
   extends React.ComponentProps<typeof VirtualScrollArea> {

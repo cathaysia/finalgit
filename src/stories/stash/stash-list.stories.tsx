@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import StashList from './stash-list';
+import StashList from '../stash/stash-list';
 
 const meta = {
   component: StashList,

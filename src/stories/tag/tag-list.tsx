@@ -1,6 +1,6 @@
 import type { TagInfo } from '@/bindings';
 import { cn } from '@/lib/utils';
-import { TagItem } from '@/stories/atoms/tagitem';
+import { TagItem } from '@/stories/tag/tagitem';
 import VirtualScrollArea from '../atoms/virtualscroll-area';
 
 export interface TagListProps

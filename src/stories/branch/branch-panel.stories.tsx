@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Default as BranchListStories } from '@/stories/lists/branch-list.stories';
-import { Default as TagListStories } from '@/stories/lists/tag-list.stories';
+import { Default as BranchListStories } from '@/stories/branch/branch-list.stories';
+import { Default as TagListStories } from '@/stories/tag/tag-list.stories';
 import BranchPanel from './barnch-panel';
 
 const meta = {

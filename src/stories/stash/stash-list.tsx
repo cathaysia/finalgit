@@ -1,6 +1,6 @@
 import type { StashInfo } from '@/bindings';
-import StashItem from '../atoms/stash-item';
 import VirtualScrollArea from '../atoms/virtualscroll-area';
+import StashItem from './stash-item';
 
 export interface StashListProps
   extends Omit<

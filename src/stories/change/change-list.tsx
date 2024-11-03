@@ -8,9 +8,9 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';
-import ChangeItem from '../atoms/change-item';
 import Commiter from '../atoms/commiter';
 import VirtualScrollArea from '../atoms/virtualscroll-area';
+import ChangeItem from './change-item';
 
 export interface ChangeListProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {

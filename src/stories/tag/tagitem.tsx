@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { match } from 'ts-pattern';
-import HighLightLabel from './highlight-label';
+import HighLightLabel from '../atoms/highlight-label';
 
 export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   info: TagInfo;

@@ -7,7 +7,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
-import StashList from '../lists/stash-list';
+import StashList from './stash-list';
 
 export interface StashCardProps
   extends React.ComponentProps<typeof Collapsible> {

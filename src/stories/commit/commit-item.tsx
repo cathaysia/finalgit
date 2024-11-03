@@ -30,7 +30,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching, match } from 'ts-pattern';
-import HighLightLabel from './highlight-label';
+import HighLightLabel from '../atoms/highlight-label';
 
 export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {

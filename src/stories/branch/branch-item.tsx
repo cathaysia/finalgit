@@ -21,8 +21,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaCodeBranch } from 'react-icons/fa';
 import { match } from 'ts-pattern';
+import HighLightLabel from '../atoms/highlight-label';
 import BranchRename from './branch-rename';
-import HighLightLabel from './highlight-label';
 
 export interface BranchItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {

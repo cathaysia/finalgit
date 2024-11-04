@@ -91,12 +91,6 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             text={replaceEmoji(summary, useEmoji)}
             value={summary}
             filter={filter}
-            onClick={() => {
-              if (repoPath && !isDirty) {
-                checkoutCommit(repoPath, commit.oid);
-                refreshBranches();
-              }
-            }}
           />
           <Badge
             title={commit.oid}

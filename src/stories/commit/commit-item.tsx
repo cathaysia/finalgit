@@ -169,7 +169,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                     }
                   }}
                 >
-                  {t('commit.bisect_stop')}
+                  {t('bisect.stop')}
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem
@@ -181,7 +181,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                     e.preventDefault();
                   }}
                 >
-                  {t('commit.bisect_start')}
+                  {t('bisect.start')}
                 </DropdownMenuItem>
               )}
               <motion.div
@@ -212,7 +212,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                     }
                   }}
                 >
-                  {t('commit.bisect_mark_good')}
+                  {t('bisect.mark_good')}
                   <div className="h-2 w-2 bg-green-600" />
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -225,7 +225,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                     }
                   }}
                 >
-                  {t('commit.bisect_mark_bad')}
+                  {t('bisect.mark_bad')}
                   <div className="h-2 w-2 bg-red-600" />
                 </DropdownMenuItem>
               </motion.div>
@@ -349,7 +349,7 @@ async function bisectStart(repoPath: string) {
   refreshBisectNext();
 }
 
-async function bisectStop(repoPath: string) {
+export async function bisectStop(repoPath: string) {
   const res = await commands.bisectStop(repoPath);
   if (isMatching({ status: 'error' }, res)) {
     NOTIFY.error(res.error);

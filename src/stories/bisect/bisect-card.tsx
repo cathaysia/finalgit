@@ -1,4 +1,6 @@
+import { Button } from '@/components/ui/button';
 import type { BisectState } from '@/hooks/bisect';
+import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
 import { motion } from 'framer-motion';
@@ -7,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
 import { FaCheckCircle } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { bisectStop } from '../commit/commit-item';
 
 export interface RebaseCardProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -19,6 +22,7 @@ export default function BisectCard({
   ...props
 }: RebaseCardProps) {
   const { t } = useTranslation();
+  const [repoPath] = useAppState(s => [s.repoPath]);
 
   const [bisectId, setBisectId] = useState<number | string | undefined>();
   const blameWidget = useRef<HTMLDivElement>(null);
@@ -73,6 +77,15 @@ export default function BisectCard({
                 )}
               </div>
             )}
+            <Button
+              title={t('bisect.stop')}
+              onClick={() => {
+                if (repoPath) {
+                  bisectStop(repoPath);
+                }
+              }}
+              className="h-4 w-4 bg-red-500 p-0 hover:bg-red-300 dark:bg-red-500 hover:dark:bg-red-300"
+            />
           </div>
         </Portal.Root>
       )}

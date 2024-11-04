@@ -32,11 +32,13 @@
     "discard": "Discard",
     "unstage": "Remove from stage"
   },
+  "bisect": {
+    "mark_bad": "Mark bad commit",
+    "mark_good": "Mark good commit",
+    "start": "Start bisect",
+    "stop": "Stop bisect"
+  },
   "commit": {
-    "bisect_mark_bad": "Mark bad commit",
-    "bisect_mark_good": "Mark good commit",
-    "bisect_start": "Start bisect",
-    "bisect_stop": "Stop bisect",
     "checkout": "checkout",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {{ val }}",

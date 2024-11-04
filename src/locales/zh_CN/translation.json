@@ -32,11 +32,13 @@
     "discard": "丢弃",
     "unstage": "取消暂存"
   },
+  "bisect": {
+    "mark_bad": "标记为坏提交",
+    "mark_good": "标记为好提交",
+    "start": "开始二份查找",
+    "stop": "停止二份查找"
+  },
   "commit": {
-    "bisect_mark_bad": "标记为坏提交",
-    "bisect_mark_good": "标记为好提交",
-    "bisect_start": "开始二份查找",
-    "bisect_stop": "停止二份查找",
     "checkout": "检出",
     "copy": "拷贝",
     "copy_to_clipboard": "拷贝到粘贴板",

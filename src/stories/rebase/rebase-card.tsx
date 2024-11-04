@@ -1,35 +1,31 @@
+import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
-import type { BisectState } from '@/hooks/bisect';
+import { refreshHeadState, useHeadState } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
+import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
-import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
-import { FaCheckCircle } from 'react-icons/fa';
 import { toast } from 'sonner';
-import { bisectStop } from '../commit/commit-item';
+import { isMatching } from 'ts-pattern';
 
-export interface BisectCardProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  bisectState: BisectState;
-}
+export interface RebaseCardProps
+  extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
-export default function BisectCard({
-  className,
-  bisectState,
-  ...props
-}: BisectCardProps) {
+export default function RebaseCard({ className, ...props }: RebaseCardProps) {
   const { t } = useTranslation();
   const [repoPath] = useAppState(s => [s.repoPath]);
+  const { data: headState } = useHeadState();
+  const isRebasing =
+    headState === 'Rebase' || headState === 'RebaseInteractive';
 
   const [bisectId, setBisectId] = useState<number | string | undefined>();
   const blameWidget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const isBisect = bisectState.isBisecting;
-    if (isBisect && !bisectId) {
+    if (isRebasing && !bisectId) {
       const id = toast(<div ref={blameWidget} />, {
         duration: Number.POSITIVE_INFINITY,
         unstyled: true,
@@ -37,18 +33,18 @@ export default function BisectCard({
       });
       setBisectId(id);
     }
-  }, [bisectState.isBisecting]);
+  }, [isRebasing]);
 
   useEffect(() => {
-    if (!bisectState.isBisecting && bisectId) {
+    if (!isRebasing && bisectId) {
       toast.dismiss(bisectId);
       setBisectId(undefined);
     }
-  }, [bisectId, bisectState.isBisecting]);
+  }, [bisectId, isRebasing]);
 
   return (
     <div className={cn(className)} {...props}>
-      {bisectState.isBisecting && (
+      {isRebasing && (
         <Portal.Root container={blameWidget.current} asChild>
           <div
             className={cn(
@@ -56,32 +52,27 @@ export default function BisectCard({
               'rounded-2xl bg-primary pt-1 pr-4 pb-1 pl-4 text-white dark:text-black',
             )}
           >
-            {!bisectState.firstBad ? (
+            {isRebasing && (
               <>
                 <CgSpinner className="inline-block animate-spin" />
-                <span>{t('island.bisecting')}</span>
+                <span>{t('rebase.doing')}</span>
               </>
-            ) : (
-              <div className="item-center flex gap-2">
-                <motion.span
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-center gap-2"
-                >
-                  <FaCheckCircle className="text-green-500" />
-                </motion.span>
-                {t(
-                  `island.rebase.firstbad is ${bisectState.firstBad.slice(0, 6)}`,
-                )}
-              </div>
             )}
+
             <Button
-              title={t('bisect.stop')}
+              title={t('rebase.continue')}
               onClick={() => {
                 if (repoPath) {
-                  bisectStop(repoPath);
+                  rebaseContinue(repoPath);
+                }
+              }}
+              className="h-4 w-4 bg-green-500 p-0 hover:bg-green-300 dark:bg-green-500 hover:dark:bg-green-300"
+            />
+            <Button
+              title={t('rebase.abort')}
+              onClick={() => {
+                if (repoPath) {
+                  rebaseAbort(repoPath);
                 }
               }}
               className="h-4 w-4 bg-red-500 p-0 hover:bg-red-300 dark:bg-red-500 hover:dark:bg-red-300"
@@ -91,4 +82,20 @@ export default function BisectCard({
       )}
     </div>
   );
+}
+
+async function rebaseAbort(repoPath: string) {
+  const res = await commands.rebaseAbort(repoPath);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+  }
+  refreshHeadState();
+}
+
+async function rebaseContinue(repoPath: string) {
+  const res = await commands.rebaseContinue(repoPath);
+  if (isMatching({ status: 'error' }, res)) {
+    NOTIFY.error(res.error);
+  }
+  refreshHeadState();
 }

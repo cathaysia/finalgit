@@ -33,7 +33,7 @@ impl RebaseExt for git2::Repository {
     }
 
     fn rebase_continue(&self) -> AppResult<()> {
-        let _ = self.exec_git(["rebase", "continue"])?;
+        let _ = self.exec_git(["rebase", "--continue"])?;
         Ok(())
     }
 }

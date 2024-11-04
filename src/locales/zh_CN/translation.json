@@ -2,6 +2,12 @@
   "ai": {
     "prompt": "提示"
   },
+  "bisect": {
+    "mark_bad": "标记为坏提交",
+    "mark_good": "标记为好提交",
+    "start": "开始二份查找",
+    "stop": "停止二份查找"
+  },
   "branch": {
     "apply": "应用",
     "branches": "分支",
@@ -31,12 +37,6 @@
     "diff": "差异",
     "discard": "丢弃",
     "unstage": "取消暂存"
-  },
-  "bisect": {
-    "mark_bad": "标记为坏提交",
-    "mark_good": "标记为好提交",
-    "start": "开始二份查找",
-    "stop": "停止二份查找"
   },
   "commit": {
     "checkout": "检出",
@@ -109,6 +109,11 @@
   "project": {
     "clone_repository": "克隆远程仓库",
     "open_local_repository": "打开本地仓库"
+  },
+  "rebase": {
+    "abort": "终止变基",
+    "continue": "继续变基",
+    "doing": "正在变基"
   },
   "rename": {
     "kind": "rename.kind"

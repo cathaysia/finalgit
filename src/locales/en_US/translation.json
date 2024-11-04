@@ -2,6 +2,12 @@
   "ai": {
     "prompt": "Prompt"
   },
+  "bisect": {
+    "mark_bad": "Mark bad commit",
+    "mark_good": "Mark good commit",
+    "start": "Start bisect",
+    "stop": "Stop bisect"
+  },
   "branch": {
     "apply": "Apply",
     "branches": "Branches",
@@ -31,12 +37,6 @@
     "diff": "Diff",
     "discard": "Discard",
     "unstage": "Remove from stage"
-  },
-  "bisect": {
-    "mark_bad": "Mark bad commit",
-    "mark_good": "Mark good commit",
-    "start": "Start bisect",
-    "stop": "Stop bisect"
   },
   "commit": {
     "checkout": "checkout",
@@ -109,6 +109,11 @@
   "project": {
     "clone_repository": "Clone remote repository",
     "open_local_repository": "Open local repository"
+  },
+  "rebase": {
+    "abort": "abort rebase",
+    "continue": "continue rebase",
+    "doing": "rebaseing"
   },
   "rename": {
     "kind": "Kind"

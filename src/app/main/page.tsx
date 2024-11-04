@@ -11,6 +11,7 @@ import BisectCard from '@/stories/bisect/bisect-card';
 import CommitList from '@/stories/commit/commit-list';
 import ControlPanel from '@/stories/panels/control-panel';
 import MainPanel from '@/stories/panels/main-panel';
+import RebaseCard from '@/stories/rebase/rebase-card';
 import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
@@ -33,6 +34,7 @@ function Layout() {
       <ControlPanel className="h-full" />
       <MainPanel className="mr-2 h-full grow" />
       {repoPath && <Commit />}
+      <RebaseCard />
     </div>
   );
 }

@@ -116,7 +116,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              <DropdownMenuItem>{t('commit.details')}</DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                {t('commit.details')}
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
                   to="/filetree/$commit"
@@ -137,11 +139,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.checkout')}
               </DropdownMenuItem>
-              <DropdownMenuItem>{t('commit.copy')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('commit.cut')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('commit.insert_before')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('commit.insert_after')}</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem disabled>{t('commit.copy')}</DropdownMenuItem>
+              <DropdownMenuItem disabled>{t('commit.cut')}</DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                {t('commit.insert_before')}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                {t('commit.insert_after')}
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-red-600" disabled>
                 {t('commit.delete')}
               </DropdownMenuItem>
               <DropdownMenuItem

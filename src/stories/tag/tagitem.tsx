@@ -68,7 +68,7 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled>
               <MdDelete className="mr-2 h-4 w-4 text-red-600" />
               <span>{t('tag.delete')}</span>
             </DropdownMenuItem>
@@ -76,7 +76,7 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
               <div className="mr-2 h-4 w-4" />
               <span>{t('branch.checkout')}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled>
               <div className="mr-2 h-4 w-4" />
               <span>{t('tags.create_branch')}</span>
             </DropdownMenuItem>

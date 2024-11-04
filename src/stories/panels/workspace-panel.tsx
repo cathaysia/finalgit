@@ -112,8 +112,8 @@ export default function WorkspacePanel({
         <Separator />
         <div className="pt-2">
           <div className="flex justify-between">
-            <Button disabled={true}>{t('workspace.set_as_default')}</Button>
-            <Button>{t('workspace.create_pr')}</Button>
+            <Button disabled>{t('workspace.set_as_default')}</Button>
+            <Button disabled>{t('workspace.create_pr')}</Button>
             <Button
               className={cn(pushState?.unpull === 0 && 'hidden')}
               onClick={() => {

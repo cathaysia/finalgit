@@ -26,13 +26,13 @@ export default function ProfileComponent() {
             <Label htmlFor="profile.stash">
               {t('profile.stash_before_checkout')}
             </Label>
-            <Checkbox id="profile.stash" />
+            <Checkbox id="profile.stash" disabled />
           </div>
           <div className="flex justify-between">
             <Label htmlFor="profile.discard">
               {t('profile.add_before_discard')}
             </Label>
-            <Checkbox id="profile.discard" />
+            <Checkbox id="profile.discard" disabled />
           </div>
           <div className="flex justify-between">
             <Label htmlFor="profile.use_emoji">{t('profile.use_emoji')}</Label>

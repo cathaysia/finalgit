@@ -21,7 +21,7 @@ export default function HighLightLabel({
 
   if (!filter) {
     return (
-      <Label className={cn(className)} title={value} {...props}>
+      <Label className={cn('select-text', className)} title={value} {...props}>
         {text}
       </Label>
     );
@@ -33,7 +33,7 @@ export default function HighLightLabel({
   );
   return (
     <Label
-      className={cn(className)}
+      className={cn('select-text', className)}
       title={value}
       dangerouslySetInnerHTML={{ __html: v }}
       {...props}

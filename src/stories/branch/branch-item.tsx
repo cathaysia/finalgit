@@ -49,8 +49,6 @@ export default function BranchItem({
   const t = useTranslation().t;
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
-  const branchName = info.name;
-  const upstream = info.remote;
   const isLocal = info.kind === 'Local';
   const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
 
@@ -98,7 +96,7 @@ export default function BranchItem({
         {...props}
       >
         <BranchRename
-          defaultValue={branchName}
+          defaultValue={info.name}
           onCancel={() => {
             setOpState(undefined);
           }}
@@ -129,14 +127,15 @@ export default function BranchItem({
           }}
         >
           <HighLightLabel
-            text={replaceEmoji(branchName, useEmoji)}
-            value={branchName}
+            text={replaceEmoji(info.name, useEmoji)}
+            value={info.name}
             filter={filter}
             className="overflow-hidden text-ellipsis whitespace-nowrap"
           />
           <div className="flex gap-2">
             <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
-            {upstream && <Badge>{upstream}</Badge>}
+            {info.upstream && <Badge>{info.upstream}</Badge>}
+            {info.remote && <Badge>{info.remote}</Badge>}
           </div>
         </div>
       </div>
@@ -204,7 +203,7 @@ export default function BranchItem({
             {isLocal && (
               <DropdownMenuItem disabled>{t('branch.pull')}</DropdownMenuItem>
             )}
-            {isLocal && (
+            {isHead && (
               <DropdownMenuItem disabled>{t('branch.push')}</DropdownMenuItem>
             )}
             <DropdownMenuItem

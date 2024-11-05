@@ -186,9 +186,11 @@ export default function BranchItem({
               {t('branch.create_new_branch')}
             </DropdownMenuItem>
             <DropdownMenuItem disabled>{t('branch.details')}</DropdownMenuItem>
-            <DropdownMenuItem disabled>
-              {t('branch.set_upstream')}
-            </DropdownMenuItem>
+            {isLocal && (
+              <DropdownMenuItem disabled>
+                {t('branch.set_upstream')}
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem>
               <Link
                 to="/filetree/$commit"
@@ -199,8 +201,12 @@ export default function BranchItem({
                 {t('branch.view_tree')}
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>{t('branch.pull')}</DropdownMenuItem>
-            <DropdownMenuItem disabled>{t('branch.push')}</DropdownMenuItem>
+            {isLocal && (
+              <DropdownMenuItem disabled>{t('branch.pull')}</DropdownMenuItem>
+            )}
+            {isLocal && (
+              <DropdownMenuItem disabled>{t('branch.push')}</DropdownMenuItem>
+            )}
             <DropdownMenuItem
               className="text-red-600"
               onClick={() => {

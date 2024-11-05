@@ -67,6 +67,7 @@ export default function RebaseCard({ className, ...props }: RebaseCardProps) {
                 }
               }}
               className="h-4 w-4 bg-green-500 p-0 hover:bg-green-300 dark:bg-green-500 hover:dark:bg-green-300"
+              disabled
             />
             <Button
               title={t('rebase.abort')}

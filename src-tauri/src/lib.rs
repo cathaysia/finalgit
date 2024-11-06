@@ -68,7 +68,7 @@ pub fn run() {
         )
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
-        // .plugin(tauri_plugin_window_state::Builder::default().build())
+        .plugin(tauri_plugin_window_state::Builder::default().build())
         .plugin(tauri_plugin_clipboard_manager::init())
         .invoke_handler(tauri_commands!())
         .run(tauri::generate_context!())

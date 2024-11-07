@@ -96,7 +96,7 @@ export default function Project({ className }: ProjectProps) {
               <span>{t('project.open_local_repository')}</span>
               <IoIosAdd className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex justify-between">
+            <DropdownMenuItem className="flex justify-between" disabled>
               <span>{t('project.clone_repository')}</span>
               <MdAddToPhotos className="ml-2 h-4 w-4" />
             </DropdownMenuItem>

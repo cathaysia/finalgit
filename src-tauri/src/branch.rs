@@ -232,6 +232,7 @@ impl RepoExt for git2::Repository {
         let path = self.path().parent().unwrap();
 
         let output = std::process::Command::new("git")
+            .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .env("LANG", "C")
@@ -353,7 +354,11 @@ impl RepoExt for git2::Repository {
             args.push("--force");
         }
 
-        let _ = self.exec_git(args)?;
+        let ret = self.exec_git(args)?;
+        let err = String::from_utf8(ret.stderr)?;
+        if err.is_empty() {
+            return Err(AppError::Spawn(err));
+        }
         Ok(())
     }
 }

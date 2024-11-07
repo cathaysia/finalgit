@@ -93,6 +93,12 @@ pub struct BranchInfo {
     pub upstream: Option<String>,
 }
 
+impl BranchInfo {
+    pub fn is_local(&self) -> bool {
+        matches!(self.kind, git2::BranchType::Local)
+    }
+}
+
 impl PartialOrd for BranchInfo {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))

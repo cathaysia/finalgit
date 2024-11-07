@@ -51,6 +51,8 @@ pub trait RepoExt {
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
     fn open_repo(repo_path: &str) -> AppResult<()>;
     fn branch_checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
+
+    fn pull_branch(&self, branch_info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()>;
 }
 
 #[export_ts(scope = "branch")]
@@ -317,6 +319,24 @@ impl RepoExt for git2::Repository {
             return Err(AppError::Spawn(err.to_string()));
         }
 
+        Ok(())
+    }
+
+    fn pull_branch(&self, info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()> {
+        if !info.is_local() {
+            // NOT implement
+            return Ok(());
+        }
+
+        let mut args = vec!["pull"];
+        if rebase {
+            args.push("--rebase");
+        }
+        if ff {
+            args.push("--ff")
+        }
+
+        let _ = self.exec_git(args)?;
         Ok(())
     }
 }

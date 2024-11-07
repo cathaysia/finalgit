@@ -36,7 +36,7 @@ pub trait RepoExt {
     /// https://stackoverflow.com/a/46758861
     fn branch_checkout(&self, name: &str) -> AppResult<()>;
     fn get_current_status(&self) -> AppResult<Vec<FileStatus>>;
-    fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
+    async fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<String>;
     fn get_tag_info(&self) -> AppResult<Vec<TagInfo>>;
 
@@ -173,7 +173,7 @@ impl RepoExt for git2::Repository {
         Ok(status)
     }
 
-    fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>> {
+    async fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>> {
         let id = git2::Oid::from_str(commit)?;
 
         let commit = self.find_commit(id)?;

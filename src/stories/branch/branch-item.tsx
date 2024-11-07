@@ -19,6 +19,7 @@ import { Link } from '@tanstack/react-router';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CgSpinner } from 'react-icons/cg';
 import { FaCodeBranch } from 'react-icons/fa';
 import { match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
@@ -50,6 +51,7 @@ export default function BranchItem({
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
   const isLocal = info.kind === 'Local';
+  const [isPulling, setIsPulling] = useState(false);
   const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
 
   const { error: changeErr, data: changes } = useChanges();
@@ -139,6 +141,7 @@ export default function BranchItem({
           </div>
         </div>
       </div>
+      {isPulling && <CgSpinner className="inline-block animate-spin" />}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={'ghost'} size="sm">
@@ -201,7 +204,19 @@ export default function BranchItem({
               </Link>
             </DropdownMenuItem>
             {isLocal && (
-              <DropdownMenuItem disabled>{t('branch.pull')}</DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={!isHead || isPulling}
+                onClick={async () => {
+                  if (!repoPath) {
+                    return;
+                  }
+                  setIsPulling(true);
+                  await commands.pullBranch(repoPath, info, true, false);
+                  setIsPulling(false);
+                }}
+              >
+                {t('branch.pull')}
+              </DropdownMenuItem>
             )}
             {isHead && (
               <DropdownMenuItem disabled>{t('branch.push')}</DropdownMenuItem>

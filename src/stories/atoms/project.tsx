@@ -83,7 +83,7 @@ export default function Project({ className }: ProjectProps) {
                     setRepoPath(item);
                   }}
                 >
-                  <span>{item}</span>
+                  <span className="break-all">{item}</span>
                   {item === repoPath && <FaCheck className="ml-2 h-4 w-4" />}
                 </DropdownMenuItem>
               );

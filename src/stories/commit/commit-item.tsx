@@ -8,6 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import { refreshBisectNext, refreshBisectRange } from '@/hooks/bisect';
 import {
   refreshBranches,
@@ -31,6 +36,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
+import CommitCard from './commit-card';
 
 export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -86,12 +92,19 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         {...props}
       >
         <div className="flex grow items-center gap-2 overflow-hidden">
-          <HighLightLabel
-            className="min-w-0 grow overflow-hidden"
-            text={replaceEmoji(summary, useEmoji)}
-            value={summary}
-            filter={filter}
-          />
+          <HoverCard>
+            <HoverCardTrigger>
+              <HighLightLabel
+                className="min-w-0 grow overflow-hidden"
+                text={replaceEmoji(summary, useEmoji)}
+                value={summary}
+                filter={filter}
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-auto">
+              <CommitCard info={commit} />
+            </HoverCardContent>
+          </HoverCard>
           <Badge
             title={commit.oid}
             className="font-mono"

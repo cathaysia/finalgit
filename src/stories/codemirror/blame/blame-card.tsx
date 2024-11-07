@@ -33,7 +33,7 @@ export function BlameCard({ blame }: BlameCardProps) {
           {line}
         </Label>
       </HoverCardTrigger>
-      <HoverCardContent className="flex flex-col gap-2">
+      <HoverCardContent className="flex w-auto flex-col gap-2">
         <span>author: {blame.signature.name}</span>
         <span>date: {`${date}`}</span>
         <span>last_modified: {blame.final_start_line}</span>

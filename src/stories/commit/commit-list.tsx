@@ -106,8 +106,7 @@ export default function CommitList({
                 className={'absolute left-0 w-full'}
                 style={{
                   height: `${item.size}px`,
-                  // top: item.start,
-                  transform: `translateY(${item.start}px)`,
+                  top: item.start,
                 }}
               >
                 <CommitItem

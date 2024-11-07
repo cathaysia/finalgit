@@ -75,6 +75,7 @@ pub fn export_ts(attr: TokenStream, input: TokenStream) -> TokenStream {
         }
 
         let signature = &func.sig;
+        let is_async = signature.asyncness.is_some();
         let name = signature.ident.clone();
 
         let has_mut = signature
@@ -137,10 +138,15 @@ pub fn export_ts(attr: TokenStream, input: TokenStream) -> TokenStream {
             (quote! {#args}, quote! {})
         };
 
+        let asyncness = if is_async {
+            quote! {async}
+        } else {
+            quote! {}
+        };
         res.extend(quote! {
             #[tauri::command]
             #[specta::specta]
-            pub fn #name(#args)  #ret {
+            pub #asyncness fn #name(#args)  #ret {
                 #open_repo
 
                 #body

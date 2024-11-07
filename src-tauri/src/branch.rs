@@ -52,7 +52,7 @@ pub trait RepoExt {
     fn open_repo(repo_path: &str) -> AppResult<()>;
     fn branch_checkout_remote(repo_path: &str, branch: &str) -> AppResult<()>;
 
-    fn pull_branch(&self, branch_info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()>;
+    async fn pull_branch(&self, branch_info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()>;
 }
 
 #[export_ts(scope = "branch")]
@@ -322,7 +322,7 @@ impl RepoExt for git2::Repository {
         Ok(())
     }
 
-    fn pull_branch(&self, info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()> {
+    async fn pull_branch(&self, info: BranchInfo, rebase: bool, ff: bool) -> AppResult<()> {
         if !info.is_local() {
             // NOT implement
             return Ok(());

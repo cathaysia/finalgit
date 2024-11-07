@@ -52,6 +52,7 @@ export default function BranchItem({
   const isHead = info.is_head;
   const isLocal = info.kind === 'Local';
   const [isPulling, setIsPulling] = useState(false);
+  const [isPushing, setIsPushing] = useState(false);
   const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
 
   const { error: changeErr, data: changes } = useChanges();
@@ -141,7 +142,9 @@ export default function BranchItem({
           </div>
         </div>
       </div>
-      {isPulling && <CgSpinner className="inline-block animate-spin" />}
+      {(isPulling || isPushing) && (
+        <CgSpinner className="inline-block animate-spin" />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={'ghost'} size="sm">
@@ -219,7 +222,19 @@ export default function BranchItem({
               </DropdownMenuItem>
             )}
             {isHead && (
-              <DropdownMenuItem disabled>{t('branch.push')}</DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={isPulling || isPushing}
+                onClick={async () => {
+                  if (!repoPath) {
+                    return;
+                  }
+                  setIsPushing(true);
+                  await commands.pushBranch(repoPath, info, false);
+                  setIsPushing(false);
+                }}
+              >
+                {t('branch.push')}
+              </DropdownMenuItem>
             )}
             <DropdownMenuItem
               className="text-red-600"

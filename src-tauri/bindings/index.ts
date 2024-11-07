@@ -315,6 +315,21 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async pushBranch(
+    repoPath: string,
+    info: BranchInfo,
+    force: boolean,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('push_branch', { repoPath, info, force }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async cherrypick(
     repoPath: string,
     commit: string,

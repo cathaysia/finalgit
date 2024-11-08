@@ -9,6 +9,7 @@ mod config;
 mod error;
 mod head;
 mod rebase;
+mod remote;
 mod stage;
 mod stash;
 mod state;

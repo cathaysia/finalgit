@@ -24,15 +24,8 @@ pub struct HeadInfo {
     is_rebasing: bool,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
-pub struct Remote {
-    name: String,
-    url: String,
-}
-
 pub trait RepoExt {
     fn get_branch_info(&self) -> AppResult<Vec<BranchInfo>>;
-    fn remote_get_list(&self) -> AppResult<Vec<Remote>>;
 
     fn branch_rename(&self, info: BranchInfo, to: &str) -> AppResult<()>;
 
@@ -68,26 +61,6 @@ impl RepoExt for git2::Repository {
     fn open_repo(repo_path: &str) -> AppResult<()> {
         git2::Repository::open(repo_path)?;
         Ok(())
-    }
-
-    fn remote_get_list(&self) -> AppResult<Vec<Remote>> {
-        let remote = self.remotes()?;
-        Ok(remote
-            .into_iter()
-            .filter_map(|item| item)
-            .filter_map(|item| {
-                self.find_remote(item)
-                    .ok()
-                    .map(|item| match (item.name(), item.url()) {
-                        (Some(name), Some(url)) => Some(Remote {
-                            name: name.to_string(),
-                            url: url.to_string(),
-                        }),
-                        _ => None,
-                    })
-                    .flatten()
-            })
-            .collect_vec())
     }
 
     fn get_branch_info(&self) -> AppResult<Vec<BranchInfo>> {

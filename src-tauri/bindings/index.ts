@@ -77,6 +77,47 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_get_list', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async remoteAdd(
+    repoPath: string,
+    name: string,
+    url: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_add', { repoPath, name, url }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async remoteSetUrl(
+    repoPath: string,
+    name: string,
+    url: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_set_url', { repoPath, name, url }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async blameOfFile(
     repoPath: string,
     commit: string,
@@ -97,17 +138,6 @@ export const commands = {
       return {
         status: 'ok',
         data: await TAURI_INVOKE('open_repo', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('remote_get_list', { repoPath }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;

@@ -148,7 +148,12 @@ export default function WorkspacePanel({
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span>{t('workspace.changed_files')} </span>
-            <Avatar className="inline-block h-6 w-6 bg-gray-50">
+            <Avatar
+              className={cn(
+                'inline-block h-6 w-6 bg-gray-50',
+                changeSet.length === 0 && 'hidden',
+              )}
+            >
               <AvatarFallback>{changeSet.length}</AvatarFallback>
             </Avatar>
           </div>

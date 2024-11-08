@@ -1,9 +1,10 @@
 import type { CommitInfo } from '@/bindings';
 import { useRemotes } from '@/hooks/query';
+import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
 import { open } from '@tauri-apps/plugin-shell';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { FaMarkdown } from 'react-icons/fa';
 import { PiClockClockwise } from 'react-icons/pi';
 import { VscGitCommit } from 'react-icons/vsc';
@@ -25,8 +26,12 @@ export default function CommitCard({
   if (info.author.name !== info.commiter.name) {
     names.push(info.commiter.name);
   }
+  const [renderMarkdown, setRenderMarkdown] = useAppState(s => [
+    s.renderMarkdown,
+    s.setRenderMarkdown,
+  ]);
+
   const { data: branches } = useRemotes();
-  const [raw, setRaw] = useState(false);
   let repo: null | string = null;
   branches?.forEach(item => {
     if (item.url) {
@@ -61,9 +66,9 @@ export default function CommitCard({
               <span>{formatDate(info.time)}</span>
               <FaMarkdown
                 onClick={() => {
-                  setRaw(!raw);
+                  setRenderMarkdown(!renderMarkdown);
                 }}
-                className={cn(raw && 'text-gray-500')}
+                className={cn(renderMarkdown && 'text-gray-500')}
               />
             </div>
             <div
@@ -76,7 +81,7 @@ export default function CommitCard({
                 }
               }}
             >
-              {raw ? (
+              {renderMarkdown ? (
                 <pre className="prose dark:prose-invert text-wrap break-all">
                   {info.message}
                 </pre>

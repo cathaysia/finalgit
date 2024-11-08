@@ -88,6 +88,7 @@ const config: Config = {
   plugins: [
     require('tailwindcss-motion'),
     require('@tailwindcss/container-queries'),
+    require('@tailwindcss/typography'),
   ],
 };
 

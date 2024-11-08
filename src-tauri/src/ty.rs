@@ -160,7 +160,23 @@ pub struct CommitInfo {
     pub commiter: Signature,
     pub message: String,
     pub summary: String,
+    pub body: Option<String>,
     pub time: u32,
+}
+
+impl TryFrom<&git2::Commit<'_>> for CommitInfo {
+    type Error = AppError;
+    fn try_from(value: &git2::Commit) -> Result<Self, Self::Error> {
+        Ok(Self {
+            oid: value.id().to_string(),
+            commiter: (&value.committer()).try_into()?,
+            author: (&value.author()).try_into()?,
+            message: value.message().unwrap().to_string(),
+            summary: value.summary().unwrap().to_string(),
+            body: value.body().map(|item| item.to_string()),
+            time: value.time().seconds() as u32,
+        })
+    }
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]

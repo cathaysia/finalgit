@@ -22,6 +22,7 @@ for (let i = 10; i < 30; ++i) {
     },
     message: `hello ${i}`,
     summary: `hello ${i}`,
+    body: null,
   });
 }
 

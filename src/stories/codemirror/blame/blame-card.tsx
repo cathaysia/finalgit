@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
 import { useCommitInfo } from '@/hooks/query';
+import CommitCard from '@/stories/commit/commit-card';
 
 export interface BlameCardProps {
   blame: BlameHunk;
@@ -13,8 +14,7 @@ export interface BlameCardProps {
 
 // NOTE: CANNOT USE HOOKS
 export function BlameCard({ blame }: BlameCardProps) {
-  const date = new Date(0);
-  date.setSeconds(blame.signature.time);
+  const date = new Date(blame.signature.time * 1000);
   const dateFormat = `${date.getFullYear()}/${date.getMonth()}/${date.getDay()} ${date.getHours()}:${date.getSeconds()}`;
   let line = `${blame.signature.name} - ${dateFormat}`;
 
@@ -33,15 +33,8 @@ export function BlameCard({ blame }: BlameCardProps) {
           {line}
         </Label>
       </HoverCardTrigger>
-      <HoverCardContent className="flex w-auto flex-col gap-2">
-        <span>author: {blame.signature.name}</span>
-        <span>date: {`${date}`}</span>
-        <span>last_modified: {blame.final_start_line}</span>
-        {commit && (
-          <div className="flex flex-col">
-            <span>{commit.message}</span>
-          </div>
-        )}
+      <HoverCardContent className="flex w-auto gap-2">
+        {commit && <CommitCard info={commit} />}
       </HoverCardContent>
     </HoverCard>
   );

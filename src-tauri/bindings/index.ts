@@ -376,7 +376,7 @@ export const commands = {
   async commitInfo(
     repoPath: string,
     commit: string,
-  ): Promise<Result<Commit, string>> {
+  ): Promise<Result<CommitInfo, string>> {
     try {
       return {
         status: 'ok',
@@ -736,21 +736,13 @@ export type BranchInfo = {
   upstream: string | null;
 };
 export type BranchType = 'Local' | 'Remote';
-export type Commit = {
-  id: string;
-  author: Signature;
-  commiter: Signature;
-  message: string;
-  summary: string;
-  body: string | null;
-  time: number;
-};
 export type CommitInfo = {
   oid: string;
   author: Signature;
   commiter: Signature;
   message: string;
   summary: string;
+  body: string | null;
   time: number;
 };
 export type FileStatus = { path: string; status: number };

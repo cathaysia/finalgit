@@ -3,43 +3,15 @@ use crate::AppError;
 use crate::AppResult;
 use crate::BranchType;
 use crate::CommitInfo;
-use crate::Signature;
 use git2::build::CheckoutBuilder;
 use git2::Oid;
 use git2::Sort;
-use specta::Type;
 use tauri_derive::export_ts;
-
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
-pub struct Commit {
-    id: String,
-    author: Signature,
-    commiter: Signature,
-    message: String,
-    summary: String,
-    body: Option<String>,
-    time: u32,
-}
-
-impl TryFrom<&git2::Commit<'_>> for Commit {
-    type Error = AppError;
-    fn try_from(value: &git2::Commit) -> Result<Self, Self::Error> {
-        Ok(Self {
-            id: value.id().to_string(),
-            commiter: (&value.committer()).try_into()?,
-            author: (&value.author()).try_into()?,
-            message: value.message().unwrap().to_string(),
-            summary: value.summary().unwrap().to_string(),
-            body: value.body().map(|item| item.to_string()),
-            time: value.time().seconds() as u32,
-        })
-    }
-}
 
 pub trait CommitExt {
     fn commit_checkout(&self, commit: &str) -> AppResult<()>;
     fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()>;
-    fn commit_info(&self, commit: &str) -> AppResult<Commit>;
+    fn commit_info(&self, commit: &str) -> AppResult<CommitInfo>;
     fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
     fn commit_amend(&self, commit: &str) -> AppResult<()>;
     fn commit_revert(&self, commit: &str) -> AppResult<()>;
@@ -68,7 +40,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn commit_info(&self, commit: &str) -> AppResult<Commit> {
+    fn commit_info(&self, commit: &str) -> AppResult<CommitInfo> {
         let commit = self.find_commit(Oid::from_str(commit)?)?;
 
         (&commit).try_into()
@@ -102,22 +74,7 @@ impl CommitExt for git2::Repository {
             let item = item?;
             let commit = self.find_commit(item)?;
 
-            res.push(CommitInfo {
-                oid: commit.id().to_string(),
-                author: Signature {
-                    name: commit.author().name().unwrap().to_string(),
-                    email: commit.author().email().unwrap().to_string(),
-                    time: commit.author().when().seconds() as u32,
-                },
-                commiter: Signature {
-                    name: commit.committer().name().unwrap().to_string(),
-                    email: commit.committer().email().unwrap().to_string(),
-                    time: commit.committer().when().seconds() as u32,
-                },
-                message: commit.message().unwrap().to_string(),
-                summary: commit.summary().unwrap().to_string(),
-                time: commit.time().seconds() as u32,
-            });
+            res.push((&commit).try_into()?);
         }
 
         Ok(res)
@@ -141,28 +98,7 @@ impl CommitExt for git2::Repository {
         for id in walker {
             let id = id?;
             let commit = self.find_commit(id)?;
-            let author = Signature {
-                name: commit.author().name().unwrap().into(),
-                email: commit.author().email().unwrap().into(),
-                time: commit.author().when().seconds() as u32,
-            };
-            let commiter = Signature {
-                name: commit.committer().name().unwrap().into(),
-                email: commit.committer().email().unwrap().into(),
-                time: commit.author().when().seconds() as u32,
-            };
-            let info = commit.message().unwrap();
-            let summary = commit.summary().unwrap();
-            let oid = commit.id().to_string();
-            let date = commit.time().seconds();
-            commits.push(CommitInfo {
-                oid,
-                author,
-                commiter,
-                message: info.into(),
-                summary: summary.into(),
-                time: date as u32,
-            });
+            commits.push((&commit).try_into()?);
         }
 
         Ok(commits)

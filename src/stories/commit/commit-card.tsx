@@ -1,7 +1,9 @@
 import type { CommitInfo } from '@/bindings';
+import { useRemotes } from '@/hooks/query';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { open } from '@tauri-apps/plugin-shell';
+import { useMemo, useState } from 'react';
 import { FaMarkdown } from 'react-icons/fa';
 import { PiClockClockwise } from 'react-icons/pi';
 import { VscGitCommit } from 'react-icons/vsc';
@@ -23,7 +25,26 @@ export default function CommitCard({
   if (info.author.name !== info.commiter.name) {
     names.push(info.commiter.name);
   }
+  const { data: branches } = useRemotes();
   const [raw, setRaw] = useState(false);
+  let repo: null | string = null;
+  branches?.forEach(item => {
+    if (item.url) {
+      const group = /.*github.com(:443)?[:\/](.*)(\.git)?/
+        .exec(item.url)
+        ?.at(2);
+      repo = group || null;
+    }
+  });
+  const mdData = useMemo(() => {
+    if (repo) {
+      return info.message.replace(
+        /#(\d+)/,
+        `[#$1](https://github.com/${repo}/issues/$1)`,
+      );
+    }
+    return null;
+  }, [info.message]);
 
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
@@ -45,7 +66,16 @@ export default function CommitCard({
                 className={cn(raw && 'text-gray-500')}
               />
             </div>
-            <div className="flex max-w-96 items-center gap-2">
+            <div
+              className="flex max-w-96 items-center gap-2"
+              onClick={e => {
+                const target = e.target as HTMLAnchorElement;
+                if (target.href) {
+                  open(target.href);
+                  e.preventDefault();
+                }
+              }}
+            >
               {raw ? (
                 <pre className="prose dark:prose-invert text-wrap break-all">
                   {info.message}
@@ -55,7 +85,7 @@ export default function CommitCard({
                   className="prose dark:prose-invert text-wrap break-all font-mono"
                   remarkPlugins={[remarkGfm]}
                 >
-                  {info.message}
+                  {mdData || info.message}
                 </Markdown>
               )}
             </div>

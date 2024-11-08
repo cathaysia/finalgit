@@ -103,6 +103,17 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_get_list', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async getBranchInfo(repoPath: string): Promise<Result<BranchInfo[], string>> {
     try {
       return {
@@ -755,6 +766,7 @@ export type HeadInfo = {
   is_rebasing: boolean;
 };
 export type PushStatus = { unpush: number; unpull: number };
+export type Remote = { name: string; url: string };
 export type RepositoryState =
   | 'Clean'
   | 'Merge'

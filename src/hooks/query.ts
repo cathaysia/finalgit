@@ -322,3 +322,30 @@ export function useHeadState() {
 export function refreshHeadState() {
   queryClient.invalidateQueries({ queryKey: ['head_state'] });
 }
+
+export function useRemotes() {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['remotes', repoPath],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.remoteGetList(repoPath);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function refreshRemotes() {
+  queryClient.invalidateQueries({ queryKey: ['remotes'] });
+}

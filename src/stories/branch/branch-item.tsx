@@ -1,4 +1,9 @@
 import { type BranchInfo, commands } from '@/bindings';
+import {
+  CollapseGroupItem,
+  CollapseGroupTrigger,
+  CollapseMenuGroup,
+} from '@/components/ext/collapse-group';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +21,6 @@ import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Link } from '@tanstack/react-router';
-import { motion } from 'framer-motion';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -55,7 +59,7 @@ export default function BranchItem({
   const [isPulling, setIsPulling] = useState(false);
   const [isPushing, setIsPushing] = useState(false);
   const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
-  const [isBisecting, setIsBisecting] = useState(false);
+  const [isRemoteOpen, setIsRemoteOpen] = useState(false);
 
   const { error: changeErr, data: changes } = useChanges();
   if (changeErr) {
@@ -193,47 +197,32 @@ export default function BranchItem({
               {t('branch.create_new_branch')}
             </DropdownMenuItem>
             <DropdownMenuItem disabled>{t('branch.details')}</DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={e => {
-                setIsBisecting(!isBisecting);
-                e.preventDefault();
-              }}
-            >
-              {t('branch.remote')}
-            </DropdownMenuItem>
-            <motion.div
-              className={cn(
-                'overflow-hidden border-r border-b border-l dark:border-zinc-800',
-                !isBisecting && 'border-transparent dark:border-transparent',
-              )}
-              variants={{
-                visible: {
-                  height: 'auto',
-                  transition: { duration: 0.2 },
-                },
-                hidden: {
-                  height: 0,
-                  transition: { duration: 0.2 },
-                },
-              }}
-              initial="hidden"
-              animate={isBisecting ? 'visible' : 'hidden'}
+            <CollapseMenuGroup
+              isOpen={isRemoteOpen}
+              trigger={
+                <CollapseGroupTrigger
+                  isOpen={isRemoteOpen}
+                  onClick={e => {
+                    setIsRemoteOpen(!isRemoteOpen);
+                    e.preventDefault();
+                  }}
+                >
+                  {t('branch.remote')}
+                </CollapseGroupTrigger>
+              }
             >
               {!isLocal && (
-                <DropdownMenuItem disabled>
+                <CollapseGroupItem disabled>
                   {t(`branch.set_url_of ${info.remote}`)}
-                </DropdownMenuItem>
+                </CollapseGroupItem>
               )}
-              <DropdownMenuItem disabled>
-                {t('branch.add_remote')}
-              </DropdownMenuItem>
+              <CollapseGroupItem>{t('branch.add_remote')}</CollapseGroupItem>
               {isLocal && (
-                <DropdownMenuItem disabled>
+                <CollapseGroupItem>
                   {t('branch.set_upstream')}
-                </DropdownMenuItem>
+                </CollapseGroupItem>
               )}
-            </motion.div>
+            </CollapseMenuGroup>
             <DropdownMenuItem>
               <Link
                 to="/filetree/$commit"

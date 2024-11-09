@@ -1,4 +1,9 @@
 import { type CommitInfo, commands } from '@/bindings';
+import {
+  CollapseGroupItem,
+  CollapseGroupTrigger,
+  CollapseMenuGroup,
+} from '@/components/ext/collapse-group';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,7 +36,6 @@ import UserAvatar from '@/stories/atoms/user-avatar';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
-import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching, match } from 'ts-pattern';
@@ -173,52 +177,28 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.revert')}
               </DropdownMenuItem>
-              {isBisecting ? (
-                <DropdownMenuItem
-                  className="rounded-b-none border-t border-r border-l dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800"
-                  onClick={() => {
-                    if (repoPath) {
-                      bisectStop(repoPath);
-                    }
-                  }}
-                >
-                  {t('bisect.stop')}
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem
-                  className="border-transparent border-t border-r border-l"
-                  onClick={e => {
-                    if (repoPath) {
-                      bisectStart(repoPath);
-                    }
-                    e.preventDefault();
-                  }}
-                >
-                  {t('bisect.start')}
-                </DropdownMenuItem>
-              )}
-              <motion.div
-                className={cn(
-                  'overflow-hidden border-r border-b border-l dark:border-zinc-800',
-                  !isBisecting && 'border-transparent dark:border-transparent',
-                )}
-                variants={{
-                  visible: {
-                    height: 'auto',
-                    transition: { duration: 0.2 },
-                  },
-                  hidden: {
-                    height: 0,
-                    transition: { duration: 0.2 },
-                  },
-                }}
-                initial="hidden"
-                animate={isBisecting ? 'visible' : 'hidden'}
+              <CollapseMenuGroup
+                isOpen={isBisecting}
+                trigger={
+                  <CollapseGroupTrigger
+                    isOpen={isBisecting}
+                    onClick={e => {
+                      if (!repoPath) {
+                        return;
+                      }
+                      if (isBisecting) {
+                        bisectStop(repoPath);
+                      } else {
+                        bisectStart(repoPath);
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    {isBisecting ? t('bisect.stop') : t('bisect.start')}
+                  </CollapseGroupTrigger>
+                }
               >
-                <DropdownMenuItem
-                  className={
-                    'flex justify-between gap-2 rounded-none dark:bg-zinc-900 dark:hover:bg-zinc-800'
-                  }
+                <CollapseGroupItem
                   onClick={() => {
                     if (repoPath) {
                       markGood(repoPath, commit.oid);
@@ -227,11 +207,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 >
                   {t('bisect.mark_good')}
                   <div className="h-2 w-2 bg-green-600" />
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className={
-                    'flex justify-between gap-2 dark:bg-zinc-900 dark:hover:bg-zinc-800'
-                  }
+                </CollapseGroupItem>
+                <CollapseGroupItem
                   onClick={() => {
                     if (repoPath) {
                       markBad(repoPath, commit.oid);
@@ -240,8 +217,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 >
                   {t('bisect.mark_bad')}
                   <div className="h-2 w-2 bg-red-600" />
-                </DropdownMenuItem>
-              </motion.div>
+                </CollapseGroupItem>
+              </CollapseMenuGroup>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

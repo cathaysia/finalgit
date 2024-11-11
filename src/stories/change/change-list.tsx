@@ -1,7 +1,7 @@
 import { type FileStatus, commands } from '@/bindings';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { refreshChanges } from '@/hooks/query';
+import { refreshChanges, useStashList } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 import Commiter from '../atoms/commiter';
 import VirtualScrollArea from '../atoms/virtualscroll-area';
+import StashCard from '../stash/stash-card';
 import ChangeItem from './change-item';
 
 export interface ChangeListProps
@@ -19,7 +20,10 @@ export interface ChangeListProps
 
 export default function ChangeList({ className, changeSet }: ChangeListProps) {
   const repoPath = useAppState(s => s.repoPath);
-
+  const { error: stashErr, data: stashList } = useStashList();
+  if (stashErr) {
+    NOTIFY.error(stashErr.message);
+  }
   const allChecked = useMemo(() => {
     const hasUnIndexed =
       changeSet.find(item => !GitFileStatus.isIndexed(item.status)) !==
@@ -36,7 +40,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
   }, [changeSet]);
 
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
+    <div className={cn('flex min-h-0 flex-col gap-2', className)}>
       <div className="flex w-full">
         <Checkbox
           checked={allChecked}
@@ -63,6 +67,10 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
           );
         }}
         className="grow"
+      />
+      <StashCard
+        className={cn(stashList?.length === 0 && 'hidden')}
+        stashList={stashList || []}
       />
       <Separator />
       <Commiter changeSet={changeSet} />

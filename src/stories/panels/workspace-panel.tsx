@@ -31,11 +31,9 @@ import {
   useBranches,
   useFiles,
   useHeadOid,
-  useStashList,
   useTags,
 } from '@/hooks/query';
 import { Link } from '@tanstack/react-router';
-import StashCard from '../stash/stash-card';
 
 export default function WorkspacePanel({
   className,
@@ -46,10 +44,6 @@ export default function WorkspacePanel({
 }: WorkspacePanelProps) {
   const { t } = useTranslation();
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const { error: stashErr, data: stashList } = useStashList();
-  if (stashErr) {
-    NOTIFY.error(stashErr.message);
-  }
   const { error: fileErr, data: files } = useFiles();
   if (fileErr) {
     NOTIFY.error(fileErr.message);
@@ -103,7 +97,13 @@ export default function WorkspacePanel({
   }, [branches, repoPath]);
 
   return (
-    <div className={cn('flex flex-col gap-2', className)} {...props}>
+    <div
+      className={cn(
+        'flex h-full max-h-full flex-col gap-2 overflow-y-hidden',
+        className,
+      )}
+      {...props}
+    >
       <div className={cn('rounded-xl border p-4 shadow', DEFAULT_STYLE)}>
         <div className="pb-2">
           <div className="pb-2">{branchName}</div>
@@ -141,7 +141,7 @@ export default function WorkspacePanel({
       </div>
       <div
         className={cn(
-          'flex grow flex-col gap-2 rounded-xl border p-4 shadow',
+          'flex min-h-0 grow flex-col gap-2 rounded-xl border p-4 shadow',
           DEFAULT_STYLE,
         )}
       >
@@ -172,10 +172,6 @@ export default function WorkspacePanel({
           </div>
         </div>
         <ChangeList changeSet={changeSet} className="grow" />
-        <StashCard
-          className={cn(stashList?.length === 0 && 'hidden')}
-          stashList={stashList || []}
-        />
       </div>
     </div>
   );

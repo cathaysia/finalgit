@@ -56,7 +56,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
         {...props}
         ref={ref}
       >
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <Checkbox
             defaultChecked={GitFileStatus.isIndexed(item.status)}
             checked={isChecked}
@@ -66,6 +66,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
           />
           <Label
             className={cn(
+              'line-clamp-2 overflow-y-hidden text-wrap break-all',
               DEFAULT_STYLE,
               isConflicted &&
                 'text-red-600 underline decoration-wavy dark:text-red-600',

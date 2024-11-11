@@ -11,7 +11,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { ThemeProvider } from 'next-themes';
-import React from 'react';
 import reactDom from 'react-dom/client';
 
 // Set up a Router instance
@@ -31,19 +30,17 @@ const persister = createSyncStoragePersister({
 });
 
 reactDom.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider
-      defaultTheme="dark"
-      storageKey="vite-ui-theme"
-      attribute="class"
+  <ThemeProvider
+    defaultTheme="dark"
+    storageKey="vite-ui-theme"
+    attribute="class"
+  >
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister }}
     >
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{ persister }}
-      >
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </PersistQueryClientProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </PersistQueryClientProvider>
+  </ThemeProvider>,
 );

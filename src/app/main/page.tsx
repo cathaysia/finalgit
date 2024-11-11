@@ -31,8 +31,8 @@ function Layout() {
       className="grid h-screen w-screen grid-cols-4 gap-2 p-2"
       data-tauri-drag-region={true}
     >
-      <ControlPanel className="h-full" />
-      <MainPanel className="mr-2 h-full grow" />
+      <ControlPanel />
+      <MainPanel />
       {repoPath && <Commit />}
       <RebaseCard />
     </div>

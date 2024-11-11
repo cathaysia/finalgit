@@ -1,6 +1,5 @@
-import { useBranches, useChanges, useFiles } from '@/hooks/query';
+import { useBranches, useChanges } from '@/hooks/query';
 import NOTIFY from '@/lib/notify';
-import { cn } from '@/lib/utils';
 import WorkspacePanel from './workspace-panel';
 
 type MainPanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
@@ -17,24 +16,18 @@ export default function MainPanel({ className, ...props }: MainPanelProps) {
     branchName = head.name;
   }
 
-  const { error: fileErr, data: file } = useFiles();
-  if (fileErr) {
-    NOTIFY.error(fileErr.message);
-  }
-  const files = file || [];
   const { error: changeErr, data: changes } = useChanges();
   if (changeErr) {
     NOTIFY.error(changeErr.message);
   }
 
   return (
-    <div className={cn(className)} data-tauri-drag-region={true} {...props}>
-      <WorkspacePanel
-        branchName={branchName}
-        changeSet={changes || []}
-        files={files}
-        className="h-full"
-      />
-    </div>
+    <WorkspacePanel
+      className={className}
+      data-tauri-drag-region={true}
+      {...props}
+      branchName={branchName}
+      changeSet={changes || []}
+    />
   );
 }

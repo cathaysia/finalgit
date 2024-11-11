@@ -1,4 +1,5 @@
 import type { CommitInfo } from '@/bindings';
+import { AvatarGroup } from '@/components/ext/avatar-group';
 import { useRemotes } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
@@ -10,7 +11,7 @@ import { PiClockClockwise } from 'react-icons/pi';
 import { VscGitCommit } from 'react-icons/vsc';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import UserAvatar from '../atoms/user-avatar';
+import { UserAvatar } from '../atoms/user-avatar';
 
 export interface CommitCardProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -54,11 +55,17 @@ export default function CommitCard({
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex gap-2">
-        <UserAvatar
-          userName={names}
-          className="max-h-8 max-w-8"
-          orientation={'col'}
-        />
+        <AvatarGroup orientation="col">
+          {names.map(item => {
+            return (
+              <UserAvatar
+                key={item}
+                userName={item}
+                className="max-h-8 max-w-8"
+              />
+            );
+          })}
+        </AvatarGroup>
         <div>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">

@@ -1,4 +1,5 @@
 import { type CommitInfo, commands } from '@/bindings';
+import { AvatarGroup } from '@/components/ext/avatar-group';
 import {
   CollapseGroupItem,
   CollapseGroupTrigger,
@@ -32,7 +33,6 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
-import UserAvatar from '@/stories/atoms/user-avatar';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -40,6 +40,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
+import { UserAvatar } from '../atoms/user-avatar';
 import CommitCard from './commit-card';
 
 export interface CommitItemProps
@@ -123,7 +124,17 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           >
             {commit.oid.slice(0, 6)}
           </Badge>
-          <UserAvatar userName={names} className="max-h-8 max-w-8" />
+          <AvatarGroup>
+            {names.map(item => {
+              return (
+                <UserAvatar
+                  key={item}
+                  userName={item}
+                  className="max-h-8 max-w-8"
+                />
+              );
+            })}
+          </AvatarGroup>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

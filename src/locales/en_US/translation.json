@@ -9,6 +9,7 @@
     "stop": "Stop bisect"
   },
   "branch": {
+    "add_remote": "Add remote",
     "apply": "Apply",
     "branches": "Branches",
     "checkout": "Checkout",

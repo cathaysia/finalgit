@@ -9,6 +9,7 @@
     "stop": "停止二份查找"
   },
   "branch": {
+    "add_remote": "添加远程",
     "apply": "应用",
     "branches": "分支",
     "checkout": "检出",
@@ -116,7 +117,7 @@
     "doing": "正在变基"
   },
   "rename": {
-    "kind": "rename.kind"
+    "kind": "Kind"
   },
   "settings": {
     "ai": "Ai",

@@ -47,8 +47,10 @@ export interface AppState {
   useEmoji: boolean;
   projects: string[];
   renderMarkdown: boolean;
+  commitHead: string | null;
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
+  setCommitHead: (head: string | null) => void;
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
 }
@@ -60,8 +62,10 @@ export const useAppState = create<AppState>()(
       lang: 'en_US',
       useEmoji: true,
       renderMarkdown: true,
+      commitHead: null,
       projects: [],
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
+      setCommitHead: (head: string | null) => set({ commitHead: head }),
       setRepoPath: (repoPath: string) => {
         set(
           produce(draft => {

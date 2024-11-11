@@ -40,17 +40,27 @@ function Layout() {
 }
 
 export default function Commit() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath, commitHead, setCommitHead] = useAppState(s => [
+    s.repoPath,
+    s.commitHead,
+    s.setCommitHead,
+  ]);
   const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
   const { error, data: branches } = useBranches();
   const { t } = useTranslation();
   if (error) {
     NOTIFY.error(error.message);
   }
-  const { error: headErr, data: head } = useHeadOid();
-  if (headErr) {
-    NOTIFY.error(headErr.message);
-  }
+  const { data: headOid } = useHeadOid();
+
+  useEffect(() => {
+    const head = branches?.find(item => item.is_head)?.commit || headOid?.oid;
+    if (!head) {
+      return;
+    }
+
+    setCommitHead(head);
+  }, []);
 
   const [filter, setFilter] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -59,24 +69,19 @@ export default function Commit() {
   const [keyDown, setKeyDown] = useState<number>();
 
   useEffect(() => {
-    let trueHead = branches?.find(item => {
-      return item.is_head;
-    })?.commit;
-    if (trueHead === undefined) {
-      trueHead = head?.oid;
+    if (!repoPath || !commitHead) {
+      return;
     }
-    if (repoPath && trueHead) {
-      commands?.getCommitsFrom(repoPath, trueHead).then(v => {
-        match(v)
-          .with({ status: 'ok' }, v => {
-            setCurrentHisotry(v.data);
-          })
-          .with({ status: 'error' }, err => {
-            NOTIFY.error(err.error);
-          });
-      });
-    }
-  }, [repoPath, branches]);
+    commands?.getCommitsFrom(repoPath, commitHead).then(v => {
+      match(v)
+        .with({ status: 'ok' }, v => {
+          setCurrentHisotry(v.data);
+        })
+        .with({ status: 'error' }, err => {
+          NOTIFY.error(err.error);
+        });
+    });
+  }, [repoPath, commitHead]);
 
   const bisectState = useBisectState(currentHistory);
   const filteredData = useMemo(() => {

@@ -1,5 +1,5 @@
 import { type BranchInfo, type FileStatus, commands } from '@/bindings';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 import { refreshBranches, refreshChanges } from '../hooks/query';
 import NOTIFY from './notify';
 
@@ -37,23 +37,17 @@ export async function branchRemove(repoPath: string, info: BranchInfo) {
 }
 
 export async function branchCheckout(repoPath: string, info: BranchInfo) {
-  if (info.kind === 'Local') {
-    const v = await commands?.branchCheckout(repoPath, info.name);
-    match(v)
-      .with({ status: 'ok' }, () => {
-        refreshBranches();
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
-  } else {
-    const v = await commands?.branchCheckoutRemote(repoPath, info.name);
-    match(v)
-      .with({ status: 'ok' }, () => {
-        refreshBranches();
-      })
-      .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
-      });
+  const v =
+    info.kind === 'Local'
+      ? await commands?.branchCheckout(repoPath, info.name)
+      : await commands?.branchCheckoutRemote(repoPath, info.name);
+
+  if (isMatching({ status: 'ok' }, v)) {
+    refreshBranches();
+    return true;
   }
+
+  NOTIFY.error(v.error);
+
+  return false;
 }

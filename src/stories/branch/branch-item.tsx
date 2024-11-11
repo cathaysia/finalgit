@@ -58,7 +58,11 @@ export default function BranchItem({
   const isLocal = info.kind === 'Local';
   const [isPulling, setIsPulling] = useState(false);
   const [isPushing, setIsPushing] = useState(false);
-  const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
+  const [repoPath, useEmoji, setCommitHead] = useAppState(s => [
+    s.repoPath,
+    s.useEmoji,
+    s.setCommitHead,
+  ]);
   const [isRemoteOpen, setIsRemoteOpen] = useState(false);
 
   const { error: changeErr, data: changes } = useChanges();
@@ -129,9 +133,12 @@ export default function BranchItem({
         <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
         <div
           className="flex w-full flex-col gap-2"
-          onClick={() => {
-            if (repoPath && info.kind === 'Local' && !isHead) {
-              branchCheckout(repoPath, info);
+          onClick={async () => {
+            if (!repoPath || info.kind !== 'Local' || isHead) {
+              return;
+            }
+            if (await branchCheckout(repoPath, info)) {
+              setCommitHead(info.commit);
             }
           }}
         >
@@ -169,9 +176,12 @@ export default function BranchItem({
             {!isHead && (
               <DropdownMenuItem
                 disabled={isDirty}
-                onClick={() => {
-                  if (repoPath) {
-                    branchCheckout(repoPath, info);
+                onClick={async () => {
+                  if (!repoPath) {
+                    return;
+                  }
+                  if (await branchCheckout(repoPath, info)) {
+                    setCommitHead(info.commit);
                   }
                 }}
                 className={cn(

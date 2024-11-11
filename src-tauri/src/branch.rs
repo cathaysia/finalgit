@@ -2,7 +2,7 @@ use std::{path::Path, process::Stdio};
 
 use git2::build::CheckoutBuilder;
 use itertools::Itertools;
-use log::{debug, info};
+use log::{debug, info, trace};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_derive::export_ts;
@@ -229,7 +229,10 @@ impl RepoExt for git2::Repository {
         I: IntoIterator<Item = S>,
         S: AsRef<std::ffi::OsStr>,
     {
-        let path = self.path().parent().unwrap();
+        let path = self.path().to_str().unwrap();
+        let path = path.replace("/.git/modules", "").replace("/.git", "");
+        let path = Path::new(&path);
+        trace!("run git command in {path:?}");
 
         let output = std::process::Command::new("git")
             .stdin(Stdio::null())

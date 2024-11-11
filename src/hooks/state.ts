@@ -70,6 +70,7 @@ export const useAppState = create<AppState>()(
         set(
           produce(draft => {
             draft.repoPath = repoPath;
+            draft.commitHead = null;
             if (!draft.projects.includes(repoPath)) {
               draft.projects.push(repoPath);
             }

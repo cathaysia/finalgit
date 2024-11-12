@@ -77,47 +77,6 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('remote_get_list', { repoPath }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async remoteAdd(
-    repoPath: string,
-    name: string,
-    url: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('remote_add', { repoPath, name, url }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async remoteSetUrl(
-    repoPath: string,
-    name: string,
-    url: string,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('remote_set_url', { repoPath, name, url }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
   async blameOfFile(
     repoPath: string,
     commit: string,
@@ -278,20 +237,6 @@ export const commands = {
       return {
         status: 'ok',
         data: await TAURI_INVOKE('branch_status', { repoPath, branch }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
-  async branchPush(
-    repoPath: string,
-    force: boolean,
-  ): Promise<Result<null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('branch_push', { repoPath, force }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
@@ -618,6 +563,47 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_get_list', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async remoteAdd(
+    repoPath: string,
+    name: string,
+    url: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_add', { repoPath, name, url }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async remoteSetUrl(
+    repoPath: string,
+    name: string,
+    url: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_set_url', { repoPath, name, url }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async stageAddFiles(
     repoPath: string,
     files: FileStatus[],
@@ -721,6 +707,23 @@ export const commands = {
   async takeRepoPath(): Promise<string | null> {
     return await TAURI_INVOKE('take_repo_path');
   },
+  async statisticsCommitsOfAuthor(
+    repoPath: string,
+    author: string,
+  ): Promise<Result<CommitStatistics[], string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('statistics_commits_of_author', {
+          repoPath,
+          author,
+        }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async getHeadModifyTime(repoPath: string): Promise<Result<number, string>> {
     try {
       return {
@@ -786,6 +789,7 @@ export type CommitInfo = {
   body: string | null;
   time: number;
 };
+export type CommitStatistics = { date: number; count: number };
 export type FileStatus = { path: string; status: number };
 export type FileTree =
   | { File: { filename: string; mode: number } }

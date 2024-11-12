@@ -349,3 +349,26 @@ export function useRemotes() {
 export function refreshRemotes() {
   queryClient.invalidateQueries({ queryKey: ['remotes'] });
 }
+
+export function useStatisOfAuthor(author: string) {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['statiscis', repoPath],
+    queryFn: async () => {
+      if (!repoPath) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.statisticsCommitsOfAuthor(repoPath, author);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    enabled: repoPath !== undefined,
+  });
+}

@@ -13,6 +13,7 @@ mod remote;
 mod stage;
 mod stash;
 mod state;
+mod statistics;
 mod ty;
 mod utils;
 

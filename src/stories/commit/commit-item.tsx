@@ -42,6 +42,7 @@ import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
 import { UserAvatar } from '../atoms/user-avatar';
 import CommitCard from './commit-card';
+import HoverAvatar from './hover-avatar';
 
 export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -127,11 +128,14 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           <AvatarGroup>
             {names.map(item => {
               return (
-                <UserAvatar
-                  key={item}
-                  userName={item}
-                  className="max-h-8 max-w-8"
-                />
+                <HoverCard key={item}>
+                  <HoverCardTrigger>
+                    <UserAvatar userName={item} className="max-h-8 max-w-8" />
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-[120]">
+                    <HoverAvatar userName={item} />
+                  </HoverCardContent>
+                </HoverCard>
               );
             })}
           </AvatarGroup>

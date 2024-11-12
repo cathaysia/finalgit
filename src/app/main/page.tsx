@@ -60,7 +60,7 @@ export default function Commit() {
     }
 
     setCommitHead(head);
-  }, []);
+  }, [repoPath]);
 
   const [filter, setFilter] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);

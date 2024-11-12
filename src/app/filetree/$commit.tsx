@@ -10,7 +10,6 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { createBlamePlugin } from '@/stories/codemirror/blame';
 import { BlameCard } from '@/stories/codemirror/blame/blame-card';
-import { checkboxPlugin } from '@/stories/codemirror/bool-checkbox';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
 import { createFileRoute } from '@tanstack/react-router';
@@ -116,7 +115,7 @@ function FileTree() {
           height="100%"
           theme={mirrorTheme}
           // @ts-expect-error: no error
-          extensions={[...extensions, checkboxPlugin, blamePlugin]}
+          extensions={[...extensions, blamePlugin]}
         />
         <Portal.Root container={blameWidget.current} asChild>
           {hunk && <BlameCard blame={hunk} />}

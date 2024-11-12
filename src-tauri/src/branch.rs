@@ -45,7 +45,6 @@ pub trait RepoExt {
         I: IntoIterator<Item = S>,
         S: AsRef<std::ffi::OsStr>;
     fn branch_status(&self, branch: &str) -> AppResult<PushStatus>;
-    fn branch_push(&self, force: bool) -> AppResult<()>;
     fn get_repo_head(&self) -> AppResult<HeadInfo>;
 
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
@@ -244,6 +243,7 @@ impl RepoExt for git2::Repository {
             .current_dir(path)
             .spawn()?
             .wait_with_output()?;
+        trace!("output = {output:?}");
 
         if output.status.code().unwrap() != 0 {
             let err = std::str::from_utf8(&output.stderr)?;
@@ -271,16 +271,6 @@ impl RepoExt for git2::Repository {
             unpush: local.len().saturating_sub(remote.len()) as u32,
             unpull: remote.len().saturating_sub(local.len()) as u32,
         })
-    }
-
-    fn branch_push(&self, force: bool) -> AppResult<()> {
-        if force {
-            self.exec_git(["push", "-f"])?;
-        } else {
-            self.exec_git(["push"])?;
-        }
-
-        Ok(())
     }
 
     fn get_repo_head(&self) -> AppResult<HeadInfo> {
@@ -352,10 +342,12 @@ impl RepoExt for git2::Repository {
         }
 
         // TODO: check need force?
-        let mut args = vec!["pull"];
+        let mut args = vec!["push"];
         if force {
             args.push("--force");
         }
+
+        trace!("run git with {args:?}");
 
         let ret = self.exec_git(args)?;
         let err = String::from_utf8(ret.stderr)?;

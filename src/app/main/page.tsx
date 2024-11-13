@@ -1,8 +1,7 @@
-import { type CommitInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBisectState } from '@/hooks/bisect';
-import { useBranches, useHeadOid } from '@/hooks/query';
+import { useBranches, useHeadOid, useHistory } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { filterCommits } from '@/lib/parser/commit-filter';
@@ -16,7 +15,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { match } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export const Route = createFileRoute('/main/')({
@@ -45,7 +43,6 @@ export default function Commit() {
     s.commitHead,
     s.setCommitHead,
   ]);
-  const [currentHistory, setCurrentHisotry] = useState<CommitInfo[]>([]);
   const { error, data: branches } = useBranches();
   const { t } = useTranslation();
   if (error) {
@@ -67,21 +64,8 @@ export default function Commit() {
   const [isHighOrder, setIsHighOrder] = useState<boolean>(false);
   const [debounce] = useDebounce(filter, 200);
   const [keyDown, setKeyDown] = useState<number>();
-
-  useEffect(() => {
-    if (!repoPath || !commitHead) {
-      return;
-    }
-    commands?.getCommitsFrom(repoPath, commitHead).then(v => {
-      match(v)
-        .with({ status: 'ok' }, v => {
-          setCurrentHisotry(v.data);
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    });
-  }, [repoPath, commitHead]);
+  const { data: history } = useHistory(commitHead || '');
+  const currentHistory = history || [];
 
   const bisectState = useBisectState(currentHistory);
   const filteredData = useMemo(() => {

@@ -86,6 +86,8 @@ export function useChanges() {
         })
         .exhaustive();
     },
+    refetchInterval: 2000,
+    refetchOnWindowFocus: 'always',
     enabled: repoPath !== undefined,
   });
 }
@@ -202,7 +204,7 @@ export function useHistory(commit: string) {
   return useQuery({
     queryKey: ['history', repoPath, commit],
     queryFn: async () => {
-      if (!repoPath) {
+      if (!repoPath || commit.length === 0) {
         throw new Error('no repoPath');
       }
       const res = await commands.getCommitsFrom(repoPath, commit);

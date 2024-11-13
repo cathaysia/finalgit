@@ -125,14 +125,7 @@ export default function WorkspacePanel({
               <VscRepoPull />
               {pushState?.unpull}
             </Button>
-            <Button
-              className={cn(pushState?.unpush === 0 && 'hidden')}
-              onClick={() => {
-                if (repoPath) {
-                  pushBranch(repoPath);
-                }
-              }}
-            >
+            <Button className={cn(pushState?.unpush === 0 && 'hidden')}>
               <VscRepoPush />
               {pushState?.unpush}
             </Button>
@@ -195,17 +188,6 @@ async function refreshBranchStatus(repoPath: string, branches: BranchInfo[]) {
       return undefined;
     })
     .exhaustive();
-}
-
-async function pushBranch(repoPath: string) {
-  const res = await commands.branchPush(repoPath, false);
-  match(res)
-    .with({ status: 'ok' }, () => {
-      refreshChanges();
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    });
 }
 
 async function pullBranch(repoPath: string, branches: BranchInfo[]) {

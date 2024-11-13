@@ -68,6 +68,29 @@
     "copy": "Copy",
     "copy_path": "Copy path"
   },
+  "heatmap": {
+    "Apr": "Apr",
+    "Aug": "Aug",
+    "contribute_one": "{{count}} contribution on {{date}}",
+    "contribute_other": "{{count}} contribution on {{date}}",
+    "Dec": "Dec",
+    "Feb": "Feb",
+    "Fri": "Fri",
+    "Jan": "Jan",
+    "Jul": "Jul",
+    "Jun": "Jun",
+    "Mar": "Mar",
+    "May": "May",
+    "Mon": "Mon",
+    "Nov": "Nov",
+    "Oct": "Oct",
+    "Sat": "Sat",
+    "Sep": "Sep",
+    "Sun": "Sun",
+    "Thu": "Thu",
+    "Tue": "Tue",
+    "Wed": "Wed"
+  },
   "island": {
     "bisecting": "Bisecting"
   },

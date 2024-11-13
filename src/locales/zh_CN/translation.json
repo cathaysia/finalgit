@@ -68,6 +68,28 @@
     "copy": "复制到粘贴板",
     "copy_path": "复制路径"
   },
+  "heatmap": {
+    "Apr": "四",
+    "Aug": "八",
+    "contribute_other": "{{date}} 有 {{count}} 个提交",
+    "Dec": "十二",
+    "Feb": "二",
+    "Fri": "周五",
+    "Jan": "一",
+    "Jul": "七",
+    "Jun": "六",
+    "Mar": "三",
+    "May": "五",
+    "Mon": "周一",
+    "Nov": "十一",
+    "Oct": "十",
+    "Sat": "周六",
+    "Sep": "九",
+    "Sun": "周日",
+    "Thu": "周四",
+    "Tue": "周二",
+    "Wed": "周三"
+  },
   "island": {
     "bisecting": "正在二份查找..."
   },

@@ -192,7 +192,7 @@ impl TryFrom<&git2::Signature<'_>> for Signature {
     fn try_from(value: &git2::Signature<'_>) -> Result<Self, Self::Error> {
         Ok(Self {
             name: value.name().unwrap().to_string(),
-            email: value.name().unwrap().to_string(),
+            email: value.email().unwrap().to_string(),
             time: value.when().seconds() as u32,
         })
     }

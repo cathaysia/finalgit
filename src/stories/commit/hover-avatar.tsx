@@ -1,40 +1,118 @@
-import { type Activity, ActivityCalendar } from 'react-activity-calendar';
+import HeatMap from '@uiw/react-heat-map';
+import Tooltip from '@uiw/react-tooltip';
 
 import { useStatisOfAuthor } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
-import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UserAvatar } from '../atoms/user-avatar';
 
 export interface HoverAvatarProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   userName: string;
+  email: string;
 }
 
-export default function HoverAvatar({ userName }: HoverAvatarProps) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
-  const [data, setData] = useState<Activity[]>([]);
+export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
+  const { t } = useTranslation();
+  const { theme } = useTheme();
   const { data: statics } = useStatisOfAuthor(userName);
-  useEffect(() => {
-    if (!repoPath || !statics) {
-      return;
+
+  const [value, min] = useMemo(() => {
+    if (!statics) {
+      return [[], new Date()];
     }
-    const res = statics.map(item => {
-      const date = new Date(item.date * 1000);
-      return {
-        date: date.toISOString(),
-        count: item.count,
-        level: item.count > 5 ? 5 : item.count,
-      };
-    });
-    setData(res);
+    const threeMonth = statics.reverse().slice(0, 90).reverse();
+
+    return [
+      threeMonth.map(item => {
+        const date = new Date(item.date * 1000);
+        return {
+          date: date.toLocaleDateString(),
+          count: item.count,
+        };
+      }),
+      new Date(Math.min(...threeMonth.map(item => item.date)) * 1000),
+    ];
   }, [statics]);
+
+  const panelColors =
+    theme === 'light'
+      ? undefined
+      : {
+          0: '#161b22',
+          7: '#0e4429',
+          14: '#006d32',
+          21: '#26a641',
+          28: '#39d353',
+        };
+
+  const headmapStyle =
+    theme === 'light'
+      ? undefined
+      : {
+          color: 'white',
+        };
 
   return (
     <div className="flex flex-col">
-      <UserAvatar userName={userName} className="max-h-8 max-w-8" />
-      {data.length !== 0 && (
-        <ActivityCalendar data={data} maxLevel={5} colorScheme="light" />
-      )}
+      <div className="flex gap-2">
+        <UserAvatar userName={userName} className="max-h-8 max-w-8" />
+        <div className="flex flex-col">
+          <span>{userName}</span>
+          <a href={`mailto:${email}`} className="underline">
+            {email}
+          </a>
+        </div>
+      </div>
+      <div className={cn()}>
+        <HeatMap
+          value={value}
+          startDate={min}
+          style={headmapStyle}
+          panelColors={panelColors}
+          weekLabels={[
+            t('heatmap.Sun'),
+            t('heatmap.Mon'),
+            t('heatmap.Tue'),
+            t('heatmap.Wed'),
+            t('heatmap.Thu'),
+            t('heatmap.Fri'),
+            t('heatmap.Sat'),
+          ]}
+          monthLabels={[
+            t('heatmap.Jan'),
+            t('heatmap.Feb'),
+            t('heatmap.Mar'),
+            t('heatmap.Apr'),
+            t('heatmap.May'),
+            t('heatmap.Jun'),
+            t('heatmap.Jul'),
+            t('heatmap.Aug'),
+            t('heatmap.Sep'),
+            t('heatmap.Oct'),
+            t('heatmap.Nov'),
+            t('heatmap.Dec'),
+          ]}
+          legendCellSize={0}
+          legendRender={props => {
+            return <rect {...props} rx={2} />;
+          }}
+          rectRender={(props, data) => {
+            return (
+              <Tooltip
+                content={t('heatmap.contribute', {
+                  date: data.date,
+                  count: data.count,
+                })}
+              >
+                <rect {...props} rx={2} />
+              </Tooltip>
+            );
+          }}
+        />
+      </div>
     </div>
   );
 }

@@ -70,15 +70,24 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
   ) => {
     const summary = commit.summary.slice(0, 50);
     const { t } = useTranslation();
-    const names = [commit.author.name];
+    const names = [
+      {
+        name: commit.author.name,
+        email: commit.author.email,
+      },
+    ];
     const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
     const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;
 
     if (commit.author.name !== commit.commiter.name) {
-      names.push(commit.commiter.name);
+      names.push({
+        name: commit.commiter.name,
+        email: commit.commiter.email,
+      });
     }
+    console.log(commit);
     return (
       <div
         className={cn(
@@ -128,12 +137,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
           <AvatarGroup>
             {names.map(item => {
               return (
-                <HoverCard key={item}>
+                <HoverCard key={item.name}>
                   <HoverCardTrigger>
-                    <UserAvatar userName={item} className="max-h-8 max-w-8" />
+                    <UserAvatar
+                      userName={item.name}
+                      className="max-h-8 max-w-8"
+                    />
                   </HoverCardTrigger>
                   <HoverCardContent className="w-[120]">
-                    <HoverAvatar userName={item} />
+                    <HoverAvatar userName={item.name} email={item.email} />
                   </HoverCardContent>
                 </HoverCard>
               );

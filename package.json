@@ -60,7 +60,6 @@
     "@uiw/codemirror-theme-github": "^4.23.6",
     "@uiw/react-codemirror": "^4.23.6",
     "@uiw/react-heat-map": "^2.3.0",
-    "@uiw/react-tooltip": "^4.22.3",
     "ai": "^3.4.31",
     "antlr4": "^4.13.2",
     "class-variance-authority": "^0.7.0",

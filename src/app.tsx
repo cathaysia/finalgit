@@ -6,6 +6,11 @@ import '@/assets/global.css';
 
 import { queryClient } from '@/hooks/query';
 import { routeTree } from '@/routeTree.gen';
+import {
+  ThemeProvider as MuiThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+} from '@mui/material/styles';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -30,20 +35,50 @@ const persister = createSyncStoragePersister({
   storage: window.localStorage,
 });
 
-reactDom.createRoot(document.getElementById('root') as HTMLElement).render(
+const rootElement = document.getElementById('root') as HTMLElement;
+const root = reactDom.createRoot(rootElement);
+
+const theme = createTheme({
+  components: {
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    MuiPopover: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    MuiPopper: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+    // biome-ignore lint/style/useNamingConvention: <explanation>
+    MuiDialog: {
+      defaultProps: {
+        container: rootElement,
+      },
+    },
+  },
+});
+
+root.render(
   <React.StrictMode>
     <ThemeProvider
       defaultTheme="dark"
       storageKey="vite-ui-theme"
       attribute="class"
     >
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{ persister }}
-      >
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </PersistQueryClientProvider>
+      <StyledEngineProvider injectFirst>
+        <MuiThemeProvider theme={theme}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{ persister }}
+          >
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </PersistQueryClientProvider>
+        </MuiThemeProvider>
+      </StyledEngineProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

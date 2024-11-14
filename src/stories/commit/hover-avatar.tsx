@@ -1,5 +1,5 @@
+import { Tooltip } from '@/components/ext/tooltip';
 import HeatMap from '@uiw/react-heat-map';
-import Tooltip from '@uiw/react-tooltip';
 
 import { useStatisOfAuthor } from '@/hooks/query';
 import { cn } from '@/lib/utils';
@@ -102,7 +102,7 @@ export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
           rectRender={(props, data) => {
             return (
               <Tooltip
-                content={t('heatmap.contribute', {
+                title={t('heatmap.contribute', {
                   date: data.date,
                   count: data.count,
                 })}

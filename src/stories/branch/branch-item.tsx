@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshBranches, useChanges } from '@/hooks/query';
+import { refreshBranches, useChanges, usePushstatus } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
@@ -26,6 +26,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
 import { FaCodeBranch } from 'react-icons/fa';
+import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
 import BranchRename from './branch-rename';
@@ -70,6 +71,13 @@ export default function BranchItem({
     NOTIFY.error(changeErr.message);
   }
   const isDirty = changes?.length !== 0;
+  const { data: branchStatus } = usePushstatus(
+    info.kind === 'Local' ? info.name : '',
+  );
+
+  const needPush = branchStatus ? branchStatus.unpush !== 0 : false;
+  const needPull = branchStatus ? branchStatus.unpull !== 0 : false;
+  const needSync = needPush || needPull;
 
   async function renameBranch(newName: string) {
     if (!repoPath || !opState) {
@@ -153,6 +161,16 @@ export default function BranchItem({
             {info.upstream && <Badge>{info.upstream}</Badge>}
             {info.remote && <Badge>{info.remote}</Badge>}
           </div>
+        </div>
+      </div>
+      <div className={cn('flex gap-2 text-sm', !needSync && 'hidden')}>
+        <div className={cn('flex items-center gap-2', !needPull && 'hidden')}>
+          <FaArrowDown />
+          <span>{branchStatus?.unpull}</span>
+        </div>
+        <div className={cn('flex items-center gap-2', !needPush && 'hidden')}>
+          <FaArrowUp />
+          <span>{branchStatus?.unpush}</span>
         </div>
       </div>
       {(isPulling || isPushing) && (

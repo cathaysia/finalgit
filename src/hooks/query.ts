@@ -374,3 +374,28 @@ export function useStatisOfAuthor(author: string) {
     enabled: repoPath !== undefined,
   });
 }
+
+export function usePushstatus(branch: string) {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['changes', repoPath, branch],
+    queryFn: async () => {
+      if (!repoPath || branch.length === 0) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.branchStatus(repoPath, branch);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    refetchInterval: 2000,
+    refetchOnWindowFocus: 'always',
+    enabled: repoPath !== undefined,
+  });
+}

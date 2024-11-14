@@ -107,50 +107,54 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         {...props}
       >
         <div className="flex grow items-center gap-2 overflow-hidden">
-          <HoverCard>
-            <HoverCardTrigger>
-              <HighLightLabel
-                className="min-w-0 grow overflow-hidden"
-                text={replaceEmoji(summary, useEmoji)}
-                value={summary}
-                filter={filter}
-              />
-            </HoverCardTrigger>
-            <HoverCardContent className="w-auto">
-              <CommitCard info={commit} />
-            </HoverCardContent>
-          </HoverCard>
-          <Badge
-            title={commit.oid}
-            className="font-mono"
-            onClick={async () => {
-              const _ = await writeText(commit.oid);
-              NOTIFY.info(
-                t('commit.copy_to_clipboard', {
-                  val: commit.oid,
-                }),
-              );
-            }}
-          >
-            {commit.oid.slice(0, 6)}
-          </Badge>
-          <AvatarGroup>
-            {names.map(item => {
-              return (
-                <HoverCard key={item.name}>
-                  <HoverCardTrigger>
-                    <UserAvatar
-                      userName={item.name}
-                      className="max-h-8 max-w-8"
-                    />
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-[120]">
-                    <HoverAvatar userName={item.name} email={item.email} />
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            })}
-          </AvatarGroup>
+          <div className="flex grow items-center gap-2">
+            <HoverCard>
+              <HoverCardTrigger>
+                <HighLightLabel
+                  className="min-w-0 grow overflow-hidden"
+                  text={replaceEmoji(summary, useEmoji)}
+                  value={summary}
+                  filter={filter}
+                />
+              </HoverCardTrigger>
+              <HoverCardContent className="w-auto">
+                <CommitCard info={commit} />
+              </HoverCardContent>
+            </HoverCard>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge
+              title={commit.oid}
+              className="font-mono"
+              onClick={async () => {
+                const _ = await writeText(commit.oid);
+                NOTIFY.info(
+                  t('commit.copy_to_clipboard', {
+                    val: commit.oid,
+                  }),
+                );
+              }}
+            >
+              {commit.oid.slice(0, 6)}
+            </Badge>
+            <AvatarGroup>
+              {names.map(item => {
+                return (
+                  <HoverCard key={item.name}>
+                    <HoverCardTrigger>
+                      <UserAvatar
+                        userName={item.name}
+                        className="max-h-8 max-w-8"
+                      />
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-[120]">
+                      <HoverAvatar userName={item.name} email={item.email} />
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              })}
+            </AvatarGroup>
+          </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

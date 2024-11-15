@@ -13,7 +13,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshBranches, useChanges, usePushstatus } from '@/hooks/query';
+import {
+  refreshBranches,
+  useChanges,
+  usePushstatus,
+  useTags,
+} from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
@@ -25,7 +30,7 @@ import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
-import { FaCodeBranch } from 'react-icons/fa';
+import { FaCodeBranch, FaTag } from 'react-icons/fa';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
@@ -53,6 +58,10 @@ export default function BranchItem({
   className,
   ...props
 }: BranchItemProps) {
+  const { data: tags } = useTags();
+  const tag = tags?.find(item => {
+    return item.ref_hash === info.commit || item.commit === info.commit;
+  });
   const t = useTranslation().t;
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
@@ -140,7 +149,7 @@ export default function BranchItem({
       <div className="flex w-full min-w-0 items-center gap-2">
         <FaCodeBranch className="inline-block max-h-4 min-h-4 min-w-4 max-w-4" />
         <div
-          className="flex w-full flex-col gap-2"
+          className="flex w-full min-w-0 flex-col gap-2"
           onClick={async () => {
             if (!repoPath || info.kind !== 'Local' || isHead) {
               return;
@@ -156,10 +165,20 @@ export default function BranchItem({
             filter={filter}
             className="overflow-hidden text-ellipsis whitespace-nowrap"
           />
-          <div className="flex gap-2">
-            <Badge>{isLocal ? t('branch.local') : t('branch.remote')}</Badge>
+          <div className="flex min-w-0 gap-2">
+            <Badge className="whitespace-nowrap">
+              {isLocal ? t('branch.local') : t('branch.remote')}
+            </Badge>
             {info.upstream && <Badge>{info.upstream}</Badge>}
             {info.remote && <Badge>{info.remote}</Badge>}
+            {tag && (
+              <Badge className="flex min-w-0 gap-2">
+                <FaTag />
+                <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                  {tag.name}
+                </span>
+              </Badge>
+            )}
           </div>
         </div>
       </div>

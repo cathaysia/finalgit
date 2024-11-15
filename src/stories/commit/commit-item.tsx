@@ -19,6 +19,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { refreshBisectNext, refreshBisectRange } from '@/hooks/bisect';
 import {
   refreshBranches,
@@ -28,6 +34,7 @@ import {
   refreshHistory,
   useChanges,
   useHeadOid,
+  useTags,
 } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
@@ -38,6 +45,7 @@ import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaTag } from 'react-icons/fa';
 import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
 import { UserAvatar } from '../atoms/user-avatar';
@@ -68,6 +76,10 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     },
     ref,
   ) => {
+    const { data: tags } = useTags();
+    const tag = tags?.find(item => {
+      return item.ref_hash === commit.oid || item.commit === commit.oid;
+    });
     const summary = commit.summary.slice(0, 50);
     const { t } = useTranslation();
     const names = [
@@ -87,7 +99,6 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         email: commit.commiter.email,
       });
     }
-    console.log(commit);
     return (
       <div
         className={cn(
@@ -107,7 +118,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         {...props}
       >
         <div className="flex grow items-center gap-2 overflow-hidden">
-          <div className="flex grow items-center gap-2">
+          <div className="flex min-w-0 grow flex-col gap-2">
             <HoverCard>
               <HoverCardTrigger>
                 <HighLightLabel
@@ -123,6 +134,18 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             </HoverCard>
           </div>
           <div className="flex items-center gap-2">
+            {tag && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge>
+                      <FaTag />
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>{tag.name}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             <Badge
               title={commit.oid}
               className="font-mono"

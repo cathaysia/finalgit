@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshChanges } from '@/hooks/query';
+import { refreshChanges, refreshHistory } from '@/hooks/query';
 import { useAiState, useAppState, useRefreshRequest } from '@/hooks/state';
 import { generateCommit } from '@/lib/ai';
 import GitFileStatus from '@/lib/git-file-status';
@@ -265,6 +265,7 @@ export default function Commiter({
                 .with({ status: 'ok' }, () => {
                   setIsCommiting(false);
                   refreshChanges();
+                  refreshHistory();
                 })
                 .with({ status: 'error' }, err => {
                   NOTIFY.error(err.error);

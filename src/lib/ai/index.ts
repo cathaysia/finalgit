@@ -7,9 +7,10 @@ export async function generateCommit(
   diff: string,
   prompt: string,
   model: string,
-  onGenering: (text: string) => void,
+  onGenering: (text: string, controller: AbortController) => void,
 ) {
   const controller = new AbortController();
+  onGenering('', controller);
   const llama = Ollama(model);
   const { textStream } = await streamText({
     model: llama,
@@ -20,7 +21,7 @@ export async function generateCommit(
   let text = '';
   for await (const textPart of textStream) {
     text += textPart;
-    onGenering(formatGeneratedText(text));
+    onGenering(formatGeneratedText(text), controller);
     if (
       text
         .split('\n')

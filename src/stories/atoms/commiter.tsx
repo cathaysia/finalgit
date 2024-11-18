@@ -40,6 +40,7 @@ export default function Commiter({
   changeSet,
   ...props
 }: CommiterProps) {
+  const [abort, setAbort] = useState<AbortController | null>(null);
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
   const repoPath = useAppState(s => s.repoPath);
@@ -213,7 +214,12 @@ export default function Commiter({
           }}
         />
         <Button
+          variant={isLoading ? 'destructive' : 'default'}
           onClick={async () => {
+            if (isLoading) {
+              abort?.abort();
+              setAbort(null);
+            }
             if (!repoPath) {
               return;
             }
@@ -229,8 +235,9 @@ export default function Commiter({
                     value.data,
                     prompt,
                     currentModel,
-                    text => {
+                    (text, controller) => {
                       setCommitMsg(text);
+                      setAbort(controller);
                     },
                   );
                 } catch (_) {}
@@ -241,12 +248,11 @@ export default function Commiter({
                 NOTIFY.error(err.error);
               });
           }}
-          disabled={isLoading}
         >
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {t('commiter.generating')}
+              {t('commiter.abort')}
             </>
           ) : (
             <>

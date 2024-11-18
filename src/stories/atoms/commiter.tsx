@@ -24,7 +24,7 @@ import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { debug } from '@tauri-apps/plugin-log';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { VscDiscard } from 'react-icons/vsc';
 import { isMatching, match } from 'ts-pattern';
@@ -63,6 +63,10 @@ export default function Commiter({
   );
 
   const [commitMsg, setCommitMsg] = useState<string>('');
+
+  useEffect(() => {
+    setCommitMsg('');
+  }, [repoPath]);
 
   async function startCommit() {
     if (!repoPath) {
@@ -273,7 +277,10 @@ export default function Commiter({
         <Button
           className="w-1/5"
           variant={'outline'}
-          onClick={() => setIsCommiting(false)}
+          onClick={() => {
+            setIsCommiting(false);
+            setCommitMsg('');
+          }}
         >
           {t('Cancel')}
         </Button>

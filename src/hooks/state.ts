@@ -110,7 +110,7 @@ export interface AiStateProps {
   current: string;
   promptList: Map<string, string>;
   ollamaEndpoint: string;
-  ollamaCurrentModel: string | undefined;
+  ollamaCurrentModel: string;
   setPrompt: (name: string, prompt: string) => void;
   setCurrent: (name: string) => void;
   setOllamaEndpoint: (endpoint: string) => void;
@@ -146,7 +146,7 @@ export const useAiState = create<AiStateProps>()(
       current: 'Conventional Commits',
       promptList: defaultPrompt,
       ollamaEndpoint: 'http://127.0.0.1:11434',
-      ollamaCurrentModel: undefined,
+      ollamaCurrentModel: '',
       setCurrent: (name: string) => set({ current: name }),
       setPrompt: (name: string, prompt: string) =>
         set(
@@ -167,6 +167,7 @@ export const useAiState = create<AiStateProps>()(
       partialize: s => ({
         prompt: s.current,
         ollamaEndpoint: s.ollamaEndpoint,
+        ollamaCurrentModel: s.ollamaCurrentModel,
       }),
     },
   ),

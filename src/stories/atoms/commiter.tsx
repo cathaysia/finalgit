@@ -224,12 +224,17 @@ export default function Commiter({
                 if (currentModel === undefined) {
                   return;
                 }
-                const v = await generateCommit(
-                  value.data,
-                  prompt,
-                  currentModel,
-                );
-                setCommitMsg(v);
+                try {
+                  await generateCommit(
+                    value.data,
+                    prompt,
+                    currentModel,
+                    text => {
+                      setCommitMsg(text);
+                    },
+                  );
+                } catch (_) {}
+
                 setIsLoading(false);
               })
               .with({ status: 'error' }, err => {

@@ -380,7 +380,7 @@ export function usePushstatus(branch: string) {
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   return useQuery({
-    queryKey: ['changes', repoPath, branch],
+    queryKey: ['pushStatus', repoPath, branch],
     queryFn: async () => {
       if (!repoPath || branch.length === 0) {
         throw new Error('no repoPath');
@@ -399,4 +399,8 @@ export function usePushstatus(branch: string) {
     refetchOnWindowFocus: 'always',
     enabled: repoPath !== undefined,
   });
+}
+
+export function refreshPushStatus() {
+  queryClient.invalidateQueries({ queryKey: ['pushStatus'] });
 }

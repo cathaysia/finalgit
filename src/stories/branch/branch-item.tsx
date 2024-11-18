@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
   refreshBranches,
+  refreshPushStatus,
   useChanges,
   usePushstatus,
   useTags,
@@ -290,6 +291,7 @@ export default function BranchItem({
                   setIsPulling(true);
                   await commands.pullBranch(repoPath, info, true, false);
                   setIsPulling(false);
+                  refreshPushStatus();
                 }}
               >
                 {t('branch.pull')}
@@ -305,6 +307,7 @@ export default function BranchItem({
                   setIsPushing(true);
                   await commands.pushBranch(repoPath, info, false);
                   setIsPushing(false);
+                  refreshPushStatus();
                 }}
               >
                 {t('branch.push')}

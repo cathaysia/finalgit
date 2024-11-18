@@ -229,10 +229,7 @@ export default function Commiter({
                   prompt,
                   currentModel,
                 );
-                const lines = v.split('\n');
-                if (lines.length !== 0) {
-                  setCommitMsg(lines[0]);
-                }
+                setCommitMsg(v);
                 setIsLoading(false);
               })
               .with({ status: 'error' }, err => {

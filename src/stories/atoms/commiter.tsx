@@ -27,7 +27,7 @@ import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { VscDiscard } from 'react-icons/vsc';
-import { match } from 'ts-pattern';
+import { isMatching, match } from 'ts-pattern';
 
 export interface CommiterProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -68,10 +68,10 @@ export default function Commiter({
     if (!repoPath) {
       return;
     }
-    const isIndexed = changeSet
+    const hasIndexed = changeSet
       .map(item => GitFileStatus.isIndexed(item.status))
-      .reduce((l, r) => l && r);
-    if (!isIndexed) {
+      .reduce((l, r) => l || r);
+    if (!hasIndexed) {
       const allfiles = changeSet.filter(
         item => !GitFileStatus.isConflicted(item.status),
       );
@@ -79,14 +79,13 @@ export default function Commiter({
         return;
       }
       const res = await commands?.stageAddFiles(repoPath, allfiles);
-      match(res)
-        .with({ status: 'ok' }, () => {
-          refreshChanges();
-          refreshPush();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
+      if (isMatching({ status: 'ok' }, res)) {
+        refreshChanges();
+        refreshPush();
+      } else {
+        NOTIFY.error(res.error);
+        return;
+      }
     }
     setIsCommiting(true);
   }

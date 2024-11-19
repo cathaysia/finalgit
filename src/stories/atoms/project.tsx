@@ -72,6 +72,10 @@ export default function Project({ className }: ProjectProps) {
         >
           <DropdownMenuGroup>
             {projects.map(item => {
+              const [first, second] = [
+                item.slice(0, item.length / 2),
+                item.slice(item.length / 2),
+              ];
               return (
                 <DropdownMenuItem
                   key={item}
@@ -83,7 +87,17 @@ export default function Project({ className }: ProjectProps) {
                     setRepoPath(item);
                   }}
                 >
-                  <span className="break-all">{item}</span>
+                  <span className="flex w-full">
+                    <span className="overflow-x-hidden text-ellipsis whitespace-nowrap">
+                      {first}
+                    </span>
+                    <span
+                      dir="rtl"
+                      className="overflow-x-hidden whitespace-nowrap"
+                    >
+                      <span dir="ltr">{second}</span>
+                    </span>
+                  </span>
                   {item === repoPath && <FaCheck className="ml-2 h-4 w-4" />}
                 </DropdownMenuItem>
               );

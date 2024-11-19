@@ -232,6 +232,7 @@ export default function Commiter({
       <div className="flex flex-col gap-2">
         <Textarea
           placeholder={t('commiter.commit_summary')}
+          className="h-40 resize-none text-base"
           autoFocus
           value={commitMsg}
           onChange={e => setCommitMsg(e.target.value)}

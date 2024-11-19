@@ -775,7 +775,7 @@ export type BranchInfo = {
   remote: string | null;
   name: string;
   kind: BranchType;
-  commit: string;
+  oid: string;
   is_head: boolean;
   upstream: string | null;
 };
@@ -816,7 +816,7 @@ export type RepositoryState =
   | 'ApplyMailboxOrRebase';
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
-export type TagInfo = { name: string; commit: string; ref_hash: string };
+export type TagInfo = { name: string; oid: string; ref_hash: string };
 
 /** tauri-specta globals **/
 

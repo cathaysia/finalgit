@@ -37,8 +37,8 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
     if (!repoPath) {
       return;
     }
-    console.log(`checkout to ${info.commit}`);
-    const res = await commands?.commitCheckout(repoPath, info.commit);
+    console.log(`checkout to ${info.oid}`);
+    const res = await commands?.commitCheckout(repoPath, info.oid);
     match(res).with({ status: 'error' }, err => {
       NOTIFY.error(err.error);
     });

@@ -15,7 +15,7 @@ export const Default: Story = {
     info: {
       remote: null,
       name: 'maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaster',
-      commit: 'e5b49f0f6bf15efb2317b17d033c485bb4e897b4',
+      oid: 'e5b49f0f6bf15efb2317b17d033c485bb4e897b4',
       kind: 'Local',
       is_head: true,
       upstream: null,

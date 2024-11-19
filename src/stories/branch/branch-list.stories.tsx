@@ -28,7 +28,7 @@ for (const _ in [...Array(1000).keys()]) {
   branches.push({
     remote: null,
     name: createRandomString(10),
-    commit: createRandomString(40),
+    oid: createRandomString(40),
     kind: Math.random() % 1 ? 'Local' : 'Remote',
     is_head: false,
     upstream: null,
@@ -41,7 +41,7 @@ export const Default: Story = {
       {
         remote: null,
         name: 'master',
-        commit: 'e5b49f0f6bf15efb2317b17d033c485bb4e897b4',
+        oid: 'e5b49f0f6bf15efb2317b17d033c485bb4e897b4',
         kind: 'Local',
         is_head: true,
         upstream: null,

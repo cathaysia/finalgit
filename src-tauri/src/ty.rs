@@ -77,7 +77,7 @@ impl Ord for FileTree {
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
 pub struct TagInfo {
     pub name: String,
-    pub commit: String,
+    pub oid: String,
     pub ref_hash: String,
 }
 
@@ -88,7 +88,7 @@ pub struct BranchInfo {
     #[serde(with = "BranchTypeSerde")]
     #[specta(type=BranchType)]
     pub kind: git2::BranchType,
-    pub commit: String,
+    pub oid: String,
     pub is_head: bool,
     pub upstream: Option<String>,
 }

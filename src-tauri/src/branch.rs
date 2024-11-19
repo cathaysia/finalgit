@@ -88,7 +88,7 @@ impl RepoExt for git2::Repository {
                     remote: None,
                     name: branch_name.into(),
                     kind,
-                    commit: branch_head,
+                    oid: branch_head,
                     is_head,
                     upstream,
                 },
@@ -104,7 +104,7 @@ impl RepoExt for git2::Repository {
                         remote: remote.map(|item| item.into()),
                         name: branch.into(),
                         kind,
-                        commit: branch_head,
+                        oid: branch_head,
                         is_head,
                         upstream,
                     }
@@ -214,7 +214,7 @@ impl RepoExt for git2::Repository {
             }
             taginfos.push(TagInfo {
                 name,
-                commit,
+                oid: commit,
                 ref_hash,
             });
             true

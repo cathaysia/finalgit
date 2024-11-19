@@ -78,7 +78,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
   ) => {
     const { data: tags } = useTags();
     const tag = tags?.find(item => {
-      return item.ref_hash === commit.oid || item.commit === commit.oid;
+      return item.ref_hash === commit.oid || item.oid === commit.oid;
     });
     const summary = commit.summary.slice(0, 50);
     const { t } = useTranslation();

@@ -26,7 +26,7 @@ const tags: TagInfo[] = [];
 for (const _ in [...Array(1000).keys()]) {
   tags.push({
     name: createRandomString(10),
-    commit: createRandomString(40).toLowerCase(),
+    oid: createRandomString(40).toLowerCase(),
     ref_hash: createRandomString(40).toLowerCase(),
   });
 }

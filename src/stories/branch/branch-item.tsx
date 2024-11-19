@@ -61,7 +61,7 @@ export default function BranchItem({
 }: BranchItemProps) {
   const { data: tags } = useTags();
   const tag = tags?.find(item => {
-    return item.ref_hash === info.commit || item.commit === info.commit;
+    return item.ref_hash === info.oid || item.oid === info.oid;
   });
   const t = useTranslation().t;
   const [opState, setOpState] = useState<OpState>();
@@ -103,7 +103,7 @@ export default function BranchItem({
           NOTIFY.error(err.error);
         });
     } else {
-      const res = await commands?.branchCreate(repoPath, newName, info.commit);
+      const res = await commands?.branchCreate(repoPath, newName, info.oid);
       match(res)
         .with({ status: 'ok' }, () => {
           refreshBranches();
@@ -156,7 +156,7 @@ export default function BranchItem({
               return;
             }
             if (await branchCheckout(repoPath, info)) {
-              setCommitHead(info.commit);
+              setCommitHead(info.oid);
             }
           }}
         >
@@ -219,7 +219,7 @@ export default function BranchItem({
                     return;
                   }
                   if (await branchCheckout(repoPath, info)) {
-                    setCommitHead(info.commit);
+                    setCommitHead(info.oid);
                   }
                 }}
                 className={cn(
@@ -275,7 +275,7 @@ export default function BranchItem({
               <Link
                 to="/filetree/$commit"
                 params={{
-                  commit: info.commit,
+                  commit: info.oid,
                 }}
               >
                 {t('branch.view_tree')}

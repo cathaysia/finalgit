@@ -51,7 +51,7 @@ export default function Commit() {
   const { data: headOid } = useHeadOid();
 
   useEffect(() => {
-    const head = branches?.find(item => item.is_head)?.commit || headOid?.oid;
+    const head = branches?.find(item => item.is_head)?.oid || headOid?.oid;
     if (!head) {
       return;
     }

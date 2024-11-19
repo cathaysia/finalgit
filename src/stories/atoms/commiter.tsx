@@ -43,7 +43,11 @@ export default function Commiter({
   const [abort, setAbort] = useState<AbortController | null>(null);
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
-  const [repoPath, signoff] = useAppState(s => [s.repoPath, s.signoff]);
+  const [repoPath, signoff, setCommitHead] = useAppState(s => [
+    s.repoPath,
+    s.signoff,
+    s.setCommitHead,
+  ]);
   const [refreshPush] = useRefreshRequest(s => [s.refreshPush]);
   const [isLoading, setIsLoading] = useState(false);
   const [current, promptList, currentModel] = useAiState(s => [
@@ -300,10 +304,14 @@ export default function Commiter({
             if (repoPath) {
               const v = await commands?.createCommit(repoPath, commitMsg);
               match(v)
-                .with({ status: 'ok' }, () => {
+                .with({ status: 'ok' }, async () => {
                   setIsCommiting(false);
                   refreshChanges();
                   refreshHistory();
+                  const head = await commands.getRepoHead(repoPath);
+                  if (isMatching({ status: 'ok' }, head)) {
+                    setCommitHead(head.data.oid);
+                  }
                 })
                 .with({ status: 'error' }, err => {
                   NOTIFY.error(err.error);

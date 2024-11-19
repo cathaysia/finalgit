@@ -222,7 +222,6 @@ export function useHistory(commit: string) {
 }
 
 export function refreshHistory() {
-  refreshHeadOid();
   queryClient.invalidateQueries({ queryKey: ['history'] });
 }
 

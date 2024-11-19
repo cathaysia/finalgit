@@ -20,6 +20,8 @@ pub enum AppError {
     BadStatus,
     #[error("Not implement")]
     NotImplement,
+    #[error("Don't support bare repo.")]
+    BareRepo,
 }
 
 pub type AppResult<T> = Result<T, AppError>;

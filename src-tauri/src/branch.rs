@@ -7,9 +7,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_derive::export_ts;
 
-use crate::{
-    commit::CommitExt, AppError, AppResult, BranchInfo, BranchType, FileStatus, FileTree, TagInfo,
-};
+use crate::{AppError, AppResult, BranchInfo, FileStatus, FileTree, TagInfo};
 
 #[derive(Debug, Default, Serialize, Deserialize, Type)]
 pub struct PushStatus {
@@ -254,22 +252,34 @@ impl RepoExt for git2::Repository {
     }
 
     fn branch_status(&self, branch: &str) -> AppResult<PushStatus> {
+        if self.is_bare() {
+            return Err(AppError::BareRepo);
+        }
+
         let local = self.find_branch(branch, git2::BranchType::Local)?;
         let Ok(upstream) = local.upstream() else {
             return Ok(Default::default());
         };
         let upstream = upstream.into_reference();
-        // let upstream =
+
         let upstream = upstream.name().unwrap();
         let (_, upstream) = upstream.split_once('/').unwrap();
         let (_, upstream) = upstream.split_once('/').unwrap();
 
-        let local = self.get_commits_by_branch(branch, BranchType::Local)?;
-        let remote = self.get_commits_by_branch(upstream, BranchType::Remote)?;
+        let local_oid = {
+            let branch = self.find_branch(branch, git2::BranchType::Local)?;
+            branch.get().target().unwrap()
+        };
+        let remote_oid = {
+            let branch = self.find_branch(upstream, git2::BranchType::Remote)?;
+            branch.get().target().unwrap()
+        };
+
+        let (local, remote) = self.graph_ahead_behind(local_oid, remote_oid)?;
 
         Ok(PushStatus {
-            unpush: local.len().saturating_sub(remote.len()) as u32,
-            unpull: remote.len().saturating_sub(local.len()) as u32,
+            unpush: local as u32,
+            unpull: remote as u32,
         })
     }
 
@@ -401,6 +411,13 @@ mod test {
     fn test_open_repo() {
         git2::Repository::open_repo("..").unwrap();
     }
+
+    // #[test]
+    // fn test_open_repo1() {
+    //     let repo = git2::Repository::open("..").unwrap();
+    //     let v = repo.branch_status("dev").unwrap();
+    //     println!("{v:#?}");
+    // }
 
     // #[test]
     // fn test_get_branch() {

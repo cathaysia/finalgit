@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshChanges, refreshHistory } from '@/hooks/query';
+import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
 import { useAiState, useAppState, useRefreshRequest } from '@/hooks/state';
 import { generateCommit } from '@/lib/ai';
 import GitFileStatus from '@/lib/git-file-status';
@@ -186,6 +186,17 @@ export default function Commiter({
       });
     debug('save stash');
   }
+
+  const { data: changes } = useChanges();
+  useEffect(() => {
+    if (!changes) {
+      return;
+    }
+    if (changes.length === 0) {
+      setIsCommiting(false);
+      setIsLoading(false);
+    }
+  }, [changes]);
 
   if (!isCommiting) {
     return (

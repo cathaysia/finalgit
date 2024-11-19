@@ -52,10 +52,10 @@
     "viewtree": "Browse files"
   },
   "commiter": {
+    "abort": "Abort Commit",
     "commit": "Commit",
     "commit_summary": "Commit Summary",
     "generate_message": "Generate Message",
-    "generating": "Generating",
     "start_commit": "Start Commit"
   },
   "controlbar": {
@@ -127,6 +127,7 @@
       "username": "Name"
     },
     "language": "Language",
+    "signoff": "Sign off commit",
     "stash_before_checkout": "Enable smart stash",
     "use_emoji": "using emoji replace plaintext in branch and commit"
   },

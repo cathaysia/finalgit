@@ -52,10 +52,10 @@
     "viewtree": "查看文件"
   },
   "commiter": {
+    "abort": "终止提交",
     "commit": "提交",
     "commit_summary": "摘要",
     "generate_message": "生成消息",
-    "generating": "正在生成",
     "start_commit": "开始提交"
   },
   "controlbar": {
@@ -126,6 +126,7 @@
       "username": "用户名"
     },
     "language": "Language",
+    "signoff": "签名提交",
     "stash_before_checkout": "检出前暂存更改",
     "use_emoji": "在分支和提交界面使用 Emoji 替换纯文本"
   },

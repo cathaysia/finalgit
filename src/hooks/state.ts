@@ -55,6 +55,7 @@ export interface AppState {
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
   setSignoff: (signoff: boolean) => void;
+  removeRepoPath: (path: string) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -83,6 +84,17 @@ export const useAppState = create<AppState>()(
       setLang: (lang: string) => set({ lang: lang }),
       setUseEmoji: (useEmoji: boolean) => set({ useEmoji: useEmoji }),
       setSignoff: (signoff: boolean) => set({ signoff: signoff }),
+      removeRepoPath: (path: string) => {
+        set(
+          produce((draft: AppState) => {
+            const idx = draft.projects.indexOf(path);
+            draft.projects = [
+              ...draft.projects.slice(0, idx),
+              ...draft.projects.slice(idx + 1),
+            ];
+          }),
+        );
+      },
     }),
     {
       name: 'app',

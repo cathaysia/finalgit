@@ -25,10 +25,11 @@ export interface ProjectProps {
 
 export default function Project({ className }: ProjectProps) {
   const { t } = useTranslation();
-  const [repoPath, setRepoPath, projects] = useAppState(s => [
+  const [repoPath, setRepoPath, projects, removeRepoPath] = useAppState(s => [
     s.repoPath,
     s.setRepoPath,
     s.projects,
+    s.removeRepoPath,
   ]);
 
   async function openRepo() {
@@ -77,29 +78,40 @@ export default function Project({ className }: ProjectProps) {
                 item.slice(item.length / 2),
               ];
               return (
-                <DropdownMenuItem
-                  key={item}
-                  className={cn('flex justify-between')}
-                  onClick={() => {
-                    if (item === repoPath) {
-                      return;
-                    }
-                    setRepoPath(item);
-                  }}
-                >
-                  <span className="flex w-full">
-                    <span className="overflow-x-hidden text-ellipsis whitespace-nowrap">
-                      {first}
+                <div key={item} className="flex justify-between gap-2">
+                  <DropdownMenuItem
+                    className={cn('flex min-w-0 grow justify-between')}
+                    onClick={() => {
+                      if (item === repoPath) {
+                        return;
+                      }
+                      setRepoPath(item);
+                    }}
+                  >
+                    <span className="flex w-full">
+                      <span className="overflow-x-hidden text-ellipsis whitespace-nowrap">
+                        {first}
+                      </span>
+                      <span
+                        dir="rtl"
+                        className="overflow-x-hidden whitespace-nowrap"
+                      >
+                        <span dir="ltr">{second}</span>
+                      </span>
                     </span>
-                    <span
-                      dir="rtl"
-                      className="overflow-x-hidden whitespace-nowrap"
-                    >
-                      <span dir="ltr">{second}</span>
-                    </span>
-                  </span>
-                  {item === repoPath && <FaCheck className="ml-2 h-4 w-4" />}
-                </DropdownMenuItem>
+                    {item === repoPath && <FaCheck className="ml-2 h-4 w-4" />}
+                  </DropdownMenuItem>
+                  <Button
+                    variant={'ghost'}
+                    className="h-8 w-8"
+                    onClick={e => {
+                      removeRepoPath(item);
+                      e.preventDefault();
+                    }}
+                  >
+                    -
+                  </Button>
+                </div>
               );
             })}
             {projects.length !== 0 && <DropdownMenuSeparator />}

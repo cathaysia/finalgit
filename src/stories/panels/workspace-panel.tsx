@@ -1,4 +1,4 @@
-import type { BranchInfo, FileStatus, FileTree } from '@/bindings';
+import type { FileStatus, FileTree } from '@/bindings';
 import { commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { FaFolderTree } from 'react-icons/fa6';
@@ -14,7 +14,6 @@ import ChangeList from '@/stories/change/change-list';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
-import { match } from 'ts-pattern';
 
 export interface WorkspacePanelProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -24,14 +23,11 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
-import {
-  refreshChanges,
-  useBranches,
-  useHeadOid,
-  usePushstatus,
-  useTags,
-} from '@/hooks/query';
+import { useBranches, useHeadOid, usePushstatus, useTags } from '@/hooks/query';
 import { Link } from '@tanstack/react-router';
+import { produce } from 'immer';
+import { useState } from 'react';
+import { CgSpinner } from 'react-icons/cg';
 
 export default function WorkspacePanel({
   className,
@@ -71,6 +67,14 @@ export default function WorkspacePanel({
     NOTIFY.error(error.message);
   }
 
+  function refreshPushStatus() {
+    throw new Error('Function not implemented.');
+  }
+  const [pushActionState, setPushActionState] = useState({
+    isPulling: false,
+    isPushing: false,
+  });
+
   return (
     <div
       className={cn(
@@ -86,22 +90,66 @@ export default function WorkspacePanel({
         </div>
         <Separator />
         <div className="pt-2">
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-2">
             <Button disabled>{t('workspace.set_as_default')}</Button>
             <Button disabled>{t('workspace.create_pr')}</Button>
             <Button
               className={cn(pushState?.unpull === 0 && 'hidden')}
-              onClick={() => {
-                if (repoPath && branches) {
-                  pullBranch(repoPath, branches);
+              onClick={async () => {
+                const info = branches?.find(item => item.name === branchName);
+                if (!repoPath || !info) {
+                  return;
                 }
+
+                setPushActionState(
+                  produce(d => {
+                    d.isPushing = true;
+                  }),
+                );
+                await commands.pullBranch(repoPath, info, true, false);
+                setPushActionState(
+                  produce(d => {
+                    d.isPulling = false;
+                  }),
+                );
+                refreshPushStatus();
               }}
             >
-              <VscRepoPull />
+              {pushActionState.isPulling ? (
+                <CgSpinner className="inline-block animate-spin" />
+              ) : (
+                <VscRepoPull className="mr-2" />
+              )}
               {pushState?.unpull}
             </Button>
-            <Button className={cn(pushState?.unpush === 0 && 'hidden')}>
-              <VscRepoPush />
+            <Button
+              className={cn(pushState?.unpush === 0 && 'hidden')}
+              onClick={async () => {
+                const info = branches?.find(item => item.name === branchName);
+                if (!repoPath || !info) {
+                  return;
+                }
+                setPushActionState(
+                  produce(d => {
+                    d.isPushing = true;
+                  }),
+                );
+
+                await commands.pushBranch(repoPath, info, true);
+
+                setPushActionState(
+                  produce(d => {
+                    d.isPushing = false;
+                  }),
+                );
+                refreshPushStatus();
+              }}
+            >
+              {pushActionState.isPushing ? (
+                <CgSpinner className="inline-block animate-spin" />
+              ) : (
+                <VscRepoPush className="mr-2" />
+              )}
               {pushState?.unpush}
             </Button>
           </div>
@@ -142,19 +190,4 @@ export default function WorkspacePanel({
       </div>
     </div>
   );
-}
-
-async function pullBranch(repoPath: string, branches: BranchInfo[]) {
-  const currentBranch = branches.find(item => item.is_head);
-  if (!currentBranch) {
-    return;
-  }
-  const res = await commands.branchFetch(repoPath, currentBranch.name);
-  match(res)
-    .with({ status: 'ok' }, () => {
-      refreshChanges();
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    });
 }

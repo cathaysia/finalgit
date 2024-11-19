@@ -41,6 +41,7 @@
   },
   "commit": {
     "checkout": "checkout",
+    "cherrypick": "Cherry-pick",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {{ val }}",
     "cut": "Cut",

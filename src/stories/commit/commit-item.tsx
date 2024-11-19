@@ -210,14 +210,23 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.checkout')}
               </DropdownMenuItem>
-              <DropdownMenuItem disabled>{t('commit.copy')}</DropdownMenuItem>
-              <DropdownMenuItem disabled>{t('commit.cut')}</DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                {t('commit.insert_before')}
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>
-                {t('commit.insert_after')}
-              </DropdownMenuItem>
+              <CollapseMenuGroup
+                isOpen={false}
+                trigger={
+                  <CollapseGroupTrigger isOpen={false} disabled>
+                    {t('commit.cherrypick')}
+                  </CollapseGroupTrigger>
+                }
+              >
+                <DropdownMenuItem disabled>{t('commit.copy')}</DropdownMenuItem>
+                <DropdownMenuItem disabled>{t('commit.cut')}</DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  {t('commit.insert_before')}
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  {t('commit.insert_after')}
+                </DropdownMenuItem>
+              </CollapseMenuGroup>
               <DropdownMenuItem className="text-red-600" disabled>
                 {t('commit.delete')}
               </DropdownMenuItem>

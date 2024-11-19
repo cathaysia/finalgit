@@ -41,6 +41,7 @@
   },
   "commit": {
     "checkout": "检出",
+    "cherrypick": "Cherry-pick",
     "copy": "拷贝",
     "copy_to_clipboard": "拷贝到粘贴板",
     "cut": "剪切",

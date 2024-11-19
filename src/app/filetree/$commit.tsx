@@ -30,10 +30,7 @@ function FileTree() {
   const { commit } = Route.useParams();
 
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const { error: fileErr, data: files } = useFiles();
-  if (fileErr) {
-    NOTIFY.error(fileErr.message);
-  }
+  const { data: files } = useFiles(commit);
   const tree = files || [];
   if (tree.length === 0) {
     <Navigate to="/" />;
@@ -68,7 +65,7 @@ function FileTree() {
         setText(val.data);
       })
       .with({ status: 'error' }, err => {
-        NOTIFY.error(err.error);
+        NOTIFY.error(`get file content failed: ${err.error}`);
       });
   }
 
@@ -78,10 +75,7 @@ function FileTree() {
     extensions.push(loadLanguage(language));
   }
 
-  const { error: blameErr, data: blameInfo } = useBlameInfo(commit, path);
-  if (blameErr) {
-    NOTIFY.error(blameErr.name);
-  }
+  const { data: blameInfo } = useBlameInfo(commit, path);
   const [cursor, setCursor] = useState(0);
   const blameWidget = useRef<HTMLElement | undefined>();
   const hunk = blameInfo?.find(item => {

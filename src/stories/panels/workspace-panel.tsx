@@ -1,5 +1,5 @@
 import type { BranchInfo, FileStatus, FileTree } from '@/bindings';
-import { type PushStatus, commands } from '@/bindings';
+import { commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { FaFolderTree } from 'react-icons/fa6';
 
@@ -12,7 +12,6 @@ import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/change/change-list';
 import type React from 'react';
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
@@ -27,10 +26,9 @@ export interface WorkspacePanelProps
 
 import {
   refreshChanges,
-  refreshHeadOid,
   useBranches,
-  useFiles,
   useHeadOid,
+  usePushstatus,
   useTags,
 } from '@/hooks/query';
 import { Link } from '@tanstack/react-router';
@@ -44,20 +42,11 @@ export default function WorkspacePanel({
 }: WorkspacePanelProps) {
   const { t } = useTranslation();
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const { error: fileErr, data: files } = useFiles();
-  if (fileErr) {
-    NOTIFY.error(fileErr.message);
-  }
 
   const { error: headErr, data: current } = useHeadOid();
   if (headErr) {
     NOTIFY.error(headErr.message);
   }
-
-  const [pushState, setPushState] = useState<PushStatus>({
-    unpush: 0,
-    unpull: 0,
-  });
 
   const { error: tagErr, data: tags } = useTags();
   if (tagErr) {
@@ -75,26 +64,12 @@ export default function WorkspacePanel({
       branchName = current?.oid.slice(0, 6);
     }
   }
+  const { data: pushState } = usePushstatus(branchName);
 
   const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
   }
-
-  useEffect(() => {
-    if (!repoPath) {
-      return;
-    }
-    refreshHeadOid();
-    if (!branches) {
-      return;
-    }
-    refreshBranchStatus(repoPath, branches).then(val => {
-      if (val) {
-        setPushState(val);
-      }
-    });
-  }, [branches, repoPath]);
 
   return (
     <div
@@ -157,9 +132,8 @@ export default function WorkspacePanel({
                 params={{
                   commit: current.oid,
                 }}
-                className={cn(files?.length === 0 && 'pointer-events-none')}
               >
-                <FaFolderTree />
+                <FaFolderTree className="hover:text-gray-500" />
               </Link>
             )}
           </div>
@@ -168,26 +142,6 @@ export default function WorkspacePanel({
       </div>
     </div>
   );
-}
-
-async function refreshBranchStatus(repoPath: string, branches: BranchInfo[]) {
-  const currentBranch = branches.find(item => item.is_head);
-  if (!currentBranch) {
-    return;
-  }
-  if (currentBranch.remote === null) {
-    return;
-  }
-  const status = await commands.branchStatus(repoPath, currentBranch.name);
-  return match(status)
-    .with({ status: 'ok' }, val => {
-      return val.data;
-    })
-    .with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-      return undefined;
-    })
-    .exhaustive();
 }
 
 async function pullBranch(repoPath: string, branches: BranchInfo[]) {

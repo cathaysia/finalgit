@@ -96,20 +96,16 @@ export function refreshChanges() {
   queryClient.invalidateQueries({ queryKey: ['changes'] });
 }
 
-export function useFiles() {
+export function useFiles(commit: string) {
   const [repoPath] = useAppState(s => [s.repoPath]);
-  const { data: head } = useHeadOid();
 
   return useQuery({
-    queryKey: ['changes', repoPath, head],
+    queryKey: ['changes', repoPath, commit],
     queryFn: async () => {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      if (!head) {
-        throw new Error('no head');
-      }
-      const res = await commands.getFileTree(repoPath, head.oid);
+      const res = await commands.getFileTree(repoPath, commit);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -119,7 +115,7 @@ export function useFiles() {
         })
         .exhaustive();
     },
-    enabled: repoPath !== undefined && head !== undefined,
+    enabled: repoPath !== undefined,
   });
 }
 
@@ -261,13 +257,16 @@ export function useBlameInfo(commit: string, file: string) {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
+      if (file.length === 0) {
+        throw new Error('bad blame path');
+      }
       const res = await commands.blameOfFile(repoPath, commit, file);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
         })
         .with({ status: 'error' }, err => {
-          throw new Error(err.error);
+          throw new Error(`get blame failed: ${err.error}`);
         })
         .exhaustive();
     },

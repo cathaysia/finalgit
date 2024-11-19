@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { save } from '@tauri-apps/plugin-dialog';
@@ -10,6 +9,7 @@ import { VscDiff } from 'react-icons/vsc';
 import { VscGitStash } from 'react-icons/vsc';
 
 import { type FileStatus, commands } from '@/bindings';
+import { AutosizeTextarea } from '@/components/ext/autosize-textarea';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -230,7 +230,7 @@ export default function Commiter({
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex flex-col gap-2">
-        <Textarea
+        <AutosizeTextarea
           placeholder={t('commiter.commit_summary')}
           className="h-40 resize-none text-base"
           autoFocus

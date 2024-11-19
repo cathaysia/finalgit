@@ -116,7 +116,7 @@ export default function WorkspacePanel({
               }}
             >
               {pushActionState.isPulling ? (
-                <CgSpinner className="inline-block animate-spin" />
+                <CgSpinner className="mr-2 inline-block animate-spin" />
               ) : (
                 <VscRepoPull className="mr-2" />
               )}
@@ -146,7 +146,7 @@ export default function WorkspacePanel({
               }}
             >
               {pushActionState.isPushing ? (
-                <CgSpinner className="inline-block animate-spin" />
+                <CgSpinner className="mr-2 inline-block animate-spin" />
               ) : (
                 <VscRepoPush className="mr-2" />
               )}

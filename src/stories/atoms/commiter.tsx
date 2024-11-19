@@ -43,7 +43,7 @@ export default function Commiter({
   const [abort, setAbort] = useState<AbortController | null>(null);
   const [isCommiting, setIsCommiting] = useState(false);
   const t = useTranslation().t;
-  const repoPath = useAppState(s => s.repoPath);
+  const [repoPath, signoff] = useAppState(s => [s.repoPath, s.signoff]);
   const [refreshPush] = useRefreshRequest(s => [s.refreshPush]);
   const [isLoading, setIsLoading] = useState(false);
   const [current, promptList, currentModel] = useAiState(s => [
@@ -52,6 +52,30 @@ export default function Commiter({
     s.ollamaCurrentModel,
   ]);
   const prompt = promptList.get(current) || '';
+
+  const [userInfo, setUserInfo] = useState({
+    userName: '',
+    userEmail: '',
+  });
+
+  useEffect(() => {
+    if (!repoPath) {
+      return;
+    }
+    (async () => {
+      const userName = await commands.gitGetConfig(repoPath, 'user.name');
+      const email = await commands.gitGetConfig(repoPath, 'user.email');
+
+      if (
+        isMatching({ status: 'error' }, userName) ||
+        isMatching({ status: 'error' }, email)
+      ) {
+        return;
+      }
+
+      setUserInfo({ userName: userName.data, userEmail: email.data });
+    })();
+  }, [repoPath]);
 
   useHotkeys(
     'Escape',
@@ -241,6 +265,12 @@ export default function Commiter({
                     },
                   );
                 } catch (_) {}
+
+                if (signoff) {
+                  setCommitMsg(s => {
+                    return `${s}\n\nSigned-off-by: ${userInfo.userName} ${userInfo.userEmail}`;
+                  });
+                }
 
                 setIsLoading(false);
               })

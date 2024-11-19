@@ -48,11 +48,13 @@ export interface AppState {
   projects: string[];
   renderMarkdown: boolean;
   commitHead: string | null;
+  signoff: boolean;
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
+  setSignoff: (signoff: boolean) => void;
 }
 
 export const useAppState = create<AppState>()(
@@ -64,6 +66,7 @@ export const useAppState = create<AppState>()(
       renderMarkdown: true,
       commitHead: null,
       projects: [],
+      signoff: true,
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),
       setRepoPath: (repoPath: string) => {
@@ -79,6 +82,7 @@ export const useAppState = create<AppState>()(
       },
       setLang: (lang: string) => set({ lang: lang }),
       setUseEmoji: (useEmoji: boolean) => set({ useEmoji: useEmoji }),
+      setSignoff: (signoff: boolean) => set({ signoff: signoff }),
     }),
     {
       name: 'app',
@@ -89,6 +93,7 @@ export const useAppState = create<AppState>()(
         projects: s.projects,
         useEmoji: s.useEmoji,
         renderMarkdown: s.renderMarkdown,
+        signoff: s.signoff,
       }),
     },
   ),

@@ -13,7 +13,12 @@ import { useTranslation } from 'react-i18next';
 
 export default function ProfileComponent() {
   const { t } = useTranslation();
-  const [useEmoji, setUseEmoji] = useAppState(s => [s.useEmoji, s.setUseEmoji]);
+  const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppState(s => [
+    s.useEmoji,
+    s.setUseEmoji,
+    s.signoff,
+    s.setSignoff,
+  ]);
   return (
     <>
       <ThemeCard className="w-full" />
@@ -46,6 +51,16 @@ export default function ProfileComponent() {
                 if (v === false) {
                   setUseEmoji(false);
                 }
+              }}
+            />
+          </div>
+          <div className="flex justify-between">
+            <Label htmlFor="profile.signoff">{t('profile.signoff')}</Label>
+            <Checkbox
+              id="profile.signoff"
+              checked={signoff}
+              onCheckedChange={v => {
+                setSignoff(v === true);
               }}
             />
           </div>

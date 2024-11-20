@@ -71,7 +71,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               isConflicted &&
                 'text-red-600 underline decoration-wavy dark:text-red-600',
               isDeleted && 'line-through',
-              isNew && 'text-green-600 dark:text-gray-600',
+              isNew && 'text-green-600 dark:text-green-600',
               isModified && 'text-yellow-600 dark:text-yellow-600',
             )}
             title={

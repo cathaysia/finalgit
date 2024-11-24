@@ -3,6 +3,7 @@ import '@fontsource-variable/noto-sans-sc';
 import '@fontsource-variable/fira-code';
 import '@/locales';
 import '@/assets/global.css';
+import 'virtual:svg-icons-register';
 
 import { queryClient } from '@/hooks/query';
 import { routeTree } from '@/routeTree.gen';

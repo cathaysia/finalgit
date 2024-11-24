@@ -127,6 +127,7 @@
     "typescript-eslint": "^8.12.2",
     "vite": "^5.4.10",
     "vite-plugin-image-optimizer": "^1.1.8",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vitest": "^2.1.4"
   }
 }

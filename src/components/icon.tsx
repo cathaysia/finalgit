@@ -43,16 +43,13 @@ export default function Icon({
     manifest,
   );
 
-  const iconpath = `/icons/${iconname}.svg`;
-
   return (
-    <img
-      alt={iconname}
-      className={cn('inline', className)}
-      width={16}
-      height={16}
-      src={iconpath}
-    />
+    <span className={cn('inline', className)}>
+      <svg className="inline h-4 w-4">
+        <title>{iconname}</title>
+        <use href={`#icon-${iconname}`} />
+      </svg>
+    </span>
   );
 }
 

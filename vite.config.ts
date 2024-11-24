@@ -3,12 +3,26 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { type PluginOption, defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [TanStackRouterVite(), react(), ViteImageOptimizer()],
+  plugins: [
+    createSvgIconsPlugin({
+      iconDirs: [
+        path.resolve(process.cwd(), './node_modules/material-icon-theme/icons'),
+      ],
+      symbolId: 'icon-[dir]-[name]',
+      inject: 'body-last',
+      customDomId: 'material_icon_theme_icon',
+    }),
+    ,
+    TanStackRouterVite(),
+    react(),
+    ViteImageOptimizer(),
+  ],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

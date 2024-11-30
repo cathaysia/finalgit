@@ -15,10 +15,6 @@ export default function Panel({ className, ...props }: PanelProps) {
   const { t } = useTranslation();
   const navs: NavItemProps[] = [
     {
-      to: '/',
-      text: <MdHome />,
-    },
-    {
       to: '/settings',
       text: t('settings.profile'),
     },
@@ -36,6 +32,9 @@ export default function Panel({ className, ...props }: PanelProps) {
       className={cn('rounded-xl border shadow', DEFAULT_STYLE, className)}
       {...props}
     >
+      <Nav href="/" className="h-16 w-full rounded-t-xl border-b">
+        <MdHome />
+      </Nav>
       {navs.map(item => {
         return (
           <Nav

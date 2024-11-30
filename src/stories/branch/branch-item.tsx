@@ -183,6 +183,9 @@ export default function BranchItem({
           </div>
         </div>
       </div>
+      {(isPulling || isPushing) && (
+        <CgSpinner className="inline-block animate-spin" />
+      )}
       <div className={cn('flex gap-2 text-sm', !needSync && 'hidden')}>
         <div className={cn('flex items-center gap-2', !needPull && 'hidden')}>
           <FaArrowDown />
@@ -193,9 +196,6 @@ export default function BranchItem({
           <span>{branchStatus?.unpush}</span>
         </div>
       </div>
-      {(isPulling || isPushing) && (
-        <CgSpinner className="inline-block animate-spin" />
-      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={'ghost'} size="sm">

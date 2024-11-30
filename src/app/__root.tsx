@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import '@/locales';
 import { commands } from '@/bindings';
+import { TanStackRouterDevtools } from '@/components/devtools/router-devtools';
 import {
   refreshBranches,
   refreshChanges,
@@ -17,15 +18,6 @@ import i18n from '@/locales';
 import { attachConsole } from '@tauri-apps/plugin-log';
 import { useEffect } from 'react';
 import { Toaster } from 'sonner';
-
-const TanStackRouterDevtools =
-  process.env.NODE_ENV === 'production'
-    ? () => null
-    : React.lazy(() =>
-        import('@tanstack/router-devtools').then(res => ({
-          default: res.TanStackRouterDevtools,
-        })),
-      );
 
 export const Route = createRootRoute({
   component: () => (

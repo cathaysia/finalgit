@@ -13,12 +13,12 @@ import {
   createTheme,
 } from '@mui/material/styles';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { ThemeProvider } from 'next-themes';
 import React from 'react';
 import reactDom from 'react-dom/client';
+import { TanStackQueryDevtools } from './components/devtools/query-devtools';
 
 // Set up a Router instance
 const router = createRouter({
@@ -76,7 +76,7 @@ root.render(
             persistOptions={{ persister }}
           >
             <RouterProvider router={router} />
-            <ReactQueryDevtools initialIsOpen={false} />
+            <TanStackQueryDevtools />
           </PersistQueryClientProvider>
         </MuiThemeProvider>
       </StyledEngineProvider>

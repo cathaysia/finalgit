@@ -32,6 +32,7 @@ const VirtualScrollArea = React.forwardRef<
       <ScrollAreaPrimitive.Viewport
         ref={parentRef}
         className="h-full w-full rounded-[inherit]"
+        data-tauri-drag-region
       >
         <div
           style={{

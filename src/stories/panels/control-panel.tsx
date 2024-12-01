@@ -33,7 +33,7 @@ export default function ControlPanel({
   return (
     <aside
       className={cn(
-        'flex h-full max-h-full w-full flex-col gap-4 overflow-hidden',
+        'flex h-full max-h-full w-full flex-col gap-2 overflow-hidden',
         className,
       )}
       {...props}

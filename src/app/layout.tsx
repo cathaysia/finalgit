@@ -27,6 +27,7 @@ import '@/assets/global.css';
 import { queryClient } from '@/hooks/query';
 
 import { TanStackQueryDevtools } from '@/components/devtools/query-devtools';
+import RebaseCard from '@/stories/rebase/rebase-card';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -67,6 +68,7 @@ export default function RootLayout({
               <App />
               {children}
               <Toaster richColors position="top-right" />
+              <RebaseCard />
               <TanStackQueryDevtools />
             </PersistQueryClientProvider>
           </ThemeProvider>

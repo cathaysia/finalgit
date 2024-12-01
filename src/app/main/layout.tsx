@@ -1,5 +1,3 @@
-import RebaseCard from '@/stories/rebase/rebase-card';
-
 export default function RootLayout({
   children,
   control,
@@ -12,12 +10,11 @@ export default function RootLayout({
   return (
     <div
       className="grid h-screen w-screen grid-cols-4 gap-2 p-2"
-      data-tauri-drag-region={true}
+      data-tauri-drag-region
     >
       {control}
       {children}
       {commit}
-      <RebaseCard />
     </div>
   );
 }

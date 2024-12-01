@@ -11,7 +11,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
   return (
     <div
       data-tauri-drag-region={true}
-      className={cn('flex w-full justify-between', className)}
+      className={cn('flex h-8 w-full items-center justify-between', className)}
       {...props}
     >
       <div className="flex items-center gap-2">

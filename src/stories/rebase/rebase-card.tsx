@@ -1,3 +1,4 @@
+'use client';
 import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { refreshHeadState, useHeadState } from '@/hooks/query';

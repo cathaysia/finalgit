@@ -1,5 +1,8 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
+import { Suspense } from 'react';
+
 export default function MainLayout({
   children,
 }: Readonly<{
@@ -7,7 +10,9 @@ export default function MainLayout({
 }>) {
   return (
     <div className="h-screen w-screen" data-tauri-drag-region={true}>
-      {children}
+      <Suspense fallback={<Skeleton className="h-screen w-screen" />}>
+        {children}
+      </Suspense>
     </div>
   );
 }

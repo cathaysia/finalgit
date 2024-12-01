@@ -1,3 +1,4 @@
+'use client';
 import type { BranchInfo, TagInfo } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

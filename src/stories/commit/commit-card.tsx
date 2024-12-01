@@ -103,7 +103,12 @@ export default function CommitCard({
         </div>
       </div>
       <Link
-        href={`/filetree/${info.oid}`}
+        href={{
+          pathname: '/filetree/',
+          query: {
+            commit: info.oid,
+          },
+        }}
         className="flex items-center gap-2 text-blue-600"
       >
         <VscGitCommit />

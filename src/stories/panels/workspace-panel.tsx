@@ -1,3 +1,4 @@
+'use client';
 import type { FileStatus, FileTree } from '@/bindings';
 import { commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -177,7 +178,7 @@ export default function WorkspacePanel({
             {current && (
               <Link
                 href={{
-                  pathname: '/filetree/commit/',
+                  pathname: '/filetree/',
                   query: {
                     commit: current.oid,
                   },

@@ -274,7 +274,7 @@ export default function BranchItem({
             <DropdownMenuItem>
               <Link
                 href={{
-                  pathname: '/filetree/$commit',
+                  pathname: '/filetree/',
                   query: {
                     commit: info.oid,
                   },

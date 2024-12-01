@@ -1,3 +1,4 @@
+'use client';
 import { useBranches, useChanges } from '@/hooks/query';
 import NOTIFY from '@/lib/notify';
 import WorkspacePanel from './workspace-panel';

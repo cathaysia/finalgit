@@ -122,7 +122,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             <HoverCard>
               <HoverCardTrigger>
                 <HighLightLabel
-                  className="min-w-0 grow overflow-hidden"
+                  className="min-w-0 grow select-none overflow-hidden"
                   text={replaceEmoji(summary, useEmoji)}
                   value={summary}
                   filter={filter}
@@ -193,7 +193,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <DropdownMenuItem>
                 <Link
                   href={{
-                    pathname: '/filetree/$commit',
+                    pathname: '/filetree/',
                     query: {
                       commit: commit.oid,
                     },

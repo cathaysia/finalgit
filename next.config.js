@@ -5,7 +5,6 @@ const nextConfig = {
     appIsrStatus: false,
     buildActivity: true,
   },
-  distDir: 'dist',
 };
 
 export default nextConfig;

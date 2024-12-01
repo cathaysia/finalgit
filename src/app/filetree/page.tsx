@@ -12,12 +12,11 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { createBlamePlugin } from '@/stories/codemirror/blame';
 import { BlameCard } from '@/stories/codemirror/blame/blame-card';
+import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
-import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror from '@uiw/react-codemirror';
-import { useTheme } from 'next-themes';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
@@ -31,9 +30,7 @@ export default function FileTree() {
   const { data: files } = useFiles(commit);
   const tree = files || [];
   const [text, setText] = useState<string>();
-  const { theme } = useTheme();
   const [language, setLanguage] = useState<string>();
-  const mirrorTheme = theme === 'dark' ? githubDark : githubLight;
 
   const [path, setPath] = useState('');
 
@@ -102,7 +99,7 @@ export default function FileTree() {
           value={text}
           className="h-screen w-full font-mono text-base"
           height="100%"
-          theme={mirrorTheme}
+          theme={shadcnTheme}
           // @ts-expect-error: no error
           extensions={[...extensions, blamePlugin]}
         />

@@ -1,16 +1,17 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useTranslation } from 'react-i18next';
 import { FaMagic } from 'react-icons/fa';
 import { VscDiff } from 'react-icons/vsc';
 import { VscGitStash } from 'react-icons/vsc';
 
 import { type FileStatus, commands } from '@/bindings';
-import { AutosizeTextarea } from '@/components/ext/autosize-textarea';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -242,12 +243,21 @@ export default function Commiter({
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       <div className="flex flex-col gap-2">
-        <AutosizeTextarea
+        <CodeMirror
           placeholder={t('commiter.commit_summary')}
-          className="h-40 resize-none text-base"
+          className={cn(
+            'h-40 overflow-x-hidden overflow-y-scroll rounded border p-2 pr-4 text-base',
+            'border-neutral-200 text-neutral-950 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50',
+          )}
           autoFocus
           value={commitMsg}
-          onChange={e => setCommitMsg(e.target.value)}
+          theme={shadcnTheme}
+          basicSetup={{
+            lineNumbers: false,
+            foldGutter: false,
+          }}
+          extensions={[EditorView.lineWrapping]}
+          onChange={value => setCommitMsg(value)}
           onKeyUp={e => {
             if (e.key === 'Escape') {
               setIsCommiting(false);

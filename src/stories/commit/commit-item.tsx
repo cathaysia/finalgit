@@ -41,8 +41,8 @@ import NOTIFY from '@/lib/notify';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { Link } from '@tanstack/react-router';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import Link from 'next/link';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
@@ -192,9 +192,11 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
-                  to="/filetree/$commit"
-                  params={{
-                    commit: commit.oid,
+                  href={{
+                    pathname: '/filetree/$commit',
+                    query: {
+                      commit: commit.oid,
+                    },
                   }}
                 >
                   {t('commit.viewtree')}

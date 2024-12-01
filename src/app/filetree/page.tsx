@@ -1,7 +1,6 @@
-import { Navigate, createFileRoute } from '@tanstack/react-router';
+'use client';
+import { redirect } from 'next/navigation';
 
-export const Route = createFileRoute('/filetree/')({
-  component: () => {
-    <Navigate to="/" />;
-  },
-});
+export default function Page() {
+  redirect('/');
+}

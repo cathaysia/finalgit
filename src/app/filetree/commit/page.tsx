@@ -1,3 +1,4 @@
+'use client';
 import { commands } from '@/bindings';
 import { Nav } from '@/components/na';
 import {
@@ -12,29 +13,22 @@ import { createBlamePlugin } from '@/stories/codemirror/blame';
 import { BlameCard } from '@/stories/codemirror/blame/blame-card';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
-import { createFileRoute } from '@tanstack/react-router';
-import { Navigate } from '@tanstack/react-router';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
+import { useSearchParams } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
-export const Route = createFileRoute('/filetree/$commit')({
-  component: FileTree,
-});
-
-function FileTree() {
-  const { commit } = Route.useParams();
+export default function FileTree() {
+  const params = useSearchParams();
+  const commit = params.get('commit') || '';
 
   const [repoPath] = useAppState(s => [s.repoPath]);
   const { data: files } = useFiles(commit);
   const tree = files || [];
-  if (tree.length === 0) {
-    <Navigate to="/" />;
-  }
   const [text, setText] = useState<string>();
   const { theme } = useTheme();
   const [language, setLanguage] = useState<string>();

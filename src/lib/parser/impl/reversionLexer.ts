@@ -12,8 +12,6 @@ import {
   Token,
 } from 'antlr4';
 
-// @ts-ignore
-
 export default class reversionLexer extends Lexer {
   public static readonly T__0 = 1;
   public static readonly T__1 = 2;

@@ -44,12 +44,11 @@ export default function Icon({
   );
 
   return (
-    <span className={cn('inline', className)}>
-      <svg className="inline h-4 w-4">
-        <title>{iconname}</title>
-        <use href={`#icon-${iconname}`} />
-      </svg>
-    </span>
+    <img
+      src={`/icons/${iconname}.svg`}
+      alt={iconname}
+      className={cn('inline', className)}
+    />
   );
 }
 

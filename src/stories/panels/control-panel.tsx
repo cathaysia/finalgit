@@ -4,7 +4,8 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import Project from '@/stories/atoms/project';
 import BranchPanel from '@/stories/branch/barnch-panel';
-import { Link, useLocation } from '@tanstack/react-router';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import ControlBar from '../atoms/controlbar';
@@ -17,7 +18,7 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   const { t } = useTranslation();
 
-  const currentPath = useLocation().pathname;
+  const currentPath = usePathname();
   const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
@@ -39,7 +40,7 @@ export default function ControlPanel({
       <ControlBar />
       <Project />
       <Button variant={'link'} disabled={currentPath === '/main/workspace'}>
-        <Link to="/main">{t('Workspace')}</Link>
+        <Link href="/main">{t('Workspace')}</Link>
       </Button>
 
       <BranchPanel

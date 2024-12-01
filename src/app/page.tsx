@@ -1,9 +1,6 @@
-import { Navigate, createFileRoute } from '@tanstack/react-router';
+'use client';
+import { redirect } from 'next/navigation';
 
-export const Route = createFileRoute('/')({
-  component: Index,
-});
-
-function Index() {
-  return <Navigate to="/main" />;
+export default function Index() {
+  redirect('/main');
 }

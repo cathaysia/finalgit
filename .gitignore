@@ -33,3 +33,4 @@ stats.html
 **/.antlr/
 **/*.interp
 **/*.tokens
+public/icons/

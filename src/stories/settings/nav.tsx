@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils';
-import { Link, useLocation } from '@tanstack/react-router';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type NavProps = React.ComponentProps<typeof Link>;
 
 export default function Nav({ className, children, href, ...props }: NavProps) {
-  const pathname = useLocation().pathname;
+  const pathname = usePathname();
 
   return (
     <Link
@@ -16,7 +17,7 @@ export default function Nav({ className, children, href, ...props }: NavProps) {
           : 'hover:bg-neutral-100 dark:hover:bg-neutral-800',
         className,
       )}
-      to={href}
+      href={href}
       {...props}
     >
       {children}

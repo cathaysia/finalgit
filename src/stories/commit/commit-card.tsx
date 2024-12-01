@@ -3,8 +3,8 @@ import { AvatarGroup } from '@/components/ext/avatar-group';
 import { useRemotes } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
-import { Link } from '@tanstack/react-router';
 import { open } from '@tauri-apps/plugin-shell';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import { FaMarkdown } from 'react-icons/fa';
 import { PiClockClockwise } from 'react-icons/pi';
@@ -36,9 +36,7 @@ export default function CommitCard({
   let repo: null | string = null;
   branches?.forEach(item => {
     if (item.url) {
-      const group = /.*github.com(:443)?[:\/](.*)(\.git)?/
-        .exec(item.url)
-        ?.at(2);
+      const group = /.*github.com(:443)?[:/](.*)(\.git)?/.exec(item.url)?.at(2);
       repo = group || null;
     }
   });

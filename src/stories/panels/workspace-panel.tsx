@@ -24,8 +24,8 @@ export interface WorkspacePanelProps
 }
 
 import { useBranches, useHeadOid, usePushstatus, useTags } from '@/hooks/query';
-import { Link } from '@tanstack/react-router';
 import { produce } from 'immer';
+import Link from 'next/link';
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 
@@ -176,9 +176,11 @@ export default function WorkspacePanel({
           <div className="flex gap-2">
             {current && (
               <Link
-                to="/filetree/$commit"
-                params={{
-                  commit: current.oid,
+                href={{
+                  pathname: '/filetree/commit/',
+                  query: {
+                    commit: current.oid,
+                  },
                 }}
               >
                 <FaFolderTree className="hover:text-gray-500" />

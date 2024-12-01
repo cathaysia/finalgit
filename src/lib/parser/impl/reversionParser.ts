@@ -22,10 +22,7 @@ import type reversionListener from './reversionListener.js';
 import type reversionVisitor from './reversionVisitor.js';
 
 // for running tests with parameters, TODO: discuss strategy for typed parameters in CI
-// eslint-disable-next-line no-unused-vars
 type Int = number;
-
-// @ts-ignore
 
 export default class reversionParser extends Parser {
   public static readonly T__0 = 1;

@@ -26,7 +26,7 @@ import { branchCheckout, branchRemove } from '@/lib/operator';
 import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { Link } from '@tanstack/react-router';
+import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -273,9 +273,11 @@ export default function BranchItem({
             </CollapseMenuGroup>
             <DropdownMenuItem>
               <Link
-                to="/filetree/$commit"
-                params={{
-                  commit: info.oid,
+                href={{
+                  pathname: '/filetree/$commit',
+                  query: {
+                    commit: info.oid,
+                  },
                 }}
               >
                 {t('branch.view_tree')}

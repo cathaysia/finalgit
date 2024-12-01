@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBisectState } from '@/hooks/bisect';
@@ -11,17 +13,12 @@ import CommitList from '@/stories/commit/commit-list';
 import ControlPanel from '@/stories/panels/control-panel';
 import MainPanel from '@/stories/panels/main-panel';
 import RebaseCard from '@/stories/rebase/rebase-card';
-import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';
 
-export const Route = createFileRoute('/main/')({
-  component: Layout,
-});
-
-function Layout() {
+export default function Page() {
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   return (
@@ -37,7 +34,7 @@ function Layout() {
   );
 }
 
-export default function Commit() {
+function Commit() {
   const [repoPath, commitHead, setCommitHead] = useAppState(s => [
     s.repoPath,
     s.commitHead,

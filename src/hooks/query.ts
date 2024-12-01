@@ -1,3 +1,4 @@
+'use client';
 import { commands } from '@/bindings';
 import { useAiState } from '@/hooks/state';
 import { queryModels } from '@/lib/ai';

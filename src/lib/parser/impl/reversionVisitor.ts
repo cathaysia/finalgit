@@ -2,8 +2,6 @@
 
 import { ParseTreeVisitor } from 'antlr4';
 
-// @ts-ignore
-
 import type { ReversionContext } from './reversionParser';
 import type { RevAfterContext } from './reversionParser';
 import type { RevUntilContext } from './reversionParser';

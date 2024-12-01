@@ -28,9 +28,6 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - name: core.symlinks
-        run: |
-          git config --global core.symlinks true
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
@@ -62,6 +59,11 @@ jobs:
 
       - name: install frontend dependencies
         run: pnpm install
+
+      - name: setup icons
+        run: |
+          mkdir -p public
+          cp -r node_modules/material-icon-theme/icons public/
 
       - uses: tauri-apps/tauri-action@v0
         env:

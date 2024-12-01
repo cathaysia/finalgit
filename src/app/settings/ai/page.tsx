@@ -1,9 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
-
-export const Route = createFileRoute('/settings/ai')({
-  component: AiComponent,
-});
-
+'use client';
 import AiCard from '@/stories/settings/ai-card';
 import AiPrompt from '@/stories/settings/ai-prompt';
 

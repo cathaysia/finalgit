@@ -1,5 +1,4 @@
 import js from '@eslint/js';
-import pluginRouter from '@tanstack/eslint-plugin-router';
 import reactPlugin from 'eslint-plugin-react';
 import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
@@ -27,9 +26,8 @@ export default [
     },
   },
   js.configs.recommended,
-  ...storybook.recommended,
+  ...storybook.configs['flat/recommended'],
   ...tseslint.configs.recommended,
-  ...pluginRouter.configs['flat/recommended'],
   {
     files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}'],
     ...reactPlugin.configs.flat.recommended,

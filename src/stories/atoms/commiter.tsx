@@ -280,7 +280,9 @@ export default function Commiter({
                       setAbort(controller);
                     },
                   );
-                } catch (_) {}
+                } catch (_) {
+                  //
+                }
 
                 if (signoff) {
                   setCommitMsg(s => {

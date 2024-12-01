@@ -57,6 +57,8 @@ jobs:
           key: rust-${{ matrix.name }}
           workspaces: src-tauri
 
+      - uses: jongwooo/next-cache@v1
+
       - name: install frontend dependencies
         run: pnpm install
 

@@ -1,8 +1,0 @@
-{
-  "routesDirectory": "src/app",
-  "indexToken": "page",
-  "routeToken": "layout",
-  "autoCodeSplitting": true,
-  "semicolons": true,
-  "routeFileIgnorePrefix": "!"
-}

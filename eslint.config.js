@@ -1,8 +1,10 @@
-import js from '@eslint/js';
+import jsPlugin from '@eslint/js';
+import nextPlugin from '@next/eslint-plugin-next';
 import reactPlugin from 'eslint-plugin-react';
-import storybook from 'eslint-plugin-storybook';
+import hooksPlugin from 'eslint-plugin-react-hooks';
+import storybookPlugin from 'eslint-plugin-storybook';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
+import tsEslintPlugin from 'typescript-eslint';
 
 export default [
   {
@@ -14,6 +16,10 @@ export default [
       'vite.config.ts',
       'src/parser/impl/**',
       'src/routeTree.gen.ts',
+      '**/out/**',
+      '**/node_modules/**',
+      '**/.next/**',
+      'src/lib/parser/*.ts',
     ],
   },
   {
@@ -25,17 +31,26 @@ export default [
       },
     },
   },
-  js.configs.recommended,
-  ...storybook.configs['flat/recommended'],
-  ...tseslint.configs.recommended,
+  jsPlugin.configs.recommended,
+  ...storybookPlugin.configs['flat/recommended'],
+  ...tsEslintPlugin.configs.recommended,
   {
-    files: ['**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}'],
-    ...reactPlugin.configs.flat.recommended,
-    languageOptions: {
-      ...reactPlugin.configs.flat.recommended.languageOptions,
+    files: ['src/*.{js,ts,tsx,jsx}'],
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': hooksPlugin,
+      '@next/next': nextPlugin,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
     rules: {
-      'react/react-in-jsx-scope': 'off',
+      ...reactPlugin.configs.recommended.rules,
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      ...hooksPlugin.configs.recommended.rules,
     },
   },
   {
@@ -45,6 +60,7 @@ export default [
       '@typescript-eslint/no-unused-expressions': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      '@next/next/no-img-element': 'off',
     },
   },
 ];

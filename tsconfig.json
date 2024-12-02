@@ -30,7 +30,8 @@
     ".storybook/*.tsx",
     "dist/types/**/*.ts",
     "next-env.d.ts",
-    "next.config.js"
+    "next.config.js",
+    "eslint.config.js"
   ],
   "exclude": ["node_modules"]
 }

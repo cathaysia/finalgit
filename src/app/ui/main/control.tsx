@@ -1,5 +1,5 @@
 import ControlPanel from '@/stories/panels/control-panel';
 
-export default function Page() {
+export default function Control() {
   return <ControlPanel />;
 }

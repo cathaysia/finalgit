@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { isMatching } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
-export default function Page() {
+export default function Commit() {
   const [repoPath, commitHead, setCommitHead] = useAppState(s => [
     s.repoPath,
     s.commitHead,

@@ -18,7 +18,7 @@ import * as Portal from '@radix-ui/react-portal';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import CodeMirror from '@uiw/react-codemirror';
 import { useSearchParams } from 'next/navigation';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
 import { match } from 'ts-pattern';
 
@@ -34,7 +34,7 @@ export default function FileTree() {
 
   const [path, setPath] = useState('');
 
-  async function getText(path: string) {
+  async function getText(path: string, noWarn = false) {
     if (!repoPath) {
       return;
     }
@@ -57,9 +57,16 @@ export default function FileTree() {
         setText(val.data);
       })
       .with({ status: 'error' }, err => {
+        if (noWarn) {
+          return;
+        }
         NOTIFY.error(`get file content failed: ${err.error}`);
       });
   }
+
+  useEffect(() => {
+    getText('/README.md', true);
+  }, []);
 
   const extensions = [];
   if (language) {
@@ -95,14 +102,18 @@ export default function FileTree() {
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel className="grow">
-        <CodeMirror
-          value={text}
-          className="h-screen w-full font-mono text-base"
-          height="100%"
-          theme={shadcnTheme}
-          // @ts-expect-error: no error
-          extensions={[...extensions, blamePlugin]}
-        />
+        {text ? (
+          <CodeMirror
+            value={text}
+            className="font-mono text-base"
+            height="100%"
+            theme={shadcnTheme}
+            // @ts-expect-error: no error
+            extensions={[...extensions, blamePlugin]}
+          />
+        ) : (
+          <div className="" />
+        )}
         <Portal.Root container={blameWidget.current} asChild>
           {hunk && <BlameCard blame={hunk} />}
         </Portal.Root>

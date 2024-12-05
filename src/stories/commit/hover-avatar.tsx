@@ -16,7 +16,7 @@ export interface HoverAvatarProps
 
 export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
   const { t } = useTranslation();
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const { data: statics } = useStatisOfAuthor(userName);
 
   const [value, min] = useMemo(() => {
@@ -38,7 +38,7 @@ export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
   }, [statics]);
 
   const panelColors =
-    theme === 'light'
+    resolvedTheme === 'light'
       ? undefined
       : {
           0: '#161b22',
@@ -49,7 +49,7 @@ export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
         };
 
   const headmapStyle =
-    theme === 'light'
+    resolvedTheme === 'light'
       ? undefined
       : {
           color: 'white',

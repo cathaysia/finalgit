@@ -1,6 +1,6 @@
 'use client';
-import AiCard from '@/stories/settings/ai-card';
-import AiPrompt from '@/stories/settings/ai-prompt';
+import AiCard from '@/app/settings/ui/ai-card';
+import AiPrompt from '@/app/settings/ui/ai-prompt';
 
 export default function AiComponent() {
   return (

@@ -87,7 +87,7 @@ export default function FileTree() {
     <ResizablePanelGroup
       direction="horizontal"
       className="flex h-screen overflow-clip p-2"
-      data-tauri-drag-region={true}
+      data-tauri-drag-region
     >
       <ResizablePanel defaultSize={20} className="flex w-52 flex-col">
         <Nav to="/" text={<MdHome />} />

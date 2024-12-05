@@ -1,8 +1,8 @@
 'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import GitSwitch from '@/stories/atoms/git-switch';
-import GitCore from '@/stories/settings/git-core';
-import GitUser from '@/stories/settings/git-user';
+import GitCore from '@/app/settings/ui/git-core';
+import GitUser from '@/app/settings/ui/git-user';
 import { useTranslation } from 'react-i18next';
 
 export default function GitComponent() {

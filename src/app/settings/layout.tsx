@@ -1,5 +1,5 @@
 'use client';
-import Panel from '@/stories/settings/panel';
+import Panel from '@/app/settings/ui/panel';
 
 export default function Layout({
   children,

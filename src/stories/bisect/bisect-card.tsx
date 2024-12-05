@@ -3,7 +3,7 @@ import type { BisectState } from '@/hooks/bisect';
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';

@@ -1,7 +1,7 @@
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import React from 'react';
 
 interface CollapseMenuGroupProps {

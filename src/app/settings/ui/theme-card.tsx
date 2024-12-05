@@ -6,7 +6,7 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
-import { LanguageCard } from '../atoms/language-card';
+import { LanguageCard } from '../../../stories/atoms/language-card';
 
 type ThemeCardProps = React.ComponentProps<typeof Card>;
 

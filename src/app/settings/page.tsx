@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAppState } from '@/hooks/state';
-import ThemeCard from '@/stories/settings/theme-card';
+import ThemeCard from '@/app/settings/ui/theme-card';
 import { useTranslation } from 'react-i18next';
 
 export default function ProfileComponent() {

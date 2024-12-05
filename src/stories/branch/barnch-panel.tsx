@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import BranchList from '@/stories/branch/branch-list';
 import { TagList } from '@/stories/tag/tag-list';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';

@@ -10,7 +10,7 @@ import { filterCommits } from '@/lib/parser/commit-filter';
 import { cn } from '@/lib/utils';
 import BisectCard from '@/stories/bisect/bisect-card';
 import CommitList from '@/stories/commit/commit-list';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMatching } from 'ts-pattern';

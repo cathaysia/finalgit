@@ -40,7 +40,7 @@ export function UserAvatar({ userName, ...props }: UserAvatarProps) {
   const { data: src } = useGhAvatar(userName);
   const { bgColor, text } = stringAvatar(userName);
   return (
-    <Avatar className="text-center text-2xl" title={userName} {...props}>
+    <Avatar className="text-center text-2xl" {...props}>
       <AvatarImage src={src} />
       <AvatarFallback
         className="text-xl"

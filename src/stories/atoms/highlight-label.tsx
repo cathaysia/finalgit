@@ -21,11 +21,7 @@ export default function HighLightLabel({
 
   if (!filter) {
     return (
-      <Label
-        className={cn('select-text break-all', className)}
-        title={value}
-        {...props}
-      >
+      <Label className={cn('select-text break-all', className)} {...props}>
         {text}
       </Label>
     );

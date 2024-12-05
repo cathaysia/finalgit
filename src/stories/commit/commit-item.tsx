@@ -147,7 +147,6 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               </TooltipProvider>
             )}
             <Badge
-              title={commit.oid}
               className="font-mono"
               onClick={async () => {
                 const _ = await writeText(commit.oid);

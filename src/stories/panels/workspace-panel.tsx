@@ -24,7 +24,13 @@ export interface WorkspacePanelProps
   changeSet: FileStatus[];
 }
 
-import { useBranches, useHeadOid, usePushstatus, useTags } from '@/hooks/query';
+import {
+  refreshPushStatus,
+  useBranches,
+  useHeadOid,
+  usePushstatus,
+  useTags,
+} from '@/hooks/query';
 import { produce } from 'immer';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -68,9 +74,6 @@ export default function WorkspacePanel({
     NOTIFY.error(error.message);
   }
 
-  function refreshPushStatus() {
-    throw new Error('Function not implemented.');
-  }
   const [pushActionState, setPushActionState] = useState({
     isPulling: false,
     isPushing: false,

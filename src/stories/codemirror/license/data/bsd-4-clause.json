@@ -1,0 +1,11 @@
+{
+  "title": "BSD 4-Clause \"Original\" or \"Old\" License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "warranty"]
+}

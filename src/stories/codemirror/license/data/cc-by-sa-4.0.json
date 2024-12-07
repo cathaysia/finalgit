@@ -1,0 +1,11 @@
+{
+  "title": "Creative Commons Attribution Share Alike 4.0 International",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright", "document-changes", "same-license"],
+  "limitations": ["liability", "trademark-use", "patent-use", "warranty"]
+}

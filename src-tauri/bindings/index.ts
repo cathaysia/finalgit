@@ -799,7 +799,11 @@ export type HeadInfo = {
   is_detached: boolean;
   is_rebasing: boolean;
 };
-export type PushStatus = { unpush: number; unpull: number };
+export type PushStatus = {
+  unpush: number;
+  unpull: number;
+  has_conflict: boolean;
+};
 export type Remote = { name: string; url: string };
 export type RepositoryState =
   | 'Clean'

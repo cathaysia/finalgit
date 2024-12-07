@@ -1,0 +1,12 @@
+{
+  "title": "Microsoft Reciprocal License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["disclose-source", "include-copyright", "same-license--file"],
+  "limitations": ["warranty", "trademark-use"]
+}

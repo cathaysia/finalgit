@@ -1,0 +1,12 @@
+{
+  "title": "Mulan Permissive Software License, Version 2",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "trademark-use", "warranty"]
+}

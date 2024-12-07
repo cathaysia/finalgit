@@ -14,6 +14,7 @@ use tauri_derive::export_ts;
 pub struct PushStatus {
     pub unpush: u32,
     pub unpull: u32,
+    pub has_conflict: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize, Type)]
@@ -43,7 +44,7 @@ pub trait RepoExt {
     where
         I: IntoIterator<Item = S>,
         S: AsRef<std::ffi::OsStr>;
-    fn branch_status(&self, branch: &str) -> AppResult<PushStatus>;
+    async fn branch_status(&self, branch: &str) -> AppResult<PushStatus>;
     fn get_repo_head(&self) -> AppResult<HeadInfo>;
 
     fn branch_fetch(&self, branch: &str) -> AppResult<()>;
@@ -256,7 +257,7 @@ impl RepoExt for git2::Repository {
         Ok(output)
     }
 
-    fn branch_status(&self, branch: &str) -> AppResult<PushStatus> {
+    async fn branch_status(&self, branch: &str) -> AppResult<PushStatus> {
         if self.is_bare() {
             return Err(AppError::BareRepo);
         }
@@ -285,6 +286,8 @@ impl RepoExt for git2::Repository {
         Ok(PushStatus {
             unpush: local as u32,
             unpull: remote as u32,
+            has_conflict: self.graph_descendant_of(local_oid, remote_oid)?
+                || self.graph_descendant_of(remote_oid, local_oid)?,
         })
     }
 

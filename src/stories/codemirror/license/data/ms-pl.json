@@ -1,0 +1,12 @@
+{
+  "title": "Microsoft Public License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["warranty", "trademark-use"]
+}

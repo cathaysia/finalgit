@@ -1,0 +1,11 @@
+{
+  "title": "LaTeX Project Public License v1.3c",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright", "document-changes", "disclose-source"],
+  "limitations": ["liability", "warranty"]
+}

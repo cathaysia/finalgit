@@ -1,0 +1,12 @@
+{
+  "title": "Artistic License 2.0",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["include-copyright", "document-changes"],
+  "limitations": ["liability", "trademark-use", "warranty"]
+}

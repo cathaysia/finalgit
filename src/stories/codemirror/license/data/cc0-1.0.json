@@ -1,0 +1,11 @@
+{
+  "title": "Creative Commons Zero v1.0 Universal",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": [],
+  "limitations": ["liability", "trademark-use", "patent-use", "warranty"]
+}

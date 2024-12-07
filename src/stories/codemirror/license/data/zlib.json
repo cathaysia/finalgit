@@ -1,0 +1,11 @@
+{
+  "title": "zlib License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright--source", "document-changes"],
+  "limitations": ["liability", "warranty"]
+}

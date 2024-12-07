@@ -1,0 +1,18 @@
+{
+  "title": "Open Software License 3.0",
+  "permissions": [
+    "commercial-use",
+    "distribution",
+    "modifications",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": [
+    "include-copyright",
+    "disclose-source",
+    "document-changes",
+    "network-use-disclose",
+    "same-license"
+  ],
+  "limitations": ["trademark-use", "liability", "warranty"]
+}

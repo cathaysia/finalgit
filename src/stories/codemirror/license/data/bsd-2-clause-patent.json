@@ -1,0 +1,12 @@
+{
+  "title": "BSD-2-Clause Plus Patent License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "warranty"]
+}

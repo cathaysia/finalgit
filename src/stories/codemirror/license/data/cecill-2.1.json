@@ -1,0 +1,17 @@
+{
+  "title": "CeCILL Free Software License Agreement v2.1",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use",
+    "patent-use"
+  ],
+  "conditions": [
+    "include-copyright",
+    "network-use-disclose",
+    "disclose-source",
+    "same-license"
+  ],
+  "limitations": ["liability", "warranty"]
+}

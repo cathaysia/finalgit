@@ -12,11 +12,16 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { createBlamePlugin } from '@/stories/codemirror/blame';
 import { BlameCard } from '@/stories/codemirror/blame/blame-card';
-import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
+import {
+  LicenseCard,
+  detectLicense,
+} from '@/stories/codemirror/license/license-card';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
-import CodeMirror from '@uiw/react-codemirror';
+import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import { useTheme } from 'next-themes';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
@@ -25,6 +30,7 @@ import { match } from 'ts-pattern';
 export default function FileTree() {
   const params = useSearchParams();
   const commit = params.get('commit') || '';
+  const theme = useTheme().resolvedTheme === 'light' ? githubLight : githubDark;
 
   const [repoPath] = useAppState(s => [s.repoPath]);
   const { data: files } = useFiles(commit);
@@ -90,6 +96,11 @@ export default function FileTree() {
     });
   }, [path]);
 
+  let license: string[] = [];
+  if (text && path.toLowerCase().includes('license')) {
+    license = detectLicense(text);
+  }
+
   return (
     <ResizablePanelGroup
       direction="horizontal"
@@ -101,19 +112,22 @@ export default function FileTree() {
         <FilePanel files={tree} onClicked={getText} commit={commit} />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel className="grow">
-        {text ? (
-          <CodeMirror
-            value={text}
-            className="font-mono text-base"
-            height="100%"
-            theme={shadcnTheme}
-            // @ts-expect-error: no error
-            extensions={[...extensions, blamePlugin]}
-          />
-        ) : (
-          <div className="" />
-        )}
+      <ResizablePanel>
+        <div className="flex h-screen flex-col overflow-y-hidden">
+          <LicenseCard license={license} />
+          {text ? (
+            <CodeMirror
+              value={text}
+              className="font-mono text-base"
+              height="100vh"
+              theme={theme}
+              // @ts-expect-error: no error
+              extensions={[...extensions, blamePlugin, EditorView.lineWrapping]}
+            />
+          ) : (
+            <div className="" />
+          )}
+        </div>
         <Portal.Root container={blameWidget.current} asChild>
           {hunk && <BlameCard blame={hunk} />}
         </Portal.Root>

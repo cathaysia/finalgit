@@ -59,6 +59,7 @@
     "@tauri-apps/plugin-shell": "2.0.1",
     "@tauri-apps/plugin-store": "2.1.0",
     "@uiw/codemirror-extensions-langs": "^4.23.6",
+    "@uiw/codemirror-theme-github": "^4.23.6",
     "@uiw/react-codemirror": "^4.23.6",
     "@uiw/react-heat-map": "^2.3.1",
     "ai": "^3.4.33",

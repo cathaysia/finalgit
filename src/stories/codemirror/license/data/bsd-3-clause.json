@@ -1,0 +1,11 @@
+{
+  "title": "BSD 3-Clause \"New\" or \"Revised\" License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "warranty"]
+}

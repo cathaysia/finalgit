@@ -1,0 +1,17 @@
+{
+  "title": "GNU General Public License v3.0",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": [
+    "include-copyright",
+    "document-changes",
+    "disclose-source",
+    "same-license"
+  ],
+  "limitations": ["liability", "warranty"]
+}

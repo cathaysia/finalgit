@@ -1,0 +1,12 @@
+{
+  "title": "CERN Open Hardware Licence Version 2 - Permissive",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use",
+    "patent-use"
+  ],
+  "conditions": ["include-copyright", "document-changes"],
+  "limitations": ["liability", "warranty"]
+}

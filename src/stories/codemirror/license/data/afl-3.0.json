@@ -1,0 +1,12 @@
+{
+  "title": "Academic Free License v3.0",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use",
+    "patent-use"
+  ],
+  "conditions": ["include-copyright", "document-changes"],
+  "limitations": ["trademark-use", "liability", "warranty"]
+}

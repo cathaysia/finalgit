@@ -1,0 +1,12 @@
+{
+  "title": "Eclipse Public License 1.0",
+  "permissions": [
+    "commercial-use",
+    "distribution",
+    "modifications",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["disclose-source", "include-copyright", "same-license"],
+  "limitations": ["liability", "warranty"]
+}

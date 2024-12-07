@@ -1,0 +1,11 @@
+{
+  "title": "ISC License",
+  "permissions": [
+    "commercial-use",
+    "distribution",
+    "modifications",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "warranty"]
+}

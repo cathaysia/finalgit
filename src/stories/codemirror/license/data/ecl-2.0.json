@@ -1,0 +1,12 @@
+{
+  "title": "Educational Community License v2.0",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "patent-use",
+    "private-use"
+  ],
+  "conditions": ["include-copyright", "document-changes"],
+  "limitations": ["trademark-use", "liability", "warranty"]
+}

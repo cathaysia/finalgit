@@ -1,0 +1,11 @@
+{
+  "title": "Open Data Commons Open Database License v1.0",
+  "permissions": [
+    "commercial-use",
+    "distribution",
+    "modifications",
+    "private-use"
+  ],
+  "conditions": ["disclose-source", "include-copyright", "same-license"],
+  "limitations": ["liability", "patent-use", "trademark-use", "warranty"]
+}

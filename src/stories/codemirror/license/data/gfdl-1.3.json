@@ -1,0 +1,16 @@
+{
+  "title": "GNU Free Documentation License v1.3",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": [
+    "include-copyright",
+    "disclose-source",
+    "same-license",
+    "document-changes"
+  ],
+  "limitations": ["liability", "warranty"]
+}

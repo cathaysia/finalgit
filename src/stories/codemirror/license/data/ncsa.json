@@ -1,0 +1,11 @@
+{
+  "title": "University of Illinois/NCSA Open Source License",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright"],
+  "limitations": ["liability", "warranty"]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "The Unlicense",
+  "permissions": [
+    "private-use",
+    "commercial-use",
+    "modifications",
+    "distribution"
+  ],
+  "conditions": [],
+  "limitations": ["liability", "warranty"]
+}

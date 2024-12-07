@@ -1,0 +1,11 @@
+{
+  "title": "Boost Software License 1.0",
+  "permissions": [
+    "commercial-use",
+    "modifications",
+    "distribution",
+    "private-use"
+  ],
+  "conditions": ["include-copyright--source"],
+  "limitations": ["liability", "warranty"]
+}

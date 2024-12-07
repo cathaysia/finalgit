@@ -1,13 +1,14 @@
 use std::{path::Path, process::Stdio};
 
+use crate::{AppError, AppResult, BranchInfo, FileStatus, FileTree, TagInfo};
 use git2::build::CheckoutBuilder;
 use itertools::Itertools;
 use log::{debug, info, trace};
 use serde::{Deserialize, Serialize};
 use specta::Type;
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
 use tauri_derive::export_ts;
-
-use crate::{AppError, AppResult, BranchInfo, FileStatus, FileTree, TagInfo};
 
 #[derive(Debug, Default, Serialize, Deserialize, Type)]
 pub struct PushStatus {
@@ -231,16 +232,20 @@ impl RepoExt for git2::Repository {
         let path = Path::new(&path);
         trace!("run git command in {path:?}");
 
-        let output = std::process::Command::new("git")
+        let mut command = std::process::Command::new("git");
+        command
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .env("LANG", "C")
             .env("GIT_TERMINAL_PROMPT", "0")
             .args(args)
-            .current_dir(path)
-            .spawn()?
-            .wait_with_output()?;
+            .current_dir(path);
+
+        #[cfg(target_os = "windows")]
+        command.creation_flags(0x08000000);
+
+        let output = command.spawn()?.wait_with_output()?;
         trace!("output = {output:?}");
 
         if output.status.code().unwrap() != 0 {

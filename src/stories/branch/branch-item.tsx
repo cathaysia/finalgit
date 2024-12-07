@@ -254,6 +254,7 @@ export default function BranchItem({
                     setIsRemoteOpen(!isRemoteOpen);
                     e.preventDefault();
                   }}
+                  disabled
                 >
                   {t('branch.remote')}
                 </CollapseGroupTrigger>

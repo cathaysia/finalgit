@@ -1,4 +1,5 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
@@ -20,8 +21,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
-import { useAiState, useAppState, useRefreshRequest } from '@/hooks/state';
-import { generateCommit } from '@/lib/ai';
+import { useAiState, useAppState } from '@/hooks/state';
+import { AiKind, generateCommit } from '@/lib/ai';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { debug } from '@tauri-apps/plugin-log';
@@ -50,13 +51,12 @@ export default function Commiter({
     s.signoff,
     s.setCommitHead,
   ]);
-  const [refreshPush] = useRefreshRequest(s => [s.refreshPush]);
   const [isLoading, setIsLoading] = useState(false);
-  const [current, promptList, currentModel] = useAiState(s => [
-    s.current,
+  const [current, promptList] = useAppState(s => [
+    s.currentPrompt,
     s.promptList,
-    s.ollamaCurrentModel,
   ]);
+  const [currentModel] = useAiState(s => [s.ollamaCurrentModel]);
   const prompt = promptList.get(current) || '';
 
   const [userInfo, setUserInfo] = useState({
@@ -116,7 +116,6 @@ export default function Commiter({
       const res = await commands?.stageAddFiles(repoPath, allfiles);
       if (isMatching({ status: 'ok' }, res)) {
         refreshChanges();
-        refreshPush();
       } else {
         NOTIFY.error(res.error);
         return;
@@ -284,6 +283,9 @@ export default function Commiter({
                 try {
                   await generateCommit(
                     value.data,
+                    {
+                      kind: AiKind.Ollama,
+                    },
                     prompt,
                     currentModel,
                     (text, controller) => {

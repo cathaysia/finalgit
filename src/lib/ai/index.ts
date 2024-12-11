@@ -1,17 +1,47 @@
+import { type OpenAIProviderSettings, createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
-import { createOllama } from 'ollama-ai-provider';
+import { type OllamaProviderSettings, createOllama } from 'ollama-ai-provider';
 
-const Ollama = createOllama();
+export enum AiKind {
+  Ollama = 0,
+  OpenAi = 1,
+}
+
+export interface AiOllama {
+  kind: AiKind.Ollama;
+  args?: OllamaProviderSettings;
+}
+
+export interface AiOpenAi {
+  kind: AiKind.OpenAi;
+  args?: OpenAIProviderSettings;
+}
+
+export type AiType = AiOllama | AiOpenAi;
+
+function createAi(ai: AiType) {
+  if (ai.kind === AiKind.Ollama) {
+    return createOllama(ai.args);
+  }
+  if (ai.kind === AiKind.OpenAi) {
+    return createOpenAI(ai.args);
+  }
+}
 
 export async function generateCommit(
   diff: string,
+  aitype: AiType,
   prompt: string,
   model: string,
   onGenering: (text: string, controller: AbortController) => void,
 ) {
   const controller = new AbortController();
   onGenering('', controller);
-  const llama = Ollama(model);
+  const ai = createAi(aitype);
+  if (!ai) {
+    return;
+  }
+  const llama = ai(model);
   const { textStream } = await streamText({
     model: llama,
     prompt: prompt.replace('%{diff}', diff),

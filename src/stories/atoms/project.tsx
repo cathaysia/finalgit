@@ -72,7 +72,7 @@ export default function Project({ className }: ProjectProps) {
           style={{ width: 'var(--radix-popper-anchor-width)' }}
         >
           <DropdownMenuGroup>
-            {projects.map(item => {
+            {Array.from(projects.values()).map(item => {
               const [first, second] = [
                 item.slice(0, item.length / 2),
                 item.slice(item.length / 2),
@@ -114,7 +114,7 @@ export default function Project({ className }: ProjectProps) {
                 </div>
               );
             })}
-            {projects.length !== 0 && <DropdownMenuSeparator />}
+            {projects.size !== 0 && <DropdownMenuSeparator />}
             <DropdownMenuItem
               className="flex justify-between"
               onClick={openRepo}

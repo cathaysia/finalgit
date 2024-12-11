@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
@@ -7,21 +8,22 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useAiState } from '@/hooks/state';
+import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-shell';
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { FaLink } from 'react-icons/fa';
+import { IoIosAdd } from 'react-icons/io';
 
 export default function AiPrompt() {
   const { t } = useTranslation();
-  const [current, promptList, setPrompt, setCurrent] = useAiState(s => [
-    s.current,
+  const [current, promptList, setPrompt, setCurrent] = useAppState(s => [
+    s.currentPrompt,
     s.promptList,
     s.setPrompt,
-    s.setCurrent,
+    s.setCurrentPrompt,
   ]);
 
   const prompt = promptList.get(current);
@@ -83,11 +85,25 @@ export default function AiPrompt() {
               }
             }}
           />
+          <Button
+            variant={'ghost'}
+            onClick={() => {
+              const value = promptList.get(current);
+              if (!value) {
+                return;
+              }
+              setPrompt(`${current} Copy`, value);
+            }}
+          >
+            <IoIosAdd className="ml-2 h-4 w-4" />
+          </Button>
         </div>
         <Textarea
           className="h-80 resize-none text-base"
+          readOnly={isConventional || isGitmoji}
           onChange={val => {
             setContent(val.target.value);
+            setPrompt(current, content);
           }}
           value={content}
         />

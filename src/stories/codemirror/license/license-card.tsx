@@ -9,7 +9,7 @@ export function LicenseCard({ license }: { license: string[] }) {
     return <></>;
   }
   return (
-    <ScrollArea className="h-[300px] w-full overflow-visible">
+    <ScrollArea className="w-full">
       {license.map(item => {
         return <LicenseCardSingle key={item} license={item} />;
       })}

@@ -18,7 +18,10 @@ import {
 } from '@/stories/codemirror/license/license-card';
 import FilePanel from '@/stories/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
-import { loadLanguage } from '@uiw/codemirror-extensions-langs';
+import {
+  type LanguageName,
+  loadLanguage,
+} from '@uiw/codemirror-extensions-langs';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
@@ -76,8 +79,10 @@ export default function FileTree() {
 
   const extensions = [];
   if (language) {
-    // @ts-expect-error: no error
-    extensions.push(loadLanguage(language));
+    const lang = loadLanguage(language as LanguageName);
+    if (lang) {
+      extensions.push(lang);
+    }
   }
 
   const { data: blameInfo } = useBlameInfo(commit, path);
@@ -114,19 +119,33 @@ export default function FileTree() {
       <ResizableHandle withHandle />
       <ResizablePanel>
         <div className="flex h-screen flex-col overflow-y-hidden">
-          <LicenseCard license={license} />
-          {text ? (
-            <CodeMirror
-              value={text}
-              className="font-mono text-base"
-              height="100vh"
-              theme={theme}
-              // @ts-expect-error: no error
-              extensions={[...extensions, blamePlugin, EditorView.lineWrapping]}
-            />
-          ) : (
-            <div className="" />
-          )}
+          <ResizablePanelGroup direction={'vertical'}>
+            {license.length !== 0 && (
+              <>
+                <ResizablePanel defaultSize={25} className="overflow-y-visible">
+                  <LicenseCard license={license} />
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+              </>
+            )}
+            <ResizablePanel>
+              {text ? (
+                <CodeMirror
+                  value={text}
+                  className="font-mono text-base"
+                  height="100vh"
+                  theme={theme}
+                  extensions={[
+                    ...extensions,
+                    blamePlugin,
+                    EditorView.lineWrapping,
+                  ]}
+                />
+              ) : (
+                <div className="" />
+              )}
+            </ResizablePanel>
+          </ResizablePanelGroup>
         </div>
         <Portal.Root container={blameWidget.current} asChild>
           {hunk && <BlameCard blame={hunk} />}

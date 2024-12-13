@@ -1,6 +1,5 @@
 'use client';
 import { commands } from '@/bindings';
-import { useAiState } from '@/hooks/state';
 import { queryModels } from '@/lib/ai';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { match } from 'ts-pattern';
@@ -125,7 +124,8 @@ export function refreshFiles() {
 }
 
 export function useOllamaModels() {
-  const [endpoint] = useAiState(s => [s.ollamaEndpoint]);
+  const aiConfig = useAppState(s => s.aiConfig);
+  const endpoint = aiConfig.ollama.endpoint;
 
   return useQuery({
     queryKey: ['ollama_models'],

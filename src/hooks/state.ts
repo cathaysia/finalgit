@@ -1,4 +1,3 @@
-import { AiKind } from '@/lib/ai';
 import { LazyStore } from '@tauri-apps/plugin-store';
 import { enableMapSet } from 'immer';
 import superjson from 'superjson';
@@ -26,13 +25,15 @@ Here is my git diff:
 
 const tauriStore = new LazyStore('settings.json');
 
-interface AiConfig {
+export interface AiConfig {
+  current: 'ollama' | 'openai';
   ollama: {
     endpoint: string;
     model: string;
   };
   openai: {
     endpoint: string;
+    key: string;
   };
 }
 
@@ -44,10 +45,14 @@ export interface AppState {
   renderMarkdown: boolean;
   commitHead: string | null;
   signoff: boolean;
-  aiKind: AiKind;
   aiConfig: AiConfig;
   promptList: Map<string, string>;
   currentPrompt: string;
+  setCurrentAi: (ai: 'ollama' | 'openai') => void;
+  setOpenAiKey: (key: string) => void;
+  setOpenAiEndpoint: (endpoint: string) => void;
+  setOllamaModel: (model: string) => void;
+  setOllamaEndpoint: (endpoint: string) => void;
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
@@ -55,7 +60,6 @@ export interface AppState {
   setRepoPath: (isOpened: string) => void;
   setSignoff: (signoff: boolean) => void;
   removeRepoPath: (path: string) => void;
-  setAiKind: (kind: AiKind) => void;
   setAiConfig: (aiConfig: AiConfig) => void;
   setPrompt: (name: string, value: string) => void;
   setCurrentPrompt: (name: string) => void;
@@ -94,18 +98,39 @@ export const useAppState = create<AppState>()(
       commitHead: null,
       projects: new Set<string>(),
       signoff: true,
-      aiKind: AiKind.Ollama,
       aiConfig: {
+        current: 'ollama',
         ollama: {
-          endpoint: '',
+          endpoint: 'http://127.0.0.1:11434',
           model: '',
         },
         openai: {
           endpoint: '',
+          key: '',
         },
       },
       promptList: defaultPrompt,
       currentPrompt: 'Conventional Commits',
+      setOpenAiKey: (key: string) =>
+        set(s => {
+          s.aiConfig.openai.key = key;
+        }),
+      setOpenAiEndpoint: (endpoint: string) =>
+        set(s => {
+          s.aiConfig.openai.endpoint = endpoint;
+        }),
+      setCurrentAi: (model: 'ollama' | 'openai') =>
+        set(s => {
+          s.aiConfig.current = model;
+        }),
+      setOllamaModel: (model: string) =>
+        set(s => {
+          s.aiConfig.ollama.model = model;
+        }),
+      setOllamaEndpoint: (endpoint: string) =>
+        set(s => {
+          s.aiConfig.ollama.endpoint = endpoint;
+        }),
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),
       setRepoPath: (repoPath: string) => {
@@ -123,7 +148,6 @@ export const useAppState = create<AppState>()(
           s.projects.delete(path);
         });
       },
-      setAiKind: (kind: AiKind) => set({ aiKind: kind }),
       setAiConfig: (aiConfig: AiConfig) => set({ aiConfig: aiConfig }),
       setPrompt: (name: string, value: string) => {
         set(s => {
@@ -161,50 +185,8 @@ export const useAppState = create<AppState>()(
         useEmoji: s.useEmoji,
         renderMarkdown: s.renderMarkdown,
         signoff: s.signoff,
-        aiKind: s.aiKind,
         aiConfig: s.aiConfig,
         promptList: s.promptList,
-      }),
-    },
-  ),
-);
-
-export interface AiStateProps {
-  current: string;
-  promptList: Map<string, string>;
-  ollamaEndpoint: string;
-  ollamaCurrentModel: string;
-  setPrompt: (name: string, prompt: string) => void;
-  setCurrent: (name: string) => void;
-  setOllamaEndpoint: (endpoint: string) => void;
-  setOllamaModel: (model: string) => void;
-}
-
-export const useAiState = create<AiStateProps>()(
-  persist(
-    immer(set => ({
-      current: 'Conventional Commits',
-      promptList: defaultPrompt,
-      ollamaEndpoint: 'http://127.0.0.1:11434',
-      ollamaCurrentModel: '',
-      setCurrent: (name: string) => set({ current: name }),
-      setPrompt: (name: string, prompt: string) =>
-        set(s => {
-          s.promptList.set(name, prompt);
-        }),
-      setOllamaEndpoint: (endpoint: string) =>
-        set({ ollamaEndpoint: endpoint }),
-      setOllamaModel: (model: string) =>
-        set({
-          ollamaCurrentModel: model,
-        }),
-    })),
-    {
-      name: 'ai',
-      partialize: s => ({
-        prompt: s.current,
-        ollamaEndpoint: s.ollamaEndpoint,
-        ollamaCurrentModel: s.ollamaCurrentModel,
       }),
     },
   ),

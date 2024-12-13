@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
-import { useAiState, useAppState } from '@/hooks/state';
+import { useAppState } from '@/hooks/state';
 import { AiKind, generateCommit } from '@/lib/ai';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
@@ -56,7 +56,7 @@ export default function Commiter({
     s.currentPrompt,
     s.promptList,
   ]);
-  const [currentModel] = useAiState(s => [s.ollamaCurrentModel]);
+  const currentModel = useAppState(s => s.aiConfig.ollama.model);
   const prompt = promptList.get(current) || '';
 
   const [userInfo, setUserInfo] = useState({

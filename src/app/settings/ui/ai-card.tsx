@@ -1,9 +1,3 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -22,8 +16,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useOllamaModels } from '@/hooks/query';
-import { useAiState } from '@/hooks/state';
+import { useAppState } from '@/hooks/state';
 import { fetchModel } from '@/lib/ai/ollama';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -35,21 +36,28 @@ import { P, isMatching } from 'ts-pattern';
 
 export default function AiCard() {
   const { t } = useTranslation();
-  const [endpoint, currentModel, setCurrentModel, setEndpoint] = useAiState(
-    s => [
-      s.ollamaEndpoint,
-      s.ollamaCurrentModel,
-      s.setOllamaModel,
-      s.setOllamaEndpoint,
-    ],
-  );
+  const [
+    aiConfig,
+    setCurrentAi,
+    setOllamaModel,
+    setOpenAiKey,
+    setOpenAiEndpoint,
+  ] = useAppState(s => [
+    s.aiConfig,
+    s.setCurrentAi,
+    s.setOllamaModel,
+    s.setOpenAiKey,
+    s.setOpenAiEndpoint,
+  ]);
+  const endpoint = aiConfig.ollama.endpoint;
+  const [setEndpoint] = useAppState(s => [s.setOllamaEndpoint]);
 
   const { error, data: models } = useOllamaModels();
   if (error) {
     NOTIFY.error(error.message);
   }
-  if (models && !currentModel && models.length > 0) {
-    setCurrentModel(models[0]);
+  if (models && aiConfig.ollama.model.length === 0 && models.length > 0) {
+    setOllamaModel(models[0]);
   }
 
   return (
@@ -58,26 +66,65 @@ export default function AiCard() {
         <CardTitle>{t('profile.ai_provider')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="Ollama">
-            <AccordionTrigger>{t('Ollama')}</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-2">
-              <div>
-                <Label htmlFor="ollama.endpoint">{t('ollama.endpoint')}</Label>
+        <Select
+          defaultValue={aiConfig.current}
+          onValueChange={val => {
+            if (val === 'ollama' || val === 'openai') {
+              setCurrentAi(val);
+            }
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue defaultValue={aiConfig.ollama.model} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ollama">Ollama</SelectItem>
+            <SelectItem value="openai">Openai</SelectItem>
+          </SelectContent>
+        </Select>
+        {aiConfig.current === 'ollama' && (
+          <div className="mt-2 flex flex-col gap-2">
+            <div>
+              <Label htmlFor="ollama.endpoint">{t('ollama.endpoint')}</Label>
+              <Input
+                id="ollama_endpoint"
+                className="mt-2"
+                type="url"
+                value={endpoint}
+                onChange={e => {
+                  setEndpoint(e.target.value);
+                }}
+              />
+            </div>
+            <OllamaPull />
+          </div>
+        )}
+        {aiConfig.current === 'openai' && (
+          <div className="mt-2 flex flex-col gap-2">
+            <Label htmlFor="openai.key">{t('openai.key')}</Label>
+            <Input
+              id="openai_key"
+              type="password"
+              value={aiConfig.openai.endpoint}
+              onChange={e => {
+                setOpenAiEndpoint(e.target.value);
+              }}
+            />
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="openai.key">{t('openai.key')}</Label>
                 <Input
-                  id="ollama_endpoint"
-                  className="mt-2"
-                  type="url"
-                  value={endpoint}
+                  id="openai_key"
+                  type="password"
+                  value={aiConfig.openai.key}
                   onChange={e => {
-                    setEndpoint(e.target.value);
+                    setOpenAiKey(e.target.value);
                   }}
                 />
               </div>
-              <OllamaPull />
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -85,21 +132,20 @@ export default function AiCard() {
 
 function OllamaPull() {
   const { t } = useTranslation();
-  const [endpoint, currentModel, setCurrentModel] = useAiState(s => [
-    s.ollamaEndpoint,
-    s.ollamaCurrentModel,
-    s.setOllamaModel,
-  ]);
+  const aiConfig = useAppState(s => s.aiConfig);
+  const endpoint = aiConfig.ollama.endpoint;
+  const currentModel = aiConfig.ollama.model;
+  const setCurrentModel = useAppState(s => s.setOllamaModel);
 
   const [pullState, setPullState] = useState<{
     isPull: boolean;
-    tatal: number;
+    total: number;
     completed: number;
     state: string;
     abort: boolean;
   }>({
     isPull: false,
-    tatal: 100,
+    total: 100,
     completed: 0,
     state: '',
     abort: false,
@@ -126,26 +172,26 @@ function OllamaPull() {
           if (base.abort) {
             draft.abort = false;
             draft.isPull = false;
-            draft.tatal = 100;
+            draft.total = 100;
             draft.completed = 0;
             return;
           }
           if (isMatching({ completed: P.select() }, state)) {
             draft.completed = state.completed;
-            draft.tatal = state.total;
-            draft.tatal = state.total;
+            draft.total = state.total;
+            draft.total = state.total;
             draft.completed = state.completed;
           }
           if (isMatching({ error: P.select() }, state)) {
             draft.isPull = false;
-            draft.tatal = 100;
+            draft.total = 100;
             draft.completed = 0;
             NOTIFY.error(state.error);
             return;
           }
           if (isMatching({ status: 'success' }, state)) {
             draft.isPull = false;
-            draft.tatal = 100;
+            draft.total = 100;
             draft.completed = 0;
             draft.state = state.status;
             setCurrentModel(moduleName);
@@ -167,7 +213,7 @@ function OllamaPull() {
       <Label htmlFor="ollama.model">{t('ollama.model')}</Label>
       <div className="flex w-full items-center gap-2">
         {pullState.isPull ? (
-          <Progress value={(pullState.completed / pullState.tatal) * 100} />
+          <Progress value={(pullState.completed / pullState.total) * 100} />
         ) : (
           <Input
             type="text"
@@ -190,7 +236,7 @@ function OllamaPull() {
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0">
             <Command>
-              <CommandInput placeholder={t('settings.search_langing')} />
+              <CommandInput placeholder={t('settings.search_module')} />
               <CommandList>
                 <CommandEmpty>No module found.</CommandEmpty>
                 <CommandGroup>

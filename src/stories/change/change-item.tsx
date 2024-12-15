@@ -14,7 +14,6 @@ import { useAppState } from '@/hooks/state';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { stageAddFile, stageDiscardFile } from '@/lib/operator';
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -67,7 +66,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
           <Label
             className={cn(
               'line-clamp-2 overflow-y-hidden text-wrap break-all',
-              DEFAULT_STYLE,
               isConflicted &&
                 'text-red-600 underline decoration-wavy dark:text-red-600',
               isDeleted && 'line-through',

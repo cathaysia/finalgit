@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/change/change-list';
 import type React from 'react';
@@ -87,7 +86,7 @@ export default function WorkspacePanel({
       )}
       {...props}
     >
-      <div className={cn('rounded-xl border p-4 shadow', DEFAULT_STYLE)}>
+      <div className={cn('rounded-xl border p-4 shadow')}>
         <div className="pb-2">
           <div className="pb-2">{branchName}</div>
           {upstream && <Badge>{upstream}</Badge>}
@@ -162,7 +161,6 @@ export default function WorkspacePanel({
       <div
         className={cn(
           'flex min-h-0 grow flex-col gap-2 rounded-xl border p-4 shadow',
-          DEFAULT_STYLE,
         )}
       >
         <div className="flex items-center justify-between gap-2">

@@ -38,7 +38,6 @@ import {
 } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -103,7 +102,6 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       <div
         className={cn(
           'flex h-16 items-center justify-between gap-2 text-wrap border px-2 py-4 font-medium text-sm',
-          DEFAULT_STYLE,
           isBisecting && 'border-l-2 border-l-gray-600 dark:border-l-gray-600',
           isBad && 'border-l-red-600 dark:border-l-red-600',
           isGood && 'border-l-green-600 dark:border-l-green-600',

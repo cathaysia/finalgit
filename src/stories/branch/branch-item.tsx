@@ -23,7 +23,6 @@ import {
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
@@ -119,8 +118,7 @@ export default function BranchItem({
     return (
       <div
         className={cn(
-          'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:bg-neutral-900 dark:text-white',
-          DEFAULT_STYLE,
+          'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
           isHead && 'border-green-600',
           className,
         )}
@@ -141,7 +139,6 @@ export default function BranchItem({
     <div
       className={cn(
         'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
-        DEFAULT_STYLE,
         isHead && 'border-green-600 dark:border-green-600',
         className,
       )}

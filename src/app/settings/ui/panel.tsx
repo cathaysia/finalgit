@@ -1,4 +1,3 @@
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 import { MdHome } from 'react-icons/md';
@@ -28,10 +27,7 @@ export default function Panel({ className, ...props }: PanelProps) {
     },
   ];
   return (
-    <div
-      className={cn('rounded-xl border shadow', DEFAULT_STYLE, className)}
-      {...props}
-    >
+    <div className={cn('rounded-xl border shadow', className)} {...props}>
       <Nav href="/" className="h-16 w-full rounded-t-xl border-b">
         <MdHome />
       </Nav>

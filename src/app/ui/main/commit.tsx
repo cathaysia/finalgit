@@ -74,7 +74,7 @@ export default function Commit() {
         <AnimatePresence>
           {isHighOrder && (
             <motion.span
-              className="absolute ml-2 h-6 w-6 rounded bg-gray-800 text-center"
+              className="absolute ml-2 h-6 w-6 rounded bg-secondary text-center"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}

@@ -48,7 +48,7 @@ export const CollapseGroupItem = React.forwardRef<
   <DropdownMenuItem
     ref={ref}
     className={cn(
-      'flex justify-between gap-2 rounded-none dark:bg-zinc-900 dark:hover:bg-zinc-800',
+      'flex justify-between gap-2 rounded-none bg-secondary hover:bg-secondary/80 dark:hover:bg-secondary/80',
       className,
     )}
     {...props}
@@ -69,7 +69,7 @@ export const CollapseGroupTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         isOpen
-          ? 'rounded-b-none border-t border-r border-l dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800'
+          ? 'rounded-b-none border-t border-r border-l bg-secondary hover:bg-secondary/80 dark:hover:bg-secondary/80'
           : 'border-transparent border-t border-r border-l',
       )}
       {...props}

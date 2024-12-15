@@ -11,7 +11,6 @@ import {
 import { refreshBranches, useHeadOid } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
-import { DEFAULT_STYLE } from '@/lib/style';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
@@ -49,9 +48,8 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   return (
     <div
       className={cn(
-        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:bg-neutral-900 dark:text-white',
+        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:text-white',
         className,
-        DEFAULT_STYLE,
         info.ref_hash === head?.oid && 'border-green-600 dark:border-green-600',
       )}
       {...props}

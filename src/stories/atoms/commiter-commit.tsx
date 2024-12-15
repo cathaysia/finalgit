@@ -61,7 +61,6 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
           placeholder={t('commiter.commit_summary')}
           className={cn(
             'h-40 overflow-x-hidden overflow-y-scroll rounded border p-2 pr-4 text-base',
-            'border-neutral-200 text-neutral-950 dark:border-neutral-800 dark:bg-neutral-950 dark:text-neutral-50',
           )}
           autoFocus
           value={commitMsg}

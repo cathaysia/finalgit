@@ -1,7 +1,6 @@
 'use client';
 
 import { commands } from '@/bindings';
-import { Nav } from '@/components/na';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -10,6 +9,7 @@ import {
 import { useBlameInfo, useFiles } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
+import { cn } from '@/lib/utils';
 import { createBlamePlugin } from '@/stories/codemirror/blame';
 import { BlameCard } from '@/stories/codemirror/blame/blame-card';
 import {
@@ -25,6 +25,7 @@ import {
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
@@ -113,7 +114,14 @@ export default function FileTree() {
       data-tauri-drag-region
     >
       <ResizablePanel defaultSize={20} className="flex w-52 flex-col">
-        <Nav to="/" text={<MdHome />} />
+        <Link
+          href="/"
+          className={cn(
+            'flex h-9 w-full justify-center pt-2 text-center align-middle hover:bg-secondary/80',
+          )}
+        >
+          <MdHome className="inline-block" />
+        </Link>
         <FilePanel files={tree} onClicked={getText} commit={commit} />
       </ResizablePanel>
       <ResizableHandle withHandle />

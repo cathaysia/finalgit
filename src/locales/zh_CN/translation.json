@@ -101,7 +101,9 @@
     "endpoint": "API",
     "model": "模型"
   },
-  "Ollama": "Ollama",
+  "openai": {
+    "key": "openai.key"
+  },
   "profile": {
     "add_before_discard": "丢弃更改前添加更改到暂存",
     "ai_provider": "AI",
@@ -147,7 +149,8 @@
     "ai": "Ai",
     "git": "Git",
     "profile": "Profile",
-    "search_langing": "Search language"
+    "search_langing": "Search language",
+    "search_module": "settings.search_module"
   },
   "stash": {
     "apply": "应用",

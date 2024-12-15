@@ -102,7 +102,9 @@
     "endpoint": "Endpoint",
     "model": "Model"
   },
-  "Ollama": "Ollama",
+  "openai": {
+    "key": "openai.key"
+  },
   "profile": {
     "add_before_discard": "Add before discard",
     "ai_provider": "Provider",
@@ -148,7 +150,8 @@
     "ai": "AI",
     "git": "GIT",
     "profile": "PROFILE",
-    "search_langing": "Search language"
+    "search_langing": "Search language",
+    "search_module": "settings.search_module"
   },
   "stash": {
     "apply": "Apply",

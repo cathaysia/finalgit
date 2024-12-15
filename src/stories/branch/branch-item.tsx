@@ -63,7 +63,7 @@ export default function BranchItem({
   const tag = tags?.find(item => {
     return item.ref_hash === info.oid || item.oid === info.oid;
   });
-  const t = useTranslation().t;
+  const { t } = useTranslation();
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
   const isLocal = info.kind === 'Local';

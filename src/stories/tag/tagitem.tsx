@@ -27,7 +27,7 @@ export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
 }
 export function TagItem({ info, filter, className, ...props }: TagItemProps) {
-  const t = useTranslation().t;
+  const { t } = useTranslation();
   const [repoPath] = useAppState(s => [s.repoPath]);
   const { error: headErr, data: head } = useHeadOid();
   if (headErr) {

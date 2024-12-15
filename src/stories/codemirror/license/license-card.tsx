@@ -43,8 +43,9 @@ export function LicenseCardSingle({ license }: { license: string }) {
             e.preventDefault();
           }}
           className="text-xl"
+          title={licensePermission?.title}
         >
-          {licensePermission?.title}
+          {licensePermission && t(licensePermission.title)}
         </a>
       </CardTitle>
       <CardContent>
@@ -57,8 +58,9 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-green-600 before:content-[""]'
+                    title={t(`permissions.${item}.description`)}
                   >
-                    {item}
+                    {t(`permissions.${item}.label`)}
                   </li>
                 );
               })}
@@ -72,8 +74,9 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-sky-600 before:content-[""]'
+                    title={t(`conditions.${item}.description`)}
                   >
-                    {item}
+                    {t(`conditions.${item}.label`)}
                   </li>
                 );
               })}
@@ -87,8 +90,9 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-red-600 before:content-[""]'
+                    title={t(`limitations.${item}.description`)}
                   >
-                    {item}
+                    {t(`limitations.${item}.label`)}
                   </li>
                 );
               })}

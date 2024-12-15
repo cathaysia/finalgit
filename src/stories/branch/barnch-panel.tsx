@@ -23,7 +23,7 @@ export default function BranchPanel({
   tags,
   className,
 }: BranchCardProps) {
-  const t = useTranslation().t;
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const searchBar = useRef<HTMLInputElement>(null);

@@ -128,7 +128,7 @@ export default function FileTree() {
                 <ResizableHandle withHandle />
               </>
             )}
-            <ResizablePanel>
+            <ResizablePanel defaultSize={75}>
               {text ? (
                 <CodeMirror
                   value={text}

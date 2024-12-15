@@ -34,7 +34,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
           }}
         />
       </div>
-      <Link href="/settings">
+      <Link href="/settings" className="hover:text-foreground/80">
         <MdSettings className="mr-2" title={t('controlbar.preference')} />
       </Link>
     </div>

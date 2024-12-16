@@ -103,7 +103,7 @@
     "model": "Model"
   },
   "openai": {
-    "key": "openai.key"
+    "key": "Key"
   },
   "profile": {
     "add_before_discard": "Add before discard",
@@ -151,7 +151,7 @@
     "git": "GIT",
     "profile": "PROFILE",
     "search_langing": "Search language",
-    "search_module": "settings.search_module"
+    "search_module": "Search module"
   },
   "stash": {
     "apply": "Apply",

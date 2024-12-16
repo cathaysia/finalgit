@@ -41,7 +41,7 @@
   },
   "commit": {
     "checkout": "检出",
-    "cherrypick": "Cherry-pick",
+    "cherrypick": "拣选",
     "copy": "拷贝",
     "copy_to_clipboard": "拷贝到粘贴板",
     "cut": "剪切",
@@ -96,13 +96,13 @@
   },
   "ollama": {
     "add_model": "添加模型",
-    "apply": "ollama.apply",
-    "cancel": "ollama.cancel",
+    "apply": "应用",
+    "cancel": "取消",
     "endpoint": "API",
     "model": "模型"
   },
   "openai": {
-    "key": "openai.key"
+    "key": "密钥"
   },
   "profile": {
     "add_before_discard": "丢弃更改前添加更改到暂存",
@@ -150,7 +150,7 @@
     "git": "Git",
     "profile": "Profile",
     "search_langing": "Search language",
-    "search_module": "settings.search_module"
+    "search_module": "搜索模型"
   },
   "stash": {
     "apply": "应用",

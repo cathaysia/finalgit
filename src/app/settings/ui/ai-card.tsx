@@ -218,6 +218,7 @@ function OllamaPull() {
           <Input
             type="text"
             id="ollama_model"
+            autoCorrect="off"
             value={moduleName}
             onChange={e => {
               setModuleName(e.target.value);

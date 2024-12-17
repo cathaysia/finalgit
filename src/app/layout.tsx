@@ -10,6 +10,7 @@ import RebaseCard from '@/stories/rebase/rebase-card';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from 'next-themes';
 import { App } from './ui/app';
+import { MuiThemeProvider } from './ui/mui/mui-theme-provider';
 import { QueryProvider } from './ui/query-provider';
 
 export default function RootLayout({
@@ -30,15 +31,17 @@ export default function RootLayout({
           enableSystem
           attribute="class"
         >
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <QueryProvider>
-              <App />
-              {children}
-              <Toaster richColors position="top-right" />
-              <RebaseCard />
-              <TanStackQueryDevtools />
-            </QueryProvider>
-          </AppRouterCacheProvider>
+          <MuiThemeProvider>
+            <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+              <QueryProvider>
+                <App />
+                {children}
+                <Toaster richColors position="top-right" />
+                <RebaseCard />
+                <TanStackQueryDevtools />
+              </QueryProvider>
+            </AppRouterCacheProvider>
+          </MuiThemeProvider>
         </ThemeProvider>
       </body>
     </html>

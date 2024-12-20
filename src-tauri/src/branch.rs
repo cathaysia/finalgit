@@ -133,6 +133,10 @@ impl RepoExt for git2::Repository {
     }
 
     fn branch_create(&self, name: &str, commit: &str) -> AppResult<()> {
+        if commit.is_empty() {
+            self.exec_git(["branch", "-M", name])?;
+            return Ok(());
+        }
         let commit = self.find_commit_by_prefix(commit)?;
 
         let _ = self.branch(name, &commit, true)?;

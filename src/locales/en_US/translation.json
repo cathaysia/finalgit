@@ -10,6 +10,7 @@
   },
   "branch": {
     "add_remote": "Add remote",
+    "addBranch": "branch.addBranch",
     "apply": "Apply",
     "branches": "Branches",
     "checkout": "Checkout",

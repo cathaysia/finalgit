@@ -68,6 +68,10 @@ export default function Commit() {
     return currentHistory;
   }, [currentHistory, debounce]);
 
+  if (currentHistory.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
       <div className="flex items-center gap-2">

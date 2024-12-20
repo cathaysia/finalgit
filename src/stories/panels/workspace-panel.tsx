@@ -68,11 +68,7 @@ export default function WorkspacePanel({
   }
   const { data: pushState } = usePushstatus(branchName);
 
-  const { error, data: branches } = useBranches();
-  if (error) {
-    NOTIFY.error(error.message);
-  }
-
+  const { data: branches } = useBranches();
   const [pushActionState, setPushActionState] = useState({
     isPulling: false,
     isPushing: false,
@@ -97,7 +93,9 @@ export default function WorkspacePanel({
             <Button disabled>{t('workspace.set_as_default')}</Button>
             <Button disabled>{t('workspace.create_pr')}</Button>
             <Button
-              className={cn(pushState?.unpull === 0 && 'hidden')}
+              className={cn(
+                (!pushState || pushState?.unpull === 0) && 'hidden',
+              )}
               onClick={async () => {
                 const info = branches?.find(item => item.name === branchName);
                 if (!repoPath || !info) {
@@ -126,7 +124,9 @@ export default function WorkspacePanel({
               {pushState?.unpull}
             </Button>
             <Button
-              className={cn(pushState?.unpush === 0 && 'hidden')}
+              className={cn(
+                (!pushState || pushState?.unpush === 0) && 'hidden',
+              )}
               onClick={async () => {
                 const info = branches?.find(item => item.name === branchName);
                 if (!repoPath || !info) {

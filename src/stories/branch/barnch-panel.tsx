@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppState } from '@/hooks/state';
+import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import BranchList from '@/stories/branch/branch-list';
 import { TagList } from '@/stories/tag/tag-list';
@@ -93,12 +94,11 @@ export default function BranchPanel({
           variants={{
             visible: {
               height: 'auto',
-              opacity: 1,
               transition: { duration: 0.2 },
             },
             hidden: {
               height: 0,
-              opacity: 0,
+              overflow: 'hidden',
               transition: { duration: 0.2 },
             },
           }}
@@ -131,12 +131,19 @@ export default function BranchPanel({
                 onChange={v => setNewBranchName(v.target.value)}
               />
               <Button
-                disabled={!repoPath}
+                disabled={!repoPath || newBranchName.length === 0}
                 onClick={async () => {
-                  if (!repoPath) {
+                  if (!repoPath || newBranchName.length === 0) {
                     return;
                   }
-                  await commands.branchCreate(repoPath, newBranchName, '');
+                  const name = await commands.branchCreate(
+                    repoPath,
+                    newBranchName,
+                    '',
+                  );
+                  if (name.status === 'error') {
+                    NOTIFY.error(name.error);
+                  }
                   setNewBranchName('');
                 }}
               >

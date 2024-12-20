@@ -10,6 +10,7 @@
   },
   "branch": {
     "add_remote": "添加远程",
+    "addBranch": "创建分支",
     "apply": "应用",
     "branches": "分支",
     "checkout": "检出",

@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshChanges } from '@/hooks/query';
+import { refreshChanges, useBranches } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
@@ -34,12 +34,13 @@ export function CommiterButton({
   ...props
 }: CommiterProps) {
   const repoPath = useAppState().repoPath;
+  const { data: branches } = useBranches();
 
   return (
     <div className={cn('flex gap-2', className)} {...props}>
       <Button
         className="w-full"
-        disabled={changeSet.length === 0}
+        disabled={changeSet.length === 0 || branches?.length === 0}
         onClick={onClicked}
       >
         {t('commiter.start_commit')}

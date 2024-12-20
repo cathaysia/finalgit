@@ -1,8 +1,9 @@
 'use client';
-import type { BranchInfo, TagInfo } from '@/bindings';
+import { type BranchInfo, type TagInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import BranchList from '@/stories/branch/branch-list';
 import { TagList } from '@/stories/tag/tag-list';
@@ -27,6 +28,8 @@ export default function BranchPanel({
   const [filter, setFilter] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const searchBar = useRef<HTMLInputElement>(null);
+  const [newBranchName, setNewBranchName] = useState<string>('');
+  const repoPath = useAppState(s => s.repoPath);
 
   useHotkeys(
     '/',
@@ -119,10 +122,34 @@ export default function BranchPanel({
         </motion.div>
       </div>
       <TabsContent value="branch" className="h-full">
-        <BranchList
-          branches={filteredBranches}
-          filter={isSearching ? filter : undefined}
-        />
+        {filteredBranches.length === 0 ? (
+          <div className="w-full">
+            <div className="flex w-full gap-2">
+              <Input
+                value={newBranchName}
+                disabled={!repoPath}
+                onChange={v => setNewBranchName(v.target.value)}
+              />
+              <Button
+                disabled={!repoPath}
+                onClick={async () => {
+                  if (!repoPath) {
+                    return;
+                  }
+                  await commands.branchCreate(repoPath, newBranchName, '');
+                  setNewBranchName('');
+                }}
+              >
+                {t('branch.addBranch')}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <BranchList
+            branches={filteredBranches}
+            filter={isSearching ? filter : undefined}
+          />
+        )}
       </TabsContent>
       <TabsContent value="tags" className="h-full">
         <TagList

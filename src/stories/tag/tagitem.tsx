@@ -48,17 +48,25 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   return (
     <div
       className={cn(
-        'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3 dark:text-white',
+        'flex w-full items-center gap-2 rounded-none border px-4 py-3 dark:text-white',
         className,
         info.ref_hash === head?.oid && 'border-green-600 dark:border-green-600',
       )}
       {...props}
     >
-      <span className="flex items-center gap-2 font-medium text-sm leading-none">
+      <div className="flex grow items-center gap-2">
         <FaTag className="inline-block" />
-        <HighLightLabel text={info.name} filter={filter} />
-        <Badge className="font-mono">{info.ref_hash.slice(0, 6)}</Badge>
-      </span>
+        <div className="flex min-w-0 grow flex-col gap-2">
+          <HighLightLabel
+            className="min-w-0"
+            text={info.name}
+            filter={filter}
+          />
+          <div>
+            <Badge className="font-mono">{info.ref_hash.slice(0, 6)}</Badge>
+          </div>
+        </div>
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={'ghost'} size="sm">

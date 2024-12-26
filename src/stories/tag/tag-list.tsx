@@ -17,7 +17,7 @@ export function TagList({ tags, filter, className, ...props }: TagListProps) {
     <div className={cn('flex h-full flex-col', className)} {...props}>
       <VirtualScrollArea
         count={tags.length}
-        height={60}
+        height={85}
         getItem={(idx: number) => {
           const item = tags[idx];
           return <TagItem info={item} filter={filter} />;

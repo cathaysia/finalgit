@@ -117,9 +117,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       >
         <div className="flex h-full grow items-center gap-2">
           <HoverCard>
-            <HoverCardTrigger>
+            <HoverCardTrigger className="grow">
               <HighLightLabel
-                className="line-clamp-3 h-full min-w-0 grow select-none text-ellipsis"
+                className="line-clamp-3 h-full min-w-0 select-none text-ellipsis"
                 text={replaceEmoji(summary, useEmoji)}
                 value={summary}
                 filter={filter}

@@ -115,22 +115,20 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         ref={ref}
         {...props}
       >
-        <div className="flex grow items-center gap-2 overflow-hidden">
-          <div className="flex min-w-0 grow flex-col gap-2">
-            <HoverCard>
-              <HoverCardTrigger>
-                <HighLightLabel
-                  className="min-w-0 grow select-none overflow-hidden"
-                  text={replaceEmoji(summary, useEmoji)}
-                  value={summary}
-                  filter={filter}
-                />
-              </HoverCardTrigger>
-              <HoverCardContent className="w-auto">
-                <CommitCard info={commit} />
-              </HoverCardContent>
-            </HoverCard>
-          </div>
+        <div className="flex h-full grow items-center gap-2">
+          <HoverCard>
+            <HoverCardTrigger>
+              <HighLightLabel
+                className="line-clamp-3 h-full min-w-0 grow select-none text-ellipsis"
+                text={replaceEmoji(summary, useEmoji)}
+                value={summary}
+                filter={filter}
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-auto">
+              <CommitCard info={commit} />
+            </HoverCardContent>
+          </HoverCard>
           <div className="flex items-center gap-2">
             {tag && (
               <TooltipProvider>

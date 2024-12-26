@@ -101,7 +101,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     return (
       <div
         className={cn(
-          'flex h-16 items-center justify-between gap-2 text-wrap border px-2 py-4 font-medium text-sm',
+          '@container flex h-16 items-center justify-between gap-2 text-wrap border px-2 py-4 font-medium text-sm',
           isBisecting && 'border-l-2 border-l-gray-600 dark:border-l-gray-600',
           isBad && 'border-l-red-600 dark:border-l-red-600',
           isGood && 'border-l-green-600 dark:border-l-green-600',
@@ -129,7 +129,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <CommitCard info={commit} />
             </HoverCardContent>
           </HoverCard>
-          <div className="flex items-center gap-2">
+          <div className="@xs:flex hidden items-center gap-2">
             {tag && (
               <TooltipProvider>
                 <Tooltip>

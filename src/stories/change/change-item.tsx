@@ -19,7 +19,6 @@ import type { CheckedState } from '@radix-ui/react-checkbox';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { VscDiff, VscDiffAdded, VscDiffRemoved } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
 
 export interface ChangeItemProps
@@ -30,7 +29,7 @@ export interface ChangeItemProps
 
 const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
   ({ className, item, ...props }, ref) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('stage');
     const [repoPath] = useAppState(s => [s.repoPath]);
 
     function getCheckedStatus(status: number) {
@@ -73,9 +72,9 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               isModified && 'text-yellow-600 dark:text-yellow-600',
             )}
             title={
-              (isModified && t('change.modified')) ||
-              (isDeleted && t('change.deleted')) ||
-              (isNew && t('change.new_file')) ||
+              (isModified && t('modified')) ||
+              (isDeleted && t('deleted')) ||
+              (isNew && t('new_file')) ||
               undefined
             }
           >
@@ -92,13 +91,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 <DropdownMenuItem
-                  className={cn(isChecked && 'hidden')}
-                  onClick={() => repoPath && stageAddFile(repoPath, item)}
-                >
-                  <VscDiffAdded className="mr-2 h-4 w-4" />
-                  {t('changes.add')}
-                </DropdownMenuItem>
-                <DropdownMenuItem
                   className={cn(!isChecked && 'hidden')}
                   onClick={async () => {
                     if (!repoPath) {
@@ -114,19 +106,18 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                       );
                   }}
                 >
-                  <VscDiffRemoved className="mr-2 h-4 w-4" />
-                  {t('changes.unstage')}
+                  {t('unstage')}
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <VscDiff className="mr-2 h-4 w-4" />
-                  {t('changes.diff')}
+                <DropdownMenuItem disabled>{t('diff')}</DropdownMenuItem>
+                <DropdownMenuItem disabled>{t('ignore file')}</DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  {t('add to gitignore')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-red-600"
                   onClick={() => repoPath && stageDiscardFile(repoPath, item)}
                 >
-                  <VscDiffRemoved className="mr-2 h-4 w-4" />
-                  {t('changes.discard')}
+                  {t('discard')}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

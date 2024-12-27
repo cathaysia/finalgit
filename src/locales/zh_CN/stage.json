@@ -1,0 +1,10 @@
+{
+  "add to gitignore": "添加到 gitignore",
+  "deleted": "删除",
+  "diff": "查看差异",
+  "discard": "丢弃变更",
+  "ignore file": "忽略文件",
+  "modified": "修改",
+  "new_file": "新文件",
+  "unstage": "取消暂存"
+}

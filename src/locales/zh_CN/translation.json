@@ -29,17 +29,6 @@
     "view_tree": "查看文件"
   },
   "Cancel": "取消",
-  "change": {
-    "deleted": "删除",
-    "modified": "修改",
-    "new_file": "新增"
-  },
-  "changes": {
-    "add": "新增",
-    "diff": "差异",
-    "discard": "丢弃",
-    "unstage": "取消暂存"
-  },
   "commit": {
     "checkout": "检出",
     "cherrypick": "拣选",

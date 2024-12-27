@@ -25,6 +25,7 @@
     "remote": "远程",
     "rename": "重命名",
     "set_upstream": "设置上游",
+    "set_url_of": "设置 {{branch}} URL",
     "tags": "标签",
     "view_tree": "查看文件"
   },

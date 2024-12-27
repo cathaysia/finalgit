@@ -259,7 +259,9 @@ export default function BranchItem({
             >
               {!isLocal && (
                 <CollapseGroupItem disabled>
-                  {t(`branch.set_url_of ${info.remote}`)}
+                  {t('branch.set_url_of', {
+                    branch: info.remote,
+                  })}
                 </CollapseGroupItem>
               )}
               <CollapseGroupItem>{t('branch.add_remote')}</CollapseGroupItem>

@@ -25,6 +25,7 @@
     "remote": "Remote",
     "rename": "Rename",
     "set_upstream": "Set Upstream",
+    "set_url_of": "branch.set_url_of",
     "tags": "Tags",
     "view_tree": "Browse files"
   },

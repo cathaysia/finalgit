@@ -1,4 +1,4 @@
-import i18n from '@/locales';
+import i18n, { Language } from '@/locales';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,8 +23,8 @@ export function LanguageCard() {
   const [setLang] = useAppState(s => [s.setLang]);
   const lang = i18n.language;
   const languages = [
-    { label: 'English', value: 'en_US' },
-    { label: '中文', value: 'zh_CN' },
+    { label: 'English', value: Language.EnUs },
+    { label: '中文', value: Language.ZhCn },
   ];
   const { t } = useTranslation();
 

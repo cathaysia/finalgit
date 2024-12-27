@@ -23,27 +23,28 @@ strip = true
 tauri-build = { version = "2.0.2", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.6", features = [] }
+tauri = { version = "2.1.1", features = [] }
 tauri-plugin-shell = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+tauri-plugin-dialog = "2.0.3"
+tauri-plugin-log = { version = "2.2.0", features = ["colored"] }
+tauri-plugin-window-state = "2.2.0"
+tauri-plugin-clipboard-manager = "2.2.0"
+tauri-plugin-store = "2.2.0"
+tauri-plugin-fs = "2.2.0"
+
+specta = { version = "=2.0.0-rc.20" }
+tauri-specta = { version = "=2.0.0-rc.20", features = ["derive", "typescript"] }
+tauri_derive = { path = "./tauri_derive" }
+serde = { version = "1.0.216", features = ["derive"] }
+serde_json = "1.0.134"
 git2 = "0.19.0"
-anyhow = "1.0.86"
-thiserror = "1.0.63"
+anyhow = "1.0.95"
+thiserror = "2.0.9"
 itertools = "0.13.0"
 log = "0.4.22"
-tauri-plugin-dialog = "2.0.3"
-tauri-specta = { version = "=2.0.0-rc.20", features = ["derive", "typescript"] }
 specta-typescript = "0.0.7"
-specta = { version = "=2.0.0-rc.20" }
-tauri-plugin-log = { version = "2.0.1", features = ["colored"] }
-tauri-plugin-window-state = "2.0.2"
-tauri-plugin-clipboard-manager = "2.0.1"
-tauri-plugin-store = "2.1.0"
-tauri-plugin-fs = "2.0.3"
 filetime = "0.2.25"
 glob-match = "0.2.1"
-tauri_derive = { path = "./tauri_derive" }
-semver = "1.0.23"
-clap = { version = "4.5.20", features = ["derive"] }
-chrono = "0.4.38"
+semver = "1.0.24"
+clap = { version = "4.5.23", features = ["derive"] }
+chrono = "0.4.39"

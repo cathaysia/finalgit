@@ -14,8 +14,8 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
+import { useTranslations } from 'next-intl';
 import type React from 'react';
-import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { match } from 'ts-pattern';
@@ -26,7 +26,7 @@ export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
 }
 export function TagItem({ info, filter, className, ...props }: TagItemProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
   const { error: headErr, data: head } = useHeadOid();
   if (headErr) {

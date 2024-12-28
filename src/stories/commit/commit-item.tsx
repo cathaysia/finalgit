@@ -41,9 +41,9 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { FaTag } from 'react-icons/fa';
 import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
@@ -80,7 +80,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       return item.ref_hash === commit.oid || item.oid === commit.oid;
     });
     const summary = commit.summary.slice(0, 50);
-    const { t } = useTranslation();
+    const t = useTranslations();
     const names = [
       {
         name: commit.author.name,

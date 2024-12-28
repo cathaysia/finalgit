@@ -4,8 +4,8 @@ import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
 import { motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
 import { FaCheckCircle } from 'react-icons/fa';
 import { toast } from 'sonner';
@@ -21,7 +21,7 @@ export default function BisectCard({
   bisectState,
   ...props
 }: BisectCardProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   const [bisectId, setBisectId] = useState<number | string | undefined>();

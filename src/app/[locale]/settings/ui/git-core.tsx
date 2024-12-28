@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import GitOption from '../../../../stories/atoms/git-option';
 import GitSwitch from '../../../../stories/atoms/git-switch';
 
 type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Card className={cn('w-full', className)} {...props}>

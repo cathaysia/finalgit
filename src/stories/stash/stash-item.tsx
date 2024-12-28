@@ -12,7 +12,7 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { match } from 'ts-pattern';
 
 export interface StashItemProps
@@ -25,7 +25,7 @@ export default function StashItem({
   stash,
   ...props
 }: StashItemProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   async function applyStash() {

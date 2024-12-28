@@ -3,10 +3,10 @@ import GitCore from '@/app/[locale]/settings/ui/git-core';
 import GitUser from '@/app/[locale]/settings/ui/git-user';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import GitSwitch from '@/stories/atoms/git-switch';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 export default function GitComponent() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <>
       <GitCore />

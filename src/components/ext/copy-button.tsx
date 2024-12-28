@@ -4,8 +4,8 @@ import { CheckIcon, ClipboardIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, type ButtonProps } from '../ui/button';
 
 interface CopyButtonProps extends ButtonProps {
@@ -24,7 +24,7 @@ export function CopyButton({
   variant = 'ghost',
   ...props
 }: CopyButtonProps) {
-  const { t } = useTranslation('copy-button');
+  const t = useTranslations('copy-button');
   const [hasCopied, setHasCopied] = useState(false);
 
   React.useEffect(() => {

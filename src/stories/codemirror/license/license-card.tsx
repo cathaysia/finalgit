@@ -1,8 +1,8 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { open } from '@tauri-apps/plugin-shell';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export function LicenseCard({ license }: { license: string[] }) {
   if (license.length === 0) {
@@ -18,7 +18,7 @@ export function LicenseCard({ license }: { license: string[] }) {
 }
 
 export function LicenseCardSingle({ license }: { license: string }) {
-  const { t } = useTranslation('license-card');
+  const t = useTranslations('license-card');
   const [licensePermission, setLicensePermission] = useState<
     | undefined
     | {

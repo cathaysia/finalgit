@@ -1,13 +1,13 @@
 import { cn } from '@/lib/utils';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
 
 type ControlBarProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function ControlBar({ className, ...props }: ControlBarProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   return (
     <div
       data-tauri-drag-region={true}

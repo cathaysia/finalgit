@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { MdHome } from 'react-icons/md';
 import Nav from './nav';
 
@@ -11,7 +11,7 @@ interface NavItemProps {
 }
 
 export default function Panel({ className, ...props }: PanelProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const navs: NavItemProps[] = [
     {
       to: '/settings',

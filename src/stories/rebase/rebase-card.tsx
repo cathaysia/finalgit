@@ -6,8 +6,8 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
 import { toast } from 'sonner';
 import { isMatching } from 'ts-pattern';
@@ -16,7 +16,7 @@ export interface RebaseCardProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {}
 
 export default function RebaseCard({ className, ...props }: RebaseCardProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
   const { data: headState } = useHeadState();
   const isRebasing =

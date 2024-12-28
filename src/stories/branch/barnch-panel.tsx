@@ -9,9 +9,9 @@ import { cn } from '@/lib/utils';
 import BranchList from '@/stories/branch/branch-list';
 import { TagList } from '@/stories/tag/tag-list';
 import { motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useTranslation } from 'react-i18next';
 import { FaCodeBranch, FaFilter, FaTag } from 'react-icons/fa';
 
 export interface BranchCardProps {
@@ -25,7 +25,7 @@ export default function BranchPanel({
   tags,
   className,
 }: BranchCardProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [filter, setFilter] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const searchBar = useRef<HTMLInputElement>(null);

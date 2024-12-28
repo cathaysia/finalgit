@@ -12,7 +12,7 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-dialog';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { BsChevronExpand } from 'react-icons/bs';
 import { FaCheck } from 'react-icons/fa';
 import { IoIosAdd } from 'react-icons/io';
@@ -24,7 +24,7 @@ export interface ProjectProps {
 }
 
 export default function Project({ className }: ProjectProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath, setRepoPath, projects, removeRepoPath] = useAppState(s => [
     s.repoPath,
     s.setRepoPath,

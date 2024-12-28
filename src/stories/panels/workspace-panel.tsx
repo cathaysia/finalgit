@@ -11,8 +11,8 @@ import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/change/change-list';
+import { useTranslations } from 'next-intl';
 import type React from 'react';
-import { useTranslation } from 'react-i18next';
 import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
 
 export interface WorkspacePanelProps
@@ -42,7 +42,7 @@ export default function WorkspacePanel({
   changeSet,
   ...props
 }: WorkspacePanelProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
 
   const { error: headErr, data: current } = useHeadOid();

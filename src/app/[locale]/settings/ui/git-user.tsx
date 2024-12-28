@@ -11,15 +11,15 @@ import {
 import { useAppState } from '@/hooks/state';
 import { getGitConfig, setGitConfig } from '@/lib/git';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
 import GitOption from '../../../../stories/atoms/git-option';
 
 type GitUserProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function GitUser({ className, ...props }: GitUserProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [gpgList, setGpgList] = useState<string[]>([]);
   const [curGpg, setCurGpg] = useState<string>();
   const [repoPath] = useAppState(s => [s.repoPath]);

@@ -10,8 +10,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export interface BranchRenameProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -28,7 +28,7 @@ export default function BranchRename({
   defaultValue,
   ...props
 }: BranchRenameProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [value, setValue] = useState<string>(defaultValue || '');
 
   return (

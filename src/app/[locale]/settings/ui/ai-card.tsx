@@ -30,12 +30,12 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { produce } from 'immer';
 import { Check, ChevronsUpDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { P, isMatching } from 'ts-pattern';
 
 export default function AiCard() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [
     aiConfig,
     setCurrentAi,
@@ -131,7 +131,7 @@ export default function AiCard() {
 }
 
 function OllamaPull() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const aiConfig = useAppState(s => s.aiConfig);
   const endpoint = aiConfig.ollama.endpoint;
   const currentModel = aiConfig.ollama.model;

@@ -17,8 +17,8 @@ import { stageAddFile, stageDiscardFile } from '@/lib/operator';
 import { cn } from '@/lib/utils';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useTranslations } from 'next-intl';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
 
 export interface ChangeItemProps
@@ -29,7 +29,7 @@ export interface ChangeItemProps
 
 const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
   ({ className, item, ...props }, ref) => {
-    const { t } = useTranslation('stage');
+    const t = useTranslations('stage');
     const [repoPath] = useAppState(s => [s.repoPath]);
 
     function getCheckedStatus(status: number) {

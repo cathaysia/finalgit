@@ -13,12 +13,12 @@ import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-shell';
 import { useEffect, useState } from 'react';
 
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { FaLink } from 'react-icons/fa';
 import { IoIosAdd } from 'react-icons/io';
 
 export default function AiPrompt() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [current, promptList, setPrompt, setCurrent] = useAppState(s => [
     s.currentPrompt,
     s.promptList,

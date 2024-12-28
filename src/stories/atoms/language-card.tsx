@@ -1,6 +1,6 @@
 import i18n, { Language } from '@/locales';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,7 +26,7 @@ export function LanguageCard() {
     { label: 'English', value: Language.EnUs },
     { label: '中文', value: Language.ZhCn },
   ];
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Popover>

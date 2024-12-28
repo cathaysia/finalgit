@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Moon, Sun } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
-import { useTranslation } from 'react-i18next';
 import { MdSettings } from 'react-icons/md';
 import { LanguageCard } from '../../../../stories/atoms/language-card';
 
@@ -12,7 +12,7 @@ type ThemeCardProps = React.ComponentProps<typeof Card>;
 
 export default function ThemeCard({ className, ...props }: ThemeCardProps) {
   const { setTheme } = useTheme();
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   return (
     <Card className={cn(className)} {...props}>

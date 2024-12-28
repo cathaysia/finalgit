@@ -3,9 +3,9 @@ import HeatMap from '@uiw/react-heat-map';
 
 import { useStatisOfAuthor } from '@/hooks/query';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { UserAvatar } from '../atoms/user-avatar';
 
 export interface HoverAvatarProps
@@ -15,7 +15,7 @@ export interface HoverAvatarProps
 }
 
 export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const { resolvedTheme } = useTheme();
   const { data: statics } = useStatisOfAuthor(userName);
 

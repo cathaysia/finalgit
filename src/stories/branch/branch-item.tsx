@@ -25,10 +25,10 @@ import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CgSpinner } from 'react-icons/cg';
 import { FaCodeBranch, FaTag } from 'react-icons/fa';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
@@ -62,7 +62,7 @@ export default function BranchItem({
   const tag = tags?.find(item => {
     return item.ref_hash === info.oid || item.oid === info.oid;
   });
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
   const isLocal = info.kind === 'Local';

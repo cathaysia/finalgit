@@ -17,8 +17,8 @@ import {
 } from '@mui/x-tree-view/TreeItem2';
 import { useTreeItem2 } from '@mui/x-tree-view/useTreeItem2';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
-import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
 
 interface FileItemLabelProps
@@ -42,7 +42,7 @@ export interface FileItemProps extends TreeItem2Props {}
 export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
   (props, ref) => {
     const { id, itemId, label, disabled, children } = props;
-    const { t } = useTranslation();
+    const t = useTranslations();
     const { publicAPI } = useTreeItem2({
       id,
       itemId,

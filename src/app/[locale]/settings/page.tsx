@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useAppState } from '@/hooks/state';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 export default function ProfileComponent() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppState(s => [
     s.useEmoji,
     s.setUseEmoji,

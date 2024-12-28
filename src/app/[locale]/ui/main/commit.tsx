@@ -11,8 +11,8 @@ import { cn } from '@/lib/utils';
 import BisectCard from '@/stories/bisect/bisect-card';
 import CommitList from '@/stories/commit/commit-list';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { isMatching } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
@@ -22,7 +22,7 @@ export default function Commit() {
     s.commitHead,
     s.setCommitHead,
   ]);
-  const { t } = useTranslation();
+  const t = useTranslations();
 
   useEffect(() => {
     if (!repoPath) {

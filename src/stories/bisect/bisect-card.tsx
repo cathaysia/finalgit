@@ -72,9 +72,9 @@ export default function BisectCard({
                 >
                   <FaCheckCircle className="text-green-500" />
                 </motion.span>
-                {t(
-                  `island.rebase.firstbad is ${bisectState.firstBad.slice(0, 6)}`,
-                )}
+                {t('island.rebase.firstbad', {
+                  oid: bisectState.firstBad.slice(0, 6),
+                })}
               </div>
             )}
             <Button

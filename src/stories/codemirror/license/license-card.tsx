@@ -45,7 +45,10 @@ export function LicenseCardSingle({ license }: { license: string }) {
           className="text-xl"
           title={licensePermission?.title}
         >
-          {licensePermission && t(licensePermission.title)}
+          {
+            // biome-ignore lint/suspicious/noExplicitAny:
+            licensePermission && t(licensePermission.title as any)
+          }
         </a>
       </CardTitle>
       <CardContent>
@@ -58,9 +61,15 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-green-600 before:content-[""]'
-                    title={t(`permissions.${item}.description`)}
+                    title={
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`permissions.${item}.description` as any)
+                    }
                   >
-                    {t(`permissions.${item}.label`)}
+                    {
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`permissions.${item}.label` as any)
+                    }
                   </li>
                 );
               })}
@@ -74,9 +83,15 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-sky-600 before:content-[""]'
-                    title={t(`conditions.${item}.description`)}
+                    title={
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`conditions.${item}.description` as any)
+                    }
                   >
-                    {t(`conditions.${item}.label`)}
+                    {
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`conditions.${item}.label` as any)
+                    }
                   </li>
                 );
               })}
@@ -90,9 +105,15 @@ export function LicenseCardSingle({ license }: { license: string }) {
                   <li
                     key={item}
                     className='flex items-center gap-2 before:h-3 before:w-3 before:rounded-lg before:bg-red-600 before:content-[""]'
-                    title={t(`limitations.${item}.description`)}
+                    title={
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`limitations.${item}.description` as any)
+                    }
                   >
-                    {t(`limitations.${item}.label`)}
+                    {
+                      // biome-ignore lint/suspicious/noExplicitAny:
+                      t(`limitations.${item}.label` as any)
+                    }
                   </li>
                 );
               })}

@@ -54,7 +54,11 @@ export function CommiterButton({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => savePatch(t, repoPath)}>
+            <DropdownMenuItem
+              onClick={() =>
+                savePatch(t('workspace.patch_save_path'), repoPath)
+              }
+            >
               <VscDiff className="mr-2 h-4 w-4" />
               {t('workspace.generate_patch')}
             </DropdownMenuItem>
@@ -120,9 +124,9 @@ async function discardChanges(changeSet: FileStatus[], repoPath?: string) {
     });
 }
 
-async function savePatch(t: (key: string) => string, repoPath?: string) {
+async function savePatch(title: string, repoPath?: string) {
   const path = await save({
-    title: t('workspace.patch_save_path'),
+    title: title,
     defaultPath: repoPath,
     canCreateDirectories: true,
   });

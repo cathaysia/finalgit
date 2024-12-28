@@ -1,0 +1,309 @@
+{
+  "ai": {
+    "prompt": "提示"
+  },
+  "bisect": {
+    "mark_bad": "标记为坏提交",
+    "mark_good": "标记为好提交",
+    "start": "开始二份查找",
+    "stop": "停止二份查找"
+  },
+  "branch": {
+    "add_remote": "添加远程",
+    "addBranch": "创建分支",
+    "apply": "应用",
+    "branches": "分支",
+    "checkout": "检出",
+    "checkout_remote": "检出到远程分支",
+    "create_new_branch": "创建分支",
+    "delete": "删除",
+    "details": "详情",
+    "disable_dirty": "工作区有修改，请先提交或 stash",
+    "local": "本地",
+    "pull": "拉取",
+    "push": "推送",
+    "remote": "远程",
+    "rename": "重命名",
+    "set_upstream": "设置上游",
+    "set_url_of": "设置 {branch} URL",
+    "tags": "标签",
+    "view_tree": "查看文件"
+  },
+  "Cancel": "取消",
+  "commit": {
+    "checkout": "检出",
+    "cherrypick": "拣选",
+    "copy": "拷贝",
+    "copy_to_clipboard": "拷贝到粘贴板",
+    "cut": "剪切",
+    "delete": "删除",
+    "details": "详情",
+    "insert_after": "在前面插入",
+    "insert_before": "在后面插入",
+    "revert": "撤销",
+    "viewtree": "查看文件"
+  },
+  "commiter": {
+    "abort": "终止提交",
+    "commit": "提交",
+    "commit_summary": "摘要",
+    "generate_message": "生成消息",
+    "start_commit": "开始提交"
+  },
+  "controlbar": {
+    "preference": "偏好"
+  },
+  "fileItem": {
+    "checkout": "检出",
+    "compareHead": "与 Head 进行比较",
+    "compareWith": "compareWith",
+    "copy": "复制到粘贴板",
+    "copy_path": "复制路径"
+  },
+  "heatmap": {
+    "Apr": "四",
+    "Aug": "八",
+    "contribute": "{date} 有 {count} 个提交",
+    "Dec": "十二",
+    "Feb": "二",
+    "Fri": "周五",
+    "Jan": "一",
+    "Jul": "七",
+    "Jun": "六",
+    "Mar": "三",
+    "May": "五",
+    "Mon": "周一",
+    "Nov": "十一",
+    "Oct": "十",
+    "Sat": "周六",
+    "Sep": "九",
+    "Sun": "周日",
+    "Thu": "周四",
+    "Tue": "周二",
+    "Wed": "周三"
+  },
+  "island": {
+    "bisecting": "正在二份查找...",
+    "rebase": {
+      "firstbad": "第一个损坏的 commit 是：{oid}"
+    }
+  },
+  "ollama": {
+    "add_model": "添加模型",
+    "apply": "应用",
+    "cancel": "取消",
+    "endpoint": "API",
+    "model": "模型"
+  },
+  "openai": {
+    "key": "密钥"
+  },
+  "profile": {
+    "add_before_discard": "丢弃更改前添加更改到暂存",
+    "ai_provider": "AI",
+    "behaviour": "行为",
+    "git": {
+      "commit": {
+        "gpgsign": "使用 GPG 签名提交"
+      },
+      "core": "Core",
+      "defaultBranch": "默认分支",
+      "email": "邮件",
+      "pull": {
+        "ff": "Fast-Forward",
+        "header": "Pull",
+        "rebase": "Rebase"
+      },
+      "select_gpg": "选择 GPG",
+      "signingKey": "签名密钥",
+      "tag": {
+        "gpgsign": "GPG 密钥"
+      },
+      "user": "用户",
+      "username": "用户名"
+    },
+    "language": "Language",
+    "signoff": "签名提交",
+    "stash_before_checkout": "检出前暂存更改",
+    "use_emoji": "在分支和提交界面使用 Emoji 替换纯文本"
+  },
+  "project": {
+    "clone_repository": "克隆远程仓库",
+    "open_local_repository": "打开本地仓库"
+  },
+  "rebase": {
+    "abort": "终止变基",
+    "continue": "继续变基",
+    "doing": "正在变基"
+  },
+  "rename": {
+    "kind": "Kind"
+  },
+  "settings": {
+    "ai": "Ai",
+    "git": "Git",
+    "profile": "Profile",
+    "search_langing": "Search language",
+    "search_module": "搜索模型"
+  },
+  "stash": {
+    "apply": "应用",
+    "delete": "丢弃"
+  },
+  "tag": {
+    "delete": "删除"
+  },
+  "tags": {
+    "create_branch": "创建分支"
+  },
+  "workspace": {
+    "changed_files": "变更列表",
+    "create_pr": "创建 PR",
+    "discard": "丢弃更改",
+    "discard_all": "丢弃全部更改",
+    "generate_patch": "生成补丁文件",
+    "patch_save_path": "补丁保存路径",
+    "set_as_default": "设为默认分支",
+    "stash": "暂存更改"
+  },
+  "Workspace": "工作区",
+  "copy-button": {
+    "Copy": "Copy"
+  },
+  "license-card": {
+    "Academic Free License v3.0": "学术自由许可证 v3.0",
+    "Apache License 2.0": "Apache 许可 2.0",
+    "Artistic License 2.0": "艺术许可 2.0",
+    "Blue Oak Model License 1.0.0": "Blue Oak 模型许可 1.0.0",
+    "Boost Software License 1.0": "Boost 软件许可 1.0",
+    "BSD 2-Clause \"Simplified\" License": "BSD 2 条款“简化”许可证",
+    "BSD 3-Clause \"New\" or \"Revised\" License": "BSD 3-Clause \"New\" or \"Revised\" License",
+    "BSD 3-Clause Clear License": "BSD 3-Clause Clear License",
+    "BSD 4-Clause \"Original\" or \"Old\" License": "BSD 4-Clause \"Original\" or \"Old\" License",
+    "BSD Zero Clause License": "BSD 零条款许可证",
+    "BSD-2-Clause Plus Patent License": "BSD-2-Clause Plus 专利许可证",
+    "CeCILL Free Software License Agreement v2.1": "CeCILL 自由软件许可协议 v2.1",
+    "CERN Open Hardware Licence Version 2 - Permissive": "CERN 开放硬件许可证版本 2 - 宽松",
+    "CERN Open Hardware Licence Version 2 - Strongly Reciprocal": "CERN 开放硬件许可证版本 2 - 强互惠",
+    "CERN Open Hardware Licence Version 2 - Weakly Reciprocal": "CERN 开放硬件许可证版本 2 - 弱互惠",
+    "conditions": {
+      "disclose-source": {
+        "description": "若分发被许可材料，则必须披露源码",
+        "label": "披露源码"
+      },
+      "document-changes": {
+        "description": "必须记录对许可材料所做的更改",
+        "label": "陈述变更"
+      },
+      "include-copyright": {
+        "description": "许可材料中必须包含许可证和版权声明的副本",
+        "label": "许可和版权声明"
+      },
+      "include-copyright--source": {
+        "description": "许可证和版权声明的副本必须以源形式包含在许可材料中，但二进制文件则不需要",
+        "label": "来源许可和版权声明"
+      },
+      "network-use-disclose": {
+        "description": "通过网络与授权材料互动的用户有权获得源代码的副本",
+        "label": "网络使用即分发"
+      },
+      "same-license": {
+        "description": "在分发许可材料时，修改内容必须在相同许可下发布。 在某些情况下，可以使用类似或相关的许可",
+        "label": "相同许可"
+      },
+      "same-license--file": {
+        "description": "在分发许可材料时，对现有文件的修改必须使用相同的许可。 在某些情况下，可以使用类似或相关的许可",
+        "label": "相同许可（文件）"
+      },
+      "same-license--library": {
+        "description": "在分发许可材料时，修改内容必须以相同的许可方式发布。 在某些情况下，可以使用类似或相关的许可，或者本条件可能不适用于将许可材料用作图书馆的作品",
+        "label": "相同许可（库）"
+      }
+    },
+    "Conditions": "条件",
+    "Creative Commons Attribution 4.0 International": "知识共享署名 4.0 国际",
+    "Creative Commons Attribution Share Alike 4.0 International": "知识共享署名相同方式共享 4.0 国际",
+    "Creative Commons Zero v1.0 Universal": "Creative Commons Zero v1.0 Universal",
+    "Do What The F*ck You Want To Public License": "Do What The F*ck You Want To Public License",
+    "Eclipse Public License 1.0": "Eclipse 公共许可 1.0",
+    "Eclipse Public License 2.0": "Eclipse 公共许可 2.0",
+    "Educational Community License v2.0": "教育社区许可证 v2.0",
+    "European Union Public License 1.1": "欧盟公共许可 1.1",
+    "European Union Public License 1.2": "欧盟公共许可 1.2",
+    "GNU Affero General Public License v3.0": "GNU Affero 通用公共许可证 v3.0",
+    "GNU Free Documentation License v1.3": "GNU 自由文档许可证 v1.3",
+    "GNU General Public License v2.0": "GNU 通用公共许可证 v2.0",
+    "GNU General Public License v3.0": "GNU 通用公共许可证 v3.0",
+    "GNU Lesser General Public License v2.1": "GNU 宽松通用公共许可证 v2.1",
+    "GNU Lesser General Public License v3.0": "GNU 宽松通用公共许可证 v3.0",
+    "ISC License": "ISC 许可",
+    "LaTeX Project Public License v1.3c": "LaTeX 项目公共许可证 v1.3c",
+    "limitations": {
+      "liability": {
+        "description": "此许可包括责任限制",
+        "label": "责任"
+      },
+      "patent-use": {
+        "description": "本许可证明确规定不授予贡献者任何专利权",
+        "label": "专利使用"
+      },
+      "trademark-use": {
+        "description": "该许可证明确声明不授予商标权，尽管没有此类声明的许可证可能不授予任何隐含的商标权",
+        "label": "商标使用"
+      },
+      "warranty": {
+        "description": "本许可证明确规定不提供任何担保",
+        "label": "担保"
+      }
+    },
+    "Limitations": "限制",
+    "Microsoft Public License": "微软公共许可",
+    "Microsoft Reciprocal License": "微软互惠许可",
+    "MIT License": "MIT 许可",
+    "MIT No Attribution": "MIT No Attribution",
+    "Mozilla Public License 2.0": "Mozilla 公共许可 2.0",
+    "Mulan Permissive Software License, Version 2": "木兰宽容软件许可证第二版",
+    "Open Data Commons Open Database License v1.0": "开放数据共享开放数据库许可证 v1.0",
+    "Open Software License 3.0": "开放软件许可证 3.0",
+    "permissions": {
+      "commercial-use": {
+        "description": "许可材料及其衍生品可用于商业目的",
+        "label": "商业使用"
+      },
+      "distribution": {
+        "description": "被许可材料可被分发",
+        "label": "分发"
+      },
+      "modifications": {
+        "description": "被许可材料可被修改",
+        "label": "修改"
+      },
+      "patent-use": {
+        "description": "该许可证明确授予贡献者的专利权",
+        "label": "专利使用"
+      },
+      "private-use": {
+        "description": "被许可材料可私自使用和修改",
+        "label": "私有使用"
+      }
+    },
+    "Permissions": "权限",
+    "PostgreSQL License": "PostgreSQL 许可",
+    "SIL Open Font License 1.1": "SIL 开放字体许可证 1.1",
+    "The Unlicense": "无许可",
+    "Universal Permissive License v1.0": "通用许可证 v1.0",
+    "University of Illinois/NCSA Open Source License": "伊利诺伊大学/NCSA 开源许可证",
+    "Vim License": "Vim 许可",
+    "zlib License": "zlib 许可"
+  },
+  "stage": {
+    "add to gitignore": "添加到 gitignore",
+    "deleted": "删除",
+    "diff": "查看差异",
+    "discard": "丢弃变更",
+    "ignore file": "忽略文件",
+    "modified": "修改",
+    "new_file": "新文件",
+    "unstage": "取消暂存"
+  }
+}

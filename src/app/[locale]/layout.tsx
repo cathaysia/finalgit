@@ -16,8 +16,12 @@ import { QueryProvider } from './ui/query-provider';
 import type { Langs } from '@/i18n';
 import { routing } from '@/i18n/routing';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+
+export function generateStaticParams() {
+  return routing.locales.map(locale => ({ locale }));
+}
 
 export default async function RootLayout({
   children,
@@ -30,6 +34,7 @@ export default async function RootLayout({
     attachConsole();
   }
   const locale = (await params).locale;
+  setRequestLocale(locale);
   if (!routing.locales.includes(locale as Langs)) {
     notFound();
   }

@@ -3,7 +3,6 @@ import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
-import { t } from 'i18next';
 import { FaMagic } from 'react-icons/fa';
 
 import { commands } from '@/bindings';
@@ -12,6 +11,7 @@ import { AiKind, generateCommit } from '@/lib/ai';
 import NOTIFY from '@/lib/notify';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { isMatching } from 'ts-pattern';
 
@@ -24,6 +24,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [commitMsg, setCommitMsg] = useState<string>('');
   const currentModel = useAppState(s => s.aiConfig.ollama.model);
+  const t = useTranslations();
 
   const [abort, setAbort] = useState<AbortController | null>(null);
   const [repoPath, signoff, setCommitHead] = useAppState(s => [

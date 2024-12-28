@@ -16,7 +16,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { debug } from '@tauri-apps/plugin-log';
-import { t } from 'i18next';
+import { useTranslations } from 'next-intl';
 import { VscDiff, VscDiscard, VscGitStash } from 'react-icons/vsc';
 import { match } from 'ts-pattern';
 
@@ -34,6 +34,7 @@ export function CommiterButton({
   ...props
 }: CommiterProps) {
   const repoPath = useAppState().repoPath;
+  const t = useTranslations();
   const { data: branches } = useBranches();
 
   return (
@@ -53,7 +54,7 @@ export function CommiterButton({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => savePatch(repoPath)}>
+            <DropdownMenuItem onClick={() => savePatch(t, repoPath)}>
               <VscDiff className="mr-2 h-4 w-4" />
               {t('workspace.generate_patch')}
             </DropdownMenuItem>
@@ -119,7 +120,7 @@ async function discardChanges(changeSet: FileStatus[], repoPath?: string) {
     });
 }
 
-async function savePatch(repoPath?: string) {
+async function savePatch(t: (key: string) => string, repoPath?: string) {
   const path = await save({
     title: t('workspace.patch_save_path'),
     defaultPath: repoPath,

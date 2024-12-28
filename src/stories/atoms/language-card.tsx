@@ -1,4 +1,3 @@
-import i18n, { Language } from '@/locales';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -21,10 +20,9 @@ import { cn } from '@/lib/utils';
 
 export function LanguageCard() {
   const [setLang] = useAppState(s => [s.setLang]);
-  const lang = i18n.language;
   const languages = [
-    { label: 'English', value: Language.EnUs },
-    { label: '中文', value: Language.ZhCn },
+    { label: 'English', value: 'en' },
+    { label: '中文', value: 'cn' },
   ];
   const t = useTranslations();
 
@@ -36,12 +34,14 @@ export function LanguageCard() {
           role="combobox"
           className={cn(
             'w-[200px] justify-between',
-            !lang && 'text-muted-foreground',
+            // !lang && 'text-muted-foreground',
           )}
         >
-          {lang
-            ? languages.find(language => language.value === lang)?.label
-            : 'Select language'}
+          {
+            // lang
+            //   ? languages.find(language => language.value === lang)?.label
+            //   : 'Select language'
+          }
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -56,14 +56,14 @@ export function LanguageCard() {
                   value={language.label}
                   key={language.value}
                   onSelect={() => {
-                    i18n.changeLanguage(language.value);
+                    // i18n.changeLanguage(language.value);
                     setLang(language.value);
                   }}
                 >
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      language.value === lang ? 'opacity-100' : 'opacity-0',
+                      // language.value === lang ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                   {language.label}

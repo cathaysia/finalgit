@@ -1,5 +1,5 @@
 'use client';
-import Panel from '@/app/settings/ui/panel';
+import Panel from '@/app/[locale]/settings/ui/panel';
 
 export default function Layout({
   children,

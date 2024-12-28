@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { match } from 'ts-pattern';
-import GitOption from '../../../stories/atoms/git-option';
+import GitOption from '../../../../stories/atoms/git-option';
 
 type GitUserProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
@@ -70,7 +70,7 @@ export default function GitUser({ className, ...props }: GitUserProps) {
                 setRefeshGpg(!refreshGpg);
               }
             }}
-            disabled={gpgList.length===0}
+            disabled={gpgList.length === 0}
           >
             <SelectTrigger>
               <SelectValue placeholder={t('profile.git.select_gpg')} />

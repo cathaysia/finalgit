@@ -104,7 +104,7 @@ export default function HoverAvatar({ userName, email }: HoverAvatarProps) {
               <Tooltip
                 title={t('heatmap.contribute', {
                   date: data.date,
-                  count: data.count,
+                  count: data.count || 0,
                 })}
               >
                 <rect {...props} rx={2} />

@@ -63,7 +63,7 @@
   "heatmap": {
     "Apr": "四",
     "Aug": "八",
-    "contribute": "{date} 有 {count} 个提交",
+    "contribute": "{count, plural, =0 {没有提交} other {有 {count} 个提交}}",
     "Dec": "十二",
     "Feb": "二",
     "Fri": "周五",

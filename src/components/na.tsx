@@ -1,5 +1,5 @@
+import { Link } from '@/i18n/routing';
 import clsx from 'clsx';
-import Link from 'next/link';
 import type { ReactElement } from 'react';
 
 export interface NavProps {

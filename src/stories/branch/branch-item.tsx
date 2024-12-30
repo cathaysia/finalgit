@@ -21,12 +21,12 @@ import {
   useTags,
 } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
+import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import type React from 'react';
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';

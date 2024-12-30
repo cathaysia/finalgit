@@ -1,7 +1,7 @@
+import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { MdSettings } from 'react-icons/md';
 
 type ControlBarProps = React.HtmlHTMLAttributes<HTMLDivElement>;

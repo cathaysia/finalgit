@@ -45,10 +45,9 @@ export function LicenseCardSingle({ license }: { license: string }) {
           className="text-xl"
           title={licensePermission?.title}
         >
-          {
+          {licensePermission &&
             // biome-ignore lint/suspicious/noExplicitAny:
-            licensePermission && t(licensePermission.title as any)
-          }
+            t(licensePermission.title.replaceAll('.', '_') as any)}
         </a>
       </CardTitle>
       <CardContent>

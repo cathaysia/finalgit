@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/resizable';
 import { useBlameInfo, useFiles } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
+import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { createBlamePlugin } from '@/stories/codemirror/blame';
@@ -25,7 +26,6 @@ import {
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useTheme } from 'next-themes';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';

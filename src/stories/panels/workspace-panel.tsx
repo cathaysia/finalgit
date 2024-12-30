@@ -30,8 +30,8 @@ import {
   usePushstatus,
   useTags,
 } from '@/hooks/query';
+import { Link } from '@/i18n/routing';
 import { produce } from 'immer';
-import Link from 'next/link';
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 

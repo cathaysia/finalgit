@@ -17,9 +17,10 @@ import {
 } from '@/components/ui/popover';
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export function LanguageCard() {
-  const [setLang] = useAppState(s => [s.setLang]);
+  const [lang, setLang] = useAppState(s => [s.lang, s.setLang]);
   const languages = [
     { label: 'English', value: 'en' },
     { label: '中文', value: 'cn' },
@@ -34,14 +35,12 @@ export function LanguageCard() {
           role="combobox"
           className={cn(
             'w-[200px] justify-between',
-            // !lang && 'text-muted-foreground',
+            !lang && 'text-muted-foreground',
           )}
         >
-          {
-            // lang
-            //   ? languages.find(language => language.value === lang)?.label
-            //   : 'Select language'
-          }
+          {lang
+            ? languages.find(language => language.value === lang)?.label
+            : 'Select language'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -52,21 +51,21 @@ export function LanguageCard() {
             <CommandEmpty>No language found.</CommandEmpty>
             <CommandGroup>
               {languages.map(language => (
-                <CommandItem
-                  value={language.label}
-                  key={language.value}
-                  onSelect={() => {
-                    // i18n.changeLanguage(language.value);
-                    setLang(language.value);
-                  }}
-                >
+                <CommandItem value={language.label} key={language.value}>
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      // language.value === lang ? 'opacity-100' : 'opacity-0',
+                      language.value === lang ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {language.label}
+                  <Link
+                    href={`/${language.value}/settings`}
+                    onClick={() => {
+                      setLang(language.value);
+                    }}
+                  >
+                    {language.label}
+                  </Link>
                 </CommandItem>
               ))}
             </CommandGroup>

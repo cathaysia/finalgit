@@ -37,12 +37,12 @@ import {
   useTags,
 } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
+import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import React from 'react';
 import { FaTag } from 'react-icons/fa';
 import { isMatching, match } from 'ts-pattern';

@@ -1,0 +1,68 @@
+name: 'test'
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: linux-x86
+            platform: 'ubuntu-22.04'
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          version: 1.0
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: rust-${{ matrix.name }}
+          workspaces: src-tauri
+
+      - uses: jongwooo/next-cache@v1
+
+      - name: install frontend dependencies
+        run: pnpm install
+
+      - name: setup icons
+        run: |
+          mkdir -p public
+          cp -r node_modules/material-icon-theme/icons public/
+
+      - name: run test
+        run: |
+          git config user.name "Alice"
+          git config user.email "Alice@bob.com"
+          git config user.signingkey "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          git config commit.gpgsign true
+
+          bash -c 'cd src-tauri && cargo test'
+          bash -c 'pnpm test'

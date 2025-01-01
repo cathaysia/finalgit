@@ -43,7 +43,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const [isOpen, setIsOpen] = useState(false);
+let isOpen = false;
 
 export const Default: Story = {
   args: {
@@ -52,7 +52,7 @@ export const Default: Story = {
       <CollapseGroupTrigger
         isOpen={isOpen}
         onClick={() => {
-          setIsOpen(!isOpen);
+          isOpen = !isOpen;
         }}
       >
         item 3

@@ -321,6 +321,9 @@ importers:
       storybook:
         specifier: ^8.4.6
         version: 8.4.6(prettier@3.3.3)
+      storybook-next-intl:
+        specifier: ^1.2.4
+        version: 1.2.4(next-intl@3.26.3(next@15.1.3(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1))
       tailwindcss:
         specifier: ^3.4.15
         version: 3.4.15
@@ -5714,6 +5717,14 @@ packages:
 
   std-env@3.8.0:
     resolution: {integrity: sha512-Bc3YwwCB+OzldMxOXJIIvC6cPRWr/LxOp48CdQTOkPyk/t4JWWJbrilwBd7RJzKV8QW7tJkcgAmeuLLJugl5/w==}
+
+  storybook-i18n@3.1.1:
+    resolution: {integrity: sha512-k1/lS+Rx6l5mJEYAHQWEgXuwU5IyWk7kjcJtm2FDIn1UqZwbEraGlrp/fEZKK2e/7+SXEQdKeCaTz7+63WTQxw==}
+
+  storybook-next-intl@1.2.4:
+    resolution: {integrity: sha512-wScjy/lRUtPNmjpNxwFcCdFffzc9CtdHMUSlxOXMrKU8Jl0ED3d0MYqn+U2IGmWnuS4opfIC2oTFhL9saP1X1g==}
+    peerDependencies:
+      next-intl: ^3
 
   storybook@8.4.6:
     resolution: {integrity: sha512-J6juZSZT2u3PUW0QZYZZYxBq6zU5O0OrkSgkMXGMg/QrS9to9IHmt4FjEMEyACRbXo8POcB/fSXa3VpGe7bv3g==}
@@ -12831,6 +12842,13 @@ snapshots:
   stackframe@1.3.4: {}
 
   std-env@3.8.0: {}
+
+  storybook-i18n@3.1.1: {}
+
+  storybook-next-intl@1.2.4(next-intl@3.26.3(next@15.1.3(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)):
+    dependencies:
+      next-intl: 3.26.3(next@15.1.3(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      storybook-i18n: 3.1.1
 
   storybook@8.4.6(prettier@3.3.3):
     dependencies:

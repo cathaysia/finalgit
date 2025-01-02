@@ -6,14 +6,18 @@ use std::path::Path;
 use crate::{AppError, AppResult, FileStatus};
 
 pub trait StageExt {
-    fn stage_add_files(&self, files: Vec<FileStatus>) -> AppResult<()>;
-    fn stage_remove_files(&self, files: Vec<&str>) -> AppResult<()>;
-    fn stage_restore_files(&self, files: Vec<FileStatus>, commit: Option<&str>) -> AppResult<()>;
+    async fn stage_add_files(&self, files: Vec<FileStatus>) -> AppResult<()>;
+    async fn stage_remove_files(&self, files: Vec<&str>) -> AppResult<()>;
+    async fn stage_restore_files(
+        &self,
+        files: Vec<FileStatus>,
+        commit: Option<&str>,
+    ) -> AppResult<()>;
 }
 
 #[export_ts(scope = "stage")]
 impl StageExt for git2::Repository {
-    fn stage_add_files(&self, files: Vec<FileStatus>) -> AppResult<()> {
+    async fn stage_add_files(&self, files: Vec<FileStatus>) -> AppResult<()> {
         let mut index = self.index()?;
         for item in files {
             let s = git2::Status::from_bits(item.status).ok_or(AppError::BadStatus)?;
@@ -27,14 +31,18 @@ impl StageExt for git2::Repository {
         Ok(())
     }
 
-    fn stage_remove_files(&self, files: Vec<&str>) -> AppResult<()> {
+    async fn stage_remove_files(&self, files: Vec<&str>) -> AppResult<()> {
         let head = self.head()?.target().ok_or(AppError::NoRepo)?;
         let obj = self.find_object(head, Some(ObjectType::Commit))?;
         self.reset_default(Some(&obj), files)?;
         Ok(())
     }
 
-    fn stage_restore_files(&self, files: Vec<FileStatus>, commit: Option<&str>) -> AppResult<()> {
+    async fn stage_restore_files(
+        &self,
+        files: Vec<FileStatus>,
+        commit: Option<&str>,
+    ) -> AppResult<()> {
         let tree = match commit {
             Some(hash) => {
                 let id = Oid::from_str(hash)?;

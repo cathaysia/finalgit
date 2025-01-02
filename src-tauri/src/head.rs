@@ -5,12 +5,12 @@ use tauri_derive::export_ts;
 use crate::AppResult;
 
 pub trait HeadExt {
-    fn head_get_status(&self) -> AppResult<RepositoryState>;
+    async fn head_get_status(&self) -> AppResult<RepositoryState>;
 }
 
 #[export_ts(scope = "head")]
 impl HeadExt for git2::Repository {
-    fn head_get_status(&self) -> AppResult<RepositoryState> {
+    async fn head_get_status(&self) -> AppResult<RepositoryState> {
         Ok(self.state().into())
     }
 }

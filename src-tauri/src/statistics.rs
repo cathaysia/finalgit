@@ -16,12 +16,12 @@ pub struct CommitStatistics {
 }
 
 pub trait StatisticsExt {
-    fn statistics_commits_of_author(&self, author: &str) -> AppResult<Vec<CommitStatistics>>;
+    async fn statistics_commits_of_author(&self, author: &str) -> AppResult<Vec<CommitStatistics>>;
 }
 
 #[export_ts(scope = "statistics")]
 impl StatisticsExt for git2::Repository {
-    fn statistics_commits_of_author(&self, author: &str) -> AppResult<Vec<CommitStatistics>> {
+    async fn statistics_commits_of_author(&self, author: &str) -> AppResult<Vec<CommitStatistics>> {
         let mut statistics = HashMap::new();
         let mut revwalk = self.revwalk()?;
         revwalk.push_head()?;
@@ -68,9 +68,11 @@ impl StatisticsExt for git2::Repository {
 mod test {
     use super::StatisticsExt;
 
-    #[test]
-    fn test_time() {
+    #[tokio::test]
+    async fn test_time() {
         let time = git2::Repository::open("..").unwrap();
-        time.statistics_commits_of_author("loongtao.zhang").unwrap();
+        time.statistics_commits_of_author("loongtao.zhang")
+            .await
+            .unwrap();
     }
 }

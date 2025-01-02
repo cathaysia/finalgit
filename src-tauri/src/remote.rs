@@ -10,14 +10,14 @@ pub struct Remote {
     url: String,
 }
 pub trait RemoteExt {
-    fn remote_get_list(&self) -> AppResult<Vec<Remote>>;
-    fn remote_add(&self, name: &str, url: &str) -> AppResult<()>;
-    fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()>;
+    async fn remote_get_list(&self) -> AppResult<Vec<Remote>>;
+    async fn remote_add(&self, name: &str, url: &str) -> AppResult<()>;
+    async fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()>;
 }
 
 #[export_ts(scope = "remote")]
 impl RemoteExt for git2::Repository {
-    fn remote_get_list(&self) -> AppResult<Vec<Remote>> {
+    async fn remote_get_list(&self) -> AppResult<Vec<Remote>> {
         let remote = self.remotes()?;
         Ok(remote
             .into_iter()
@@ -36,12 +36,12 @@ impl RemoteExt for git2::Repository {
             .collect_vec())
     }
 
-    fn remote_add(&self, name: &str, url: &str) -> AppResult<()> {
+    async fn remote_add(&self, name: &str, url: &str) -> AppResult<()> {
         let _ = self.remote(name, url)?;
         Ok(())
     }
 
-    fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()> {
+    async fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()> {
         self.remote_set_url(name, url)?;
         Ok(())
     }

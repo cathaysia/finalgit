@@ -9,25 +9,29 @@ use git2::Sort;
 use tauri_derive::export_ts;
 
 pub trait CommitExt {
-    fn commit_checkout(&self, commit: &str) -> AppResult<()>;
-    fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()>;
+    async fn commit_checkout(&self, commit: &str) -> AppResult<()>;
+    async fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()>;
     async fn commit_info(&self, commit: &str) -> AppResult<CommitInfo>;
-    fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
-    fn commit_amend(&self, commit: &str) -> AppResult<()>;
-    fn commit_revert(&self, commit: &str) -> AppResult<()>;
+    async fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
+    async fn commit_amend(&self, commit: &str) -> AppResult<()>;
+    async fn commit_revert(&self, commit: &str) -> AppResult<()>;
     async fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
-    fn create_commit(&self, msg: &str) -> AppResult<()>;
+    async fn create_commit(&self, msg: &str) -> AppResult<()>;
     async fn get_commits_by_branch(
         &self,
         branch: &str,
         kind: BranchType,
     ) -> AppResult<Vec<CommitInfo>>;
-    fn create_patch(&self) -> AppResult<String>;
+    async fn create_patch(&self) -> AppResult<String>;
 }
 
 #[export_ts(scope = "commit")]
 impl CommitExt for git2::Repository {
-    fn commit_checkout(&self, commit: &str) -> AppResult<()> {
+    async fn commit_checkout(&self, commit: &str) -> AppResult<()> {
+        if !matches!(self.state(), git2::RepositoryState::Clean) {
+            return Err(AppError::BadStatus);
+        }
+
         let oid = Oid::from_str(commit)?;
         self.set_head_detached(oid)?;
 
@@ -38,7 +42,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()> {
+    async fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()> {
         self.exec_git(["checkout", commit, path])?;
 
         Ok(())
@@ -50,13 +54,13 @@ impl CommitExt for git2::Repository {
         (&commit).try_into()
     }
 
-    fn commit_reset_author(&self, _commit: &str) -> AppResult<()> {
+    async fn commit_reset_author(&self, _commit: &str) -> AppResult<()> {
         self.exec_git(["commit", "--reset-author", "--amend", "--no-edit"])?;
 
         Ok(())
     }
 
-    fn commit_amend(&self, commit: &str) -> AppResult<()> {
+    async fn commit_amend(&self, commit: &str) -> AppResult<()> {
         let head = self.head()?.target().unwrap().to_string();
         if commit == head {
             self.exec_git(["commit", "--amend", "--no-edit"])?;
@@ -84,7 +88,7 @@ impl CommitExt for git2::Repository {
         Ok(res)
     }
 
-    fn create_commit(&self, msg: &str) -> AppResult<()> {
+    async fn create_commit(&self, msg: &str) -> AppResult<()> {
         let _ = self.exec_git(["commit", "-m", msg])?;
 
         Ok(())
@@ -112,14 +116,14 @@ impl CommitExt for git2::Repository {
         Ok(commits)
     }
 
-    fn create_patch(&self) -> AppResult<String> {
+    async fn create_patch(&self) -> AppResult<String> {
         let output = self.exec_git(["diff", "HEAD"])?;
 
         let out = String::from_utf8(output.stdout)?;
         Ok(out)
     }
 
-    fn commit_revert(&self, commit: &str) -> AppResult<()> {
+    async fn commit_revert(&self, commit: &str) -> AppResult<()> {
         self.exec_git(["revert", commit])?;
         Ok(())
     }

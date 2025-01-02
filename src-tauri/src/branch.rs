@@ -34,7 +34,7 @@ pub trait RepoExt {
     fn branch_create(&self, name: &str, commit: &str) -> AppResult<()>;
 
     /// https://stackoverflow.com/a/46758861
-    fn branch_checkout(&self, name: &str) -> AppResult<()>;
+    async fn branch_checkout(&self, name: &str) -> AppResult<()>;
     fn get_current_status(&self) -> AppResult<Vec<FileStatus>>;
     async fn get_file_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     fn get_file_content(&self, commit: &str, path: &str) -> AppResult<String>;
@@ -145,7 +145,10 @@ impl RepoExt for git2::Repository {
     }
 
     /// https://stackoverflow.com/a/46758861
-    fn branch_checkout(&self, name: &str) -> AppResult<()> {
+    async fn branch_checkout(&self, name: &str) -> AppResult<()> {
+        if !matches!(self.state(), git2::RepositoryState::Clean) {
+            return Err(AppError::BadStatus);
+        }
         let branch = self.revparse_single(name)?;
         let mut opts = CheckoutBuilder::new();
         let opts = opts.safe().force();

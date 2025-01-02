@@ -88,7 +88,7 @@ export default function FileTree() {
 
   const { data: blameInfo } = useBlameInfo(commit, path);
   const [cursor, setCursor] = useState(0);
-  const blameWidget = useRef<HTMLElement | undefined>();
+  const blameWidget = useRef<HTMLElement | undefined>(undefined);
   const hunk = blameInfo?.find(item => {
     return (
       item.final_start_line <= cursor &&

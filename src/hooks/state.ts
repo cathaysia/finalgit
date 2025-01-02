@@ -1,9 +1,9 @@
 import { LazyStore } from '@tauri-apps/plugin-store';
 import { enableMapSet } from 'immer';
 import superjson from 'superjson';
-import { create } from 'zustand';
 import { type StorageValue, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { createWithEqualityFn as create } from 'zustand/traditional';
 
 enableMapSet();
 

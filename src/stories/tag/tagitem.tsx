@@ -33,18 +33,6 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
     NOTIFY.error(headErr.message);
   }
 
-  async function checkoutTag() {
-    if (!repoPath) {
-      return;
-    }
-    console.log(`checkout to ${info.oid}`);
-    const res = await commands?.commitCheckout(repoPath, info.oid);
-    match(res).with({ status: 'error' }, err => {
-      NOTIFY.error(err.error);
-    });
-    refreshBranches();
-  }
-
   return (
     <div
       className={cn(
@@ -79,7 +67,7 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
               <MdDelete className="mr-2 h-4 w-4 text-red-600" />
               <span>{t('tag.delete')}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={checkoutTag}>
+            <DropdownMenuItem onClick={() => checkoutTag(repoPath, info)}>
               <div className="mr-2 h-4 w-4" />
               <span>{t('branch.checkout')}</span>
             </DropdownMenuItem>
@@ -92,4 +80,16 @@ export function TagItem({ info, filter, className, ...props }: TagItemProps) {
       </DropdownMenu>
     </div>
   );
+}
+
+async function checkoutTag(repoPath: string | undefined, info: TagInfo) {
+  if (!repoPath) {
+    return;
+  }
+  console.log(`checkout to ${info.oid}`);
+  const res = await commands?.commitCheckout(repoPath, info.oid);
+  match(res).with({ status: 'error' }, err => {
+    NOTIFY.error(err.error);
+  });
+  refreshBranches();
 }

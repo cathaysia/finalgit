@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Preview, StoryFn } from '@storybook/react';
+import type { Preview } from '@storybook/react';
 
 import { useState } from 'react';
 import { Button } from '../ui/button';
@@ -19,7 +19,7 @@ import {
 const meta = {
   component: CollapseMenuGroup,
   decorators: [
-    (Story: StoryFn) => (
+    Story => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">Open</Button>

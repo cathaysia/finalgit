@@ -1,4 +1,4 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { TagInfo } from '@/bindings';
 import { TagList } from './tag-list';
@@ -6,7 +6,7 @@ import { TagList } from './tag-list';
 const meta = {
   component: TagList,
   decorators: [
-    (Story: StoryFn) => (
+    Story => (
       <div className="h-[420px] shadow p-4 border rounded overflow-hidden">
         <Story />
       </div>

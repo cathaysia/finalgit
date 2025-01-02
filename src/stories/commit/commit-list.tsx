@@ -33,7 +33,7 @@ export default function CommitList({
   ...props
 }: Omit<CommitListProps, 'count' | 'height' | 'getItem'>) {
   const parentRef = useRef<HTMLDivElement>(null);
-  const scrollingRef = React.useRef<number>();
+  const scrollingRef = React.useRef<number>(undefined);
 
   // biome-ignore lint/suspicious/noExplicitAny:any
   const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] =

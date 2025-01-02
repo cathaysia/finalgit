@@ -1,43 +1,37 @@
-use crate::branch::RepoExt;
 use std::collections::HashMap;
 
-use itertools::Itertools;
 use tauri_derive::export_ts;
 
 use crate::AppResult;
 
 pub trait ConfigExt {
-    fn git_get_config(&self, key: &str) -> AppResult<String>;
-    fn git_set_config(&self, key: &str, value: &str) -> AppResult<()>;
-    fn git_get_configes(&self) -> AppResult<HashMap<String, String>>;
+    async fn git_get_config(&self, key: &str) -> AppResult<String>;
+    async fn git_set_config(&self, key: &str, value: &str) -> AppResult<()>;
+    async fn git_get_configes(&self) -> AppResult<HashMap<String, String>>;
 }
 
 #[export_ts(scope = "config")]
 impl ConfigExt for git2::Repository {
-    fn git_get_config(&self, key: &str) -> AppResult<String> {
-        let output = self.exec_git(["config", "--get", key])?;
-        let out = std::str::from_utf8(&output.stdout)?.trim();
-        Ok(out.into())
+    async fn git_get_config(&self, key: &str) -> AppResult<String> {
+        Ok(self.config()?.snapshot()?.get_str(key)?.into())
     }
-    fn git_set_config(&self, key: &str, value: &str) -> AppResult<()> {
-        let _ = self.exec_git(["config", "--local", key, value])?;
+
+    async fn git_set_config(&self, key: &str, value: &str) -> AppResult<()> {
+        self.config()?.set_str(key, value)?;
 
         Ok(())
     }
-    fn git_get_configes(&self) -> AppResult<HashMap<String, String>> {
-        let output = self.exec_git(["config", "-l"])?;
-        let output = String::from_utf8(output.stdout)?;
+
+    async fn git_get_configes(&self) -> AppResult<HashMap<String, String>> {
         let mut res = HashMap::<String, String>::default();
-
-        for line in output.lines() {
-            let sp = line.split(':').collect_vec();
-            if sp.len() != 2 {
-                continue;
-            }
-
-            res.insert(sp[0].to_string(), sp[1].to_string());
-        }
-
+        self.config()?
+            .snapshot()?
+            .entries(None)?
+            .for_each(|entry| {
+                if let (Some(key), Some(value)) = (entry.name(), entry.value()) {
+                    res.insert(key.to_string(), value.to_string());
+                }
+            })?;
         Ok(res)
     }
 }
@@ -46,11 +40,11 @@ impl ConfigExt for git2::Repository {
 mod test {
     use super::*;
 
-    #[test]
-    fn get_config() {
+    #[tokio::test]
+    async fn get_config() {
         let repo = crate::utils::open_repo("../").unwrap();
-        repo.git_get_config("user.name").unwrap();
-        repo.git_get_config("user.email").unwrap();
-        repo.git_get_config("commit.gpgsign").unwrap();
+        repo.git_get_config("user.name").await.unwrap();
+        repo.git_get_config("user.email").await.unwrap();
+        repo.git_get_config("commit.gpgsign").await.unwrap();
     }
 }

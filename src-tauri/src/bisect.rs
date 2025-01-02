@@ -11,37 +11,37 @@ pub struct BisectRange {
 }
 
 pub trait BisectExt {
-    fn bisect_start(&self) -> AppResult<()>;
-    fn bisect_stop(&self) -> AppResult<()>;
-    fn bisect_mark_good(&self, oid: &str) -> AppResult<()>;
-    fn bisect_mark_bad(&self, oid: &str) -> AppResult<()>;
-    fn bisect_get_next(&self) -> AppResult<Option<String>>;
-    fn bisect_get_range(&self) -> AppResult<BisectRange>;
+    async fn bisect_start(&self) -> AppResult<()>;
+    async fn bisect_stop(&self) -> AppResult<()>;
+    async fn bisect_mark_good(&self, oid: &str) -> AppResult<()>;
+    async fn bisect_mark_bad(&self, oid: &str) -> AppResult<()>;
+    async fn bisect_get_next(&self) -> AppResult<Option<String>>;
+    async fn bisect_get_range(&self) -> AppResult<BisectRange>;
 }
 
 #[export_ts(scope = "bisect")]
 impl BisectExt for git2::Repository {
-    fn bisect_start(&self) -> AppResult<()> {
+    async fn bisect_start(&self) -> AppResult<()> {
         self.exec_git(["bisect", "start"])?;
         Ok(())
     }
 
-    fn bisect_stop(&self) -> AppResult<()> {
+    async fn bisect_stop(&self) -> AppResult<()> {
         self.exec_git(["bisect", "reset"])?;
         Ok(())
     }
 
-    fn bisect_mark_good(&self, oid: &str) -> AppResult<()> {
+    async fn bisect_mark_good(&self, oid: &str) -> AppResult<()> {
         self.exec_git(["bisect", "good", oid])?;
         Ok(())
     }
 
-    fn bisect_mark_bad(&self, oid: &str) -> AppResult<()> {
+    async fn bisect_mark_bad(&self, oid: &str) -> AppResult<()> {
         self.exec_git(["bisect", "bad", oid])?;
         Ok(())
     }
 
-    fn bisect_get_next(&self) -> AppResult<Option<String>> {
+    async fn bisect_get_next(&self) -> AppResult<Option<String>> {
         let output = self.exec_git(["bisect", "next"])?;
         let output = String::from_utf8(output.stdout)?;
         let Some(output) = output.lines().nth(1) else {
@@ -54,7 +54,7 @@ impl BisectExt for git2::Repository {
         Ok(Some(output.to_string()))
     }
 
-    fn bisect_get_range(&self) -> AppResult<BisectRange> {
+    async fn bisect_get_range(&self) -> AppResult<BisectRange> {
         let output = self.exec_git(["bisect", "log"])?.stdout;
         let output = String::from_utf8(output)?;
 

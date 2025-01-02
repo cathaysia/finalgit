@@ -8,7 +8,7 @@ use std::path::Path;
 use crate::{AppError, AppResult};
 
 pub trait BlameExt {
-    fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>>;
+    async fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>>;
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
@@ -34,7 +34,7 @@ impl TryFrom<&git2::BlameHunk<'_>> for BlameHunk {
 
 #[export_ts(scope = "blame")]
 impl BlameExt for git2::Repository {
-    fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
+    async fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
         let mut opt = BlameOptions::new();
         opt.newest_commit(Oid::from_str(commit)?);
         let blame = self.blame_file(Path::new(path), Some(&mut opt))?;

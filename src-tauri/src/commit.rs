@@ -11,13 +11,17 @@ use tauri_derive::export_ts;
 pub trait CommitExt {
     fn commit_checkout(&self, commit: &str) -> AppResult<()>;
     fn checkout_file(&self, commit: &str, path: &str) -> AppResult<()>;
-    fn commit_info(&self, commit: &str) -> AppResult<CommitInfo>;
+    async fn commit_info(&self, commit: &str) -> AppResult<CommitInfo>;
     fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
     fn commit_amend(&self, commit: &str) -> AppResult<()>;
     fn commit_revert(&self, commit: &str) -> AppResult<()>;
-    fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
+    async fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
     fn create_commit(&self, msg: &str) -> AppResult<()>;
-    fn get_commits_by_branch(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>>;
+    async fn get_commits_by_branch(
+        &self,
+        branch: &str,
+        kind: BranchType,
+    ) -> AppResult<Vec<CommitInfo>>;
     fn create_patch(&self) -> AppResult<String>;
 }
 
@@ -40,7 +44,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn commit_info(&self, commit: &str) -> AppResult<CommitInfo> {
+    async fn commit_info(&self, commit: &str) -> AppResult<CommitInfo> {
         let commit = self.find_commit(Oid::from_str(commit)?)?;
 
         (&commit).try_into()
@@ -63,7 +67,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
+    async fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
         let commit = self.find_commit_by_prefix(commit)?;
         let mut revwalk = self.revwalk()?;
         revwalk.push(commit.id())?;
@@ -86,7 +90,11 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    fn get_commits_by_branch(&self, branch: &str, kind: BranchType) -> AppResult<Vec<CommitInfo>> {
+    async fn get_commits_by_branch(
+        &self,
+        branch: &str,
+        kind: BranchType,
+    ) -> AppResult<Vec<CommitInfo>> {
         let branch = self.find_branch(branch, kind.into())?;
         let oid = branch.get().target().unwrap();
 

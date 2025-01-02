@@ -1,10 +1,17 @@
 import type { BranchInfo } from '@/bindings';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 
 import BranchList from './branch-list';
 
 const meta = {
   component: BranchList,
+  decorators: [
+    (Story: StoryFn) => (
+      <div className="h-[420px] shadow p-4 border rounded">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof BranchList>;
 
 export default meta;

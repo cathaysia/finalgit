@@ -133,7 +133,7 @@ async function savePatch(title: string, repoPath?: string) {
   if (path === null || !repoPath) {
     return;
   }
-  const res = await commands?.createPatch(repoPath);
+  const res = await commands?.patchCreate(repoPath);
   match(res)
     .with({ status: 'ok' }, async v => {
       await writeTextFile(path, v.data);

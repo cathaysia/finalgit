@@ -133,7 +133,7 @@ async function copyFileContent(
   itemId: string,
 ) {
   const path = itemId.slice(1);
-  const res = await commands?.getFileContent(repoPath, commit, path);
+  const res = await commands?.fileGetContent(repoPath, commit, path);
   match(res)
     .with({ status: 'ok' }, async val => {
       await writeText(val.data);

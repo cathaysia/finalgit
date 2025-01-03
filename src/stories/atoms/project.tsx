@@ -39,7 +39,7 @@ export default function Project({ className }: ProjectProps) {
     if (value === null) {
       return;
     }
-    commands?.openRepo(value).then(res => {
+    commands?.repoOpen(value).then(res => {
       match(res)
         .with({ status: 'ok' }, () => {
           setRepoPath(value);

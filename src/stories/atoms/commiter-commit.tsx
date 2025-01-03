@@ -91,7 +91,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                 return;
               }
               setIsLoading(true);
-              const value = await commands?.createPatch(repoPath);
+              const value = await commands?.patchCreate(repoPath);
               if (value.status === 'error') {
                 NOTIFY.error(value.error);
                 setIsLoading(false);
@@ -136,7 +136,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
             if (!repoPath) {
               return;
             }
-            const v = await commands?.createCommit(repoPath, commitMsg);
+            const v = await commands?.commitCreate(repoPath, commitMsg);
             if (v.status === 'error') {
               NOTIFY.error(v.error);
               return;
@@ -144,7 +144,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
 
             refreshChanges();
             refreshHistory();
-            const head = await commands.getRepoHead(repoPath);
+            const head = await commands.repoGetHead(repoPath);
             if (isMatching({ status: 'ok' }, head)) {
               setCommitHead(head.data.oid);
             }
@@ -175,8 +175,8 @@ function useSignoffInfo() {
       if (!repoPath) {
         throw Error('empty repoPath!');
       }
-      const userName = await commands.gitGetConfig(repoPath, 'user.name');
-      const email = await commands.gitGetConfig(repoPath, 'user.email');
+      const userName = await commands.configGet(repoPath, 'user.name');
+      const email = await commands.configGet(repoPath, 'user.email');
 
       if (userName.status === 'error' || email.status === 'error') {
         throw Error('queryfailed');

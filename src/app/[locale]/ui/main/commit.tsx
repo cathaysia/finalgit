@@ -28,7 +28,7 @@ export default function Commit() {
     if (!repoPath) {
       return;
     }
-    commands.getRepoHead(repoPath).then(v => {
+    commands.repoGetHead(repoPath).then(v => {
       if (isMatching({ status: 'ok' }, v)) {
         setCommitHead(v.data.oid);
       }

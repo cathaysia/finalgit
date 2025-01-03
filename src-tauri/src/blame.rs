@@ -11,6 +11,23 @@ pub trait BlameExt {
     async fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>>;
 }
 
+#[export_ts(scope = "blame")]
+impl BlameExt for git2::Repository {
+    async fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
+        let mut opt = BlameOptions::new();
+        opt.newest_commit(Oid::from_str(commit)?);
+        let blame = self.blame_file(Path::new(path), Some(&mut opt))?;
+
+        let mut res = Vec::with_capacity(blame.len());
+
+        for hunk in blame.iter() {
+            res.push(BlameHunk::try_from(&hunk)?);
+        }
+
+        Ok(res)
+    }
+}
+
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, Type)]
 pub struct BlameHunk {
     pub final_commit_id: String,
@@ -29,22 +46,5 @@ impl TryFrom<&git2::BlameHunk<'_>> for BlameHunk {
             lines: value.lines_in_hunk() as _,
             signature: (&value.final_signature()).try_into()?,
         })
-    }
-}
-
-#[export_ts(scope = "blame")]
-impl BlameExt for git2::Repository {
-    async fn blame_of_file(&self, commit: &str, path: &str) -> AppResult<Vec<BlameHunk>> {
-        let mut opt = BlameOptions::new();
-        opt.newest_commit(Oid::from_str(commit)?);
-        let blame = self.blame_file(Path::new(path), Some(&mut opt))?;
-
-        let mut res = Vec::with_capacity(blame.len());
-
-        for hunk in blame.iter() {
-            res.push(BlameHunk::try_from(&hunk)?);
-        }
-
-        Ok(res)
     }
 }

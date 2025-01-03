@@ -22,7 +22,7 @@ export function useBranches() {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getBranchInfo(repoPath);
+      const res = await commands.branchGetInfo(repoPath);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -49,7 +49,7 @@ export function useTags() {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getTagInfo(repoPath);
+      const res = await commands.tagGetInfo(repoPath);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -76,7 +76,7 @@ export function useChanges() {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getCurrentStatus(repoPath);
+      const res = await commands.fileGetStatus(repoPath);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -105,7 +105,7 @@ export function useFiles(commit: string) {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getFileTree(repoPath, commit);
+      const res = await commands.fileGetTree(repoPath, commit);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -204,7 +204,7 @@ export function useHistory(commit: string) {
       if (!repoPath || commit.length === 0) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getCommitsFrom(repoPath, commit);
+      const res = await commands.commitsSince(repoPath, commit);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -231,7 +231,7 @@ export function useHeadOid() {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.getRepoHead(repoPath);
+      const res = await commands.repoGetHead(repoPath);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -307,7 +307,7 @@ export function useHeadState() {
       if (!repoPath) {
         throw new Error('no repoPath');
       }
-      const res = await commands.headGetStatus(repoPath);
+      const res = await commands.repoGetStatus(repoPath);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;
@@ -384,7 +384,7 @@ export function usePushstatus(branch: string) {
       if (!repoPath || branch.length === 0) {
         throw new Error('no repoPath');
       }
-      const res = await commands.branchStatus(repoPath, branch);
+      const res = await commands.branchGetStatus(repoPath, branch);
       return match(res)
         .with({ status: 'ok' }, res => {
           return res.data;

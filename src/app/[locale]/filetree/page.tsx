@@ -57,7 +57,7 @@ export default function FileTree() {
       }
     });
 
-    const content = await commands?.getFileContent(
+    const content = await commands?.fileGetContent(
       repoPath,
       commit,
       normalPath,

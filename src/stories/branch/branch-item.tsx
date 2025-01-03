@@ -291,7 +291,7 @@ export default function BranchItem({
                     return;
                   }
                   setIsPulling(true);
-                  await commands.pullBranch(repoPath, info, true, false);
+                  await commands.branchPull(repoPath, info, true, false);
                   setIsPulling(false);
                   refreshPushStatus();
                 }}
@@ -307,7 +307,7 @@ export default function BranchItem({
                     return;
                   }
                   setIsPushing(true);
-                  await commands.pushBranch(repoPath, info, false);
+                  await commands.branchPush(repoPath, info, false);
                   setIsPushing(false);
                   refreshPushStatus();
                 }}

@@ -3,7 +3,7 @@ import { isMatching, match } from 'ts-pattern';
 import NOTIFY from './notify';
 
 export async function getGitConfig(repoPath: string, opt: string) {
-  const res = await commands?.gitGetConfig(repoPath, opt);
+  const res = await commands?.configGet(repoPath, opt);
   if (isMatching({ status: 'ok' }, res)) {
     return res.data;
   }
@@ -14,7 +14,7 @@ export async function setGitConfig(
   opt: string,
   value: string,
 ) {
-  const res = await commands?.gitSetConfig(repoPath, opt, value);
+  const res = await commands?.configSet(repoPath, opt, value);
   match(res)
     .with({ status: 'ok' }, _ => {})
     .with({ status: 'error' }, err => {

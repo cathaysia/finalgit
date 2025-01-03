@@ -15,14 +15,11 @@ pub trait CommitExt {
     async fn commit_reset_author(&self, _commit: &str) -> AppResult<()>;
     async fn commit_amend(&self, commit: &str) -> AppResult<()>;
     async fn commit_revert(&self, commit: &str) -> AppResult<()>;
-    async fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
-    async fn create_commit(&self, msg: &str) -> AppResult<()>;
-    async fn get_commits_by_branch(
-        &self,
-        branch: &str,
-        kind: BranchType,
-    ) -> AppResult<Vec<CommitInfo>>;
-    async fn create_patch(&self) -> AppResult<String>;
+    async fn commits_since(&self, commit: &str) -> AppResult<Vec<CommitInfo>>;
+    async fn commit_create(&self, msg: &str) -> AppResult<()>;
+    async fn commits_by_branch(&self, branch: &str, kind: BranchType)
+        -> AppResult<Vec<CommitInfo>>;
+    async fn patch_create(&self) -> AppResult<String>;
 }
 
 #[export_ts(scope = "commit")]
@@ -71,7 +68,7 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
-    async fn get_commits_from(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
+    async fn commits_since(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
         let commit = self.find_commit_by_prefix(commit)?;
         let mut revwalk = self.revwalk()?;
         revwalk.push(commit.id())?;
@@ -88,13 +85,13 @@ impl CommitExt for git2::Repository {
         Ok(res)
     }
 
-    async fn create_commit(&self, msg: &str) -> AppResult<()> {
+    async fn commit_create(&self, msg: &str) -> AppResult<()> {
         let _ = self.exec_git(["commit", "-m", msg])?;
 
         Ok(())
     }
 
-    async fn get_commits_by_branch(
+    async fn commits_by_branch(
         &self,
         branch: &str,
         kind: BranchType,
@@ -116,7 +113,7 @@ impl CommitExt for git2::Repository {
         Ok(commits)
     }
 
-    async fn create_patch(&self) -> AppResult<String> {
+    async fn patch_create(&self) -> AppResult<String> {
         let output = self.exec_git(["diff", "HEAD"])?;
 
         let out = String::from_utf8(output.stdout)?;
@@ -124,7 +121,14 @@ impl CommitExt for git2::Repository {
     }
 
     async fn commit_revert(&self, commit: &str) -> AppResult<()> {
-        self.exec_git(["revert", commit])?;
+        let commit = self.find_commit(commit.parse()?)?;
+
+        let mut builder = git2::build::CheckoutBuilder::new();
+        builder.safe();
+        let mut opts = git2::RevertOptions::new();
+        opts.checkout_builder(builder);
+
+        self.revert(&commit, Some(&mut opts))?;
         Ok(())
     }
 }

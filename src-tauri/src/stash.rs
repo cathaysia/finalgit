@@ -1,7 +1,5 @@
 use tauri_derive::export_ts;
 
-use crate::branch::RepoExt;
-
 use crate::AppResult;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize, specta::Type)]
@@ -12,7 +10,7 @@ pub struct StashInfo {
 }
 
 pub trait StashExt {
-    async fn stash_save(&self, message: Option<String>) -> AppResult<()>;
+    async fn stash_save(&mut self, message: Option<String>) -> AppResult<()>;
     async fn stash_apply(&mut self, index: u32) -> AppResult<()>;
     async fn stash_remove(&mut self, index: u32) -> AppResult<()>;
     async fn stash_list(&mut self) -> AppResult<Vec<StashInfo>>;
@@ -20,15 +18,15 @@ pub trait StashExt {
 
 #[export_ts(scope = "stash")]
 impl StashExt for git2::Repository {
-    async fn stash_save(&self, message: Option<String>) -> AppResult<()> {
-        match message {
-            Some(msg) => {
-                let _ = self.exec_git(["stash", &msg])?;
-            }
-            None => {
-                let _ = self.exec_git(["stash"])?;
-            }
-        }
+    async fn stash_save(&mut self, message: Option<String>) -> AppResult<()> {
+        let config = self.config()?.snapshot()?;
+        let user = config.get_str("user.name")?;
+        let email = config.get_str("user.email")?;
+
+        let signature = git2::Signature::now(user, email)?;
+
+        self.stash_save2(&signature, message.as_deref(), None)?;
+
         Ok(())
     }
 

@@ -1,10 +1,9 @@
 'use client';
-import { type BranchInfo, type TagInfo, commands } from '@/bindings';
+import type { BranchInfo, TagInfo } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppState } from '@/hooks/state';
-import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import BranchList from '@/stories/branch/branch-list';
 import { TagList } from '@/stories/tag/tag-list';
@@ -131,20 +130,13 @@ export default function BranchPanel({
                 onChange={v => setNewBranchName(v.target.value)}
               />
               <Button
-                disabled={!repoPath || newBranchName.length === 0}
+                // disabled={!repoPath || newBranchName.length === 0}
+                disabled
                 onClick={async () => {
                   if (!repoPath || newBranchName.length === 0) {
                     return;
                   }
-                  const name = await commands.branchCreate(
-                    repoPath,
-                    newBranchName,
-                    '',
-                  );
-                  if (name.status === 'error') {
-                    NOTIFY.error(name.error);
-                  }
-                  setNewBranchName('');
+                  // TODO
                 }}
               >
                 {t('branch.addBranch')}

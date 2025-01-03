@@ -7,7 +7,7 @@ mod cherry_pick;
 mod commit;
 mod config;
 mod error;
-mod head;
+mod file;
 mod rebase;
 mod remote;
 mod stage;

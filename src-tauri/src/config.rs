@@ -5,24 +5,24 @@ use tauri_derive::export_ts;
 use crate::AppResult;
 
 pub trait ConfigExt {
-    async fn git_get_config(&self, key: &str) -> AppResult<String>;
-    async fn git_set_config(&self, key: &str, value: &str) -> AppResult<()>;
-    async fn git_get_configes(&self) -> AppResult<HashMap<String, String>>;
+    async fn config_get(&self, key: &str) -> AppResult<String>;
+    async fn config_set(&self, key: &str, value: &str) -> AppResult<()>;
+    async fn config_get_all(&self) -> AppResult<HashMap<String, String>>;
 }
 
 #[export_ts(scope = "config")]
 impl ConfigExt for git2::Repository {
-    async fn git_get_config(&self, key: &str) -> AppResult<String> {
+    async fn config_get(&self, key: &str) -> AppResult<String> {
         Ok(self.config()?.snapshot()?.get_str(key)?.into())
     }
 
-    async fn git_set_config(&self, key: &str, value: &str) -> AppResult<()> {
+    async fn config_set(&self, key: &str, value: &str) -> AppResult<()> {
         self.config()?.set_str(key, value)?;
 
         Ok(())
     }
 
-    async fn git_get_configes(&self) -> AppResult<HashMap<String, String>> {
+    async fn config_get_all(&self) -> AppResult<HashMap<String, String>> {
         let mut res = HashMap::<String, String>::default();
         self.config()?
             .snapshot()?
@@ -43,8 +43,8 @@ mod test {
     #[tokio::test]
     async fn get_config() {
         let repo = crate::utils::open_repo("../").unwrap();
-        repo.git_get_config("user.name").await.unwrap();
-        repo.git_get_config("user.email").await.unwrap();
-        repo.git_get_config("commit.gpgsign").await.unwrap();
+        repo.config_get("user.name").await.unwrap();
+        repo.config_get("user.email").await.unwrap();
+        repo.config_get("commit.gpgsign").await.unwrap();
     }
 }

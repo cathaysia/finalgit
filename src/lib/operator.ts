@@ -40,7 +40,7 @@ export async function branchCheckout(repoPath: string, info: BranchInfo) {
   const v =
     info.kind === 'Local'
       ? await commands?.branchCheckout(repoPath, info.name)
-      : await commands?.branchCheckoutRemote(repoPath, info.name);
+      : await commands?.branchCreateFrom(repoPath, info.name, info);
 
   if (isMatching({ status: 'ok' }, v)) {
     refreshBranches();

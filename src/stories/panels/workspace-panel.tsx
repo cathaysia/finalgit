@@ -107,7 +107,7 @@ export default function WorkspacePanel({
                     d.isPushing = true;
                   }),
                 );
-                await commands.pullBranch(repoPath, info, true, false);
+                await commands.branchPull(repoPath, info, true, false);
                 setPushActionState(
                   produce(d => {
                     d.isPulling = false;
@@ -138,7 +138,7 @@ export default function WorkspacePanel({
                   }),
                 );
 
-                await commands.pushBranch(repoPath, info, true);
+                await commands.branchPush(repoPath, info, true);
 
                 setPushActionState(
                   produce(d => {

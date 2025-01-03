@@ -53,7 +53,7 @@ export default function GitSwitch({
 }
 
 async function getBooleanConfig(repoPath: string, opt: string) {
-  const res = await commands?.gitGetConfig(repoPath, opt);
+  const res = await commands?.configGet(repoPath, opt);
   if (isMatching({ status: 'ok' }, res)) {
     if (res.data === 'true') {
       return true;
@@ -64,7 +64,7 @@ async function getBooleanConfig(repoPath: string, opt: string) {
 }
 
 async function setBooleanConfig(repoPath: string, opt: string, value: boolean) {
-  const res = await commands?.gitSetConfig(
+  const res = await commands?.configSet(
     repoPath,
     opt,
     value ? 'true' : 'false',

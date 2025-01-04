@@ -92,7 +92,7 @@ export const useAppState = create<AppState>()(
   persist(
     immer(set => ({
       repoPath: undefined,
-      lang: 'en_US',
+      lang: 'en',
       useEmoji: true,
       renderMarkdown: true,
       commitHead: null,

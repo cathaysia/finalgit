@@ -1,6 +1,4 @@
-'use client';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,36 +14,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-export function LanguageCard() {
-  const pathanme = usePathname();
-  const p = /\/(\w+)\/?.*/.exec(pathanme) || [];
-  const lang = p[1];
-  const [setLang] = useAppState(s => [s.setLang]);
+export async function LanguageCard({ locale }: { locale: string }) {
   const languages = [
     { label: 'English', value: 'en' },
     { label: '中文', value: 'cn' },
   ];
-  const t = useTranslations();
+  const t = await getTranslations({ locale });
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="combobox"
           className={cn(
             'w-[200px] justify-between',
-            !lang && 'text-muted-foreground',
+            !locale && 'text-muted-foreground',
           )}
         >
-          {lang
-            ? languages.find(language => language.value === lang)?.label
-            : 'Select language'}
+          {languages.find(language => language.value === locale)?.label}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -60,15 +52,10 @@ export function LanguageCard() {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      language.value === lang ? 'opacity-100' : 'opacity-0',
+                      language.value === locale ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  <Link
-                    href={`/${language.value}/settings`}
-                    onClick={() => {
-                      setLang(language.value);
-                    }}
-                  >
+                  <Link href={`/${language.value}/settings`}>
                     {language.label}
                   </Link>
                 </CommandItem>

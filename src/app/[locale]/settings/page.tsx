@@ -1,66 +1,35 @@
-'use client';
 import ThemeCard from '@/app/[locale]/settings/ui/theme-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { useAppState } from '@/hooks/state';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { LanguageCard } from './ui/language-card';
+import ProfileCard from './ui/profile-card';
+import { UpdateLang } from './ui/update-lang';
 
-export default function ProfileComponent() {
-  const t = useTranslations();
-  const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppState(s => [
-    s.useEmoji,
-    s.setUseEmoji,
-    s.signoff,
-    s.setSignoff,
-  ]);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const locale = (await params).locale;
+  const t = await getTranslations({ locale });
+
   return (
     <>
-      <ThemeCard className="w-full" />
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>{t('profile.behaviour')}</CardTitle>
+          <CardTitle>Theme</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col justify-between gap-2">
-          <div className="flex justify-between">
-            <Label htmlFor="profile.stash">
-              {t('profile.stash_before_checkout')}
-            </Label>
-            <Checkbox id="profile.stash" disabled />
-          </div>
-          <div className="flex justify-between">
-            <Label htmlFor="profile.discard">
-              {t('profile.add_before_discard')}
-            </Label>
-            <Checkbox id="profile.discard" disabled />
-          </div>
-          <div className="flex justify-between">
-            <Label htmlFor="profile.use_emoji">{t('profile.use_emoji')}</Label>
-            <Checkbox
-              id="profile.use_emoji"
-              checked={useEmoji}
-              onCheckedChange={v => {
-                if (v === true) {
-                  setUseEmoji(true);
-                }
-                if (v === false) {
-                  setUseEmoji(false);
-                }
-              }}
-            />
-          </div>
-          <div className="flex justify-between">
-            <Label htmlFor="profile.signoff">{t('profile.signoff')}</Label>
-            <Checkbox
-              id="profile.signoff"
-              checked={signoff}
-              onCheckedChange={v => {
-                setSignoff(v === true);
-              }}
-            />
+        <CardContent className="flex w-full flex-col gap-2">
+          <ThemeCard />
+          <div className="flex w-full items-center justify-between">
+            <Label>{t('profile.language')}</Label>
+            <LanguageCard locale={locale} />
           </div>
         </CardContent>
       </Card>
+      <ProfileCard />
+      <UpdateLang locale={locale} />
     </>
   );
 }

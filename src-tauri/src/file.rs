@@ -1,6 +1,7 @@
 use itertools::Itertools;
 use std::path::Path;
 use tauri_derive::export_ts;
+use tokio::{fs::OpenOptions, io::AsyncWriteExt};
 
 use log::debug;
 
@@ -10,6 +11,9 @@ pub trait FileExt {
     async fn file_get_tree(&self, commit: &str) -> AppResult<Vec<FileTree>>;
     async fn file_get_content(&self, commit: &str, path: &str) -> AppResult<String>;
     async fn file_get_status(&self) -> AppResult<Vec<FileStatus>>;
+
+    async fn file_add_ignore(&self, rules: &str) -> AppResult<()>;
+    async fn file_add_exclude(&self, rules: &str) -> AppResult<()>;
 }
 
 #[export_ts(scope = "file")]
@@ -59,6 +63,25 @@ impl FileExt for git2::Repository {
             .collect_vec();
 
         Ok(status)
+    }
+
+    async fn file_add_ignore(&self, rules: &str) -> AppResult<()> {
+        self.add_ignore_rule(rules)?;
+        Ok(())
+    }
+
+    async fn file_add_exclude(&self, rules: &str) -> AppResult<()> {
+        let path = self.path().join("info");
+        if !path.exists() {
+            tokio::fs::create_dir_all(&path).await?;
+        }
+        let path = path.join("exclude");
+
+        // TODO: parse file
+        let mut opt = OpenOptions::new();
+        let mut exclude = opt.append(true).create(true).open(path).await?;
+        exclude.write_all(format!("\n{rules}\n").as_bytes()).await?;
+        Ok(())
     }
 }
 

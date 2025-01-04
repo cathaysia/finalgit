@@ -532,6 +532,34 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async fileAddIgnore(
+    repoPath: string,
+    rules: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('file_add_ignore', { repoPath, rules }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async fileAddExclude(
+    repoPath: string,
+    rules: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('file_add_exclude', { repoPath, rules }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
     try {
       return {

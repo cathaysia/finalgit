@@ -109,9 +109,37 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                   {t('unstage')}
                 </DropdownMenuItem>
                 <DropdownMenuItem disabled>{t('diff')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>{t('ignore file')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  {t('add to gitignore')}
+                <DropdownMenuItem
+                  onClick={async () => {
+                    if (!repoPath) {
+                      return;
+                    }
+                    const res = await commands?.fileAddIgnore(
+                      repoPath,
+                      item.path,
+                    );
+                    if (res.status === 'error') {
+                      NOTIFY.error(res.error);
+                    }
+                  }}
+                >
+                  {t('ignore file')}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={async () => {
+                    if (!repoPath) {
+                      return;
+                    }
+                    const res = await commands?.fileAddExclude(
+                      repoPath,
+                      item.path,
+                    );
+                    if (res.status === 'error') {
+                      NOTIFY.error(res.error);
+                    }
+                  }}
+                >
+                  {t('exclude file')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-red-600"

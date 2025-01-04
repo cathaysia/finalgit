@@ -297,7 +297,7 @@
     "zlib License": "zlib License"
   },
   "stage": {
-    "add to gitignore": "add to gitignore",
+    "exclude file": "exclude file",
     "deleted": "deleted",
     "diff": "diff",
     "discard": "discard",

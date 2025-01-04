@@ -73,11 +73,11 @@ export default function CommitCard({
                 onClick={() => {
                   setRenderMarkdown(!renderMarkdown);
                 }}
-                className={cn(renderMarkdown && 'text-gray-500')}
+                className={cn(!renderMarkdown && 'text-gray-500')}
               />
             </div>
             <div
-              className="flex max-w-96 items-center gap-2"
+              className="flex max-w-32 items-center gap-2"
               onClick={e => {
                 const target = e.target as HTMLAnchorElement;
                 if (target.href) {
@@ -87,16 +87,16 @@ export default function CommitCard({
               }}
             >
               {renderMarkdown ? (
-                <pre className="prose dark:prose-invert text-wrap break-all">
-                  {info.message}
-                </pre>
-              ) : (
                 <Markdown
                   className="prose dark:prose-invert text-wrap break-all font-mono"
                   remarkPlugins={[remarkGfm]}
                 >
                   {mdData || info.message}
                 </Markdown>
+              ) : (
+                <pre className="prose dark:prose-invert text-wrap break-all">
+                  {info.message}
+                </pre>
               )}
             </div>
           </div>

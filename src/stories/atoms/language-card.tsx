@@ -1,3 +1,4 @@
+'use client';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -18,9 +19,13 @@ import {
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function LanguageCard() {
-  const [lang, setLang] = useAppState(s => [s.lang, s.setLang]);
+  const pathanme = usePathname();
+  const p = /\/(\w+)\/?.*/.exec(pathanme) || [];
+  const lang = p[1];
+  const [setLang] = useAppState(s => [s.setLang]);
   const languages = [
     { label: 'English', value: 'en' },
     { label: '中文', value: 'cn' },

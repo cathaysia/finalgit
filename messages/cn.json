@@ -297,7 +297,7 @@
     "zlib License": "zlib 许可"
   },
   "stage": {
-    "add to gitignore": "添加到 gitignore",
+    "exclude file": "添加到 exclude",
     "deleted": "删除",
     "diff": "查看差异",
     "discard": "丢弃变更",

@@ -1,5 +1,6 @@
 import type { CommitInfo } from '@/bindings';
 import { AvatarGroup } from '@/components/ext/avatar-group';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRemotes } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import { Link } from '@/i18n/routing';
@@ -76,8 +77,8 @@ export default function CommitCard({
                 className={cn(!renderMarkdown && 'text-gray-500')}
               />
             </div>
-            <div
-              className="flex max-w-32 items-center gap-2"
+            <ScrollArea
+              className="flex h-72 max-w-96 items-center gap-2"
               onClick={e => {
                 const target = e.target as HTMLAnchorElement;
                 if (target.href) {
@@ -91,14 +92,14 @@ export default function CommitCard({
                   className="prose dark:prose-invert text-wrap break-all font-mono"
                   remarkPlugins={[remarkGfm]}
                 >
-                  {mdData || info.message}
+                  {mdData || info.body}
                 </Markdown>
               ) : (
                 <pre className="prose dark:prose-invert text-wrap break-all">
-                  {info.message}
+                  {info.body}
                 </pre>
               )}
-            </div>
+            </ScrollArea>
           </div>
         </div>
       </div>

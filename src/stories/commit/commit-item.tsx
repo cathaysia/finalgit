@@ -125,7 +125,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 filter={filter}
               />
             </HoverCardTrigger>
-            <HoverCardContent className="w-auto">
+            <HoverCardContent className="w-[470px]">
               <CommitCard info={commit} />
             </HoverCardContent>
           </HoverCard>

@@ -8,7 +8,14 @@ use git2::DiffFormat;
 use git2::DiffOptions;
 use git2::Oid;
 use git2::Sort;
+use specta::Type;
 use tauri_derive::export_ts;
+
+#[derive(Debug, Default, Clone, serde::Serialize, serde::Deserialize, Type)]
+pub struct ChangeInfo {
+    pub add: i32,
+    pub del: i32,
+}
 
 pub trait CommitExt {
     async fn commit_checkout(&self, commit: &str) -> AppResult<()>;
@@ -21,6 +28,7 @@ pub trait CommitExt {
     async fn commit_create(&self, msg: &str) -> AppResult<()>;
     async fn commits_by_branch(&self, branch: &str, kind: BranchType)
         -> AppResult<Vec<CommitInfo>>;
+    async fn commits_change_info(&self, commit: &str) -> AppResult<ChangeInfo>;
 
     async fn diff_stage(&self) -> AppResult<String>;
     async fn diff_between(&self, old_commit: &str, new_commit: &str) -> AppResult<String>;
@@ -193,5 +201,25 @@ impl CommitExt for git2::Repository {
         })?;
 
         Ok(res)
+    }
+
+    async fn commits_change_info(&self, commit: &str) -> AppResult<ChangeInfo> {
+        let commit = Oid::from_str(commit)?;
+        let commit = self.find_commit(commit)?;
+        let prev = commit.parent(0)?;
+
+        let diff = self.diff_tree_to_tree(Some(&prev.tree()?), Some(&commit.tree()?), None)?;
+        let mut info = ChangeInfo::default();
+
+        diff.print(DiffFormat::Patch, |_delta, _hunk, line| {
+            match line.origin() {
+                '+' => info.add += 1,
+                '-' => info.del += 1,
+                _ => {}
+            };
+            true
+        })?;
+
+        Ok(info)
     }
 }

@@ -403,3 +403,28 @@ export function usePushstatus(branch: string) {
 export function refreshPushStatus() {
   queryClient.invalidateQueries({ queryKey: ['pushStatus'] });
 }
+
+export function useCommitChanges(commit: string) {
+  const [repoPath] = useAppState(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['commitchanges', repoPath, commit],
+    queryFn: async () => {
+      if (!repoPath || commit.length === 0) {
+        throw new Error('no repoPath');
+      }
+      const res = await commands.commitsChangeInfo(repoPath, commit);
+      return match(res)
+        .with({ status: 'ok' }, res => {
+          return res.data;
+        })
+        .with({ status: 'error' }, err => {
+          throw new Error(err.error);
+        })
+        .exhaustive();
+    },
+    refetchInterval: 2000,
+    refetchOnWindowFocus: 'always',
+    enabled: repoPath !== undefined,
+  });
+}

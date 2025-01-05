@@ -83,7 +83,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
                 {item.path}
               </Label>
             </HoverCardTrigger>
-            <HoverCardContent className="w-80">
+            <HoverCardContent className="w-[520px]">
               <Diff filePath={item.path} />
             </HoverCardContent>
           </HoverCard>

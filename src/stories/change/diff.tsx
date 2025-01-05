@@ -2,7 +2,7 @@ import { commands } from '@/bindings';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
-import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import { useEffect, useMemo, useState } from 'react';
 import { shadcnTheme } from '../codemirror/theme/shadcn';
 
@@ -40,9 +40,9 @@ export function Diff({ filePath }: DiffProps) {
     <CodeMirror
       className="font-mono text-base"
       theme={shadcnTheme}
-      height="100%"
+      height="520px"
       value={diff}
-      extensions={[...extensions, EditorView.lineWrapping]}
+      extensions={[...extensions]}
       basicSetup={{
         lineNumbers: false,
         foldGutter: false,

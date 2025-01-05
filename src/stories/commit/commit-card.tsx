@@ -1,7 +1,7 @@
 import type { CommitInfo } from '@/bindings';
 import { AvatarGroup } from '@/components/ext/avatar-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useRemotes } from '@/hooks/query';
+import { useCommitChanges, useRemotes } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
@@ -32,6 +32,7 @@ export default function CommitCard({
     s.renderMarkdown,
     s.setRenderMarkdown,
   ]);
+  const { data: changInfo } = useCommitChanges(info.oid);
 
   const { data: branches } = useRemotes();
   let repo: null | string = null;
@@ -67,15 +68,21 @@ export default function CommitCard({
         </AvatarGroup>
         <div>
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <PiClockClockwise />
-              <span>{formatDate(info.time)}</span>
-              <FaMarkdown
-                onClick={() => {
-                  setRenderMarkdown(!renderMarkdown);
-                }}
-                className={cn(!renderMarkdown && 'text-gray-500')}
-              />
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <PiClockClockwise />
+                <span>{formatDate(info.time)}</span>
+                <FaMarkdown
+                  onClick={() => {
+                    setRenderMarkdown(!renderMarkdown);
+                  }}
+                  className={cn(!renderMarkdown && 'text-gray-500')}
+                />
+              </div>
+              <div className="flex gap-2">
+                <span className="text-green-500">+{changInfo?.add}</span>
+                <span className="text-red-500">-{changInfo?.del}</span>
+              </div>
             </div>
             <ScrollArea
               className="flex h-72 max-w-96 items-center gap-2"

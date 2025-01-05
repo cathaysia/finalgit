@@ -479,6 +479,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async commitsChangeInfo(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<ChangeInfo, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commits_change_info', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async configGet(
     repoPath: string,
     key: string,
@@ -845,6 +859,7 @@ export type BranchInfo = {
   upstream: string | null;
 };
 export type BranchType = 'Local' | 'Remote';
+export type ChangeInfo = { add: number; del: number };
 export type CommitInfo = {
   oid: string;
   author: Signature;

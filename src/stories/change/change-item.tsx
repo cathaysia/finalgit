@@ -8,6 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
 import { refreshChanges } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
@@ -20,6 +25,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { match } from 'ts-pattern';
+import { Diff } from './diff';
 
 export interface ChangeItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -54,7 +60,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
         {...props}
         ref={ref}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex grow items-center gap-2">
           <Checkbox
             defaultChecked={GitFileStatus.isIndexed(item.status)}
             checked={isChecked}
@@ -62,24 +68,25 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               repoPath && handleCheckedChange(repoPath, s, item)
             }
           />
-          <Label
-            className={cn(
-              'line-clamp-2 overflow-y-hidden text-wrap break-all',
-              isConflicted &&
-                'text-red-600 underline decoration-wavy dark:text-red-600',
-              isDeleted && 'line-through',
-              isNew && 'text-green-600 dark:text-green-600',
-              isModified && 'text-yellow-600 dark:text-yellow-600',
-            )}
-            title={
-              (isModified && t('modified')) ||
-              (isDeleted && t('deleted')) ||
-              (isNew && t('new_file')) ||
-              undefined
-            }
-          >
-            {item.path}
-          </Label>
+          <HoverCard>
+            <HoverCardTrigger className="grow">
+              <Label
+                className={cn(
+                  'line-clamp-2 overflow-y-hidden text-wrap break-all',
+                  isConflicted &&
+                    'text-red-600 underline decoration-wavy dark:text-red-600',
+                  isDeleted && 'line-through',
+                  isNew && 'text-green-600 dark:text-green-600',
+                  isModified && 'text-yellow-600 dark:text-yellow-600',
+                )}
+              >
+                {item.path}
+              </Label>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <Diff filePath={item.path} />
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <div className="flex items-center">
           <DropdownMenu>

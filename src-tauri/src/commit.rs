@@ -4,6 +4,8 @@ use crate::AppResult;
 use crate::BranchType;
 use crate::CommitInfo;
 use git2::build::CheckoutBuilder;
+use git2::DiffFormat;
+use git2::DiffOptions;
 use git2::Oid;
 use git2::Sort;
 use tauri_derive::export_ts;
@@ -19,7 +21,11 @@ pub trait CommitExt {
     async fn commit_create(&self, msg: &str) -> AppResult<()>;
     async fn commits_by_branch(&self, branch: &str, kind: BranchType)
         -> AppResult<Vec<CommitInfo>>;
-    async fn patch_create(&self) -> AppResult<String>;
+
+    async fn diff_stage(&self) -> AppResult<String>;
+    async fn diff_between(&self, old_commit: &str, new_commit: &str) -> AppResult<String>;
+    /// Just like git diff
+    async fn diff_stage_file(&self, file_path: &str) -> AppResult<String>;
 }
 
 #[export_ts(scope = "commit")]
@@ -68,6 +74,18 @@ impl CommitExt for git2::Repository {
         Ok(())
     }
 
+    async fn commit_revert(&self, commit: &str) -> AppResult<()> {
+        let commit = self.find_commit(commit.parse()?)?;
+
+        let mut builder = git2::build::CheckoutBuilder::new();
+        builder.safe();
+        let mut opts = git2::RevertOptions::new();
+        opts.checkout_builder(builder);
+
+        self.revert(&commit, Some(&mut opts))?;
+        Ok(())
+    }
+
     async fn commits_since(&self, commit: &str) -> AppResult<Vec<CommitInfo>> {
         let commit = self.find_commit_by_prefix(commit)?;
         let mut revwalk = self.revwalk()?;
@@ -113,22 +131,67 @@ impl CommitExt for git2::Repository {
         Ok(commits)
     }
 
-    async fn patch_create(&self) -> AppResult<String> {
-        let output = self.exec_git(["diff", "HEAD"])?;
+    async fn diff_stage(&self) -> AppResult<String> {
+        let index = self.index()?;
+        let diff = self.diff_index_to_workdir(Some(&index), None)?;
+        let mut res = String::default();
+        diff.print(DiffFormat::Patch, |_delta, _hunk, line| {
+            let prefix = match line.origin() {
+                '+' => "+",
+                '-' => "-",
+                _ => "",
+            };
+            if let Ok(line) = std::str::from_utf8(line.content()) {
+                res.push_str(&format!("{prefix}{line}"));
+            }
+            true
+        })?;
 
-        let out = String::from_utf8(output.stdout)?;
-        Ok(out)
+        Ok(res)
     }
 
-    async fn commit_revert(&self, commit: &str) -> AppResult<()> {
-        let commit = self.find_commit(commit.parse()?)?;
+    async fn diff_between(&self, old_commit: &str, new_commit: &str) -> AppResult<String> {
+        let old_commit = Oid::from_str(old_commit)?;
+        let new_commit = Oid::from_str(new_commit)?;
+        let old_commit = self.find_commit(old_commit)?.tree()?;
+        let new_commit = self.find_commit(new_commit)?.tree()?;
 
-        let mut builder = git2::build::CheckoutBuilder::new();
-        builder.safe();
-        let mut opts = git2::RevertOptions::new();
-        opts.checkout_builder(builder);
+        let diff = self.diff_tree_to_tree(Some(&old_commit), Some(&new_commit), None)?;
 
-        self.revert(&commit, Some(&mut opts))?;
-        Ok(())
+        let mut res = String::default();
+        diff.print(DiffFormat::Patch, |_delta, _hunk, line| {
+            let prefix = match line.origin() {
+                '+' => "+",
+                '-' => "-",
+                _ => "",
+            };
+            if let Ok(line) = std::str::from_utf8(line.content()) {
+                res.push_str(&format!("{prefix}{line}"));
+            }
+            true
+        })?;
+
+        Ok(res)
+    }
+
+    async fn diff_stage_file(&self, file_path: &str) -> AppResult<String> {
+        let index = self.index()?;
+        let mut opts = DiffOptions::new();
+        opts.pathspec(file_path);
+        let diff = self.diff_index_to_workdir(Some(&index), Some(&mut opts))?;
+        let mut res = String::default();
+        diff.print(DiffFormat::Patch, |_delta, _hunk, line| {
+            let prefix = match line.origin() {
+                '+' => "+",
+                '-' => "-",
+                _ => "",
+            };
+            if let Ok(line) = std::str::from_utf8(line.content()) {
+                res.push_str(&format!("{prefix}{line}"));
+            }
+            true
+        })?;
+
+        Ok(res)
     }
 }

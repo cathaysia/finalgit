@@ -374,6 +374,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async commitRevert(
+    repoPath: string,
+    commit: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('commit_revert', { repoPath, commit }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async commitsSince(
     repoPath: string,
     commit: string,
@@ -421,25 +435,44 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async patchCreate(repoPath: string): Promise<Result<string, string>> {
+  async diffStage(repoPath: string): Promise<Result<string, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('patch_create', { repoPath }),
+        data: await TAURI_INVOKE('diff_stage', { repoPath }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;
       else return { status: 'error', error: e as any };
     }
   },
-  async commitRevert(
+  async diffBetween(
     repoPath: string,
-    commit: string,
-  ): Promise<Result<null, string>> {
+    oldCommit: string,
+    newCommit: string,
+  ): Promise<Result<string, string>> {
     try {
       return {
         status: 'ok',
-        data: await TAURI_INVOKE('commit_revert', { repoPath, commit }),
+        data: await TAURI_INVOKE('diff_between', {
+          repoPath,
+          oldCommit,
+          newCommit,
+        }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async diffStageFile(
+    repoPath: string,
+    filePath: string,
+  ): Promise<Result<string, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('diff_stage_file', { repoPath, filePath }),
       };
     } catch (e) {
       if (e instanceof Error) throw e;

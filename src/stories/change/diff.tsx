@@ -41,6 +41,7 @@ export function Diff({ filePath }: DiffProps) {
       className="font-mono text-base"
       theme={shadcnTheme}
       height="520px"
+      readOnly={true}
       value={diff}
       extensions={[...extensions]}
       basicSetup={{

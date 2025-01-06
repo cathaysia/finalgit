@@ -99,11 +99,11 @@ export default function CommitCard({
                   className="prose dark:prose-invert text-wrap break-all font-mono"
                   remarkPlugins={[remarkGfm]}
                 >
-                  {mdData || info.body}
+                  {mdData || info.message}
                 </Markdown>
               ) : (
                 <pre className="prose dark:prose-invert text-wrap break-all">
-                  {info.body}
+                  {info.message}
                 </pre>
               )}
             </ScrollArea>

@@ -56,9 +56,11 @@ export default function AiCard() {
   if (error) {
     NOTIFY.error(error.message);
   }
-  if (models && aiConfig.ollama.model.length === 0 && models.length > 0) {
-    setOllamaModel(models[0]);
-  }
+  useEffect(() => {
+    if (models && aiConfig.ollama.model.length === 0 && models.length > 0) {
+      setOllamaModel(models[0]);
+    }
+  });
 
   return (
     <Card className="w-full">
@@ -229,6 +231,7 @@ function OllamaPull() {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
+              // biome-ignore lint/a11y/useSemanticElements: <explanation>
               role="combobox"
               className={cn('justify-between', !showSelect && 'hidden')}
             >

@@ -91,7 +91,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                 return;
               }
               setIsLoading(true);
-              const value = await commands?.diffStage(repoPath);
+              const value = await commands?.diffCache(repoPath, []);
               if (value.status === 'error') {
                 NOTIFY.error(value.error);
                 setIsLoading(false);

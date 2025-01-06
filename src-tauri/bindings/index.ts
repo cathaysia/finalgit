@@ -493,6 +493,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async diffCache(
+    repoPath: string,
+    filePathes: string[],
+  ): Promise<Result<string, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('diff_cache', { repoPath, filePathes }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async configGet(
     repoPath: string,
     key: string,

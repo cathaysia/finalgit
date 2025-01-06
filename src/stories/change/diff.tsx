@@ -1,5 +1,6 @@
-import { commands } from '@/bindings';
+import { type FileStatus, commands } from '@/bindings';
 import { useAppState } from '@/hooks/state';
+import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import CodeMirror from '@uiw/react-codemirror';
@@ -7,10 +8,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { shadcnTheme } from '../codemirror/theme/shadcn';
 
 export interface DiffProps {
-  filePath: string;
+  item: FileStatus;
 }
 
-export function Diff({ filePath }: DiffProps) {
+export function Diff({ item: filePath }: DiffProps) {
+  const isWt = GitFileStatus.isWt(filePath.status);
+
   const [repoPath] = useAppState(s => [s.repoPath]);
   const [diff, setDiff] = useState('');
 
@@ -27,13 +30,24 @@ export function Diff({ filePath }: DiffProps) {
     if (!repoPath) {
       return;
     }
-    commands?.diffStageFile(repoPath, filePath).then(s => {
-      if (s.status === 'ok') {
-        setDiff(s.data);
-      } else {
-        NOTIFY.error(s.error);
-      }
-    });
+
+    if (isWt) {
+      commands?.diffStageFile(repoPath, filePath.path).then(s => {
+        if (s.status === 'ok') {
+          setDiff(s.data);
+        } else {
+          NOTIFY.error(s.error);
+        }
+      });
+    } else {
+      commands?.diffCache(repoPath, [filePath.path]).then(s => {
+        if (s.status === 'ok') {
+          setDiff(s.data);
+        } else {
+          NOTIFY.error(s.error);
+        }
+      });
+    }
   }, [filePath, repoPath]);
 
   return (

@@ -31,6 +31,7 @@ pub trait CommitExt {
     async fn commits_change_info(&self, commit: &str) -> AppResult<ChangeInfo>;
 
     async fn diff_stage(&self) -> AppResult<String>;
+    async fn diff_cache(&self, file_pathes: Vec<String>) -> AppResult<String>;
     async fn diff_between(&self, old_commit: &str, new_commit: &str) -> AppResult<String>;
     /// Just like git diff
     async fn diff_stage_file(&self, file_path: &str) -> AppResult<String>;
@@ -221,5 +222,29 @@ impl CommitExt for git2::Repository {
         })?;
 
         Ok(info)
+    }
+
+    async fn diff_cache(&self, file_pathes: Vec<String>) -> AppResult<String> {
+        let tree = self.head()?.peel_to_tree()?;
+        let index = self.index()?;
+        let mut opts = DiffOptions::new();
+        for file in file_pathes {
+            opts.pathspec(file);
+        }
+        let diff = self.diff_tree_to_index(Some(&tree), Some(&index), Some(&mut opts))?;
+        let mut res = String::default();
+        diff.print(DiffFormat::Patch, |_delta, _hunk, line| {
+            let prefix = match line.origin() {
+                '+' => "+",
+                '-' => "-",
+                _ => "",
+            };
+            if let Ok(line) = std::str::from_utf8(line.content()) {
+                res.push_str(&format!("{prefix}{line}"));
+            }
+            true
+        })?;
+
+        Ok(res)
     }
 }

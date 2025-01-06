@@ -38,16 +38,6 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
     const t = useTranslations('stage');
     const [repoPath] = useAppState(s => [s.repoPath]);
 
-    function getCheckedStatus(status: number) {
-      const isIndexed = GitFileStatus.isIndexed(status);
-      const isWt = GitFileStatus.isWt(status);
-      if (isIndexed && isWt) {
-        return 'indeterminate';
-      }
-
-      return isIndexed;
-    }
-
     const isChecked = getCheckedStatus(item.status);
     const isConflicted = GitFileStatus.isConflicted(item.status);
     const isDeleted = GitFileStatus.isDeleted(item.status);
@@ -84,7 +74,7 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               </Label>
             </HoverCardTrigger>
             <HoverCardContent className="w-[520px]">
-              <Diff filePath={item.path} />
+              <Diff item={item} />
             </HoverCardContent>
           </HoverCard>
         </div>
@@ -184,3 +174,13 @@ async function handleCheckedChange(
 }
 
 export default ChangeItem;
+
+export function getCheckedStatus(status: number) {
+  const isIndexed = GitFileStatus.isIndexed(status);
+  const isWt = GitFileStatus.isWt(status);
+  if (isIndexed && isWt) {
+    return 'indeterminate';
+  }
+
+  return isIndexed;
+}

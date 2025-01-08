@@ -4,9 +4,9 @@ import { useBranches, useTags } from '@/hooks/query';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
-import ControlBar from '@/stories/atoms/controlbar';
-import Project from '@/stories/atoms/project';
-import BranchPanel from '@/stories/branch/barnch-panel';
+import ControlBar from '@/ui/atoms/controlbar';
+import Project from '@/ui/atoms/project';
+import BranchPanel from '@/ui/branch/barnch-panel';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 

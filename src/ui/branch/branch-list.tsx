@@ -1,6 +1,6 @@
 import type { BranchInfo } from '@/bindings';
 import { cn } from '@/lib/utils';
-import BranchItem from '@/stories/branch/branch-item';
+import BranchItem from '@/ui/branch/branch-item';
 import VirtualScrollArea from '../atoms/virtualscroll-area';
 
 export interface BranchListProps

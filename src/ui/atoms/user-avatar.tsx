@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useGhAvatar } from '@/hooks/gh';
-import { stringToColor } from '@/utils/string2color';
+import { stringToColor } from '@/lib/string2color';
 
 function stringAvatar(name: string) {
   let tag = null;

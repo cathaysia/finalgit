@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useAppState } from '@/hooks/state';
 import { cn } from '@/lib/utils';
-import { shadcnTheme } from '@/stories/codemirror/theme/shadcn';
+import { shadcnTheme } from '@/ui/codemirror/theme/shadcn';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { FaMagic } from 'react-icons/fa';
 

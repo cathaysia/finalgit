@@ -6,7 +6,7 @@ import '@fontsource-variable/fira-code';
 import '@/assets/global.css';
 import { TanStackQueryDevtools } from '@/components/devtools/query-devtools';
 import { Toaster } from '@/components/ui/sonner';
-import RebaseCard from '@/stories/rebase/rebase-card';
+import RebaseCard from '@/ui/rebase/rebase-card';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from 'next-themes';
 import { App } from './ui/app';

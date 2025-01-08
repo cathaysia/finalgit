@@ -11,13 +11,13 @@ import { useAppState } from '@/hooks/state';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
-import { createBlamePlugin } from '@/stories/codemirror/blame';
-import { BlameCard } from '@/stories/codemirror/blame/blame-card';
+import { createBlamePlugin } from '@/ui/codemirror/blame';
+import { BlameCard } from '@/ui/codemirror/blame/blame-card';
 import {
   LicenseCard,
   detectLicense,
-} from '@/stories/codemirror/license/license-card';
-import FilePanel from '@/stories/panels/file-panel';
+} from '@/ui/codemirror/license/license-card';
+import FilePanel from '@/ui/panels/file-panel';
 import * as Portal from '@radix-ui/react-portal';
 import {
   type LanguageName,

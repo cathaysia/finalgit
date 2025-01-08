@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import GitOption from '@/ui/atoms/git-option';
+import GitSwitch from '@/ui/atoms/git-switch';
 import { useTranslations } from 'next-intl';
-import GitOption from '../../../../stories/atoms/git-option';
-import GitSwitch from '../../../../stories/atoms/git-switch';
 
 type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {

@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAppState } from '@/hooks/state';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
-import ChangeList from '@/stories/change/change-list';
+import ChangeList from '@/ui/change/change-list';
 import { useTranslations } from 'next-intl';
 import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
 

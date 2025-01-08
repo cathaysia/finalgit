@@ -11,10 +11,10 @@ import {
 import { useAppState } from '@/hooks/state';
 import { getGitConfig, setGitConfig } from '@/lib/git';
 import { cn } from '@/lib/utils';
+import GitOption from '@/ui/atoms/git-option';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
-import GitOption from '../../../../stories/atoms/git-option';
 
 type GitUserProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 

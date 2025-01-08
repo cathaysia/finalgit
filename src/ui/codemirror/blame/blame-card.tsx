@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
 import { useCommitInfo } from '@/hooks/query';
-import CommitCard from '@/stories/commit/commit-card';
+import CommitCard from '@/ui/commit/commit-card';
 
 export interface BlameCardProps {
   blame: BlameHunk;

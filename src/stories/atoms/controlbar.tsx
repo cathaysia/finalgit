@@ -1,13 +1,28 @@
+'use client';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
+import { IoClose, IoRemove } from 'react-icons/io5';
 import { MdSettings } from 'react-icons/md';
+import { RiExpandLeftRightFill } from 'react-icons/ri';
+import { RiContractLeftRightFill } from 'react-icons/ri';
 
 type ControlBarProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export default function ControlBar({ className, ...props }: ControlBarProps) {
   const t = useTranslations();
+  const [isMaximized, setIsMaximized] = useState(false);
+
+  useEffect(() => {
+    getCurrentWindow()
+      .isMaximizable()
+      .then(item => {
+        setIsMaximized(!item);
+      });
+  });
+
   return (
     <div
       data-tauri-drag-region={true}
@@ -16,23 +31,34 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
     >
       <div className="flex items-center gap-2">
         <div
-          className="h-3 w-3 rounded-lg bg-red-600"
+          className="group h-3 w-3 rounded-lg bg-red-600"
           onClick={() => {
             getCurrentWindow().close();
           }}
-        />
+        >
+          <IoClose className="hidden h-3 w-3 text-gray-800 group-hover:block" />
+        </div>
         <div
-          className="h-3 w-3 rounded-lg bg-yellow-600"
+          className="group h-3 w-3 rounded-lg bg-yellow-600"
           onClick={() => {
             getCurrentWindow().minimize();
           }}
-        />
+        >
+          <IoRemove className="hidden h-3 w-3 text-gray-800 group-hover:block" />
+        </div>
         <div
-          className="h-3 w-3 rounded-lg bg-green-600"
+          className="group h-3 w-3 rounded-lg bg-green-600"
           onClick={() => {
             getCurrentWindow().toggleMaximize();
+            setIsMaximized(!isMaximized);
           }}
-        />
+        >
+          {isMaximized ? (
+            <RiContractLeftRightFill className="hidden h-3 w-3 rotate-45 text-gray-800 group-hover:block" />
+          ) : (
+            <RiExpandLeftRightFill className="hidden h-3 w-3 rotate-45 text-gray-800 group-hover:block" />
+          )}
+        </div>
       </div>
       <Link href="/settings" className="hover:text-foreground/80">
         <MdSettings className="mr-2" title={t('controlbar.preference')} />

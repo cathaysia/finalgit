@@ -863,6 +863,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async gitClone(
+    args: CloneArgs,
+    chan: TAURI_CHANNEL<string>,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('git_clone', { args, chan }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
 };
 
 /** user-defined events **/
@@ -888,6 +902,13 @@ export type BranchInfo = {
 };
 export type BranchType = 'Local' | 'Remote';
 export type ChangeInfo = { add: number; del: number };
+export type CloneArgs = {
+  url: string;
+  target: string;
+  depth: number;
+  mirror: boolean;
+  recursive: boolean;
+};
 export type CommitInfo = {
   oid: string;
   author: Signature;
@@ -928,6 +949,7 @@ export type RepositoryState =
   | 'ApplyMailboxOrRebase';
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
+export type TAURI_CHANNEL<TSend> = null;
 export type TagInfo = { name: string; oid: string; ref_hash: string };
 
 /** tauri-specta globals **/

@@ -1,12 +1,29 @@
 use std::process::Stdio;
+
+use log::error;
+use specta::Type;
 use std::str::FromStr;
+use tokio::io::AsyncReadExt;
+use tokio::io::BufReader;
+use tokio::process;
 
 use crate::branch::RepoExt;
 use crate::AppError;
 use crate::AppResult;
 use filetime::FileTime;
 use itertools::Itertools;
+use tauri::ipc;
 use tauri_derive::export_ts;
+
+#[derive(Debug, Default, Clone, serde::Serialize, serde::Deserialize, Type)]
+#[serde(default)]
+pub struct CloneArgs {
+    pub url: String,
+    pub target: String,
+    pub depth: i32,
+    pub mirror: bool,
+    pub recursive: bool,
+}
 
 pub trait UtilExt {
     fn get_head_modify_time(repo_path: &str) -> AppResult<f64>;
@@ -14,6 +31,8 @@ pub trait UtilExt {
 
     fn git_get_version(&self) -> AppResult<semver::Version>;
     fn gpg_get_secret_list() -> AppResult<Vec<String>>;
+
+    async fn git_clone(args: CloneArgs, reader: ipc::Channel<&str>) -> AppResult<()>;
 }
 
 #[export_ts(scope = "utils")]
@@ -64,6 +83,51 @@ impl UtilExt for git2::Repository {
         }
 
         Ok(res)
+    }
+
+    async fn git_clone(args: CloneArgs, chan: ipc::Channel<&str>) -> AppResult<()> {
+        let mut cmd = process::Command::new("git");
+        cmd.arg("clone")
+            .env("LANG", "C")
+            .env("GIT_TERMINAL_PROMPT", "0")
+            .arg("--progress")
+            .arg(args.url)
+            .arg(args.target)
+            .stdin(Stdio::null())
+            .stderr(Stdio::piped());
+
+        if args.depth > 0 {
+            cmd.arg("--depth").arg(args.depth.to_string());
+        };
+        if args.recursive {
+            cmd.arg("--recursive");
+        }
+        if args.mirror {
+            cmd.arg("--mirror");
+        }
+
+        let mut handle = cmd.spawn()?;
+
+        let stderr = handle.stderr.take().unwrap();
+
+        let mut reader = BufReader::new(stderr);
+        let mut buffer = [0u8; 1024];
+
+        loop {
+            match reader.read(&mut buffer).await? {
+                0 => break,
+                n => match std::str::from_utf8(&buffer[0..n]) {
+                    Ok(value) => chan.send(value)?,
+                    Err(_) => {
+                        error!("find utf8 boundaries failed: {buffer:?}");
+                    }
+                },
+            }
+        }
+
+        let _ = handle.wait_with_output().await?;
+
+        Ok(())
     }
 }
 

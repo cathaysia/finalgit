@@ -5,8 +5,8 @@ import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import ControlBar from '@/ui/atoms/controlbar';
-import Project from '@/ui/atoms/project';
 import BranchPanel from '@/ui/branch/barnch-panel';
+import Project from '@/ui/main/project';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 

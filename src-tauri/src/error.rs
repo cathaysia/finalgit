@@ -22,6 +22,8 @@ pub enum AppError {
     NotImplement,
     #[error("Don't support bare repo.")]
     BareRepo,
+    #[error("{0}")]
+    TauriError(#[from] tauri::Error),
 }
 
 pub type AppResult<T> = Result<T, AppError>;

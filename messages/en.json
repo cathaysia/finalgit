@@ -129,7 +129,13 @@
   },
   "project": {
     "clone_repository": "Clone remote repository",
-    "open_local_repository": "Open local repository"
+    "open_local_repository": "Open local repository",
+    "clone_remote_repo": "Clone remote repository",
+    "clone": "Clone",
+    "cancel clone": "Cancel",
+    "depth": "Depth",
+    "recursive": "Recursive",
+    "mirror": "mirror"
   },
   "rebase": {
     "abort": "abort rebase",

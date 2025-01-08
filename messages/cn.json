@@ -129,7 +129,12 @@
   },
   "project": {
     "clone_repository": "克隆远程仓库",
-    "open_local_repository": "打开本地仓库"
+    "open_local_repository": "打开本地仓库",
+    "clone_remote_repo": "克隆远程仓库",
+    "cancel clone": "取消",
+    "depth": "Depth",
+    "recursive": "Recursive",
+    "mirror": "mirror"
   },
   "rebase": {
     "abort": "终止变基",

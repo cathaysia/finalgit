@@ -4,19 +4,13 @@ import { useBranches, useTags } from '@/hooks/query';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
+import ControlBar from '@/stories/atoms/controlbar';
 import Project from '@/stories/atoms/project';
 import BranchPanel from '@/stories/branch/barnch-panel';
 import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import type React from 'react';
-import ControlBar from '../atoms/controlbar';
 
-type ControlPanelProps = React.HtmlHTMLAttributes<HTMLDivElement>;
-
-export default function ControlPanel({
-  className,
-  ...props
-}: ControlPanelProps) {
+export default function ControlPanel() {
   const t = useTranslations();
 
   const currentPath = usePathname();
@@ -34,9 +28,7 @@ export default function ControlPanel({
     <aside
       className={cn(
         'flex h-full max-h-full w-full flex-col gap-2 overflow-hidden',
-        className,
       )}
-      {...props}
     >
       <ControlBar />
       <Project />

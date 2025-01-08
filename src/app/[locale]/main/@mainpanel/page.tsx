@@ -1,10 +1,8 @@
 'use client';
-import type { FileStatus, FileTree } from '@/bindings';
 import { commands } from '@/bindings';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { FaFolderTree } from 'react-icons/fa6';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useAppState } from '@/hooks/state';
@@ -12,20 +10,12 @@ import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/stories/change/change-list';
 import { useTranslations } from 'next-intl';
-import type React from 'react';
 import { VscRepoPull, VscRepoPush } from 'react-icons/vsc';
-
-export interface WorkspacePanelProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {
-  branchName: string;
-  upstream?: string;
-  files?: FileTree[];
-  changeSet: FileStatus[];
-}
 
 import {
   refreshPushStatus,
   useBranches,
+  useChanges,
   useHeadOid,
   usePushstatus,
   useTags,
@@ -35,13 +25,24 @@ import { produce } from 'immer';
 import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 
-export default function WorkspacePanel({
-  className,
-  branchName,
-  upstream,
-  changeSet,
-  ...props
-}: WorkspacePanelProps) {
+export default function WorkspacePanel() {
+  const { error, data: branches } = useBranches();
+  if (error) {
+    NOTIFY.error(error.message);
+  }
+
+  const head = branches?.find(item => item.is_head);
+  let branchName = '';
+  if (head) {
+    branchName = head.name;
+  }
+
+  const { error: changeErr, data: changes } = useChanges();
+  if (changeErr) {
+    NOTIFY.error(changeErr.message);
+  }
+  const changeSet = changes || [];
+
   const t = useTranslations();
   const [repoPath] = useAppState(s => [s.repoPath]);
 
@@ -68,7 +69,6 @@ export default function WorkspacePanel({
   }
   const { data: pushState } = usePushstatus(branchName);
 
-  const { data: branches } = useBranches();
   const [pushActionState, setPushActionState] = useState({
     isPulling: false,
     isPushing: false,
@@ -76,16 +76,11 @@ export default function WorkspacePanel({
 
   return (
     <div
-      className={cn(
-        'flex h-full max-h-full flex-col gap-2 overflow-y-hidden',
-        className,
-      )}
-      {...props}
+      className={cn('flex h-full max-h-full flex-col gap-2 overflow-y-hidden')}
     >
       <div className={cn('rounded-xl border p-4 shadow')}>
         <div className="pb-2">
           <div className="pb-2">{branchName}</div>
-          {upstream && <Badge>{upstream}</Badge>}
         </div>
         <Separator />
         <div className="pt-2">

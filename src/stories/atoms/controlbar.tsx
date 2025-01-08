@@ -2,6 +2,7 @@
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { IoClose, IoRemove } from 'react-icons/io5';
@@ -60,9 +61,14 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
           )}
         </div>
       </div>
-      <Link href="/settings" className="hover:text-foreground/80">
-        <MdSettings className="mr-2" title={t('controlbar.preference')} />
-      </Link>
+      <motion.span
+        className="hover:text-foreground/80"
+        whileHover={{ rotate: '90deg', transitionDuration: '150ms' }}
+      >
+        <Link href="/settings">
+          <MdSettings title={t('controlbar.preference')} />
+        </Link>
+      </motion.span>
     </div>
   );
 }

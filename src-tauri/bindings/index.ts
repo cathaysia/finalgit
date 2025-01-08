@@ -621,6 +621,20 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async fileReadToString(
+    repoPath: string,
+    path: string,
+  ): Promise<Result<string, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('file_read_to_string', { repoPath, path }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async rebaseAbort(repoPath: string): Promise<Result<null, string>> {
     try {
       return {

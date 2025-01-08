@@ -26,6 +26,7 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 import { match } from 'ts-pattern';
 import { Diff } from './diff';
+import { FilePreview } from './file_preview';
 
 export interface ChangeItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -74,7 +75,11 @@ const ChangeItem = React.forwardRef<HTMLDivElement, ChangeItemProps>(
               </Label>
             </HoverCardTrigger>
             <HoverCardContent className="w-[520px]">
-              <Diff item={item} />
+              {isNew && !GitFileStatus.isIndexed(item.status) ? (
+                <FilePreview item={item} />
+              ) : (
+                <Diff item={item} />
+              )}
             </HoverCardContent>
           </HoverCard>
         </div>

@@ -1,6 +1,7 @@
 use itertools::Itertools;
 use std::path::Path;
 use tauri_derive::export_ts;
+use tokio::fs;
 use tokio::{fs::OpenOptions, io::AsyncWriteExt};
 
 use log::debug;
@@ -14,6 +15,7 @@ pub trait FileExt {
 
     async fn file_add_ignore(&self, rules: &str) -> AppResult<()>;
     async fn file_add_exclude(&self, rules: &str) -> AppResult<()>;
+    async fn file_read_to_string(&self, path: &str) -> AppResult<String>;
 }
 
 #[export_ts(scope = "file")]
@@ -87,6 +89,12 @@ impl FileExt for git2::Repository {
         let mut exclude = opt.append(true).create(true).open(path).await?;
         exclude.write_all(format!("\n{rules}\n").as_bytes()).await?;
         Ok(())
+    }
+
+    async fn file_read_to_string(&self, path: &str) -> AppResult<String> {
+        let path = self.path().join(format!("../{path}")).canonicalize()?;
+        let path = fs::read_to_string(path).await?;
+        Ok(path)
     }
 }
 

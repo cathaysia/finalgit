@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import NOTIFY from '@/lib/notify';
+import { useXterm } from '@/lib/use-xterm';
 import { Channel } from '@tauri-apps/api/core';
 import { produce } from 'immer';
 import { useTranslations } from 'next-intl';
@@ -11,11 +12,16 @@ import { useState } from 'react';
 import { CgSpinner } from 'react-icons/cg';
 import { FaFolder } from 'react-icons/fa6';
 import { VscRepo } from 'react-icons/vsc';
-import { Xterm } from './xterm';
 
 export function CloneWidget() {
   const t = useTranslations('project');
-  const [state, setState] = useState('');
+  const [isCloning, setIsCloning] = useState(false);
+  const { ref, writeText } = useXterm({
+    options: {
+      rows: 80,
+      cols: 80,
+    },
+  });
   const [args, setArgs] = useState<CloneArgs>({
     url: '',
     depth: 0,
@@ -24,11 +30,15 @@ export function CloneWidget() {
     recursive: false,
   });
 
-  if (state.length !== 0) {
+  if (isCloning) {
     return (
       <>
-        <div className="w-full">
-          <Xterm value={state} />
+        <div className="h-32 w-full">
+          <div
+            ref={r => {
+              ref(r);
+            }}
+          />
         </div>
         <Button variant={'destructive'} disabled>
           <CgSpinner className="mr-2 inline-block animate-spin" />
@@ -110,18 +120,17 @@ export function CloneWidget() {
       <Button
         onClick={async () => {
           console.log('cloning');
+          setIsCloning(true);
           const chan = new Channel<string>();
           chan.onmessage = rep => {
-            setState(s => {
-              return s + rep;
-            });
+            writeText(rep);
           };
 
           const res = await commands?.gitClone(args, chan);
           if (res.status === 'error') {
             NOTIFY.error(res.error);
           }
-          setState('');
+          setIsCloning(false);
         }}
       >
         {t('clone')}

@@ -69,7 +69,7 @@ export default function ChangeList({ className, changeSet }: ChangeListProps) {
         className="grow"
       />
       <StashCard
-        className={cn(stashList?.length === 0 && 'hidden')}
+        className={cn((!stashList || stashList?.length === 0) && 'hidden')}
         stashList={stashList || []}
       />
       <Separator />

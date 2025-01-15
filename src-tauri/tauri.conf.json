@@ -15,8 +15,10 @@
         "title": "FinalGit",
         "width": 1400,
         "height": 800,
-        "decorations": false,
-        "shadow": true
+        "decorations": true,
+        "shadow": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
     ],
     "security": {

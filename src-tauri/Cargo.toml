@@ -27,7 +27,6 @@ tauri = { version = "2.1.1", features = [] }
 tauri-plugin-shell = "2"
 tauri-plugin-dialog = "2.0.3"
 tauri-plugin-log = { version = "2.2.0", features = ["colored"] }
-tauri-plugin-window-state = "2.2.0"
 tauri-plugin-clipboard-manager = "2.2.0"
 tauri-plugin-store = "2.2.0"
 tauri-plugin-fs = "2.2.0"

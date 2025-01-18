@@ -38,6 +38,9 @@ export default function GitOption({
     if (!debounce || !repoPath || !debounce) {
       return;
     }
+    if (debounce.length === 0) {
+      return;
+    }
     setGitConfig(repoPath, opt, debounce);
   }, [debounce, repoPath, opt]);
 
@@ -48,6 +51,7 @@ export default function GitOption({
         type="text"
         value={value}
         id={id}
+        autoCorrect="off"
         onChange={e => {
           setValue(e.target.value);
         }}

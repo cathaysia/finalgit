@@ -1,14 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -38,26 +29,19 @@ export default function BranchRename({
         className,
       )}
     >
-      <Select defaultValue="none">
-        <SelectTrigger className="w-20">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>{t('rename.kind')}</SelectLabel>
-            <SelectItem value="none">none</SelectItem>
-            <SelectItem value="bugfix">bugfix</SelectItem>
-            <SelectItem value="feature">feature</SelectItem>
-            <SelectItem value="release">release</SelectItem>
-            <SelectItem value="hotfix">hotfix</SelectItem>
-            <SelectItem value="support">support</SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <datalist id="gitflow">
+        <option value="bugfix" />
+        <option value="feature" />
+        <option value="release" />
+        <option value="hotfix" />
+        <option value="support" />
+      </datalist>
       <Input
+        list="gitflow"
         className={cn('w-full', className)}
         type="text"
         autoFocus
+        autoCorrect="off"
         value={value}
         onChange={v => setValue(v.target.value)}
         onKeyUp={e => {

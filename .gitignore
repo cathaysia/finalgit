@@ -35,3 +35,4 @@ stats.html
 **/*.tokens
 public/icons/
 next-env.d.ts
+site

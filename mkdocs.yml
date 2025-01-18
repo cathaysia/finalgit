@@ -1,0 +1,7 @@
+site_name: FinalGit
+site_url: https://cathaysia.github.io/finalgit
+repo_url: https://github.com/cathaysia/finalgit
+theme:
+  name: material
+plugins:
+  - include-markdown

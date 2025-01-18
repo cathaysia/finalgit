@@ -538,7 +538,7 @@ export const commands = {
   },
   async configGetAll(
     repoPath: string,
-  ): Promise<Result<{ [key in string]: string }, string>> {
+  ): Promise<Result<Partial<{ [key in string]: string }>, string>> {
     try {
       return {
         status: 'ok',
@@ -949,7 +949,6 @@ export type RepositoryState =
   | 'ApplyMailboxOrRebase';
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
-export type TAURI_CHANNEL<TSend> = null;
 export type TagInfo = { name: string; oid: string; ref_hash: string };
 
 /** tauri-specta globals **/

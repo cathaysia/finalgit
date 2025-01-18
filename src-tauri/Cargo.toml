@@ -20,7 +20,7 @@ lto = true
 strip = true
 
 [build-dependencies]
-tauri-build = { version = "2.0.2", features = [] }
+tauri-build = { version = "2.0.5", features = [] }
 
 [dependencies]
 tauri = { version = "2.1.1", features = [] }
@@ -31,17 +31,18 @@ tauri-plugin-clipboard-manager = "2.2.0"
 tauri-plugin-store = "2.2.0"
 tauri-plugin-fs = "2.2.0"
 
-specta = { version = "=2.0.0-rc.20" }
-tauri-specta = { version = "=2.0.0-rc.20", features = ["derive", "typescript"] }
+specta = { version = "=2.0.0-rc.22" }
+tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
+specta-typescript = "0.0.9"
+
 tauri_derive = { path = "./tauri_derive" }
 serde = { version = "1.0.216", features = ["derive"] }
 serde_json = "1.0.134"
-git2 = "0.19.0"
+git2 = "0.20.0"
 anyhow = "1.0.95"
 thiserror = "2.0.9"
-itertools = "0.13.0"
+itertools = "0.14.0"
 log = "0.4.22"
-specta-typescript = "0.0.7"
 filetime = "0.2.25"
 glob-match = "0.2.1"
 semver = "1.0.24"

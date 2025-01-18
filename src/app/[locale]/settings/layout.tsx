@@ -8,8 +8,7 @@ export default function Layout({
 }>) {
   return (
     <div className="flex h-screen p-2" data-tauri-drag-region={true}>
-      <Panel className="w-1/6 min-w-36" />
-      <hr />
+      <Panel className="h-screen w-1/6 min-w-36 border-r" />
       <div
         className="m-2 flex grow flex-col items-center"
         data-tauri-drag-region={true}

@@ -27,7 +27,7 @@ export default function Panel({ className, ...props }: PanelProps) {
     },
   ];
   return (
-    <div className={cn('rounded-xl border shadow', className)} {...props}>
+    <div className={className} {...props}>
       <Nav href="/" className="h-16 w-full rounded-t-xl border-b">
         <MdHome />
       </Nav>

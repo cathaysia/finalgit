@@ -141,7 +141,7 @@ export default function Project({ className }: ProjectProps) {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DialogContent title="xx">
+        <DialogContent title="xx" className="w-full">
           <DialogTitle>{t('clone_remote_repo')}</DialogTitle>
           <CloneWidget />
         </DialogContent>

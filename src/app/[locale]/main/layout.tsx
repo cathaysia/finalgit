@@ -1,4 +1,7 @@
-export default async function Layout({
+'use client';
+import { DragDropProvider } from '@dnd-kit/react';
+
+export default function Layout({
   control,
   mainpanel,
   commit,
@@ -12,9 +15,11 @@ export default async function Layout({
       className="grid h-screen w-screen grid-cols-4 gap-2 p-2"
       data-tauri-drag-region
     >
-      {control}
-      {mainpanel}
-      {commit}
+      <DragDropProvider>
+        {control}
+        {mainpanel}
+        {commit}
+      </DragDropProvider>
     </div>
   );
 }

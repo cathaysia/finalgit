@@ -25,6 +25,7 @@ import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
 import { cn } from '@/lib/utils';
+import { useDroppable } from '@dnd-kit/react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 import type React from 'react';
@@ -88,6 +89,8 @@ export default function BranchItem({
   const needPull = branchStatus ? branchStatus.unpull !== 0 : false;
   const needSync = needPush || needPull;
 
+  const { ref, isDropTarget } = useDroppable({ id: 'branch' });
+
   if (opState) {
     return (
       <div
@@ -117,8 +120,10 @@ export default function BranchItem({
       className={cn(
         'flex w-full items-center justify-between gap-2 rounded-none border px-4 py-3',
         isHead && 'border-green-600 dark:border-green-600',
+        isDropTarget && 'bg-secondary/80',
         className,
       )}
+      ref={ref}
       {...props}
     >
       <div className="flex w-full min-w-0 items-center gap-2">

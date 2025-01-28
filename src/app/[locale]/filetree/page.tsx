@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/resizable';
 import { useBlameInfo, useFiles } from '@/hooks/query';
 import { useAppState } from '@/hooks/state';
-import { Link } from '@/i18n/routing';
+import { Link, usePathname, useRouter } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { createBlamePlugin } from '@/ui/codemirror/blame';
@@ -29,11 +29,14 @@ import { useTheme } from 'next-themes';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MdHome } from 'react-icons/md';
-import { match } from 'ts-pattern';
 
 export default function FileTree() {
-  const params = useSearchParams();
-  const commit = params.get('commit') || '';
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const commit = searchParams.get('commit') || '';
+  const path = searchParams.get('path') || 'README.md';
+
   const theme = useTheme().resolvedTheme === 'light' ? githubLight : githubDark;
 
   const [repoPath] = useAppState(s => [s.repoPath]);
@@ -42,41 +45,25 @@ export default function FileTree() {
   const [text, setText] = useState<string>();
   const [language, setLanguage] = useState<string>();
 
-  const [path, setPath] = useState('');
-
-  async function getText(path: string, noWarn = false) {
+  useEffect(() => {
     if (!repoPath) {
       return;
     }
-    const normalPath = path.slice(1);
-    setPath(normalPath);
-    const language = await commands.assumeLanguage(normalPath);
-    match(language).with({ status: 'ok' }, val => {
-      if (val.data) {
-        setLanguage(val.data);
-      }
-    });
-
-    const content = await commands?.fileGetContent(
-      repoPath,
-      commit,
-      normalPath,
-    );
-    match(content)
-      .with({ status: 'ok' }, val => {
-        setText(val.data);
-      })
-      .with({ status: 'error' }, err => {
-        if (noWarn) {
-          return;
+    (async () => {
+      const language = await commands.assumeLanguage(path);
+      if (language.status === 'ok') {
+        if (language.data) {
+          setLanguage(language.data);
         }
-        NOTIFY.error(`get file content failed: ${err.error}`);
-      });
-  }
-
-  useEffect(() => {
-    getText('/README.md', true);
-  }, []);
+      }
+      const res = await commands?.fileGetContent(repoPath, commit, path);
+      if (res.status === 'ok') {
+        setText(res.data);
+      } else {
+        NOTIFY.error(`get file content failed: ${res.error}`);
+      }
+    })();
+  }, [repoPath, path, commit]);
 
   const extensions = [];
   if (language) {
@@ -122,7 +109,15 @@ export default function FileTree() {
         >
           <MdHome className="inline-block" />
         </Link>
-        <FilePanel files={tree} onClicked={getText} commit={commit} />
+        <FilePanel
+          files={tree}
+          onClicked={path => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set('path', path.slice(1));
+            router.push(`${pathName}?${params.toString()}`);
+          }}
+          commit={commit}
+        />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>

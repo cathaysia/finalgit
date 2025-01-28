@@ -88,32 +88,6 @@ export default function BranchItem({
   const needPull = branchStatus ? branchStatus.unpull !== 0 : false;
   const needSync = needPush || needPull;
 
-  async function renameBranch(newName: string) {
-    if (!repoPath || !opState) {
-      return;
-    }
-    if (opState === OpState.Renaming) {
-      const res = await commands?.branchRename(repoPath, info, newName);
-      match(res)
-        .with({ status: 'ok' }, () => {
-          refreshBranches();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    } else {
-      const res = await commands?.branchCreate(repoPath, newName, info.oid);
-      match(res)
-        .with({ status: 'ok' }, () => {
-          refreshBranches();
-        })
-        .with({ status: 'error' }, err => {
-          NOTIFY.error(err.error);
-        });
-    }
-    setOpState(undefined);
-  }
-
   if (opState) {
     return (
       <div
@@ -129,7 +103,10 @@ export default function BranchItem({
           onCancel={() => {
             setOpState(undefined);
           }}
-          onConfirm={renameBranch}
+          onConfirm={name => {
+            renameBranch(name, info, repoPath, opState);
+            setOpState(undefined);
+          }}
         />
       </div>
     );
@@ -363,4 +340,34 @@ function replaceEmoji(text: string, replace: boolean) {
   }
 
   return text;
+}
+
+async function renameBranch(
+  newName: string,
+  info: BranchInfo,
+  repoPath?: string,
+  opState?: OpState,
+) {
+  if (!repoPath || !opState) {
+    return;
+  }
+  if (opState === OpState.Renaming) {
+    const res = await commands?.branchRename(repoPath, info, newName);
+    match(res)
+      .with({ status: 'ok' }, () => {
+        refreshBranches();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  } else {
+    const res = await commands?.branchCreate(repoPath, newName, info.oid);
+    match(res)
+      .with({ status: 'ok' }, () => {
+        refreshBranches();
+      })
+      .with({ status: 'error' }, err => {
+        NOTIFY.error(err.error);
+      });
+  }
 }

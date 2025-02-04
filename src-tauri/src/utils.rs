@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::process::Stdio;
 
 use specta::Type;
@@ -50,6 +51,13 @@ impl UtilExt for git2::Repository {
     }
 
     fn assume_language(file_name: &str) -> AppResult<Option<String>> {
+        let path = Path::new(file_name);
+        let Some(file_name) = path.file_name() else {
+            return Ok(None);
+        };
+        let Some(file_name) = file_name.to_str() else {
+            return Ok(None);
+        };
         for (pat, ty) in LANGUAGE_DEFINES {
             if glob_match::glob_match(pat, file_name) {
                 return Ok(Some(ty.to_string()));
@@ -131,13 +139,15 @@ pub fn open_repo(repo_path: &str) -> AppResult<git2::Repository> {
     Ok(git2::Repository::open(repo_path)?)
 }
 
-static LANGUAGE_DEFINES: [(&str, &str); 18] = [
+static LANGUAGE_DEFINES: [(&str, &str); 26] = [
     ("*.tsx", "tsx"),
     ("*.html", "html"),
     ("*.js", "javascript"),
+    ("*.mjs", "javascript"),
     ("*.jsx", "jsx"),
     ("*.md", "markdown"),
     ("*.json", "json"),
+    ("*.jsonc", "json"),
     ("*.py", "python"),
     ("*.ts", "typescript"),
     ("*.rs", "rust"),
@@ -150,6 +160,12 @@ static LANGUAGE_DEFINES: [(&str, &str); 18] = [
     ("*.{nix}", "nix"),
     ("*.svelte", "svelte"),
     ("*.vue", "vue"),
+    ("Cargo.lock", "toml"),
+    ("*.toml", "toml"),
+    ("*.yaml", "yaml"),
+    ("*.yml", "yaml"),
+    (".editorconfig", "toml"),
+    (".gitignore", "gitignore"),
 ];
 
 fn exec_proc<I, S>(path: Option<&str>, cmd: &str, args: I) -> AppResult<std::process::Output>

@@ -44,7 +44,7 @@ export default function FileTree() {
   const { data: files } = useFiles(commit);
   const tree = files || [];
   const [text, setText] = useState<string>();
-  const [language, setLanguage] = useState<string>();
+  const [language, setLanguage] = useState<string | null>();
 
   useEffect(() => {
     if (!repoPath) {
@@ -53,9 +53,7 @@ export default function FileTree() {
     (async () => {
       const language = await commands.assumeLanguage(path);
       if (language.status === 'ok') {
-        if (language.data) {
-          setLanguage(language.data);
-        }
+        setLanguage(language.data);
       }
       const res = await commands?.fileGetContent(repoPath, commit, path);
       if (res.status === 'ok') {

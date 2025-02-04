@@ -36,6 +36,7 @@ export default function FileTree() {
   const searchParams = useSearchParams();
   const commit = searchParams.get('commit') || '';
   const path = searchParams.get('path') || 'README.md';
+  const doWarn = searchParams.get('doWarn') !== null;
 
   const theme = useTheme().resolvedTheme === 'light' ? githubLight : githubDark;
 
@@ -60,7 +61,9 @@ export default function FileTree() {
       if (res.status === 'ok') {
         setText(res.data);
       } else {
-        NOTIFY.error(`get file content failed: ${res.error}`);
+        if (doWarn) {
+          NOTIFY.error(`get file content failed: ${res.error}`);
+        }
       }
     })();
   }, [repoPath, path, commit]);
@@ -114,6 +117,7 @@ export default function FileTree() {
           onClicked={path => {
             const params = new URLSearchParams(searchParams.toString());
             params.set('path', path.slice(1));
+            params.set('doWarn', '');
             router.push(`${pathName}?${params.toString()}`);
           }}
           commit={commit}

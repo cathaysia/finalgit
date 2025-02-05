@@ -68,7 +68,7 @@ jobs:
           bash -c 'pnpm test'
 
       - name: Install Playwright
-        run: pnpm dlx playwright install --with-deps
+        run: pnpm dlx playwright@1.49.0 install --with-deps
       - name: Build Storybook
         run: pnpm build-storybook --quiet
       - name: Serve Storybook and run tests

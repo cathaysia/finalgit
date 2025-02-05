@@ -67,6 +67,14 @@ jobs:
           mkdir -p public
           cp -r node_modules/material-icon-theme/icons public/
 
+      - name: Install wasm-pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Build wasm
+        run: |
+          pnpm build-wasm
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

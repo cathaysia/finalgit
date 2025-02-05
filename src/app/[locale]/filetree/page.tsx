@@ -1,5 +1,9 @@
 'use client';
 
+import wasmInit, {
+  assume_language,
+} from '@/crates/assume-language/pkg/assume_language';
+
 import { commands } from '@/bindings';
 import {
   ResizableHandle,
@@ -51,10 +55,9 @@ export default function FileTree() {
       return;
     }
     (async () => {
-      const language = await commands.assumeLanguage(path);
-      if (language.status === 'ok') {
-        setLanguage(language.data);
-      }
+      await wasmInit();
+      const language = assume_language(path);
+      setLanguage(language || null);
       const res = await commands?.fileGetContent(repoPath, commit, path);
       if (res.status === 'ok') {
         setText(res.data);

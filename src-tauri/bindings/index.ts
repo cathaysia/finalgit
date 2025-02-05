@@ -842,19 +842,6 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
-  async assumeLanguage(
-    fileName: string,
-  ): Promise<Result<string | null, string>> {
-    try {
-      return {
-        status: 'ok',
-        data: await TAURI_INVOKE('assume_language', { fileName }),
-      };
-    } catch (e) {
-      if (e instanceof Error) throw e;
-      else return { status: 'error', error: e as any };
-    }
-  },
   async gpgGetSecretList(): Promise<Result<string[], string>> {
     try {
       return { status: 'ok', data: await TAURI_INVOKE('gpg_get_secret_list') };

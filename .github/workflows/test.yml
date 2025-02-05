@@ -57,6 +57,10 @@ jobs:
           mkdir -p public
           cp -r node_modules/material-icon-theme/icons public/
 
+      - name: Install wasm-pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
       - name: run test
         run: |
           git config user.name "Alice"
@@ -64,6 +68,7 @@ jobs:
           git config user.signingkey "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           git config commit.gpgsign true
 
+          pnpm build-wasm
           bash -c 'cd src-tauri && cargo test'
           bash -c 'pnpm test'
 

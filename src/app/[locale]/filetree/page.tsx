@@ -1,6 +1,6 @@
 'use client';
 
-import * as wasm from '@/crates/assume-language/pkg/assume_language';
+import * as wasm from '@/crates/filetype/pkg/filetype';
 
 import { commands } from '@/bindings';
 import {

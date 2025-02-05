@@ -12,7 +12,7 @@
     "build-storybook": "storybook build",
     "lint": "eslint",
     "test": "vitest run",
-    "build-wasm": "cd ./crates/assume-language && wasm-pack build --target web --release"
+    "build-wasm": "cd ./crates/filetype && wasm-pack build --target web --release"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.0",

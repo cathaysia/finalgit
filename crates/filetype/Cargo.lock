@@ -18,19 +18,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34ac096ce696dc2fcabef30516bb13c0a68a11d30131d3df6f04711467681b04"
 
 [[package]]
-name = "assume-language"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "console_error_panic_hook",
- "glob-match",
- "lazy-regex",
- "regex",
- "wasm-bindgen",
- "wasm-bindgen-test",
-]
-
-[[package]]
 name = "bumpalo"
 version = "3.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -59,6 +46,19 @@ checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
 dependencies = [
  "cfg-if",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "filetype"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "console_error_panic_hook",
+ "glob-match",
+ "lazy-regex",
+ "regex",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
 ]
 
 [[package]]

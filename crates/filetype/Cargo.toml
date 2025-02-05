@@ -1,5 +1,5 @@
 [package]
-name = "assume-language"
+name = "filetype"
 version = "0.1.0"
 authors = ["loongtao.zhang <loongtao.zhang@outlook.com>"]
 edition = "2018"

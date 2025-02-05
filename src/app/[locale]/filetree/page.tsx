@@ -1,8 +1,6 @@
 'use client';
 
-import wasmInit, {
-  assume_language,
-} from '@/crates/assume-language/pkg/assume_language';
+import * as wasm from '@/crates/assume-language/pkg/assume_language';
 
 import { commands } from '@/bindings';
 import {
@@ -55,8 +53,8 @@ export default function FileTree() {
       return;
     }
     (async () => {
-      await wasmInit();
-      const language = assume_language(path);
+      await wasm.default();
+      const language = wasm.resolve(path);
       setLanguage(language || null);
       const res = await commands?.fileGetContent(repoPath, commit, path);
       if (res.status === 'ok') {

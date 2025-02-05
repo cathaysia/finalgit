@@ -1,49 +1,53 @@
+mod complex;
+mod extensions;
+mod literal;
 pub mod utils;
 
+use complex::{COMPLEX_COMPLEX, COMPLEX_ENDSWITH, COMPLEX_STARTSWITH};
+use extensions::EXTENSIONS;
+use literal::LITERAL;
 use std::path::Path;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn assume_language(file_name: &str) -> Option<String> {
+pub fn resolve(file_name: &str, _content: Option<String>) -> Option<String> {
     let path = Path::new(file_name);
-    let file_name = path.file_name()?;
-    let file_name = file_name.to_str()?;
-    for (pat, ty) in LANGUAGE_DEFINES {
-        if glob_match::glob_match(pat, file_name) {
-            return Some(ty.to_string());
+    if let Some(file_name) = path.file_name() {
+        if let Some(ext) = file_name.to_str() {
+            if let Some(ext) = LITERAL.get(ext) {
+                return Some(ext.to_string());
+            }
         }
     }
+
+    if let Some(ext) = path.extension() {
+        if let Some(ext) = ext.to_str() {
+            if let Some(ext) = EXTENSIONS.get(ext) {
+                return Some(ext.to_string());
+            }
+        }
+    }
+
+    for (re, ext) in COMPLEX_STARTSWITH.iter() {
+        if re.find(file_name).is_some() {
+            return Some(ext.to_string());
+        }
+    }
+
+    for (re, ext) in COMPLEX_ENDSWITH.iter() {
+        if re.find(file_name).is_some() {
+            return Some(ext.to_string());
+        }
+    }
+
+    for (re, ext) in COMPLEX_COMPLEX.iter() {
+        if re.find(file_name).is_some() {
+            return Some(ext.to_string());
+        }
+    }
+
     None
 }
-
-static LANGUAGE_DEFINES: [(&str, &str); 26] = [
-    ("*.tsx", "tsx"),
-    ("*.html", "html"),
-    ("*.js", "javascript"),
-    ("*.mjs", "javascript"),
-    ("*.jsx", "jsx"),
-    ("*.md", "markdown"),
-    ("*.json", "json"),
-    ("*.jsonc", "json"),
-    ("*.py", "python"),
-    ("*.ts", "typescript"),
-    ("*.rs", "rust"),
-    ("*.sql", "sql"),
-    ("*.xml", "xml"),
-    ("*.sass", "sass"),
-    ("*.css", "css"),
-    ("*.{c,h}", "c"),
-    ("*.{cpp,hpp,cc,cxx}", "cpp"),
-    ("*.{nix}", "nix"),
-    ("*.svelte", "svelte"),
-    ("*.vue", "vue"),
-    ("Cargo.lock", "toml"),
-    ("*.toml", "toml"),
-    ("*.yaml", "yaml"),
-    ("*.yml", "yaml"),
-    (".editorconfig", "toml"),
-    (".gitignore", "gitignore"),
-];
 
 #[cfg(test)]
 mod test {
@@ -51,10 +55,14 @@ mod test {
 
     #[test]
     fn test_ft() {
-        let v = [("README.md", "markdown")];
+        let v = [
+            ("README.md", "markdown"),
+            ("src/lib.rs", "rust"),
+            ("src/.editorconfig", "dosini"),
+        ];
 
         for (path, ty) in v {
-            let lang = assume_language(path).unwrap();
+            let lang = resolve(path, None).unwrap();
             assert_eq!(lang, ty)
         }
     }

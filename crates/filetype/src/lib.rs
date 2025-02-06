@@ -1,16 +1,18 @@
 mod complex;
 mod extensions;
 mod literal;
+mod shebang;
 pub mod utils;
 
 use complex::{COMPLEX_COMPLEX, COMPLEX_ENDSWITH, COMPLEX_STARTSWITH};
 use extensions::EXTENSIONS;
 use literal::LITERAL;
+use shebang::analyzer_shebang;
 use std::path::Path;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn resolve(file_name: &str, _content: Option<String>) -> Option<String> {
+pub fn resolve(file_name: &str, content: Option<String>) -> Option<String> {
     let path = Path::new(file_name);
     if let Some(file_name) = path.file_name() {
         if let Some(ext) = file_name.to_str() {
@@ -44,6 +46,10 @@ pub fn resolve(file_name: &str, _content: Option<String>) -> Option<String> {
         if re.find(file_name).is_some() {
             return Some(ext.to_string());
         }
+    }
+
+    if let Some(content) = &content {
+        return analyzer_shebang(content).map(|item| item.to_string());
     }
 
     None

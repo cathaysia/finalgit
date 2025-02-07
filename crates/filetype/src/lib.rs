@@ -1,12 +1,14 @@
 mod complex;
 mod extensions;
 mod literal;
+mod modline;
 mod shebang;
 pub mod utils;
 
 use complex::{COMPLEX_COMPLEX, COMPLEX_ENDSWITH, COMPLEX_STARTSWITH};
 use extensions::EXTENSIONS;
 use literal::LITERAL;
+use modline::get_modline;
 use shebang::analyzer_shebang;
 use std::path::Path;
 use wasm_bindgen::prelude::*;
@@ -52,6 +54,11 @@ pub fn resolve(file_name: &str, content: Option<String>) -> Option<String> {
         return analyzer_shebang(content).map(|item| item.to_string());
     }
 
+    if let Some(content) = &content {
+        if let Some(ft) = get_modline(content) {
+            return Some(ft.to_string());
+        }
+    }
     None
 }
 

@@ -72,6 +72,8 @@ mod test {
             ("README.md", "markdown"),
             ("src/lib.rs", "rust"),
             ("src/.editorconfig", "dosini"),
+            ("/etc/man.conf", "manconf"),
+            ("/Users/xxx/.config/tmux/tmux.conf", "tmux"),
         ];
 
         for (path, ty) in v {

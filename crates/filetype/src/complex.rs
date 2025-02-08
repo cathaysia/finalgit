@@ -150,7 +150,7 @@ pub(crate) static COMPLEX_STARTSWITH: LazyLock<Vec<(&lazy_regex::Regex, &str)>> 
 pub(crate) static COMPLEX_COMPLEX: LazyLock<Vec<(&lazy_regex::Regex, &str)>> =
     LazyLock::new(|| {
         vec![
-            (regex!(r#"\.tmux.*\.conf"#), "tmux"),
+            (regex!(r#".*tmux.*\.conf"#), "tmux"),
             (regex!(r#".*\.git/modules/.*/config"#), "gitconfig"),
             (regex!(r#".*git/config"#), "gitconfig"),
             (

@@ -8,15 +8,8 @@ jobs:
   test:
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: linux-x86
-            platform: 'ubuntu-22.04'
-            args: ''
 
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -32,11 +25,8 @@ jobs:
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04'
+      - name: install dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
@@ -44,11 +34,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: rust-${{ matrix.name }}
           workspaces: src-tauri
 
       - uses: jongwooo/next-cache@v1
-
       - name: install frontend dependencies
         run: pnpm install
 
@@ -70,6 +58,7 @@ jobs:
 
           pnpm build-wasm
           bash -c 'cd src-tauri && cargo test'
+          bash -c 'cd crates/filetype && cargo test'
           bash -c 'pnpm test'
 
       - name: Install Playwright

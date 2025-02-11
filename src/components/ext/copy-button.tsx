@@ -6,11 +6,18 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Button, type ButtonProps } from '../ui/button';
+import { Button } from '../ui/button';
 
-interface CopyButtonProps extends ButtonProps {
+interface CopyButtonProps extends React.ComponentProps<'button'> {
   value: string;
   src?: string;
+  variant:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link';
 }
 
 export async function copyToClipboardWithMeta(value: string) {

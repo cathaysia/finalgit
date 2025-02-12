@@ -4,7 +4,6 @@ import { Label } from '@/components/ui/label';
 import { getTranslations } from 'next-intl/server';
 import { LanguageCard } from './ui/language-card';
 import ProfileCard from './ui/profile-card';
-import { UpdateLang } from './ui/update-lang';
 
 export default async function Page({
   params,
@@ -29,7 +28,6 @@ export default async function Page({
         </CardContent>
       </Card>
       <ProfileCard />
-      <UpdateLang locale={locale} />
     </>
   );
 }

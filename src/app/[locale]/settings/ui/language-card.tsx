@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
+import LangLink from './language-link';
 
 export async function LanguageCard({ locale }: { locale: string }) {
   const languages = [
@@ -55,9 +55,12 @@ export async function LanguageCard({ locale }: { locale: string }) {
                       language.value === locale ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  <Link href={`/${language.value}/settings`}>
+                  <LangLink
+                    href={`/${language.value}/settings`}
+                    lang={language.value}
+                  >
                     {language.label}
-                  </Link>
+                  </LangLink>
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useOllamaModels } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { fetchModel } from '@/lib/ai/ollama';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -42,7 +42,7 @@ export default function AiCard() {
     setOllamaModel,
     setOpenAiKey,
     setOpenAiEndpoint,
-  ] = useAppState(s => [
+  ] = useAppStore(s => [
     s.aiConfig,
     s.setCurrentAi,
     s.setOllamaModel,
@@ -50,7 +50,7 @@ export default function AiCard() {
     s.setOpenAiEndpoint,
   ]);
   const endpoint = aiConfig.ollama.endpoint;
-  const [setEndpoint] = useAppState(s => [s.setOllamaEndpoint]);
+  const [setEndpoint] = useAppStore(s => [s.setOllamaEndpoint]);
 
   const { error, data: models } = useOllamaModels();
   if (error) {
@@ -134,10 +134,10 @@ export default function AiCard() {
 
 function OllamaPull() {
   const t = useTranslations();
-  const aiConfig = useAppState(s => s.aiConfig);
+  const aiConfig = useAppStore(s => s.aiConfig);
   const endpoint = aiConfig.ollama.endpoint;
   const currentModel = aiConfig.ollama.model;
-  const setCurrentModel = useAppState(s => s.setOllamaModel);
+  const setCurrentModel = useAppStore(s => s.setOllamaModel);
 
   const [pullState, setPullState] = useState<{
     isPull: boolean;

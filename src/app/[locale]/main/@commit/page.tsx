@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBisectState } from '@/hooks/bisect';
 import { useHistory } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { filterCommits } from '@/lib/parser/commit-filter';
 import { cn } from '@/lib/utils';
 import BisectCard from '@/ui/bisect/bisect-card';
@@ -17,7 +17,7 @@ import { isMatching } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
 export default function Commit() {
-  const [repoPath, commitHead, setCommitHead] = useAppState(s => [
+  const [repoPath, commitHead, setCommitHead] = useAppStore(s => [
     s.repoPath,
     s.commitHead,
     s.setCommitHead,

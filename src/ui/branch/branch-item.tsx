@@ -20,7 +20,7 @@ import {
   usePushstatus,
   useTags,
 } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
@@ -69,7 +69,7 @@ export default function BranchItem({
   const isLocal = info.kind === 'Local';
   const [isPulling, setIsPulling] = useState(false);
   const [isPushing, setIsPushing] = useState(false);
-  const [repoPath, useEmoji, setCommitHead] = useAppState(s => [
+  const [repoPath, useEmoji, setCommitHead] = useAppStore(s => [
     s.repoPath,
     s.useEmoji,
     s.setCommitHead,

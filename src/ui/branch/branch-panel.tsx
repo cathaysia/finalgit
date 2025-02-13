@@ -3,7 +3,7 @@ import type { BranchInfo, TagInfo } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import BranchList from '@/ui/branch/branch-list';
 import { TagList } from '@/ui/tag/tag-list';
@@ -29,7 +29,7 @@ export default function BranchPanel({
   const [isSearching, setIsSearching] = useState(false);
   const searchBar = useRef<HTMLInputElement>(null);
   const [newBranchName, setNewBranchName] = useState<string>('');
-  const repoPath = useAppState(s => s.repoPath);
+  const repoPath = useAppStore(s => s.repoPath);
 
   useHotkeys(
     '/',

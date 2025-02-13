@@ -2,7 +2,7 @@ import type { CommitInfo } from '@/bindings';
 import { AvatarGroup } from '@/components/ext/avatar-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useCommitChanges, useRemotes } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-shell';
@@ -28,7 +28,7 @@ export default function CommitCard({
   if (info.author.name !== info.commiter.name) {
     names.push(info.commiter.name);
   }
-  const [renderMarkdown, setRenderMarkdown] = useAppState(s => [
+  const [renderMarkdown, setRenderMarkdown] = useAppStore(s => [
     s.renderMarkdown,
     s.setRenderMarkdown,
   ]);

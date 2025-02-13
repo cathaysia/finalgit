@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import { shadcnTheme } from '@/ui/codemirror/theme/shadcn';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
@@ -23,16 +23,16 @@ export interface CommiterProps
 export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [commitMsg, setCommitMsg] = useState<string>('');
-  const currentModel = useAppState(s => s.aiConfig.ollama.model);
+  const currentModel = useAppStore(s => s.aiConfig.ollama.model);
   const t = useTranslations();
 
   const [abort, setAbort] = useState<AbortController | null>(null);
-  const [repoPath, signoff, setCommitHead] = useAppState(s => [
+  const [repoPath, signoff, setCommitHead] = useAppStore(s => [
     s.repoPath,
     s.signoff,
     s.setCommitHead,
   ]);
-  const [current, promptList] = useAppState(s => [
+  const [current, promptList] = useAppStore(s => [
     s.currentPrompt,
     s.promptList,
   ]);
@@ -168,7 +168,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
 }
 
 function useSignoffInfo() {
-  const repoPath = useAppState(s => s.repoPath);
+  const repoPath = useAppStore(s => s.repoPath);
   return useQuery({
     queryKey: [repoPath, 'signoff'],
     queryFn: async () => {

@@ -8,7 +8,7 @@ import {
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 import { refreshChanges, useHeadOid } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import {
   TreeItem2,
@@ -56,7 +56,7 @@ export const FileItem = React.forwardRef<HTMLLIElement, FileItemProps>(
     const isDir = item.isDir;
     const fileName = item.fileName;
     const commit = item.commit;
-    const [repoPath] = useAppState(s => [s.repoPath]);
+    const [repoPath] = useAppStore(s => [s.repoPath]);
 
     return (
       <ContextMenu>

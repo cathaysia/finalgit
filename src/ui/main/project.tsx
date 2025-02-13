@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-dialog';
@@ -32,7 +32,7 @@ export interface ProjectProps {
 
 export default function Project({ className }: ProjectProps) {
   const t = useTranslations('project');
-  const [repoPath, setRepoPath, projects, removeRepoPath] = useAppState(s => [
+  const [repoPath, setRepoPath, projects, removeRepoPath] = useAppStore(s => [
     s.repoPath,
     s.setRepoPath,
     s.projects,

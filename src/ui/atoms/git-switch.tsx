@@ -1,7 +1,7 @@
 import { commands } from '@/bindings';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ export default function GitSwitch({
   opt,
   ...props
 }: GitSwitchProps) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const [value, setValue] = useState<boolean>(false);
 
   useEffect(() => {

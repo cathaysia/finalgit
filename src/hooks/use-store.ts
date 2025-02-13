@@ -7,22 +7,6 @@ import { createWithEqualityFn as create } from 'zustand/traditional';
 
 enableMapSet();
 
-export const SHORT_DEFAULT_COMMIT_TEMPLATE = `Please could you write a commit message for my changes.
-Only respond with the commit message. Don't give any notes.
-Explain what were the changes and why the changes were done.
-Focus the most important changes.
-Use the present tense.
-Use a semantic commit prefix.
-Hard wrap lines at 72 characters.
-Ensure the title is only 50 characters.
-Do not start any lines with the hash symbol.
-
-Here is my git diff:
-\`\`\`
-%{diff}
-\`\`\`
-`;
-
 const tauriStore = new LazyStore('settings.json');
 
 export interface AiConfig {
@@ -37,7 +21,7 @@ export interface AiConfig {
   };
 }
 
-export interface AppState {
+export interface AppStoreProps {
   repoPath?: string;
   lang: string;
   useEmoji: boolean;
@@ -66,7 +50,24 @@ export interface AppState {
 }
 
 const defaultPrompt = new Map();
-defaultPrompt.set('Conventional Commits', SHORT_DEFAULT_COMMIT_TEMPLATE);
+defaultPrompt.set(
+  'Conventional Commits',
+  `Please could you write a commit message for my changes.
+Only respond with the commit message. Don't give any notes.
+Explain what were the changes and why the changes were done.
+Focus the most important changes.
+Use the present tense.
+Use a semantic commit prefix.
+Hard wrap lines at 72 characters.
+Ensure the title is only 50 characters.
+Do not start any lines with the hash symbol.
+
+Here is my git diff:
+\`\`\`
+%{diff}
+\`\`\`
+`,
+);
 defaultPrompt.set(
   'GitMoji',
   ` Please could you write a commit message for my changes.
@@ -88,7 +89,7 @@ Here is my git diff:
 `,
 );
 
-export const useAppState = create<AppState>()(
+export const useAppStore = create<AppStoreProps>()(
   persist(
     immer(set => ({
       repoPath: undefined,
@@ -169,7 +170,7 @@ export const useAppState = create<AppState>()(
         getItem: async name => {
           const str = await tauriStore.get<string>(name);
           if (!str) return null;
-          return superjson.parse<StorageValue<AppState>>(str);
+          return superjson.parse<StorageValue<AppStoreProps>>(str);
         },
         setItem: async (name, value) => {
           const str = superjson.stringify(value);

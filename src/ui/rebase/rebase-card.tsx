@@ -2,7 +2,7 @@
 import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { refreshHeadState, useHeadState } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
@@ -17,7 +17,7 @@ export interface RebaseCardProps
 
 export default function RebaseCard({ className, ...props }: RebaseCardProps) {
   const t = useTranslations();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const { data: headState } = useHeadState();
   const isRebasing =
     headState === 'Rebase' || headState === 'RebaseInteractive';

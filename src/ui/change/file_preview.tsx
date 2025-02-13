@@ -1,5 +1,5 @@
 import { type FileStatus, commands } from '@/bindings';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import CodeMirror from '@uiw/react-codemirror';
@@ -11,7 +11,7 @@ export interface DiffProps {
 }
 
 export function FilePreview({ item: filePath }: DiffProps) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const [content, setContent] = useState('');
 
   const extensions = useMemo(() => {

@@ -2,7 +2,7 @@ import { type CommitInfo, commands } from '@/bindings';
 import { useQuery } from '@tanstack/react-query';
 import { isMatching, match } from 'ts-pattern';
 import { queryClient, useHeadState } from './query';
-import { useAppState } from './state';
+import { useAppStore } from './use-store';
 
 export interface BisectState {
   bad: string | null;
@@ -73,7 +73,7 @@ export function useBisectState(info: CommitInfo[]): BisectState {
 }
 
 export function useBisectRange() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const { data: state } = useHeadState();
 
   return useQuery({
@@ -108,7 +108,7 @@ export function refreshBisectRange() {
 }
 
 export function useBisectNext() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const { data: state } = useHeadState();
 
   return useQuery({

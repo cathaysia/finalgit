@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import { open } from '@tauri-apps/plugin-shell';
 import { useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ import { IoIosAdd } from 'react-icons/io';
 
 export default function AiPrompt() {
   const t = useTranslations();
-  const [current, promptList, setPrompt, setCurrent] = useAppState(s => [
+  const [current, promptList, setPrompt, setCurrent] = useAppStore(s => [
     s.currentPrompt,
     s.promptList,
     s.setPrompt,

@@ -1,9 +1,9 @@
 'use client';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { redirect } from 'next/navigation';
 
 export default function Page() {
-  const lang = useAppState(s => s.lang);
+  const lang = useAppStore(s => s.lang);
   if (lang === 'cn') {
     redirect('/cn');
   }

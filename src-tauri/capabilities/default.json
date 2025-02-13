@@ -21,6 +21,6 @@
     "clipboard-manager:default",
     "clipboard-manager:allow-write-text",
     "clipboard-manager:allow-write-html",
-    "shell:default"
+    "decorum:allow-show-snap-overlay"
   ]
 }

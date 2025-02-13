@@ -9,7 +9,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { useBlameInfo, useFiles } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -42,7 +42,7 @@ export default function FileTree() {
 
   const theme = useTheme().resolvedTheme === 'light' ? githubLight : githubDark;
 
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const { data: files } = useFiles(commit);
   const tree = files || [];
   const [text, setText] = useState<string>();

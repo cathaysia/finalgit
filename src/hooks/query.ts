@@ -3,7 +3,7 @@ import { commands } from '@/bindings';
 import { queryModels } from '@/lib/ai';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { match } from 'ts-pattern';
-import { useAppState } from './state';
+import { useAppStore } from './use-store';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +14,7 @@ export const queryClient = new QueryClient({
 });
 
 export function useBranches() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['branches', repoPath],
@@ -41,7 +41,7 @@ export function refreshBranches() {
 }
 
 export function useTags() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['tags', repoPath],
@@ -68,7 +68,7 @@ export function refreshTags() {
 }
 
 export function useChanges() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['changes', repoPath],
@@ -97,7 +97,7 @@ export function refreshChanges() {
 }
 
 export function useFiles(commit: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['changes', repoPath, commit],
@@ -124,7 +124,7 @@ export function refreshFiles() {
 }
 
 export function useOllamaModels() {
-  const aiConfig = useAppState(s => s.aiConfig);
+  const aiConfig = useAppStore(s => s.aiConfig);
   const endpoint = aiConfig.ollama.endpoint;
 
   return useQuery({
@@ -138,7 +138,7 @@ export function useOllamaModels() {
 }
 
 export function useModifyTimes() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['modifiedTime', repoPath],
@@ -169,7 +169,7 @@ export function refreshModifyTimes() {
 }
 
 export function useStashList() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['stash', repoPath],
@@ -196,7 +196,7 @@ export function refreshStashList() {
 }
 
 export function useHistory(commit: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['history', repoPath, commit],
@@ -223,7 +223,7 @@ export function refreshHistory() {
 }
 
 export function useHeadOid() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['head', repoPath],
@@ -250,7 +250,7 @@ export function refreshHeadOid() {
 }
 
 export function useBlameInfo(commit: string, file: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['blame', repoPath, commit, file],
@@ -276,7 +276,7 @@ export function useBlameInfo(commit: string, file: string) {
 }
 
 export function useCommitInfo(commit: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['commit', repoPath, commit],
@@ -299,7 +299,7 @@ export function useCommitInfo(commit: string) {
 }
 
 export function useHeadState() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['head_state', repoPath],
@@ -326,7 +326,7 @@ export function refreshHeadState() {
 }
 
 export function useRemotes() {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['remotes', repoPath],
@@ -353,7 +353,7 @@ export function refreshRemotes() {
 }
 
 export function useStatisOfAuthor(author: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['statiscis', repoPath],
@@ -376,7 +376,7 @@ export function useStatisOfAuthor(author: string) {
 }
 
 export function usePushstatus(branch: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['pushStatus', repoPath, branch],
@@ -405,7 +405,7 @@ export function refreshPushStatus() {
 }
 
 export function useCommitChanges(commit: string) {
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return useQuery({
     queryKey: ['commitchanges', repoPath, commit],

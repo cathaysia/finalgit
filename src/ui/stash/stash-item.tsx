@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { refreshChanges } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -26,7 +26,7 @@ export default function StashItem({
   ...props
 }: StashItemProps) {
   const t = useTranslations();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   async function applyStash() {
     if (!repoPath) {

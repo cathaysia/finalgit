@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { refreshChanges, useBranches } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -33,7 +33,7 @@ export function CommiterButton({
   onClicked,
   ...props
 }: CommiterProps) {
-  const repoPath = useAppState().repoPath;
+  const repoPath = useAppStore().repoPath;
   const t = useTranslations();
   const { data: branches } = useBranches();
 

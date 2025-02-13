@@ -2,7 +2,7 @@ import { type FileStatus, commands } from '@/bindings';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { refreshChanges, useStashList } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -19,7 +19,7 @@ export interface ChangeListProps
 }
 
 export default function ChangeList({ className, changeSet }: ChangeListProps) {
-  const repoPath = useAppState(s => s.repoPath);
+  const repoPath = useAppStore(s => s.repoPath);
   const { error: stashErr, data: stashList } = useStashList();
   if (stashErr) {
     NOTIFY.error(stashErr.message);

@@ -1,5 +1,5 @@
 import { type FileStatus, commands } from '@/bindings';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
@@ -14,7 +14,7 @@ export interface DiffProps {
 export function Diff({ item: filePath }: DiffProps) {
   const isWt = GitFileStatus.isWt(filePath.status);
 
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const [diff, setDiff] = useState('');
 
   const extensions = useMemo(() => {

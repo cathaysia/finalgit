@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
 import { refreshChanges } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { stageAddFile, stageDiscardFile } from '@/lib/operator';
@@ -36,7 +36,7 @@ export interface ChangeItemProps
 
 function ChangeItem({ className, item, ...props }: ChangeItemProps) {
   const t = useTranslations('stage');
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   const isChecked = getCheckedStatus(item.status);
   const isConflicted = GitFileStatus.isConflicted(item.status);

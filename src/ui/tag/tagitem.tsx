@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { refreshBranches, useHeadOid } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -27,7 +27,7 @@ export interface TagItemProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
 }
 export function TagItem({ info, filter, className, ...props }: TagItemProps) {
   const t = useTranslations();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const { error: headErr, data: head } = useHeadOid();
   if (headErr) {
     NOTIFY.error(headErr.message);

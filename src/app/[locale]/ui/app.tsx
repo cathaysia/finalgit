@@ -8,13 +8,13 @@ import {
   refreshTags,
   useModifyTimes,
 } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 
 import { useEffect } from 'react';
 
 export function App() {
-  const [setRepoPath, lang] = useAppState(s => [s.setRepoPath, s.lang]);
+  const [setRepoPath, lang] = useAppStore(s => [s.setRepoPath, s.lang]);
 
   useEffect(() => {
     commands.takeRepoPath().then(v => {

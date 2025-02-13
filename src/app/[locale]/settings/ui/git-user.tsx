@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { getGitConfig, setGitConfig } from '@/lib/git';
 import { cn } from '@/lib/utils';
 import GitOption from '@/ui/atoms/git-option';
@@ -22,7 +22,7 @@ export default function GitUser({ className, ...props }: GitUserProps) {
   const t = useTranslations();
   const [gpgList, setGpgList] = useState<string[]>([]);
   const [curGpg, setCurGpg] = useState<string>();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
   const [refreshGpg, setRefeshGpg] = useState<boolean>(false);
 
   useEffect(() => {

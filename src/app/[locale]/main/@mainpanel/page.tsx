@@ -5,7 +5,7 @@ import { FaFolderTree } from 'react-icons/fa6';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import ChangeList from '@/ui/change/change-list';
@@ -44,7 +44,7 @@ export default function WorkspacePanel() {
   const changeSet = changes || [];
 
   const t = useTranslations();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   const { error: headErr, data: current } = useHeadOid();
   if (headErr) {

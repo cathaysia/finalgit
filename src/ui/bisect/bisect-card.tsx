@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import type { BisectState } from '@/hooks/bisect';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';
 import { motion } from 'motion/react';
@@ -22,7 +22,7 @@ export default function BisectCard({
   ...props
 }: BisectCardProps) {
   const t = useTranslations();
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   const [bisectId, setBisectId] = useState<number | string | undefined>();
   const blameWidget = useRef<HTMLDivElement>(null);

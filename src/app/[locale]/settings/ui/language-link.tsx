@@ -1,5 +1,5 @@
 'use client';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import Link from 'next/link';
 
 interface LinkProps extends React.ComponentProps<typeof Link> {
@@ -7,7 +7,7 @@ interface LinkProps extends React.ComponentProps<typeof Link> {
 }
 
 export default function LangLink({ lang, ...props }: LinkProps) {
-  const [setLang] = useAppState(s => [s.setLang]);
+  const [setLang] = useAppStore(s => [s.setLang]);
 
   return (
     <Link

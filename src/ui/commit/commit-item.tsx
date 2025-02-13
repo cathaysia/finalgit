@@ -36,7 +36,7 @@ import {
   useHeadOid,
   useTags,
 } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
@@ -87,7 +87,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         email: commit.author.email,
       },
     ];
-    const [repoPath, useEmoji] = useAppState(s => [s.repoPath, s.useEmoji]);
+    const [repoPath, useEmoji] = useAppStore(s => [s.repoPath, s.useEmoji]);
     const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;

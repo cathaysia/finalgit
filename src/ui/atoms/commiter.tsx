@@ -2,7 +2,7 @@
 
 import { type FileStatus, commands } from '@/bindings';
 import { refreshChanges } from '@/hooks/query';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ export interface CommiterProps
 
 export default function Commiter({ changeSet, ...props }: CommiterProps) {
   const [isCommiting, setIsCommiting] = useState(false);
-  const [repoPath] = useAppState(s => [s.repoPath]);
+  const [repoPath] = useAppStore(s => [s.repoPath]);
 
   return isCommiting ? (
     <CommitCommit

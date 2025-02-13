@@ -2,12 +2,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { useAppState } from '@/hooks/state';
+import { useAppStore } from '@/hooks/use-store';
 import { useTranslations } from 'next-intl';
 
 export default function ProfileCard() {
   const t = useTranslations();
-  const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppState(s => [
+  const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppStore(s => [
     s.useEmoji,
     s.setUseEmoji,
     s.signoff,

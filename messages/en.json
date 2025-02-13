@@ -125,7 +125,8 @@
       "username": "Name"
     },
     "gh": {
-      "api": "Github API Endpoint"
+      "api": "Github API Endpoint",
+      "token": "Github Token"
     },
     "language": "Language",
     "signoff": "Sign off commit",

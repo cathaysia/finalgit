@@ -35,6 +35,8 @@ export interface AppStoreProps {
   currentPrompt: string;
   isHydrated: boolean;
   githubApiUrl: string;
+  githubToken: string;
+  setGithubToken: (token: string) => void;
   setGithubApiUrl: (url: string) => void;
   setIsHydrated: (s: boolean) => void;
   setCurrentAi: (ai: 'ollama' | 'openai') => void;
@@ -121,6 +123,8 @@ export const useAppStore = create<AppStoreProps>()(
       isHydrated: false,
       currentPrompt: 'Conventional Commits',
       githubApiUrl: 'https://api.github.com',
+      githubToken: '',
+      setGithubToken: (token: string) => set({ githubToken: token }),
       setGithubApiUrl: (url: string) => set({ githubApiUrl: url }),
       setIsHydrated: s => set({ isHydrated: s }),
       setOpenAiKey: (key: string) =>
@@ -200,6 +204,8 @@ export const useAppStore = create<AppStoreProps>()(
       partialize: s => ({
         repoPath: s.repoPath,
         lang: s.lang,
+        ghUrl: s.githubApiUrl,
+        ghToken: s.githubToken,
         projects: s.projects,
         useEmoji: s.useEmoji,
         renderMarkdown: s.renderMarkdown,

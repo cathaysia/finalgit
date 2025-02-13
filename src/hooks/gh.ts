@@ -1,37 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
-import { P, isMatching } from 'ts-pattern';
+import { Octokit } from 'octokit';
 import { useAppStore } from './use-store';
 
-interface SearchUserItem {
-  id: number;
-  // biome-ignore lint/style/useNamingConvention: <explanation>
-  avatar_url: string;
-}
-interface SearchUserProps {
-  items: SearchUserItem[];
-}
-
-interface SearchError {
-  status: string;
-}
-
-type SearchResult = SearchError | SearchUserProps;
-
 export function useGhAvatar(userName: string) {
-  const [ghApi] = useAppStore(s => [s.githubApiUrl]);
+  const [ghApi, token] = useAppStore(s => [s.githubApiUrl, s.githubToken]);
+
   return useQuery({
     queryKey: ['github_avatar', userName, ghApi],
     queryFn: async () => {
-      const res = await fetch(`${ghApi}/search/users?q=${userName}`);
-      const body = JSON.parse(await res.text()) as SearchResult;
-      if (isMatching({ items: P.select() }, body)) {
-        if (body.items.length === 0) {
-          return '';
-        }
-        return body.items[0].avatar_url;
+      const octokit = new Octokit({
+        auth: token.length === 0 ? undefined : token,
+      });
+      if (token.length !== 0) {
+        await octokit.rest.users.getAuthenticated();
       }
 
-      throw new Error(`query avatar for ${userName} failed`);
+      const res = await octokit.rest.search.users({ q: userName });
+      if (res.status !== 200) {
+        throw Error(`query failed: ${res.status}`);
+      }
+
+      const item = res.data.items;
+      if (item.length === 0) {
+        throw Error('result is empty');
+      }
+
+      return item[0].avatar_url;
     },
   });
 }

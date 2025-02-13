@@ -96,7 +96,9 @@
     "model": "模型"
   },
   "openai": {
-    "key": "密钥"
+    "endpoint": "端点",
+    "key": "密钥",
+    "model": "模型"
   },
   "profile": {
     "add_before_discard": "丢弃更改前添加更改到暂存",

@@ -18,6 +18,7 @@ export interface AiConfig {
   openai: {
     endpoint: string;
     key: string;
+    model: string;
   };
 }
 
@@ -37,6 +38,7 @@ export interface AppStoreProps {
   setCurrentAi: (ai: 'ollama' | 'openai') => void;
   setOpenAiKey: (key: string) => void;
   setOpenAiEndpoint: (endpoint: string) => void;
+  setOpenAiModel: (model: string) => void;
   setOllamaModel: (model: string) => void;
   setOllamaEndpoint: (endpoint: string) => void;
   setLang: (lang: string) => void;
@@ -108,8 +110,9 @@ export const useAppStore = create<AppStoreProps>()(
           model: '',
         },
         openai: {
-          endpoint: '',
+          endpoint: 'https://api.openai.com',
           key: '',
+          model: 'gpt-4o',
         },
       },
       promptList: defaultPrompt,
@@ -123,6 +126,10 @@ export const useAppStore = create<AppStoreProps>()(
       setOpenAiEndpoint: (endpoint: string) =>
         set(s => {
           s.aiConfig.openai.endpoint = endpoint;
+        }),
+      setOpenAiModel: (model: string) =>
+        set(s => {
+          s.aiConfig.openai.model = model;
         }),
       setCurrentAi: (model: 'ollama' | 'openai') =>
         set(s => {

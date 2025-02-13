@@ -7,7 +7,7 @@ import { FaMagic } from 'react-icons/fa';
 
 import { commands } from '@/bindings';
 import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
-import { AiKind, generateCommit } from '@/lib/ai';
+import { AiKind, type AiType, generateCommit } from '@/lib/ai';
 import NOTIFY from '@/lib/notify';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
@@ -23,7 +23,7 @@ export interface CommiterProps
 export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [commitMsg, setCommitMsg] = useState<string>('');
-  const currentModel = useAppStore(s => s.aiConfig.ollama.model);
+  const aiConfig = useAppStore(s => s.aiConfig);
   const t = useTranslations();
 
   const [abort, setAbort] = useState<AbortController | null>(null);
@@ -87,7 +87,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
         ) : (
           <Button
             onClick={async () => {
-              if (!repoPath || !currentModel) {
+              if (!repoPath) {
                 return;
               }
               setIsLoading(true);
@@ -97,14 +97,30 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                 setIsLoading(false);
                 return;
               }
+
+              let aikind: AiType = {
+                kind: AiKind.Ollama,
+              };
+              let model = aiConfig.ollama.model;
+
+              if (aiConfig.current === 'openai') {
+                aikind = {
+                  kind: AiKind.OpenAi,
+                  args: {
+                    apiKey: aiConfig.openai.key,
+                    // biome-ignore lint/style/useNamingConvention: <explanation>
+                    baseURL: aiConfig.openai.endpoint,
+                  },
+                };
+                model = aiConfig.openai.model;
+              }
+
               try {
                 await generateCommit(
                   value.data,
-                  {
-                    kind: AiKind.Ollama,
-                  },
+                  aikind,
                   prompt,
-                  currentModel,
+                  model,
                   (text, controller) => {
                     setCommitMsg(text);
                     setAbort(controller);

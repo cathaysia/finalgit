@@ -1,7 +1,6 @@
 'use client';
 import '@/assets/global.css';
 
-import { Skeleton } from '@/components/ui/skeleton';
 import { useAppStore } from '@/hooks/use-store';
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -31,12 +30,7 @@ export default function Page() {
           enableSystem
           attribute="class"
         >
-          <div className="grid h-full w-full grid-cols-4 gap-2 p-4">
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-          </div>
+          <div className="h-full w-full" />
         </ThemeProvider>
       </body>
     </html>

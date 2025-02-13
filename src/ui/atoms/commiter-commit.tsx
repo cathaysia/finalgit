@@ -7,7 +7,7 @@ import { FaMagic } from 'react-icons/fa';
 
 import { commands } from '@/bindings';
 import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
-import { AiKind, type AiType, generateCommit } from '@/lib/ai';
+import { AiKind, type AiProps, generateCommit } from '@/lib/ai';
 import NOTIFY from '@/lib/notify';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
@@ -98,13 +98,13 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                 return;
               }
 
-              let aikind: AiType = {
+              let aiProps: AiProps = {
                 kind: AiKind.Ollama,
               };
               let model = aiConfig.ollama.model;
 
               if (aiConfig.current === 'openai') {
-                aikind = {
+                aiProps = {
                   kind: AiKind.OpenAi,
                   args: {
                     apiKey: aiConfig.openai.key,
@@ -118,7 +118,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
               try {
                 await generateCommit(
                   value.data,
-                  aikind,
+                  aiProps,
                   prompt,
                   model,
                   (text, controller) => {
@@ -132,6 +132,9 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
 
               if (signoff && userInfo?.userName && userInfo.userEmail) {
                 setCommitMsg(s => {
+                  if (s.length === 0) {
+                    return '';
+                  }
                   return `${s}\n\nSigned-off-by: ${userInfo.userName} ${userInfo.userEmail}`;
                 });
               }

@@ -7,43 +7,44 @@ export enum AiKind {
   OpenAi = 1,
 }
 
-export interface AiOllama {
+export interface AiOllamaProps {
   kind: AiKind.Ollama;
   args?: OllamaProviderSettings;
 }
 
-export interface AiOpenAi {
+export interface AiOpenAiProps {
   kind: AiKind.OpenAi;
   args?: OpenAIProviderSettings;
 }
 
-export type AiType = AiOllama | AiOpenAi;
+export type AiProps = AiOllamaProps | AiOpenAiProps;
 
-function createAi(ai: AiType) {
-  if (ai.kind === AiKind.Ollama) {
-    return createOllama(ai.args);
+function createAiProvider(props: AiProps) {
+  if (props.kind === AiKind.Ollama) {
+    return createOllama(props.args);
   }
-  if (ai.kind === AiKind.OpenAi) {
-    return createOpenAI(ai.args);
+  if (props.kind === AiKind.OpenAi) {
+    return createOpenAI(props.args);
   }
+
+  return null;
 }
 
 export async function generateCommit(
   diff: string,
-  aitype: AiType,
+  aitype: AiProps,
   prompt: string,
   model: string,
-  onGenering: (text: string, controller: AbortController) => void,
+  onGenerateText: (text: string, controller: AbortController) => void,
 ) {
   const controller = new AbortController();
-  onGenering('', controller);
-  const ai = createAi(aitype);
-  if (!ai) {
+  onGenerateText('', controller);
+  const provider = createAiProvider(aitype);
+  if (!provider) {
     return;
   }
-  const llama = ai(model);
   const { textStream } = await streamText({
-    model: llama,
+    model: provider(model),
     prompt: prompt.replace('%{diff}', diff),
     abortSignal: controller.signal,
   });
@@ -51,7 +52,7 @@ export async function generateCommit(
   let text = '';
   for await (const textPart of textStream) {
     text += textPart;
-    onGenering(formatGeneratedText(text), controller);
+    onGenerateText(formatGeneratedText(text), controller);
     if (
       text
         .split('\n')

@@ -129,7 +129,8 @@
     "stash_before_checkout": "检出前暂存更改",
     "use_emoji": "在分支和提交界面使用 Emoji 替换纯文本",
     "gh": {
-      "api": "Github API"
+      "api": "Github API",
+      "token": "Github Token"
     }
   },
   "project": {

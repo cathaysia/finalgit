@@ -11,9 +11,11 @@ import { useTranslations } from 'next-intl';
 type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {
   const t = useTranslations();
-  const [ghApi, setGhApi] = useAppStore(s => [
+  const [ghApi, setGhApi, ghToken, setGhToken] = useAppStore(s => [
     s.githubApiUrl,
     s.setGithubApiUrl,
+    s.githubToken,
+    s.setGithubToken,
   ]);
 
   return (
@@ -46,6 +48,16 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
             }}
             value={ghApi}
             placeholder="https://api.github.com"
+          />
+        </div>
+        <div>
+          <Label>{t('profile.gh.token')}</Label>
+          <Input
+            type="text"
+            onChange={e => {
+              setGhToken(e.target.value);
+            }}
+            value={ghToken}
           />
         </div>
       </CardContent>

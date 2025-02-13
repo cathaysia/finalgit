@@ -6,15 +6,14 @@ import {
   refreshFiles,
   refreshStashList,
   refreshTags,
-  useModifyTimes,
+  useRepoChangeTime,
 } from '@/hooks/query';
 import { useAppStore } from '@/hooks/use-store';
-import NOTIFY from '@/lib/notify';
 
 import { useEffect } from 'react';
 
 export function App() {
-  const [setRepoPath, lang] = useAppStore(s => [s.setRepoPath, s.lang]);
+  const [setRepoPath] = useAppStore(s => [s.setRepoPath, s.lang]);
 
   useEffect(() => {
     commands.takeRepoPath().then(v => {
@@ -25,10 +24,7 @@ export function App() {
     });
   });
 
-  const { error, data } = useModifyTimes();
-  if (error) {
-    NOTIFY.error(error.message);
-  }
+  const data = useRepoChangeTime();
 
   useEffect(() => {
     refreshBranches();

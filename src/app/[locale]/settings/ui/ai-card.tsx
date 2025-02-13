@@ -42,20 +42,19 @@ export default function AiCard() {
     setOllamaModel,
     setOpenAiKey,
     setOpenAiEndpoint,
+    setOpenAiModel,
   ] = useAppStore(s => [
     s.aiConfig,
     s.setCurrentAi,
     s.setOllamaModel,
     s.setOpenAiKey,
     s.setOpenAiEndpoint,
+    s.setOpenAiModel,
   ]);
   const endpoint = aiConfig.ollama.endpoint;
   const [setEndpoint] = useAppStore(s => [s.setOllamaEndpoint]);
 
-  const { error, data: models } = useOllamaModels();
-  if (error) {
-    NOTIFY.error(error.message);
-  }
+  const { data: models } = useOllamaModels();
   useEffect(() => {
     if (models && aiConfig.ollama.model.length === 0 && models.length > 0) {
       setOllamaModel(models[0]);
@@ -81,7 +80,7 @@ export default function AiCard() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ollama">Ollama</SelectItem>
-            <SelectItem value="openai">Openai</SelectItem>
+            <SelectItem value="openai">OpenAi</SelectItem>
           </SelectContent>
         </Select>
         {aiConfig.current === 'ollama' && (
@@ -103,11 +102,12 @@ export default function AiCard() {
         )}
         {aiConfig.current === 'openai' && (
           <div className="mt-2 flex flex-col gap-2">
-            <Label htmlFor="openai.key">{t('openai.key')}</Label>
+            <Label htmlFor="openai.endpoint">{t('openai.endpoint')}</Label>
             <Input
-              id="openai_key"
-              type="password"
+              id="openai.endpoint"
               value={aiConfig.openai.endpoint}
+              type="url"
+              placeholder="https://api.openai.com/v1"
               onChange={e => {
                 setOpenAiEndpoint(e.target.value);
               }}
@@ -123,6 +123,20 @@ export default function AiCard() {
                     setOpenAiKey(e.target.value);
                   }}
                 />
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="openai.model">{t('openai.model')}</Label>
+                  <Input
+                    id="openai_key"
+                    value={aiConfig.openai.model}
+                    type="text"
+                    spellCheck={false}
+                    onChange={e => {
+                      setOpenAiModel(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

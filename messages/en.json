@@ -96,7 +96,9 @@
     "model": "Model"
   },
   "openai": {
-    "key": "Key"
+    "endpoint": "Endpoint",
+    "key": "Key",
+    "model": "Model"
   },
   "profile": {
     "add_before_discard": "Add before discard",

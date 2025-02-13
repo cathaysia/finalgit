@@ -2,6 +2,8 @@
 import { commands } from '@/bindings';
 import { queryModels } from '@/lib/ai';
 import { QueryClient, useQuery } from '@tanstack/react-query';
+import { type UnwatchFn, watch } from '@tauri-apps/plugin-fs';
+import { useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
 import { useAppStore } from './use-store';
 
@@ -137,35 +139,36 @@ export function useOllamaModels() {
   });
 }
 
-export function useModifyTimes() {
+export function useRepoChangeTime() {
   const [repoPath] = useAppStore(s => [s.repoPath]);
+  const [count, setCount] = useState(0);
+  const [handle, setHandle] = useState<UnwatchFn | null>(null);
 
-  return useQuery({
-    queryKey: ['modifiedTime', repoPath],
-    queryFn: async () => {
-      if (!repoPath) {
-        return 0;
-      }
-      const res = await commands?.getHeadModifyTime(repoPath);
-      return match(res)
-        .with({ status: 'ok' }, v => {
-          return v.data;
-        })
-        .with({ status: 'error' }, err => {
-          throw new Error(err.error);
-        })
-        .exhaustive();
-    },
-    retry: false,
-    refetchInterval: 1000,
-    refetchOnWindowFocus: 'always',
-    refetchOnReconnect: true,
-    enabled: repoPath !== undefined,
-  });
-}
+  useEffect(() => {
+    if (!repoPath) {
+      return;
+    }
+    if (handle != null) {
+      handle();
+    }
+    (async () => {
+      const handle = await watch(
+        repoPath,
+        _ => {
+          setCount(count => {
+            return count + 1;
+          });
+        },
+        {
+          delayMs: 100,
+          recursive: true,
+        },
+      );
+      setHandle(handle);
+    })();
+  }, [repoPath]);
 
-export function refreshModifyTimes() {
-  queryClient.invalidateQueries({ queryKey: ['modifiedTime'] });
+  return count;
 }
 
 export function useStashList() {
@@ -377,9 +380,10 @@ export function useStatisOfAuthor(author: string) {
 
 export function usePushstatus(branch: string) {
   const [repoPath] = useAppStore(s => [s.repoPath]);
+  const data = useRepoChangeTime();
 
   return useQuery({
-    queryKey: ['pushStatus', repoPath, branch],
+    queryKey: ['pushStatus', repoPath, branch, data],
     queryFn: async () => {
       if (!repoPath || branch.length === 0) {
         throw new Error('no repoPath');
@@ -394,7 +398,6 @@ export function usePushstatus(branch: string) {
         })
         .exhaustive();
     },
-    refetchInterval: 2000,
     refetchOnWindowFocus: 'always',
     enabled: repoPath !== undefined,
   });

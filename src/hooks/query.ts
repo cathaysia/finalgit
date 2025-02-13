@@ -1,6 +1,7 @@
 'use client';
 import { commands } from '@/bindings';
 import { queryModels } from '@/lib/ai';
+import { getGitConfig } from '@/lib/git';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { type UnwatchFn, watch } from '@tauri-apps/plugin-fs';
 import { useEffect, useState } from 'react';
@@ -428,6 +429,22 @@ export function useCommitChanges(commit: string) {
     },
     refetchInterval: 2000,
     refetchOnWindowFocus: 'always',
+    enabled: repoPath !== undefined,
+  });
+}
+
+export function useGitOpts(opt: string) {
+  const [repoPath] = useAppStore(s => [s.repoPath]);
+
+  return useQuery({
+    queryKey: ['gitopts', repoPath, opt],
+    queryFn: async () => {
+      if (!repoPath || opt.length === 0) {
+        throw new Error('no repoPath');
+      }
+
+      return (await getGitConfig(repoPath, opt)) || null;
+    },
     enabled: repoPath !== undefined,
   });
 }

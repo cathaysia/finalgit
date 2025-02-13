@@ -1,7 +1,8 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useGitOpts } from '@/hooks/query';
 import { useAppStore } from '@/hooks/use-store';
-import { getGitConfig, setGitConfig } from '@/lib/git';
+import { setGitConfig } from '@/lib/git';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
@@ -20,19 +21,16 @@ export default function GitOption({
   opt,
   ...props
 }: GitOptionProps) {
+  const { data: gitOpt } = useGitOpts(opt);
   const [repoPath] = useAppStore(s => [s.repoPath]);
   const [value, setValue] = useState<string>('');
   const [debounce] = useDebounce(value, 1000);
 
   useEffect(() => {
-    if (repoPath) {
-      getGitConfig(repoPath, opt).then(val => {
-        if (val) {
-          setValue(val);
-        }
-      });
+    if (gitOpt) {
+      setValue(gitOpt);
     }
-  }, [repoPath, opt]);
+  }, [repoPath, gitOpt]);
 
   useEffect(() => {
     if (!debounce || !repoPath || !debounce) {

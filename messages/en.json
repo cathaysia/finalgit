@@ -124,6 +124,9 @@
       "user": "User",
       "username": "Name"
     },
+    "gh": {
+      "api": "Github API Endpoint"
+    },
     "language": "Language",
     "signoff": "Sign off commit",
     "stash_before_checkout": "Enable smart stash",

@@ -1,11 +1,12 @@
 import { commands } from '@/bindings';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { useGitOpts } from '@/hooks/query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { isMatching, match } from 'ts-pattern';
+import { match } from 'ts-pattern';
 
 export interface GitSwitchProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -21,19 +22,16 @@ export default function GitSwitch({
   opt,
   ...props
 }: GitSwitchProps) {
+  const { data: gitOpt } = useGitOpts(opt);
   const [repoPath] = useAppStore(s => [s.repoPath]);
   const [value, setValue] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!repoPath) {
+    if (!gitOpt) {
       return;
     }
-    getBooleanConfig(repoPath, opt).then(val => {
-      if (val) {
-        setValue(val);
-      }
-    });
-  }, [repoPath, opt]);
+    setValue(gitOpt === 'true');
+  }, [repoPath, gitOpt]);
 
   return (
     <div className={cn('flex justify-between', className)} {...props}>
@@ -50,17 +48,6 @@ export default function GitSwitch({
       />
     </div>
   );
-}
-
-async function getBooleanConfig(repoPath: string, opt: string) {
-  const res = await commands?.configGet(repoPath, opt);
-  if (isMatching({ status: 'ok' }, res)) {
-    if (res.data === 'true') {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 async function setBooleanConfig(repoPath: string, opt: string, value: boolean) {

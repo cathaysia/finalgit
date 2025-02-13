@@ -34,6 +34,8 @@ export interface AppStoreProps {
   promptList: Map<string, string>;
   currentPrompt: string;
   isHydrated: boolean;
+  githubApiUrl: string;
+  setGithubApiUrl: (url: string) => void;
   setIsHydrated: (s: boolean) => void;
   setCurrentAi: (ai: 'ollama' | 'openai') => void;
   setOpenAiKey: (key: string) => void;
@@ -118,6 +120,8 @@ export const useAppStore = create<AppStoreProps>()(
       promptList: defaultPrompt,
       isHydrated: false,
       currentPrompt: 'Conventional Commits',
+      githubApiUrl: 'https://api.github.com',
+      setGithubApiUrl: (url: string) => set({ githubApiUrl: url }),
       setIsHydrated: s => set({ isHydrated: s }),
       setOpenAiKey: (key: string) =>
         set(s => {

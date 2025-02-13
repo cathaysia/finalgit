@@ -1,4 +1,8 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import GitOption from '@/ui/atoms/git-option';
 import GitSwitch from '@/ui/atoms/git-switch';
@@ -7,6 +11,10 @@ import { useTranslations } from 'next-intl';
 type GitCoreProps = React.HtmlHTMLAttributes<HTMLDivElement>;
 export default function GitCore({ className, ...props }: GitCoreProps) {
   const t = useTranslations();
+  const [ghApi, setGhApi] = useAppStore(s => [
+    s.githubApiUrl,
+    s.setGithubApiUrl,
+  ]);
 
   return (
     <Card className={cn('w-full', className)} {...props}>
@@ -29,6 +37,17 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
           name={t('profile.git.defaultBranch')}
           opt={'init.defaultbranch'}
         />
+        <div>
+          <Label>{t('profile.gh.api')}</Label>
+          <Input
+            type="url"
+            onChange={e => {
+              setGhApi(e.target.value);
+            }}
+            value={ghApi}
+            placeholder="https://api.github.com"
+          />
+        </div>
       </CardContent>
     </Card>
   );

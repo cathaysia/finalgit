@@ -32,6 +32,8 @@ export interface AppStoreProps {
   aiConfig: AiConfig;
   promptList: Map<string, string>;
   currentPrompt: string;
+  isHydrated: boolean;
+  setIsHydrated: (s: boolean) => void;
   setCurrentAi: (ai: 'ollama' | 'openai') => void;
   setOpenAiKey: (key: string) => void;
   setOpenAiEndpoint: (endpoint: string) => void;
@@ -111,7 +113,9 @@ export const useAppStore = create<AppStoreProps>()(
         },
       },
       promptList: defaultPrompt,
+      isHydrated: false,
       currentPrompt: 'Conventional Commits',
+      setIsHydrated: s => set({ isHydrated: s }),
       setOpenAiKey: (key: string) =>
         set(s => {
           s.aiConfig.openai.key = key;
@@ -177,6 +181,9 @@ export const useAppStore = create<AppStoreProps>()(
           await tauriStore.set(name, str);
         },
         removeItem: async name => await tauriStore.delete(name),
+      },
+      onRehydrateStorage: s => {
+        return () => s.setIsHydrated(true);
       },
       // @ts-expect-error: no error
       partialize: s => ({

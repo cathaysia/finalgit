@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { P, isMatching } from 'ts-pattern';
+import { useAppStore } from './use-store';
 
 interface SearchUserItem {
   id: number;
@@ -17,12 +18,11 @@ interface SearchError {
 type SearchResult = SearchError | SearchUserProps;
 
 export function useGhAvatar(userName: string) {
+  const [ghApi] = useAppStore(s => [s.githubApiUrl]);
   return useQuery({
-    queryKey: ['github_avatar', userName],
+    queryKey: ['github_avatar', userName, ghApi],
     queryFn: async () => {
-      const res = await fetch(
-        `https://api.github.com/search/users?q=${userName}`,
-      );
+      const res = await fetch(`${ghApi}/search/users?q=${userName}`);
       const body = JSON.parse(await res.text()) as SearchResult;
       if (isMatching({ items: P.select() }, body)) {
         if (body.items.length === 0) {

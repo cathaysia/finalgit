@@ -8,7 +8,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import { useBlameInfo, useFiles } from '@/hooks/query';
+import { useBlameInfo, useFiles } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';

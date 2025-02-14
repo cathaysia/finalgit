@@ -1,7 +1,7 @@
 import { Tooltip } from '@/components/ext/tooltip';
 import HeatMap from '@uiw/react-heat-map';
 
-import { useStatisOfAuthor } from '@/hooks/query';
+import { useStatisOfAuthor } from '@/hooks/use-query';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';

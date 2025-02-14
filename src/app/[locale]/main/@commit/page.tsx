@@ -3,8 +3,8 @@
 import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useBisectState } from '@/hooks/bisect';
-import { useHistory } from '@/hooks/query';
+import { useBisectState } from '@/hooks/use-bisect';
+import { useHistory } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { filterCommits } from '@/lib/parser/commit-filter';
 import { cn } from '@/lib/utils';

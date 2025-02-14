@@ -19,7 +19,7 @@ import {
   useChanges,
   usePushstatus,
   useTags,
-} from '@/hooks/query';
+} from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';

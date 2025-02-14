@@ -14,7 +14,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
-import { refreshChanges } from '@/hooks/query';
+import { refreshChanges } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';

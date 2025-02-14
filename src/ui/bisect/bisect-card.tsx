@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import type { BisectState } from '@/hooks/bisect';
+import type { BisectState } from '@/hooks/use-bisect';
 import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
 import * as Portal from '@radix-ui/react-portal';

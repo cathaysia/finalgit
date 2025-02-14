@@ -1,5 +1,5 @@
 'use client';
-import { queryClient } from '@/hooks/query';
+import { queryClient } from '@/hooks/use-query';
 
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';

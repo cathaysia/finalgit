@@ -1,6 +1,6 @@
 import type { CommitInfo } from '@/bindings';
 import { ScrollBar } from '@/components/ui/scroll-area';
-import type { BisectState } from '@/hooks/bisect';
+import type { BisectState } from '@/hooks/use-bisect';
 import { cn } from '@/lib/utils';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 import {

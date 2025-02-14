@@ -19,7 +19,7 @@ import {
   useHeadOid,
   usePushstatus,
   useTags,
-} from '@/hooks/query';
+} from '@/hooks/use-query';
 import { Link } from '@/i18n/routing';
 import { produce } from 'immer';
 import { useState } from 'react';

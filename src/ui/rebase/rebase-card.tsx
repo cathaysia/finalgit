@@ -1,7 +1,7 @@
 'use client';
 import { commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
-import { refreshHeadState, useHeadState } from '@/hooks/query';
+import { refreshHeadState, useHeadState } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';

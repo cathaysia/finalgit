@@ -6,7 +6,7 @@ import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { FaMagic } from 'react-icons/fa';
 
 import { commands } from '@/bindings';
-import { refreshChanges, refreshHistory, useChanges } from '@/hooks/query';
+import { refreshChanges, refreshHistory, useChanges } from '@/hooks/use-query';
 import { AiKind, type AiProps, generateCommit } from '@/lib/ai';
 import NOTIFY from '@/lib/notify';
 import { useQuery } from '@tanstack/react-query';

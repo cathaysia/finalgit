@@ -187,11 +187,17 @@ export const useAppStore = create<AppStoreProps>()(
       name: 'app',
       storage: {
         getItem: async name => {
+          if (typeof window === 'undefined') {
+            return null;
+          }
           const str = await tauriStore.get<string>(name);
           if (!str) return null;
           return superjson.parse<StorageValue<AppStoreProps>>(str);
         },
         setItem: async (name, value) => {
+          if (typeof window === 'undefined') {
+            return null;
+          }
           const str = superjson.stringify(value);
           await tauriStore.set(name, str);
         },

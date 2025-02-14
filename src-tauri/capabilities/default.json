@@ -22,6 +22,9 @@
     "clipboard-manager:allow-write-text",
     "clipboard-manager:allow-write-html",
     "decorum:allow-show-snap-overlay",
-    "fs:allow-watch"
+    "fs:allow-watch",
+    "fs:allow-home-read-recursive",
+    "fs:allow-home-write-recursive",
+    "fs:allow-home-meta-recursive"
   ]
 }

@@ -1,7 +1,7 @@
 import { commands } from '@/bindings';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { useGitOpts } from '@/hooks/query';
+import { useGitOpts } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';

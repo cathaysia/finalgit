@@ -1,5 +1,5 @@
 import '@/assets/global.css';
-import { queryClient } from '@/hooks/query';
+import { queryClient } from '@/hooks/use-query';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/react';
 import { QueryClientProvider } from '@tanstack/react-query';

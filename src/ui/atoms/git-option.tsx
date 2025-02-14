@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useGitOpts } from '@/hooks/query';
+import { useGitOpts } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { setGitConfig } from '@/lib/git';
 import { cn } from '@/lib/utils';

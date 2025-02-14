@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshChanges } from '@/hooks/query';
+import { refreshChanges } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';

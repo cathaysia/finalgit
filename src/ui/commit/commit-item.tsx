@@ -25,7 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { refreshBisectNext, refreshBisectRange } from '@/hooks/bisect';
+import { refreshBisectNext, refreshBisectRange } from '@/hooks/use-bisect';
 import {
   refreshBranches,
   refreshChanges,
@@ -35,7 +35,7 @@ import {
   useChanges,
   useHeadOid,
   useTags,
-} from '@/hooks/query';
+} from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';

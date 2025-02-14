@@ -1,7 +1,7 @@
 import type { CommitInfo } from '@/bindings';
 import { AvatarGroup } from '@/components/ext/avatar-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useCommitChanges, useRemotes } from '@/hooks/query';
+import { useCommitChanges, useRemotes } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';

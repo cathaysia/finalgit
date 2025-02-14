@@ -7,7 +7,7 @@ import {
   ContextMenuLabel,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
-import { refreshChanges, useHeadOid } from '@/hooks/query';
+import { refreshChanges, useHeadOid } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import {

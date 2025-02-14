@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useOllamaModels } from '@/hooks/query';
+import { useOllamaModels } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import { fetchModel } from '@/lib/ai/ollama';
 import NOTIFY from '@/lib/notify';

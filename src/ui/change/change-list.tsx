@@ -1,7 +1,7 @@
 import { type FileStatus, commands } from '@/bindings';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { refreshChanges, useStashList } from '@/hooks/query';
+import { refreshChanges, useStashList } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';

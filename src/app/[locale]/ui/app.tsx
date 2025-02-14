@@ -7,7 +7,7 @@ import {
   refreshStashList,
   refreshTags,
   useRepoChangeTime,
-} from '@/hooks/query';
+} from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 
 import { useEffect } from 'react';

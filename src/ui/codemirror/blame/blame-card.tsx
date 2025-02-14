@@ -5,7 +5,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Label } from '@/components/ui/label';
-import { useCommitInfo } from '@/hooks/query';
+import { useCommitInfo } from '@/hooks/use-query';
 import CommitCard from '@/ui/commit/commit-card';
 
 export interface BlameCardProps {

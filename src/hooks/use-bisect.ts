@@ -1,7 +1,7 @@
 import { type CommitInfo, commands } from '@/bindings';
 import { useQuery } from '@tanstack/react-query';
 import { isMatching, match } from 'ts-pattern';
-import { queryClient, useHeadState } from './query';
+import { queryClient, useHeadState } from './use-query';
 import { useAppStore } from './use-store';
 
 export interface BisectState {

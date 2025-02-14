@@ -1,6 +1,6 @@
 import { type BranchInfo, type FileStatus, commands } from '@/bindings';
 import { isMatching, match } from 'ts-pattern';
-import { refreshBranches, refreshChanges } from '../hooks/query';
+import { refreshBranches, refreshChanges } from '../hooks/use-query';
 import NOTIFY from './notify';
 
 export async function stageAddFile(repoPath: string, item: FileStatus) {

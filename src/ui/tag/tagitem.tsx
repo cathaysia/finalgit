@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { refreshBranches, useHeadOid } from '@/hooks/query';
+import { refreshBranches, useHeadOid } from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';

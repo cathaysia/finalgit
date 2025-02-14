@@ -78,7 +78,7 @@ export default function WorkspacePanel() {
     <div
       className={cn('flex h-full max-h-full flex-col gap-2 overflow-y-hidden')}
     >
-      <div className={cn('rounded-xl border p-4 shadow')}>
+      <div className={cn('rounded border p-4 shadow')}>
         <div className="pb-2">
           <div className="pb-2">{branchName}</div>
         </div>
@@ -155,7 +155,7 @@ export default function WorkspacePanel() {
       </div>
       <div
         className={cn(
-          'flex min-h-0 grow flex-col gap-2 rounded-xl border p-4 shadow',
+          'flex min-h-0 grow flex-col gap-2 rounded border p-4 shadow',
         )}
       >
         <div className="flex items-center justify-between gap-2">

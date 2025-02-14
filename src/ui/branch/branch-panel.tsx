@@ -58,7 +58,7 @@ export default function BranchPanel({
   return (
     <Tabs
       defaultValue="branch"
-      className={cn('flex h-full flex-col border focus:bg-red-50', className)}
+      className={cn('flex h-full flex-col border', className)}
     >
       <div className="flex flex-col gap-2 px-2">
         <div className="flex items-center justify-between gap-2">

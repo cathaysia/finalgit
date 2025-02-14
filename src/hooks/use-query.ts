@@ -3,7 +3,12 @@ import { commands } from '@/bindings';
 import { queryModels } from '@/lib/ai';
 import { getGitConfig } from '@/lib/git';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { type UnwatchFn, watch } from '@tauri-apps/plugin-fs';
+import {
+  type UnwatchFn,
+  type WatchEventKind,
+  watch,
+} from '@tauri-apps/plugin-fs';
+import { debug } from '@tauri-apps/plugin-log';
 import { useEffect, useState } from 'react';
 import { match } from 'ts-pattern';
 import { useAppStore } from './use-store';
@@ -140,32 +145,52 @@ export function useOllamaModels() {
   });
 }
 
+function isInterest(e: WatchEventKind) {
+  // @ts-expect-error: xxx
+  return e.create | e.modify | e.remove;
+}
+
+let oldChangeTime = '';
 export function useRepoChangeTime() {
   const [repoPath] = useAppStore(s => [s.repoPath]);
   const [count, setCount] = useState(0);
   const [handle, setHandle] = useState<UnwatchFn | null>(null);
 
   useEffect(() => {
-    if (!repoPath) {
+    if (!repoPath || repoPath.length === 0) {
+      if (handle !== null) {
+        handle();
+        setHandle(null);
+      }
       return;
     }
-    if (handle != null) {
-      handle();
+    if (repoPath === oldChangeTime) {
+      return;
     }
+    oldChangeTime = repoPath;
     (async () => {
-      const handle = await watch(
+      debug(`watch ${repoPath}`);
+      const h = await watch(
         repoPath,
-        _ => {
-          setCount(count => {
-            return count + 1;
-          });
+        e => {
+          if (isInterest(e.type)) {
+            setCount(count => {
+              return count + 1;
+            });
+          }
         },
         {
           delayMs: 100,
           recursive: true,
         },
       );
-      setHandle(handle);
+      setHandle(s => {
+        if (s !== null) {
+          debug('cancel watch');
+          s();
+        }
+        return h;
+      });
     })();
   }, [repoPath]);
 

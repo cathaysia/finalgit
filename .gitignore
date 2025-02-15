@@ -37,3 +37,5 @@ public/icons/
 next-env.d.ts
 site
 storybook-static
+
+target

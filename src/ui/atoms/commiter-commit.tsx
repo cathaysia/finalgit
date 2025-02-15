@@ -10,6 +10,7 @@ import { refreshChanges, refreshHistory, useChanges } from '@/hooks/use-query';
 import { AiKind, type AiProps, generateCommit } from '@/lib/ai';
 import NOTIFY from '@/lib/notify';
 import { useQuery } from '@tanstack/react-query';
+import { error } from '@tauri-apps/plugin-log';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -103,7 +104,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
               };
               let model = aiConfig.ollama.model;
 
-              if (aiConfig.current === 'openai') {
+              if (aiConfig.current === AiKind.OpenAi) {
                 aiProps = {
                   kind: AiKind.OpenAi,
                   args: {
@@ -113,6 +114,18 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                   },
                 };
                 model = aiConfig.openai.model;
+              }
+              if (aiConfig.current === AiKind.OpenAiCompatible) {
+                aiProps = {
+                  kind: AiKind.OpenAiCompatible,
+                  args: {
+                    name: aiConfig.openAiCompatible.name,
+                    apiKey: aiConfig.openAiCompatible.key,
+                    // biome-ignore lint/style/useNamingConvention: <explanation>
+                    baseURL: aiConfig.openAiCompatible.endpoint,
+                  },
+                };
+                model = aiConfig.openAiCompatible.model;
               }
 
               try {
@@ -126,8 +139,8 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                     setAbort(controller);
                   },
                 );
-              } catch (_) {
-                //
+              } catch (e) {
+                error(`${e}`);
               }
 
               if (signoff && userInfo?.userName && userInfo.userEmail) {

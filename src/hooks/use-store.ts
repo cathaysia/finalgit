@@ -1,3 +1,4 @@
+import { AiKind } from '@/lib/ai';
 import { LazyStore } from '@tauri-apps/plugin-store';
 import { enableMapSet } from 'immer';
 import superjson from 'superjson';
@@ -10,12 +11,18 @@ enableMapSet();
 const tauriStore = new LazyStore('settings.json');
 
 export interface AiConfig {
-  current: 'ollama' | 'openai';
+  current: AiKind;
   ollama: {
     endpoint: string;
     model: string;
   };
   openai: {
+    endpoint: string;
+    key: string;
+    model: string;
+  };
+  openAiCompatible: {
+    name: string;
     endpoint: string;
     key: string;
     model: string;
@@ -39,7 +46,11 @@ export interface AppStoreProps {
   setGithubToken: (token: string) => void;
   setGithubApiUrl: (url: string) => void;
   setIsHydrated: (s: boolean) => void;
-  setCurrentAi: (ai: 'ollama' | 'openai') => void;
+  setCurrentAi: (ai: AiKind) => void;
+  setOpenAiCompatibleName: (name: string) => void;
+  setOpenAiCompatibleKey: (key: string) => void;
+  setOpenAiCompatibleEndpoint: (endpoint: string) => void;
+  setOpenAiCompatibleModel: (model: string) => void;
   setOpenAiKey: (key: string) => void;
   setOpenAiEndpoint: (endpoint: string) => void;
   setOpenAiModel: (model: string) => void;
@@ -108,7 +119,7 @@ export const useAppStore = create<AppStoreProps>()(
       projects: new Set<string>(),
       signoff: true,
       aiConfig: {
-        current: 'ollama',
+        current: AiKind.Ollama,
         ollama: {
           endpoint: 'http://127.0.0.1:11434',
           model: '',
@@ -117,6 +128,12 @@ export const useAppStore = create<AppStoreProps>()(
           endpoint: 'https://api.openai.com',
           key: '',
           model: 'gpt-4o',
+        },
+        openAiCompatible: {
+          name: '',
+          endpoint: '',
+          key: '',
+          model: '',
         },
       },
       promptList: defaultPrompt,
@@ -127,6 +144,22 @@ export const useAppStore = create<AppStoreProps>()(
       setGithubToken: (token: string) => set({ githubToken: token }),
       setGithubApiUrl: (url: string) => set({ githubApiUrl: url }),
       setIsHydrated: s => set({ isHydrated: s }),
+      setOpenAiCompatibleName: (name: string) =>
+        set(s => {
+          s.aiConfig.openAiCompatible.name = name;
+        }),
+      setOpenAiCompatibleKey: (key: string) =>
+        set(s => {
+          s.aiConfig.openAiCompatible.key = key;
+        }),
+      setOpenAiCompatibleEndpoint: (endpoint: string) =>
+        set(s => {
+          s.aiConfig.openAiCompatible.endpoint = endpoint;
+        }),
+      setOpenAiCompatibleModel: (model: string) =>
+        set(s => {
+          s.aiConfig.openAiCompatible.model = model;
+        }),
       setOpenAiKey: (key: string) =>
         set(s => {
           s.aiConfig.openai.key = key;
@@ -139,7 +172,7 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.aiConfig.openai.model = model;
         }),
-      setCurrentAi: (model: 'ollama' | 'openai') =>
+      setCurrentAi: (model: AiKind) =>
         set(s => {
           s.aiConfig.current = model;
         }),

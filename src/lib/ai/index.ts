@@ -1,10 +1,15 @@
 import { type OpenAIProviderSettings, createOpenAI } from '@ai-sdk/openai';
+import {
+  type OpenAICompatibleProviderSettings,
+  createOpenAICompatible,
+} from '@ai-sdk/openai-compatible';
 import { streamText } from 'ai';
 import { type OllamaProviderSettings, createOllama } from 'ollama-ai-provider';
 
 export enum AiKind {
-  Ollama = 0,
-  OpenAi = 1,
+  Ollama = 'ollama',
+  OpenAi = 'openai',
+  OpenAiCompatible = 'openai-compatible',
 }
 
 export interface AiOllamaProps {
@@ -17,7 +22,12 @@ export interface AiOpenAiProps {
   args?: OpenAIProviderSettings;
 }
 
-export type AiProps = AiOllamaProps | AiOpenAiProps;
+export interface AiOpenAiCompatibleProps {
+  kind: AiKind.OpenAiCompatible;
+  args: OpenAICompatibleProviderSettings;
+}
+
+export type AiProps = AiOllamaProps | AiOpenAiProps | AiOpenAiCompatibleProps;
 
 function createAiProvider(props: AiProps) {
   if (props.kind === AiKind.Ollama) {
@@ -25,6 +35,9 @@ function createAiProvider(props: AiProps) {
   }
   if (props.kind === AiKind.OpenAi) {
     return createOpenAI(props.args);
+  }
+  if (props.kind === AiKind.OpenAiCompatible) {
+    return createOpenAICompatible(props.args);
   }
 
   return null;

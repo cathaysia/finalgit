@@ -1,0 +1,7 @@
+.cm-editor.cm-focused {
+    @apply outline-none;
+}
+
+.cm-line {
+    @apply break-all overflow-x-clip;
+}

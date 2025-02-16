@@ -24,6 +24,9 @@ export default function Page() {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="h-screen w-screen">
+        {process.env.NODE_ENV !== 'production' && (
+          <script src="http://localhost:8097" />
+        )}
         <ThemeProvider
           defaultTheme="system"
           storageKey="next-themes"

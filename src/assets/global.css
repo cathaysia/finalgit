@@ -154,7 +154,7 @@
 
 @theme inline {
     --font-sans: "Inter Variable", "Noto Sans SC Variable", ui-sans-serif,
-        system-ui, sans-serif, "Noto Color Emoji", "Apple Color Emoji",
+        system-ui, sans-serif, "Material Icons", "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: "Fira Code Variable", ui-monospace, SFMono-Regular, Menlo,
         Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

@@ -1,10 +1,10 @@
 'use client';
+import ControlBar from '@/app/[locale]/main/ui/controlbar';
 import { Button } from '@/components/ui/button';
 import { useBranches, useTags } from '@/hooks/use-query';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
-import ControlBar from '@/ui/atoms/controlbar';
 import BranchPanel from '@/ui/branch/branch-panel';
 import Project from '@/ui/main/project';
 import { useTranslations } from 'next-intl';

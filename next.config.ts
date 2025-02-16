@@ -1,3 +1,4 @@
+import os from 'os';
 import analyzer from '@next/bundle-analyzer';
 import { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
@@ -9,6 +10,9 @@ const nextConfig: NextConfig = {
   devIndicators: {
     appIsrStatus: false,
     buildActivity: true,
+  },
+  env: {
+    os: os.platform(),
   },
 };
 

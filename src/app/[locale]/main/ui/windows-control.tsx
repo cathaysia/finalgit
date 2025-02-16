@@ -3,7 +3,7 @@
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { useState } from 'react';
 
-export function WindowsControl() {
+export function Win32Control() {
   const appWindow = getCurrentWindow();
   const [isMaximized, setIsMaxized] = useState(false);
 

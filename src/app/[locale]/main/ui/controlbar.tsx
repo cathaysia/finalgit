@@ -17,6 +17,15 @@ const LinuxControl =
       )
     : () => null;
 
+const WindowsControl =
+  process.env.os === 'win32'
+    ? React.lazy(() =>
+        import('@/app/[locale]/main/ui/windows-control').then(res => ({
+          default: res.Win32Control,
+        })),
+      )
+    : () => null;
+
 export default function ControlBar({ className, ...props }: ControlBarProps) {
   const t = useTranslations();
 
@@ -28,6 +37,7 @@ export default function ControlBar({ className, ...props }: ControlBarProps) {
     >
       <div className="flex items-center gap-2">
         <LinuxControl />
+        <WindowsControl />
       </div>
       <motion.span
         className="hover:text-foreground/80"

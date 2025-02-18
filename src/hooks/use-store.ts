@@ -30,6 +30,7 @@ export interface AiConfig {
 }
 
 export interface AppStoreProps {
+  firstStart: boolean;
   repoPath?: string;
   lang: string;
   useEmoji: boolean;
@@ -43,6 +44,7 @@ export interface AppStoreProps {
   isHydrated: boolean;
   githubApiUrl: string;
   githubToken: string;
+  setFirstStart: (firstStart: boolean) => void;
   setGithubToken: (token: string) => void;
   setGithubApiUrl: (url: string) => void;
   setIsHydrated: (s: boolean) => void;
@@ -66,6 +68,7 @@ export interface AppStoreProps {
   setAiConfig: (aiConfig: AiConfig) => void;
   setPrompt: (name: string, value: string) => void;
   setCurrentPrompt: (name: string) => void;
+  addRepoPath: (repoPath: string) => void;
 }
 
 const defaultPrompt = new Map();
@@ -111,6 +114,7 @@ Here is my git diff:
 export const useAppStore = create<AppStoreProps>()(
   persist(
     immer(set => ({
+      firstStart: true,
       repoPath: undefined,
       lang: 'en',
       useEmoji: true,
@@ -141,6 +145,7 @@ export const useAppStore = create<AppStoreProps>()(
       currentPrompt: 'Conventional Commits',
       githubApiUrl: 'https://api.github.com',
       githubToken: '',
+      setFirstStart: (firstStart: boolean) => set({ firstStart: firstStart }),
       setGithubToken: (token: string) => set({ githubToken: token }),
       setGithubApiUrl: (url: string) => set({ githubApiUrl: url }),
       setIsHydrated: s => set({ isHydrated: s }),
@@ -186,6 +191,11 @@ export const useAppStore = create<AppStoreProps>()(
         }),
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),
+      addRepoPath: (repoPath: string) => {
+        set(s => {
+          s.projects.add(repoPath);
+        });
+      },
       setRepoPath: (repoPath: string) => {
         set(s => {
           s.repoPath = repoPath;
@@ -241,6 +251,7 @@ export const useAppStore = create<AppStoreProps>()(
       },
       // @ts-expect-error: no error
       partialize: s => ({
+        firstStart: s.firstStart,
         repoPath: s.repoPath,
         lang: s.lang,
         ghUrl: s.githubApiUrl,

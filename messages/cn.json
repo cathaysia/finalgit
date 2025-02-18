@@ -1,4 +1,10 @@
 {
+  "guide": {
+    "import": "导入",
+    "language": "语言",
+    "import_project": "导入项目",
+    "imported": "已导入"
+  },
   "ai": {
     "prompt": "提示"
   },
@@ -101,6 +107,7 @@
     "model": "模型"
   },
   "profile": {
+    "run_guide": "下次启动时运行引导界面",
     "add_before_discard": "丢弃更改前添加更改到暂存",
     "ai_provider": "AI",
     "behaviour": "行为",

@@ -1,18 +1,24 @@
+'use client';
+import { useAppStore } from '@/hooks/use-store';
 import { redirect } from '@/i18n/routing';
-import { setRequestLocale } from 'next-intl/server';
+import { usePathname } from 'next/navigation';
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const locale = (await params).locale;
-  setRequestLocale(locale);
+export default function Page() {
+  const [isFirst] = useAppStore(s => [s.firstStart]);
+  let local = usePathname();
+  local = local.substring(1);
 
-  redirect({
-    href: '/main',
-    locale: locale,
-  });
+  if (isFirst) {
+    redirect({
+      href: '/guide',
+      locale: local,
+    });
+  } else {
+    redirect({
+      href: '/main',
+      locale: local,
+    });
+  }
 
   return <></>;
 }

@@ -2,7 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:app:default",
     "shell:default",
@@ -22,6 +24,8 @@
     "fs:default",
     "fs:allow-app-write",
     "fs:allow-app-write-recursive",
+    "core:path:default",
+    "core:path:allow-resolve-directory",
     "log:default",
     "core:event:default",
     "clipboard-manager:default",
@@ -31,6 +35,7 @@
     "fs:allow-unwatch",
     "fs:allow-home-read-recursive",
     "fs:allow-home-write-recursive",
-    "fs:allow-home-meta-recursive"
+    "fs:allow-home-meta-recursive",
+    "os:default"
   ]
 }

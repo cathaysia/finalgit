@@ -1,4 +1,10 @@
 {
+  "guide": {
+    "import": "Import",
+    "imported": "Imported",
+    "language": "Language",
+    "import_project": "Import project"
+  },
   "ai": {
     "prompt": "Prompt"
   },
@@ -101,6 +107,7 @@
     "model": "Model"
   },
   "profile": {
+    "run_guide": "Run guide when next start",
     "add_before_discard": "Add before discard",
     "ai_provider": "Provider",
     "behaviour": "Behaviour",

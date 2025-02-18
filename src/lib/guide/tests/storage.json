@@ -1,0 +1,356 @@
+{
+  "backupWorkspaces": {
+    "workspaces": [],
+    "folders": [
+      {
+        "folderUri": "file:///Users/xxxx/somex"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/asdf/asdf"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/criterion-compare-action"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/socket2"
+      },
+      {
+        "folderUri": "vscode-remote://ssh-remote%2B10.4.6.226/home/xxxx/somex",
+        "remoteAuthority": "ssh-remote+10.4.6.226"
+      },
+      {
+        "folderUri": "vscode-remote://ssh-remote%2B10.4.15.134/home/xxxx/somex",
+        "remoteAuthority": "ssh-remote+10.4.15.134"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/smoltcp"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/.local/share/chezmoi"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/asdf"
+      },
+      {
+        "folderUri": "file:///Users/xxxx/asdfasdfa"
+      }
+    ]
+  },
+  "lastKnownMenubarData": {
+    "menus": {
+      "File": {
+        "items": [
+          {
+            "id": "workbench.action.files.newUntitledFile",
+            "label": "新建文本文件(&&N)"
+          },
+          {
+            "id": "welcome.showNewFileEntries",
+            "label": "新建文件..."
+          },
+          {
+            "id": "workbench.action.newWindow",
+            "label": "新建窗口(&&W)"
+          },
+          {
+            "id": "submenuitem.OpenProfile",
+            "label": "使用配置文件新建窗口",
+            "submenu": {
+              "items": [
+                {
+                  "id": "workbench.profiles.actions.createProfile",
+                  "label": "新建配置文件..."
+                }
+              ]
+            }
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "workbench.action.files.openFileFolder",
+            "label": "打开(&&O)..."
+          },
+          {
+            "id": "workbench.action.files.openFolder",
+            "label": "打开文件夹(&&F)..."
+          },
+          {
+            "id": "workbench.action.openWorkspace",
+            "label": "从文件打开工作区(&&K)..."
+          },
+          {
+            "id": "submenuitem.MenubarRecentMenu",
+            "label": "打开最近的文件(&&R)",
+            "submenu": {
+              "items": [
+                {
+                  "id": "workbench.action.reopenClosedEditor",
+                  "label": "重新打开已关闭的编辑器(&&R)"
+                },
+                {
+                  "id": "vscode.menubar.separator"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/finalgit",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/finalgit"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/somex",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/somex"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/asdf",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/asdf"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "external": "vscode-remote://ssh-remote%2B10.4.15.134/home/xxxx/somex",
+                    "path": "/home/xxxx/somex",
+                    "scheme": "vscode-remote",
+                    "authority": "ssh-remote+10.4.15.134"
+                  },
+                  "remoteAuthority": "ssh-remote+10.4.15.134",
+                  "enabled": true,
+                  "label": "~/somex [SSH: 10.4.15.134]"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/.local/share/chezmoi",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/.local/share/chezmoi"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/smoltcp",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/smoltcp"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "external": "vscode-remote://ssh-remote%2B10.4.6.226/home/xxxx/somex",
+                    "path": "/home/xxxx/somex",
+                    "scheme": "vscode-remote",
+                    "authority": "ssh-remote+10.4.6.226"
+                  },
+                  "remoteAuthority": "ssh-remote+10.4.6.226",
+                  "enabled": true,
+                  "label": "~/somex [SSH: 10.4.6.226]"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/socket2",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/socket2"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/criterion-compare-action",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/criterion-compare-action"
+                },
+                {
+                  "id": "openRecentFolder",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/asdf/asdf",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/asdf/asdf"
+                },
+                {
+                  "id": "vscode.menubar.separator"
+                },
+                {
+                  "id": "openRecentFile",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/home/xxxx/somex/Dockerfile",
+                    "scheme": "vscode-remote",
+                    "authority": "ssh-remote+10.4.15.134"
+                  },
+                  "enabled": true,
+                  "label": "~/somex/Dockerfile"
+                },
+                {
+                  "id": "openRecentFile",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/home/xxxx/somex/Cargo.lock",
+                    "scheme": "vscode-remote",
+                    "authority": "ssh-remote+10.4.15.134"
+                  },
+                  "enabled": true,
+                  "label": "~/somex/Cargo.lock"
+                },
+                {
+                  "id": "openRecentFile",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/bbb/Cargo.toml",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/bbb/Cargo.toml"
+                },
+                {
+                  "id": "openRecentFile",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/sfdfix/theme/node_modules/.pnpm/vite@6.0.5_@types+node@22.10.2_jiti@1.21.7_yaml@2.6.1/node_modules/vite/dist/node/chunks/dep-BZMjGe_U.js",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/sfdfix/theme/node_modules/.pnpm/vite@6.0.5_@types+node@22.10.2_jiti@1.21.7_yaml@2.6.1/node_modules/vite/dist/node/chunks/dep-BZMjGe_U.js"
+                },
+                {
+                  "id": "openRecentFile",
+                  "uri": {
+                    "$mid": 1,
+                    "path": "/Users/xxxx/Downloads/download.svg",
+                    "scheme": "file"
+                  },
+                  "enabled": true,
+                  "label": "~/Downloads/download.svg"
+                },
+                {
+                  "id": "vscode.menubar.separator"
+                },
+                {
+                  "id": "workbench.action.openRecent",
+                  "label": "更多(&&M)..."
+                },
+                {
+                  "id": "vscode.menubar.separator"
+                },
+                {
+                  "id": "workbench.action.clearRecentFiles",
+                  "label": "清除最近打开的…(&&C)"
+                }
+              ]
+            }
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "addRootFolder",
+            "label": "将文件夹添加到工作区(&&D)..."
+          },
+          {
+            "id": "workbench.action.saveWorkspaceAs",
+            "label": "将工作区另存为..."
+          },
+          {
+            "id": "workbench.action.duplicateWorkspaceInNewWindow",
+            "label": "复制工作区"
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "workbench.action.files.save",
+            "label": "保存(&&S)"
+          },
+          {
+            "id": "workbench.action.files.saveAs",
+            "label": "另存为(&&A)..."
+          },
+          {
+            "id": "saveAll",
+            "label": "全部保存(&&L)",
+            "enabled": false
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "submenuitem.MenubarShare",
+            "label": "共享",
+            "submenu": {
+              "items": [
+                {
+                  "id": "github.copyVscodeDevLinkFile",
+                  "label": "Copy vscode.dev Link"
+                },
+                {
+                  "id": "vscode.menubar.separator"
+                },
+                {
+                  "id": "workbench.profiles.actions.exportProfile",
+                  "label": "导出配置文件(默认)..."
+                }
+              ]
+            }
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "workbench.action.toggleAutoSave",
+            "label": "自动保存(&&U)",
+            "checked": true
+          },
+          {
+            "id": "vscode.menubar.separator"
+          },
+          {
+            "id": "workbench.action.files.revert",
+            "label": "还原文件(&&V)"
+          },
+          {
+            "id": "workbench.action.closeActiveEditor",
+            "label": "关闭编辑器(&&C)"
+          },
+          {
+            "id": "workbench.action.closeFolder",
+            "label": "关闭文件夹(&&F)"
+          },
+          {
+            "id": "workbench.action.closeWindow",
+            "label": "关闭窗口(&&W)"
+          }
+        ]
+      }
+    }
+  }
+}

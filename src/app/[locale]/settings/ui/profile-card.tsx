@@ -7,11 +7,20 @@ import { useTranslations } from 'next-intl';
 
 export default function ProfileCard() {
   const t = useTranslations();
-  const [useEmoji, setUseEmoji, signoff, setSignoff] = useAppStore(s => [
+  const [
+    useEmoji,
+    setUseEmoji,
+    signoff,
+    setSignoff,
+    setFirstStart,
+    firstStart,
+  ] = useAppStore(s => [
     s.useEmoji,
     s.setUseEmoji,
     s.signoff,
     s.setSignoff,
+    s.setFirstStart,
+    s.firstStart,
   ]);
   return (
     <Card className="w-full">
@@ -53,6 +62,18 @@ export default function ProfileCard() {
             checked={signoff}
             onCheckedChange={v => {
               setSignoff(v === true);
+            }}
+          />
+        </div>
+        <div className="flex justify-between">
+          <Label htmlFor="profile.run_guid_next">
+            {t('profile.run_guide')}
+          </Label>
+          <Checkbox
+            id="profile.run_guid_next"
+            checked={firstStart}
+            onCheckedChange={v => {
+              setFirstStart(v === true);
             }}
           />
         </div>

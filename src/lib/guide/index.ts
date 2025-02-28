@@ -1,4 +1,4 @@
-import { readTextFile } from '@tauri-apps/plugin-fs';
+import { exists, readTextFile } from '@tauri-apps/plugin-fs';
 import { JetbrainsBasePath, parseJetbrainsProject } from './jetbrains';
 import { VscodeBasePath, VscodeParseProject } from './vscode';
 
@@ -12,7 +12,15 @@ export async function GetProjectList(ide: IdeType, product: string | null) {
     const projectPath = await VscodeBasePath();
     const text = await readTextFile(projectPath);
 
-    return VscodeParseProject(text);
+    const pathes = VscodeParseProject(text);
+    const res = [];
+    for (const i of pathes) {
+      if (await exists(`${i}/.git`)) {
+        res.push(i);
+      }
+    }
+
+    return res;
   }
 
   if (ide === IdeType.Jetbrains) {

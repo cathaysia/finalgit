@@ -20,10 +20,11 @@ export default function Page() {
   const t = useTranslations('guide');
   const locale = useLocale();
   const [projects, setProjects] = useState<string[]>([]);
-  const [addRepoPath, setFirstStart, repos] = useAppStore(s => [
+  const [addRepoPath, setFirstStart, repos, setLang] = useAppStore(s => [
     s.addRepoPath,
     s.setFirstStart,
     s.projects,
+    s.setLang,
   ]);
 
   useEffect(() => {
@@ -31,7 +32,6 @@ export default function Page() {
       const res = await GetProjectList(IdeType.Vscode, null);
       if (res) {
         setProjects(res);
-        console.log(res);
       }
     })();
   });
@@ -52,12 +52,18 @@ export default function Page() {
             <Label className="mb-4 block font-bold text-xl">
               {t('language')}
             </Label>
-            <Select onValueChange={lang => redirect(`/${lang}/guide`)}>
+            <Select
+              value={locale}
+              onValueChange={lang => {
+                setLang(lang);
+                redirect(`/${lang}/guide`);
+              }}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="zh">中文</SelectItem>
+                <SelectItem value="cn">中文</SelectItem>
                 <SelectItem value="en">English</SelectItem>
               </SelectContent>
             </Select>

@@ -2,9 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:app:default",
     "shell:default",
@@ -36,6 +34,17 @@
     "fs:allow-home-read-recursive",
     "fs:allow-home-write-recursive",
     "fs:allow-home-meta-recursive",
-    "os:default"
+    "os:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$HOME/**/.*"
+        },
+        {
+          "path": "$HOME/.*/**/.*"
+        }
+      ]
+    }
   ]
 }

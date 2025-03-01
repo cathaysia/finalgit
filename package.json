@@ -10,7 +10,7 @@
     "i18n": "i18next",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "lint": "eslint",
+    "lint": "biome lint",
     "test": "vitest run",
     "build-wasm": "cd ./crates/filetype && wasm-pack build --target web --release"
   },
@@ -102,10 +102,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.4",
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.20.0",
     "@next/bundle-analyzer": "^15.1.7",
-    "@next/eslint-plugin-next": "^15.1.7",
     "@storybook/addon-a11y": "^8.5.4",
     "@storybook/addon-essentials": "^8.5.4",
     "@storybook/addon-interactions": "^8.5.4",
@@ -119,22 +116,16 @@
     "@tailwindcss/postcss": "^4.0.6",
     "@tailwindcss/typography": "0.5.16",
     "@tauri-apps/cli": "2.2.7",
-    "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.20.0",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.14.0",
     "postcss": "^8.5.2",
     "storybook": "^8.5.4",
     "storybook-next-intl": "^1.2.4",
     "tailwindcss": "^4.0.6",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.24.0",
     "vitest": "^3.0.5"
   }
 }

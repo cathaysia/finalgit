@@ -2,7 +2,7 @@ import { attachConsole } from '@tauri-apps/plugin-log';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/noto-sans-sc';
 import '@fontsource-variable/fira-code';
-import '@fontsource/noto-color-emoji';
+import '@fontsource/material-icons';
 
 import '@/assets/global.css';
 import { TanStackQueryDevtools } from '@/components/devtools/query-devtools';

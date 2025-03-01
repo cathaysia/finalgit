@@ -35,7 +35,7 @@ importers:
       '@fontsource-variable/noto-sans-sc':
         specifier: ^5.1.1
         version: 5.1.1
-      '@fontsource/noto-color-emoji':
+      '@fontsource/material-icons':
         specifier: ^5.1.1
         version: 5.1.1
       '@lezer/highlight':
@@ -1389,8 +1389,8 @@ packages:
   '@fontsource-variable/noto-sans-sc@5.1.1':
     resolution: {integrity: sha512-kr4mr8vgNC3jrpnbL4kd1bznG53jtL3GKvUCdzzHuoyt3qoKtScS7oBNF5Wqkvw6Pkc8RHwBIUvEOzAbevV3dA==}
 
-  '@fontsource/noto-color-emoji@5.1.1':
-    resolution: {integrity: sha512-2hoMaeKiIX5CffUvKJSPem0qgxBqow++zi1FMB28pNBQpljoMECEYLueO2YIB1d1FLgc7C1yrwmb8CkKcVyphA==}
+  '@fontsource/material-icons@5.1.1':
+    resolution: {integrity: sha512-l1EhBIh9US1RMiiKEJ+/FTFvHZIU3cpn0MmxSZA6Ip2C/Szwca6h2xqNg/OTIOFWADune7b/rhtypeDbjHrZzA==}
 
   '@formatjs/ecma402-abstract@2.3.3':
     resolution: {integrity: sha512-pJT1OkhplSmvvr6i3CWTPvC/FGC06MbN5TNBfRO6Ox62AEz90eMq+dVvtX9Bl3jxCEkS0tATzDarRZuOLw7oFg==}
@@ -8467,7 +8467,7 @@ snapshots:
 
   '@fontsource-variable/noto-sans-sc@5.1.1': {}
 
-  '@fontsource/noto-color-emoji@5.1.1': {}
+  '@fontsource/material-icons@5.1.1': {}
 
   '@formatjs/ecma402-abstract@2.3.3':
     dependencies:

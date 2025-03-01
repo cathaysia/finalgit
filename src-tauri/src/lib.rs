@@ -25,7 +25,6 @@ use tauri::Manager;
 pub use ty::*;
 
 use tauri_derive::tauri_commands;
-use tauri_plugin_decorum::WebviewWindowExt;
 use tauri_plugin_log::{Target, TargetKind};
 
 #[derive(Parser)]
@@ -78,10 +77,18 @@ pub fn run() {
         .invoke_handler(tauri_commands!())
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
-            window.create_overlay_titlebar().unwrap();
+            #[cfg(target_os = "linux")]
+            {
+                let _ = window;
+            }
+            #[cfg(any(target_os = "macos", target_os = "windows"))]
+            {
+                use tauri_plugin_decorum::WebviewWindowExt;
+                window.create_overlay_titlebar().unwrap();
 
-            #[cfg(target_os = "macos")]
-            window.set_traffic_lights_inset(22.0, 16.0).unwrap();
+                #[cfg(target_os = "macos")]
+                window.set_traffic_lights_inset(22.0, 16.0).unwrap();
+            }
 
             Ok(())
         })

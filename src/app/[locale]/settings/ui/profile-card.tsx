@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { useAppStore } from '@/hooks/use-store';
 import { useTranslations } from 'next-intl';
 
@@ -32,36 +32,31 @@ export default function ProfileCard() {
           <Label htmlFor="profile.stash">
             {t('profile.stash_before_checkout')}
           </Label>
-          <Checkbox id="profile.stash" disabled />
+          <Switch id="profile.stash" disabled />
         </div>
         <div className="flex justify-between">
           <Label htmlFor="profile.discard">
             {t('profile.add_before_discard')}
           </Label>
-          <Checkbox id="profile.discard" disabled />
+          <Switch id="profile.discard" disabled />
         </div>
         <div className="flex justify-between">
           <Label htmlFor="profile.use_emoji">{t('profile.use_emoji')}</Label>
-          <Checkbox
+          <Switch
             id="profile.use_emoji"
             checked={useEmoji}
             onCheckedChange={v => {
-              if (v === true) {
-                setUseEmoji(true);
-              }
-              if (v === false) {
-                setUseEmoji(false);
-              }
+              setUseEmoji(v);
             }}
           />
         </div>
         <div className="flex justify-between">
           <Label htmlFor="profile.signoff">{t('profile.signoff')}</Label>
-          <Checkbox
+          <Switch
             id="profile.signoff"
             checked={signoff}
             onCheckedChange={v => {
-              setSignoff(v === true);
+              setSignoff(v);
             }}
           />
         </div>
@@ -69,11 +64,11 @@ export default function ProfileCard() {
           <Label htmlFor="profile.run_guid_next">
             {t('profile.run_guide')}
           </Label>
-          <Checkbox
+          <Switch
             id="profile.run_guid_next"
             checked={firstStart}
             onCheckedChange={v => {
-              setFirstStart(v === true);
+              setFirstStart(v);
             }}
           />
         </div>

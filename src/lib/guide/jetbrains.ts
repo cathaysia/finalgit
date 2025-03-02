@@ -34,6 +34,16 @@ export async function GetJetbrainsProducts() {
   return res;
 }
 
-export function parseJetbrainsProject(_xml: string): string[] {
-  return [];
+export function ParseJetbrainsProject(xml: string) {
+  const parser = new DOMParser();
+  const dom = parser.parseFromString(xml, 'text/xml');
+  const selectors = dom.querySelectorAll('entry');
+  const res = [];
+  for (const i of selectors) {
+    const v = i.getAttribute('key');
+    if (v) {
+      res.push(v);
+    }
+  }
+  return res;
 }

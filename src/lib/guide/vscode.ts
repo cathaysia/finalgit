@@ -41,7 +41,7 @@ export async function VscodeBasePath() {
   return `${HOME}/.config/Code/User/globalStorage/storage.json`;
 }
 
-export function VscodeParseProject(content: string) {
+export function ParseVscodeProject(content: string) {
   const json: CodeStorage = JSON.parse(content);
   const rev = new Set<string>();
   for (const item of json.lastKnownMenubarData.menus.File.items) {

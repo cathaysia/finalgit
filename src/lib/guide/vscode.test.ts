@@ -1,12 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import { expect, test } from 'vitest';
-import { VscodeParseProject } from './vscode';
+import { ParseVscodeProject } from './vscode';
 
 test('storage.json', async () => {
   const text = (await readFile('src/lib/guide/tests/storage.json')).toString();
-  const projects = VscodeParseProject(text);
+  const projects = ParseVscodeProject(text);
 
-  console.log(projects);
   expect(projects).toEqual([
     '/Users/xxxx/finalgit',
     '/Users/xxxx/somex',

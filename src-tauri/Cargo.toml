@@ -30,6 +30,7 @@ tauri-plugin-log = { version = "2.2.0", features = ["colored"] }
 tauri-plugin-clipboard-manager = "2.2.0"
 tauri-plugin-store = "2.2.0"
 tauri-plugin-fs = { version = "2.2.0", features = ["watch"] }
+tauri-plugin-os = "2"
 
 specta = { version = "=2.0.0-rc.22" }
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
@@ -49,7 +50,3 @@ semver = "1.0.24"
 clap = { version = "4.5.23", features = ["derive"] }
 chrono = "0.4.39"
 tokio = { version = "1.42.0", features = ["full"] }
-tauri-plugin-decorum = "1.1.1"
-tauri-plugin-os = "2"
-
-[dev-dependencies]

@@ -21,7 +21,6 @@ use std::process::exit;
 
 use clap::Parser;
 pub use error::*;
-use tauri::Manager;
 pub use ty::*;
 
 use tauri_derive::tauri_commands;
@@ -58,7 +57,6 @@ pub fn run() {
     }
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_decorum::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_store::Builder::new().build())
@@ -75,23 +73,6 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .invoke_handler(tauri_commands!())
-        .setup(|app| {
-            let window = app.get_webview_window("main").unwrap();
-            #[cfg(target_os = "linux")]
-            {
-                let _ = window;
-            }
-            #[cfg(any(target_os = "macos", target_os = "windows"))]
-            {
-                use tauri_plugin_decorum::WebviewWindowExt;
-                window.create_overlay_titlebar().unwrap();
-
-                #[cfg(target_os = "macos")]
-                window.set_traffic_lights_inset(22.0, 16.0).unwrap();
-            }
-
-            Ok(())
-        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

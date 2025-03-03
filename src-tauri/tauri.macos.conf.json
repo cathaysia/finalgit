@@ -3,9 +3,8 @@
   "app": {
     "windows": [
       {
-        "titleBarStyle": "Visible",
-        "hiddenTitle": true,
-        "shadow": false
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
     ]
   }

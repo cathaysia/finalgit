@@ -17,7 +17,6 @@
     "core:window:allow-is-maximized",
     "core:window:allow-start-dragging",
     "core:window:allow-toggle-maximize",
-    "decorum:allow-show-snap-overlay",
     "store:default",
     "fs:default",
     "fs:allow-app-write",

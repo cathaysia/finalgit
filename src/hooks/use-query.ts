@@ -154,13 +154,13 @@ let oldChangeTime = '';
 export function useRepoChangeTime() {
   const [repoPath] = useAppStore(s => [s.repoPath]);
   const [count, setCount] = useState(0);
-  const [handle, setHandle] = useState<UnwatchFn | null>(null);
+  const [unwatch, setUnwatch] = useState<UnwatchFn | null>(null);
 
   useEffect(() => {
     if (!repoPath || repoPath.length === 0) {
-      if (handle !== null) {
-        handle();
-        setHandle(null);
+      if (unwatch !== null) {
+        unwatch();
+        setUnwatch(null);
       }
       return;
     }
@@ -184,7 +184,10 @@ export function useRepoChangeTime() {
           recursive: true,
         },
       );
-      setHandle(s => {
+      window.addEventListener('unload', () => {
+        h();
+      });
+      setUnwatch(s => {
         if (s !== null) {
           debug('cancel watch');
           s();

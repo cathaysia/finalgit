@@ -76,9 +76,10 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     ref,
   ) => {
     const { data: tags } = useTags();
-    const tag = tags?.find(item => {
-      return item.ref_hash === commit.oid || item.oid === commit.oid;
-    });
+    const tag =
+      tags?.filter(item => {
+        return item.ref_hash === commit.oid || item.oid === commit.oid;
+      }) || [];
     const summary = commit.summary.slice(0, 50);
     const t = useTranslations();
     const names = [
@@ -126,11 +127,11 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-[470px]">
-              <CommitCard info={commit} />
+              <CommitCard info={commit} tags={tag} />
             </HoverCardContent>
           </HoverCard>
           <div className="flex items-center gap-2">
-            {tag && (
+            {tag.length !== 0 && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
@@ -138,7 +139,9 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                       <FaTag />
                     </Badge>
                   </TooltipTrigger>
-                  <TooltipContent>{tag.name}</TooltipContent>
+                  <TooltipContent>
+                    {tag.map(v => v.name).join('; ')}
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             )}
@@ -155,7 +158,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             >
               {commit.oid.slice(0, 6)}
             </Badge>
-            <AvatarGroup>
+            <AvatarGroup orientation={'col'}>
               {names.map(item => {
                 return (
                   <HoverCard key={item.name}>

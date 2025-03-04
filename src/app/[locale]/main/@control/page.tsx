@@ -1,19 +1,12 @@
 'use client';
 import ControlBar from '@/app/[locale]/main/ui/controlbar';
-import { Button } from '@/components/ui/button';
 import { useBranches, useTags } from '@/hooks/use-query';
-import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import BranchPanel from '@/ui/branch/branch-panel';
 import Project from '@/ui/main/project';
-import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 
 export default function ControlPanel() {
-  const t = useTranslations();
-
-  const currentPath = usePathname();
   const { error, data: branches } = useBranches();
   if (error) {
     NOTIFY.error(error.message);
@@ -32,9 +25,6 @@ export default function ControlPanel() {
     >
       <ControlBar />
       <Project />
-      <Button variant={'link'} disabled={currentPath === '/main/workspace'}>
-        <Link href="/main">{t('Workspace')}</Link>
-      </Button>
 
       <BranchPanel
         branches={branches || []}

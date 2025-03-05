@@ -2,13 +2,13 @@
 import { DragDropProvider } from '@dnd-kit/react';
 
 export default function Layout({
-  control,
-  mainpanel,
-  commit,
+  side,
+  workspace,
+  history,
 }: Readonly<{
-  control: React.ReactNode;
-  mainpanel: React.ReactNode;
-  commit: React.ReactNode;
+  side: React.ReactNode;
+  workspace: React.ReactNode;
+  history: React.ReactNode;
 }>) {
   return (
     <div
@@ -16,9 +16,9 @@ export default function Layout({
       data-tauri-drag-region
     >
       <DragDropProvider>
-        {control}
-        {mainpanel}
-        {commit}
+        {side}
+        {workspace}
+        {history}
       </DragDropProvider>
     </div>
   );

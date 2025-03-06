@@ -63,7 +63,7 @@ export default function BranchItem({
   const tag = tags?.find(item => {
     return item.ref_hash === info.oid || item.oid === info.oid;
   });
-  const t = useTranslations();
+  const t = useTranslations('branch');
   const [opState, setOpState] = useState<OpState>();
   const isHead = info.is_head;
   const isLocal = info.kind === 'Local';
@@ -147,7 +147,7 @@ export default function BranchItem({
           />
           <div className="flex min-w-0 gap-2">
             <Badge className="whitespace-nowrap">
-              {isLocal ? t('branch.local') : t('branch.remote')}
+              {isLocal ? t('local') : t('remote')}
             </Badge>
             {info.upstream && <Badge>{info.upstream}</Badge>}
             {info.remote && <Badge>{info.remote}</Badge>}
@@ -188,7 +188,7 @@ export default function BranchItem({
                 setOpState(OpState.Renaming);
               }}
             >
-              {t('branch.rename')}
+              {t('rename')}
             </DropdownMenuItem>
             {!isHead && (
               <DropdownMenuItem
@@ -206,14 +206,14 @@ export default function BranchItem({
                 )}
                 title={(() => {
                   if (isDirty) {
-                    return t('branch.disable_dirty');
+                    return t('disable_dirty');
                   }
                   if (!isLocal) {
-                    return t('branch.checkout_remote');
+                    return t('checkout_remote');
                   }
                 })()}
               >
-                {t('branch.checkout')}
+                {t('checkout')}
               </DropdownMenuItem>
             )}
             <DropdownMenuItem
@@ -221,9 +221,9 @@ export default function BranchItem({
                 setOpState(OpState.NewBranch);
               }}
             >
-              {t('branch.create_new_branch')}
+              {t('create_new_branch')}
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>{t('branch.details')}</DropdownMenuItem>
+            <DropdownMenuItem disabled>{t('details')}</DropdownMenuItem>
             <CollapseMenuGroup
               isOpen={isRemoteOpen}
               trigger={
@@ -235,22 +235,20 @@ export default function BranchItem({
                   }}
                   disabled
                 >
-                  {t('branch.remote')}
+                  {t('remote')}
                 </CollapseGroupTrigger>
               }
             >
               {!isLocal && (
                 <CollapseGroupItem disabled>
-                  {t('branch.set_url_of', {
+                  {t('set_url_of', {
                     branch: info.remote,
                   })}
                 </CollapseGroupItem>
               )}
-              <CollapseGroupItem>{t('branch.add_remote')}</CollapseGroupItem>
+              <CollapseGroupItem>{t('add_remote')}</CollapseGroupItem>
               {isLocal && (
-                <CollapseGroupItem>
-                  {t('branch.set_upstream')}
-                </CollapseGroupItem>
+                <CollapseGroupItem>{t('set_upstream')}</CollapseGroupItem>
               )}
             </CollapseMenuGroup>
             <DropdownMenuItem>
@@ -262,7 +260,7 @@ export default function BranchItem({
                   },
                 }}
               >
-                {t('branch.view_tree')}
+                {t('view_tree')}
               </Link>
             </DropdownMenuItem>
             {isLocal && (
@@ -278,7 +276,7 @@ export default function BranchItem({
                   refreshPushStatus();
                 }}
               >
-                {t('branch.pull')}
+                {t('pull')}
               </DropdownMenuItem>
             )}
             {isHead && (
@@ -294,7 +292,7 @@ export default function BranchItem({
                   refreshPushStatus();
                 }}
               >
-                {t('branch.push')}
+                {t('push')}
               </DropdownMenuItem>
             )}
             <DropdownMenuItem
@@ -305,7 +303,7 @@ export default function BranchItem({
                 }
               }}
             >
-              {t('branch.delete')}
+              {t('delete')}
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

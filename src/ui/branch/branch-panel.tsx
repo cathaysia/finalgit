@@ -58,7 +58,7 @@ export default function BranchPanel({
   return (
     <Tabs
       defaultValue="branch"
-      className={cn('flex h-full flex-col border', className)}
+      className={cn('flex min-h-0 flex-1 flex-col', className)}
     >
       <div className="flex flex-col gap-2 px-2">
         <div className="flex items-center justify-between gap-2">
@@ -120,7 +120,10 @@ export default function BranchPanel({
           />
         </motion.div>
       </div>
-      <TabsContent value="branch" className="h-full">
+      <TabsContent
+        value="branch"
+        className="flex min-h-0 flex-1 flex-col overflow-auto"
+      >
         {filteredBranches.length === 0 ? (
           <div className="w-full">
             <div className="flex w-full gap-2">
@@ -150,7 +153,10 @@ export default function BranchPanel({
           />
         )}
       </TabsContent>
-      <TabsContent value="tags" className="h-full">
+      <TabsContent
+        value="tags"
+        className="flex min-h-0 flex-1 flex-col overflow-auto"
+      >
         <TagList
           tags={filteredTags}
           filter={isSearching ? filter : undefined}

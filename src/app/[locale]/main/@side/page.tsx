@@ -26,11 +26,7 @@ export default function ControlPanel() {
       <ControlBar />
       <Project />
 
-      <BranchPanel
-        branches={branches || []}
-        tags={tags || []}
-        className="h-full w-full border-none"
-      />
+      <BranchPanel branches={branches || []} tags={tags || []} />
     </aside>
   );
 }

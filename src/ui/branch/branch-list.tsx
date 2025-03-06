@@ -23,7 +23,7 @@ export default function BranchList({
         const item = branches[idx];
         return <BranchItem info={item} filter={filter} />;
       }}
-      className={cn('h-full min-h-0', className)}
+      className={cn('min-h-0', className)}
       {...props}
     />
   );

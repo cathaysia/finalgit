@@ -43,7 +43,7 @@ import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTag } from 'react-icons/fa';
 import { isMatching, match } from 'ts-pattern';
 import HighLightLabel from '../atoms/highlight-label';
@@ -99,6 +99,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
         email: commit.commiter.email,
       });
     }
+    const [hover, setHovering] = useState(false);
     return (
       <div
         className={cn(
@@ -146,7 +147,13 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               </TooltipProvider>
             )}
             <Badge
-              className="font-mono"
+              className="w-16 max-w-16 font-mono hover:bg-primary/80"
+              onMouseEnter={() => {
+                setHovering(true);
+              }}
+              onMouseLeave={() => {
+                setHovering(false);
+              }}
               onClick={async () => {
                 const _ = await writeText(commit.oid);
                 NOTIFY.info(
@@ -156,7 +163,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
                 );
               }}
             >
-              {commit.oid.slice(0, 6)}
+              {hover ? t('commit.copy') : commit.oid.slice(0, 6)}
             </Badge>
             <AvatarGroup orientation={'col'}>
               {names.map(item => {

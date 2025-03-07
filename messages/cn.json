@@ -39,7 +39,7 @@
   "commit": {
     "checkout": "检出",
     "cherrypick": "拣选",
-    "copy": "拷贝",
+    "copy": "复制",
     "copy_to_clipboard": "拷贝到粘贴板",
     "cut": "剪切",
     "delete": "删除",

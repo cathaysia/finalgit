@@ -34,7 +34,7 @@ export function BlameCard({ blame }: BlameCardProps) {
         </Label>
       </HoverCardTrigger>
       <HoverCardContent className="flex w-auto gap-2">
-        {commit && <CommitCard info={commit} />}
+        {commit && <CommitCard info={commit} tags={[]} />}
       </HoverCardContent>
     </HoverCard>
   );

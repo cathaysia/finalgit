@@ -40,7 +40,7 @@ export function CommiterButton({
   return (
     <div className={cn('flex gap-2', className)} {...props}>
       <Button
-        className="w-full"
+        className="grow"
         disabled={changeSet.length === 0 || branches?.length === 0}
         onClick={onClicked}
       >

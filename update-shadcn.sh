@@ -8,4 +8,4 @@ for file in src/components/ui/*.tsx; do
 done
 
 # echo $components
-pnpm dlx shadcn@canary add -y -o ${components};
+pnpm dlx shadcn@latest add -y -o ${components};

@@ -74,7 +74,7 @@ export default function Commit() {
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
-      <div className="flex items-center gap-2">
+      <div className={cn('flex items-center', filter.length !== 0 && 'gap-2')}>
         <AnimatePresence>
           {isHighOrder && (
             <motion.span
@@ -90,7 +90,11 @@ export default function Commit() {
         </AnimatePresence>
         <Input
           value={filter}
-          className={cn(!isValid && 'text-red-600', isHighOrder && 'pl-10')}
+          className={cn(
+            'rounded-sm',
+            !isValid && 'text-red-600',
+            isHighOrder && 'pl-10',
+          )}
           spellCheck={false}
           onChange={e => {
             if (!isHighOrder) {

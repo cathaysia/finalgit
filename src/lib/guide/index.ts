@@ -1,7 +1,7 @@
+import { homeDir } from '@tauri-apps/api/path';
 import { exists, readTextFile } from '@tauri-apps/plugin-fs';
 import { JetbrainsBasePath, ParseJetbrainsProject } from './jetbrains';
 import { ParseVscodeProject, VscodeBasePath } from './vscode';
-import { homeDir } from '@tauri-apps/api/path';
 
 export enum IdeType {
   Vscode = 0,

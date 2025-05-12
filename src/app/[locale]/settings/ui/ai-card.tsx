@@ -38,7 +38,7 @@ export default function AiCard() {
             }
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue defaultValue={aiConfig.ollama.model} />
           </SelectTrigger>
           <SelectContent>

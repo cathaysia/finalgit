@@ -7,10 +7,6 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   output: 'export',
-  devIndicators: {
-    appIsrStatus: false,
-    buildActivity: true,
-  },
   env: {
     os: os.platform(),
   },

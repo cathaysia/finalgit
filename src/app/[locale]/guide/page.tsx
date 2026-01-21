@@ -37,7 +37,10 @@ export default function Page() {
   });
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-2 p-2">
+    <div
+      className="flex h-screen w-screen flex-col items-center justify-center gap-2 p-2"
+      data-tauri-drag-region
+    >
       <div
         className={`w-full items-center ${
           projects.length > 0 ? 'flex max-w-5xl gap-8' : 'max-w-md'

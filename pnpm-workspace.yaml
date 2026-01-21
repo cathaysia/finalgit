@@ -1,6 +1,11 @@
+packages:
+  - .
+
 ignoredBuiltDependencies:
   - '@swc/core'
   - core-js-pure
   - esbuild
-packages:
-  - .
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - sharp

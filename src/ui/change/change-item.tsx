@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils';
 import { useDraggable } from '@dnd-kit/react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { confirm } from '@tauri-apps/plugin-dialog';
 import { useTranslations } from 'next-intl';
 import { match } from 'ts-pattern';
 import { Diff } from './diff';
@@ -146,7 +147,19 @@ function ChangeItem({ className, item, ...props }: ChangeItemProps) {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => repoPath && stageDiscardFile(repoPath, item)}
+                onClick={async () => {
+                  if (!repoPath) {
+                    return;
+                  }
+                  const shouldDiscard = await confirm(t('discard_confirm'), {
+                    title: t('discard'),
+                    kind: 'warning',
+                  });
+                  if (!shouldDiscard) {
+                    return;
+                  }
+                  stageDiscardFile(repoPath, item);
+                }}
               >
                 {t('discard')}
               </DropdownMenuItem>

@@ -21,7 +21,7 @@ export default function AiCard() {
   ]);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
       <CardHeader>
         <CardTitle>{t('profile.ai_provider')}</CardTitle>
       </CardHeader>

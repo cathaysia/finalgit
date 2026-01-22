@@ -23,8 +23,39 @@ use clap::Parser;
 pub use error::*;
 pub use ty::*;
 
+use tauri::Emitter;
 use tauri_derive::tauri_commands;
 use tauri_plugin_log::{Target, TargetKind};
+
+#[cfg(target_os = "macos")]
+fn setup_macos_menu(app: &mut tauri::App) -> tauri::Result<()> {
+    use tauri::menu::{Menu, MenuItem, MenuItemKind, PredefinedMenuItem};
+
+    let handle = app.handle();
+    let menu = Menu::default(&handle)?;
+    let app_name = app.package_info().name.clone();
+    let settings_item = MenuItem::with_id(
+        app,
+        "open_settings",
+        "Settings...",
+        true,
+        Some("CmdOrCtrl+,"),
+    )?;
+    let separator = PredefinedMenuItem::separator(app)?;
+
+    for item in menu.items()? {
+        if let MenuItemKind::Submenu(submenu) = item {
+            if submenu.text()? == app_name {
+                submenu.append(&separator)?;
+                submenu.append(&settings_item)?;
+                break;
+            }
+        }
+    }
+
+    menu.set_as_app_menu()?;
+    Ok(())
+}
 
 #[derive(Parser)]
 struct Args {
@@ -57,6 +88,11 @@ pub fn run() {
     }
 
     tauri::Builder::default()
+        .setup(|app| {
+            #[cfg(target_os = "macos")]
+            setup_macos_menu(app)?;
+            Ok(())
+        })
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_store::Builder::new().build())
@@ -73,6 +109,11 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .invoke_handler(tauri_commands!())
+        .on_menu_event(|app, event| {
+            if event.id() == "open_settings" {
+                let _ = app.emit("open-settings", ());
+            }
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

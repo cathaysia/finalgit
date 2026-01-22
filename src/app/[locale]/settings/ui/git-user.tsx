@@ -45,7 +45,13 @@ export default function GitUser({ className, ...props }: GitUserProps) {
   });
 
   return (
-    <Card className={cn('w-full', className)} {...props}>
+    <Card
+      className={cn(
+        'w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60',
+        className,
+      )}
+      {...props}
+    >
       <CardHeader>
         <CardTitle>{t('profile.git.user')}</CardTitle>
       </CardHeader>

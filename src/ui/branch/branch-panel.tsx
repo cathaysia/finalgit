@@ -1,17 +1,24 @@
 'use client';
 import type { BranchInfo, TagInfo } from '@/bindings';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppStore } from '@/hooks/use-store';
 import { cn } from '@/lib/utils';
+import BranchItem from '@/ui/branch/branch-item';
 import BranchList from '@/ui/branch/branch-list';
 import { TagList } from '@/ui/tag/tag-list';
 import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { FaCodeBranch, FaFilter, FaTag } from 'react-icons/fa';
+import { FaCloud, FaCodeBranch, FaFilter, FaTag } from 'react-icons/fa';
 
 export interface BranchCardProps {
   branches: BranchInfo[];
@@ -40,7 +47,17 @@ export default function BranchPanel({
     { preventDefault: true },
   );
 
-  const filteredBranches = branches.filter(item => {
+  const localBranches = branches.filter(item => item.kind === 'Local');
+  const remoteBranches = branches.filter(item => item.kind === 'Remote');
+
+  const filteredLocalBranches = localBranches.filter(item => {
+    if (!isSearching) {
+      return true;
+    }
+
+    return item.name.includes(filter);
+  });
+  const filteredRemoteBranches = remoteBranches.filter(item => {
     if (!isSearching) {
       return true;
     }
@@ -54,6 +71,19 @@ export default function BranchPanel({
 
     return item.name.includes(filter);
   });
+  const remoteGroups = Array.from(
+    filteredRemoteBranches.reduce((acc, branch) => {
+      const key = branch.remote ?? t('branch.remote');
+      const current = acc.get(key);
+      if (current) {
+        current.push(branch);
+      } else {
+        acc.set(key, [branch]);
+      }
+      return acc;
+    }, new Map<string, BranchInfo[]>()),
+  ).sort(([a], [b]) => a.localeCompare(b));
+  const remoteGroupKeys = remoteGroups.map(([remote]) => remote);
 
   return (
     <Tabs
@@ -62,14 +92,18 @@ export default function BranchPanel({
     >
       <div className="flex flex-col gap-2 px-2">
         <div className="flex items-center justify-between gap-2">
-          <TabsList className={cn('mt-2 grid w-full grid-cols-2')}>
+          <TabsList className="mt-2 grid w-full grid-cols-3">
             <TabsTrigger value="branch">
               <FaCodeBranch className="mr-2" />
-              {t('branch.branches')}
+              <span className="inline">{t('branch.branches')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="remote">
+              <FaCloud className="mr-2" />
+              <span className="inline">{t('branch.remote_branches')}</span>
             </TabsTrigger>
             <TabsTrigger value="tags">
               <FaTag className="mr-2" />
-              {t('branch.tags')}
+              <span className="inline">{t('branch.tags')}</span>
             </TabsTrigger>
           </TabsList>
           <div className="mt-2">
@@ -124,7 +158,7 @@ export default function BranchPanel({
         value="branch"
         className="flex min-h-0 flex-1 flex-col overflow-auto"
       >
-        {filteredBranches.length === 0 ? (
+        {filteredLocalBranches.length === 0 ? (
           <div className="w-full">
             <div className="flex w-full gap-2">
               <Input
@@ -148,9 +182,53 @@ export default function BranchPanel({
           </div>
         ) : (
           <BranchList
-            branches={filteredBranches}
+            branches={filteredLocalBranches}
             filter={isSearching ? filter : undefined}
           />
+        )}
+      </TabsContent>
+      <TabsContent
+        value="remote"
+        className="flex min-h-0 flex-1 flex-col overflow-auto"
+      >
+        {filteredRemoteBranches.length === 0 ? (
+          <div className="px-2 py-4 text-center text-muted-foreground">
+            {t('branch.remote_branches')}: 0
+          </div>
+        ) : (
+          <Accordion
+            type="multiple"
+            className="w-full space-y-2"
+            defaultValue={remoteGroupKeys}
+          >
+            {remoteGroups.map(([remote, remoteBranches]) => (
+              <AccordionItem
+                key={remote}
+                value={remote}
+                className="rounded-md border"
+              >
+                <AccordionTrigger className="px-2">
+                  <span className="flex items-center gap-2">
+                    {remote}
+                    <span className="text-muted-foreground text-xs">
+                      {remoteBranches.length}
+                    </span>
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="pt-2 pb-2">
+                  <div className="flex flex-col gap-1">
+                    {remoteBranches.map(item => (
+                      <BranchItem
+                        key={`${remote}/${item.name}`}
+                        info={item}
+                        filter={isSearching ? filter : undefined}
+                      />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         )}
       </TabsContent>
       <TabsContent

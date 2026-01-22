@@ -125,7 +125,7 @@
     "globals": "^15.15.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
-    "storybook": "^8.6.12",
+    "storybook": "^8.6.15",
     "storybook-next-intl": "^1.2.6",
     "tailwindcss": "^4.1.6",
     "typescript": "^5.8.3",

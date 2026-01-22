@@ -10,6 +10,8 @@ enableMapSet();
 
 const tauriStore = new LazyStore('settings.json');
 
+export const COMMIT_HEAD_PANEL_ID = '__commit_head__';
+
 export interface AiConfig {
   current: AiKind;
   ollama: {
@@ -32,6 +34,7 @@ export interface AiConfig {
 export interface CommitPanelState {
   id: string;
   name: string;
+  baseName: string;
   oid: string;
 }
 
@@ -44,6 +47,7 @@ export interface AppStoreProps {
   renderMarkdown: boolean;
   commitHead: string | null;
   commitPanels: CommitPanelState[];
+  commitPanelOrder: string[];
   cherryPickQueue: string[];
   signoff: boolean;
   aiConfig: AiConfig;
@@ -70,7 +74,10 @@ export interface AppStoreProps {
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
   addCommitPanel: (panel: CommitPanelState) => void;
+  addCommitPanelToStart: (panel: CommitPanelState) => void;
   removeCommitPanel: (id: string) => void;
+  setCommitPanelOrder: (order: string[]) => void;
+  moveCommitPanel: (sourceId: string, targetId: string) => void;
   addCherryPickCommit: (oid: string) => void;
   removeCherryPickCommit: (oid: string) => void;
   clearCherryPickQueue: () => void;
@@ -134,6 +141,7 @@ export const useAppStore = create<AppStoreProps>()(
       renderMarkdown: true,
       commitHead: null,
       commitPanels: [],
+      commitPanelOrder: [COMMIT_HEAD_PANEL_ID],
       cherryPickQueue: [],
       projects: new Set<string>(),
       signoff: true,
@@ -211,12 +219,49 @@ export const useAppStore = create<AppStoreProps>()(
           const exists = s.commitPanels.some(item => item.id === panel.id);
           if (!exists) {
             s.commitPanels.push(panel);
+            if (!s.commitPanelOrder.includes(panel.id)) {
+              const headIndex =
+                s.commitPanelOrder.indexOf(COMMIT_HEAD_PANEL_ID);
+              if (headIndex === -1) {
+                s.commitPanelOrder.push(panel.id);
+              } else {
+                s.commitPanelOrder.splice(headIndex, 0, panel.id);
+              }
+            }
+          }
+        });
+      },
+      addCommitPanelToStart: (panel: CommitPanelState) => {
+        set(s => {
+          const exists = s.commitPanels.some(item => item.id === panel.id);
+          if (!exists) {
+            s.commitPanels.unshift(panel);
+            if (!s.commitPanelOrder.includes(panel.id)) {
+              s.commitPanelOrder.unshift(panel.id);
+            }
           }
         });
       },
       removeCommitPanel: (id: string) => {
         set(s => {
           s.commitPanels = s.commitPanels.filter(item => item.id !== id);
+          s.commitPanelOrder = s.commitPanelOrder.filter(item => item !== id);
+        });
+      },
+      setCommitPanelOrder: (order: string[]) =>
+        set({ commitPanelOrder: order }),
+      moveCommitPanel: (sourceId: string, targetId: string) => {
+        set(s => {
+          const order = s.commitPanelOrder.slice();
+          const from = order.indexOf(sourceId);
+          const to = order.indexOf(targetId);
+          if (from === -1 || to === -1 || from === to) {
+            return;
+          }
+          order.splice(from, 1);
+          const insertAt = from < to ? to - 1 : to;
+          order.splice(insertAt, 0, sourceId);
+          s.commitPanelOrder = order;
         });
       },
       addCherryPickCommit: (oid: string) => {
@@ -242,6 +287,7 @@ export const useAppStore = create<AppStoreProps>()(
           s.repoPath = repoPath;
           s.commitHead = null;
           s.commitPanels = [];
+          s.commitPanelOrder = [COMMIT_HEAD_PANEL_ID];
           s.cherryPickQueue = [];
           s.projects.add(repoPath);
         });

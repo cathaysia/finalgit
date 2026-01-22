@@ -25,7 +25,7 @@ import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { branchCheckout, branchRemove } from '@/lib/operator';
 import { cn } from '@/lib/utils';
-import { useDroppable } from '@dnd-kit/react';
+import { useDraggable, useDroppable } from '@dnd-kit/react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 import type React from 'react';
@@ -69,9 +69,12 @@ export default function BranchItem({
   const isLocal = info.kind === 'Local';
   const [isPulling, setIsPulling] = useState(false);
   const [isPushing, setIsPushing] = useState(false);
-  const [repoPath, useEmoji, setCommitHead, addCommitPanel] = useAppStore(
-    s => [s.repoPath, s.useEmoji, s.setCommitHead, s.addCommitPanel],
-  );
+  const [repoPath, useEmoji, setCommitHead, addCommitPanel] = useAppStore(s => [
+    s.repoPath,
+    s.useEmoji,
+    s.setCommitHead,
+    s.addCommitPanel,
+  ]);
   const [isRemoteOpen, setIsRemoteOpen] = useState(false);
 
   const { error: changeErr, data: changes } = useChanges();
@@ -87,7 +90,25 @@ export default function BranchItem({
   const needPull = branchStatus ? branchStatus.unpull !== 0 : false;
   const needSync = needPush || needPull;
 
-  const { ref, isDropTarget } = useDroppable({ id: 'branch' });
+  const panelBaseId = getCommitPanelId(info);
+  const panelName =
+    info.kind === 'Remote'
+      ? `${info.remote ?? t('remote')}/${info.name}`
+      : info.name;
+  const { ref: dropRef, isDropTarget } = useDroppable({ id: 'branch' });
+  const { ref: dragRef } = useDraggable({
+    id: panelBaseId,
+    data: {
+      type: 'branch',
+      branch: info,
+      panelBaseId,
+      panelName,
+    },
+  });
+  const setRefs = (element: HTMLDivElement | null) => {
+    dropRef(element);
+    dragRef(element);
+  };
 
   if (opState) {
     return (
@@ -121,7 +142,7 @@ export default function BranchItem({
         isDropTarget && 'bg-secondary/80',
         className,
       )}
-      ref={ref}
+      ref={setRefs}
       {...props}
     >
       <div className="flex w-full min-w-0 items-center gap-2">
@@ -263,14 +284,15 @@ export default function BranchItem({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                const panelId = getCommitPanelId(info);
+                const panelBaseId = getCommitPanelId(info);
                 const panelName =
                   info.kind === 'Remote'
                     ? `${info.remote ?? t('remote')}/${info.name}`
                     : info.name;
                 addCommitPanel({
-                  id: panelId,
+                  id: makePanelInstanceId(panelBaseId),
                   name: panelName,
+                  baseName: panelName,
                   oid: info.oid,
                 });
               }}
@@ -362,6 +384,10 @@ function replaceEmoji(text: string, replace: boolean) {
 function getCommitPanelId(info: BranchInfo) {
   const remote = info.remote ?? '';
   return `${info.kind}:${remote}:${info.name}`;
+}
+
+function makePanelInstanceId(baseId: string) {
+  return `${baseId}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
 }
 
 async function renameBranch(

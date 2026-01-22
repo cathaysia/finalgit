@@ -69,11 +69,9 @@ export default function BranchItem({
   const isLocal = info.kind === 'Local';
   const [isPulling, setIsPulling] = useState(false);
   const [isPushing, setIsPushing] = useState(false);
-  const [repoPath, useEmoji, setCommitHead] = useAppStore(s => [
-    s.repoPath,
-    s.useEmoji,
-    s.setCommitHead,
-  ]);
+  const [repoPath, useEmoji, setCommitHead, addCommitPanel] = useAppStore(
+    s => [s.repoPath, s.useEmoji, s.setCommitHead, s.addCommitPanel],
+  );
   const [isRemoteOpen, setIsRemoteOpen] = useState(false);
 
   const { error: changeErr, data: changes } = useChanges();
@@ -263,6 +261,22 @@ export default function BranchItem({
                 {t('view_tree')}
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                const panelId = getCommitPanelId(info);
+                const panelName =
+                  info.kind === 'Remote'
+                    ? `${info.remote ?? t('remote')}/${info.name}`
+                    : info.name;
+                addCommitPanel({
+                  id: panelId,
+                  name: panelName,
+                  oid: info.oid,
+                });
+              }}
+            >
+              {t('open_commit_panel')}
+            </DropdownMenuItem>
             {isLocal && (
               <DropdownMenuItem
                 disabled={!isHead || isPulling}
@@ -343,6 +357,11 @@ function replaceEmoji(text: string, replace: boolean) {
   }
 
   return text;
+}
+
+function getCommitPanelId(info: BranchInfo) {
+  const remote = info.remote ?? '';
+  return `${info.kind}:${remote}:${info.name}`;
 }
 
 async function renameBranch(

@@ -29,6 +29,12 @@ export interface AiConfig {
   };
 }
 
+export interface CommitPanelState {
+  id: string;
+  name: string;
+  oid: string;
+}
+
 export interface AppStoreProps {
   firstStart: boolean;
   repoPath?: string;
@@ -37,6 +43,7 @@ export interface AppStoreProps {
   projects: Set<string>;
   renderMarkdown: boolean;
   commitHead: string | null;
+  commitPanels: CommitPanelState[];
   signoff: boolean;
   aiConfig: AiConfig;
   promptList: Map<string, string>;
@@ -61,6 +68,8 @@ export interface AppStoreProps {
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
+  addCommitPanel: (panel: CommitPanelState) => void;
+  removeCommitPanel: (id: string) => void;
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
   setSignoff: (signoff: boolean) => void;
@@ -120,6 +129,7 @@ export const useAppStore = create<AppStoreProps>()(
       useEmoji: true,
       renderMarkdown: true,
       commitHead: null,
+      commitPanels: [],
       projects: new Set<string>(),
       signoff: true,
       aiConfig: {
@@ -191,6 +201,19 @@ export const useAppStore = create<AppStoreProps>()(
         }),
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),
+      addCommitPanel: (panel: CommitPanelState) => {
+        set(s => {
+          const exists = s.commitPanels.some(item => item.id === panel.id);
+          if (!exists) {
+            s.commitPanels.push(panel);
+          }
+        });
+      },
+      removeCommitPanel: (id: string) => {
+        set(s => {
+          s.commitPanels = s.commitPanels.filter(item => item.id !== id);
+        });
+      },
       addRepoPath: (repoPath: string) => {
         set(s => {
           s.projects.add(repoPath);
@@ -200,6 +223,7 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.repoPath = repoPath;
           s.commitHead = null;
+          s.commitPanels = [];
           s.projects.add(repoPath);
         });
       },

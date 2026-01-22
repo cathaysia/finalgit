@@ -303,6 +303,17 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async cherryPickAbort(repoPath: string): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('cherry_pick_abort', { repoPath }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async commitCheckout(
     repoPath: string,
     commit: string,
@@ -936,6 +947,7 @@ export type RepositoryState =
   | 'ApplyMailboxOrRebase';
 export type Signature = { name: string; email: string; time: number };
 export type StashInfo = { id: number; message: string; oid: string };
+export type TAURI_CHANNEL<TSend> = null;
 export type TagInfo = { name: string; oid: string; ref_hash: string };
 
 /** tauri-specta globals **/

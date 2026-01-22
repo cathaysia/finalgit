@@ -18,6 +18,7 @@ export interface CommitListProps
   filter?: string;
   history: CommitInfo[];
   bisectState: BisectState;
+  onCherryPick?: (commit: CommitInfo) => void;
 }
 
 function easeInOutQuint(t: number) {
@@ -30,6 +31,7 @@ export default function CommitList({
   filter,
   history,
   bisectState,
+  onCherryPick,
   ...props
 }: Omit<CommitListProps, 'count' | 'height' | 'getItem'>) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -116,6 +118,7 @@ export default function CommitList({
                   isBad={bisectState.bad === v.oid}
                   isBisecting={bisectState.isBisecting}
                   isNext={bisectState.next === v.oid}
+                  onCherryPick={onCherryPick}
                 />
               </div>
             );

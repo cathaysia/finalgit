@@ -41,7 +41,7 @@ export default function Commit() {
   }
 
   const headBranch =
-    branches?.find(item => item.oid === commitHead) ||
+    branches?.find(item => item.kind === 'Local' && item.oid === commitHead) ||
     branches?.find(item => item.is_head);
   const primaryTitle = headBranch?.name || t('commit.head');
   const extraPanels = commitPanels.filter(panel => panel.oid !== commitHead);
@@ -54,6 +54,8 @@ export default function Commit() {
             title={primaryTitle}
             subtitle={commitHead.slice(0, 6)}
             commit={commitHead}
+            isPrimary
+            targetBranch={headBranch}
           />
         )}
         {extraPanels.map(panel => (

@@ -1,9 +1,22 @@
 'use client';
 
+import { type BranchInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useBisectState } from '@/hooks/use-bisect';
-import { useHistory } from '@/hooks/use-query';
+import {
+  refreshBranches,
+  refreshChanges,
+  refreshHeadOid,
+  refreshHeadState,
+  refreshHistory,
+  useChanges,
+  useHeadOid,
+  useHistory,
+} from '@/hooks/use-query';
+import { useAppStore } from '@/hooks/use-store';
+import NOTIFY from '@/lib/notify';
+import { branchCheckout } from '@/lib/operator';
 import { filterCommits } from '@/lib/parser/commit-filter';
 import { cn } from '@/lib/utils';
 import BisectCard from '@/ui/bisect/bisect-card';
@@ -11,8 +24,9 @@ import CommitList from '@/ui/commit/commit-list';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { useDebounce } from 'use-debounce';
 import { FaTimes } from 'react-icons/fa';
+import { isMatching } from 'ts-pattern';
+import { useDebounce } from 'use-debounce';
 
 export interface CommitPanelProps {
   title: string;
@@ -20,6 +34,8 @@ export interface CommitPanelProps {
   subtitle?: string;
   onClose?: () => void;
   className?: string;
+  isPrimary?: boolean;
+  targetBranch?: BranchInfo;
 }
 
 export default function CommitPanel({
@@ -28,8 +44,17 @@ export default function CommitPanel({
   subtitle,
   onClose,
   className,
+  isPrimary = false,
+  targetBranch,
 }: CommitPanelProps) {
   const t = useTranslations();
+  const [repoPath, cherryPickQueue, addCherryPickCommit, clearCherryPickQueue] =
+    useAppStore(s => [
+      s.repoPath,
+      s.cherryPickQueue,
+      s.addCherryPickCommit,
+      s.clearCherryPickQueue,
+    ]);
   const [filter, setFilter] = useState<string>('');
   const [isValid, setIsValid] = useState<boolean>(true);
   const [isHighOrder, setIsHighOrder] = useState<boolean>(false);
@@ -37,6 +62,9 @@ export default function CommitPanel({
   const [keyDown, setKeyDown] = useState<number>();
   const { data: history } = useHistory(commit);
   const currentHistory = history || [];
+  const { data: changes } = useChanges();
+  const { data: head } = useHeadOid();
+  const [isCherryPicking, setIsCherryPicking] = useState(false);
 
   const bisectState = useBisectState(currentHistory);
   const filteredData = useMemo(() => {
@@ -63,6 +91,62 @@ export default function CommitPanel({
     return currentHistory;
   }, [currentHistory, debounce, isHighOrder]);
 
+  const isDirty = changes ? changes.length !== 0 : false;
+
+  const handleCherryPick = async () => {
+    if (!repoPath || !targetBranch) {
+      return;
+    }
+    if (cherryPickQueue.length === 0) {
+      return;
+    }
+    if (isDirty) {
+      NOTIFY.error(t('commit.cherrypick_dirty'));
+      return;
+    }
+    setIsCherryPicking(true);
+    const canCheckout =
+      head?.is_detached || !head || head.oid !== targetBranch.oid;
+    if (canCheckout) {
+      const checkedOut = await branchCheckout(repoPath, targetBranch);
+      if (!checkedOut) {
+        setIsCherryPicking(false);
+        return;
+      }
+    }
+
+    let blocked = false;
+
+    for (const oid of cherryPickQueue) {
+      const res = await commands.cherrypick(repoPath, oid);
+      if (isMatching({ status: 'error' }, res)) {
+        NOTIFY.error(res.error);
+        blocked = true;
+        break;
+      }
+      const stateRes = await commands.repoGetStatus(repoPath);
+      if (
+        isMatching({ status: 'ok' }, stateRes) &&
+        (stateRes.data === 'CherryPick' ||
+          stateRes.data === 'CherryPickSequence')
+      ) {
+        NOTIFY.error(t('commit.cherrypick_conflict'));
+        blocked = true;
+        break;
+      }
+    }
+
+    refreshHeadState();
+    refreshBranches();
+    refreshHeadOid();
+    refreshChanges();
+    refreshHistory();
+    setIsCherryPicking(false);
+    if (!blocked) {
+      clearCherryPickQueue();
+    }
+  };
+
   if (currentHistory.length === 0) {
     return null;
   }
@@ -76,7 +160,7 @@ export default function CommitPanel({
     >
       <div className="flex items-start justify-between gap-2 px-1 pt-1">
         <div className="min-w-0">
-          <div className="truncate text-sm font-medium">{title}</div>
+          <div className="truncate font-medium text-sm">{title}</div>
           {subtitle && (
             <div className="text-muted-foreground text-xs">{subtitle}</div>
           )}
@@ -93,6 +177,23 @@ export default function CommitPanel({
           </Button>
         )}
       </div>
+      {isPrimary && (
+        <div className="flex flex-wrap items-center gap-2 px-1">
+          <Button
+            className={cn(cherryPickQueue.length === 0 && 'hidden')}
+            onClick={handleCherryPick}
+            disabled={
+              !targetBranch ||
+              cherryPickQueue.length === 0 ||
+              isCherryPicking ||
+              !repoPath ||
+              isDirty
+            }
+          >
+            {t('commit.copy')}
+          </Button>
+        </div>
+      )}
       <div className={cn('flex items-center', filter.length !== 0 && 'gap-2')}>
         <AnimatePresence>
           {isHighOrder && (
@@ -169,6 +270,9 @@ export default function CommitPanel({
         bisectState={bisectState}
         filter={isHighOrder ? undefined : filter}
         className="min-h-0 flex-1"
+        onCherryPick={item => {
+          addCherryPickCommit(item.oid);
+        }}
       />
       <BisectCard bisectState={bisectState} />
     </div>

@@ -7,6 +7,7 @@ import '@fontsource/material-icons';
 import '@/assets/global.css';
 import { TanStackQueryDevtools } from '@/components/devtools/query-devtools';
 import { Toaster } from '@/components/ui/sonner';
+import CherryPickCard from '@/ui/cherry-pick/cherry-pick-card';
 import RebaseCard from '@/ui/rebase/rebase-card';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from 'next-themes';
@@ -57,6 +58,7 @@ export default async function RootLayout({
                   <App />
                   {children}
                   <Toaster richColors position="top-right" />
+                  <CherryPickCard />
                   <RebaseCard />
                   <TanStackQueryDevtools />
                 </QueryProvider>

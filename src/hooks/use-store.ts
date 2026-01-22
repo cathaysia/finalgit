@@ -44,6 +44,7 @@ export interface AppStoreProps {
   renderMarkdown: boolean;
   commitHead: string | null;
   commitPanels: CommitPanelState[];
+  cherryPickQueue: string[];
   signoff: boolean;
   aiConfig: AiConfig;
   promptList: Map<string, string>;
@@ -70,6 +71,9 @@ export interface AppStoreProps {
   setCommitHead: (head: string | null) => void;
   addCommitPanel: (panel: CommitPanelState) => void;
   removeCommitPanel: (id: string) => void;
+  addCherryPickCommit: (oid: string) => void;
+  removeCherryPickCommit: (oid: string) => void;
+  clearCherryPickQueue: () => void;
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
   setSignoff: (signoff: boolean) => void;
@@ -130,6 +134,7 @@ export const useAppStore = create<AppStoreProps>()(
       renderMarkdown: true,
       commitHead: null,
       commitPanels: [],
+      cherryPickQueue: [],
       projects: new Set<string>(),
       signoff: true,
       aiConfig: {
@@ -214,6 +219,19 @@ export const useAppStore = create<AppStoreProps>()(
           s.commitPanels = s.commitPanels.filter(item => item.id !== id);
         });
       },
+      addCherryPickCommit: (oid: string) => {
+        set(s => {
+          if (!s.cherryPickQueue.includes(oid)) {
+            s.cherryPickQueue.push(oid);
+          }
+        });
+      },
+      removeCherryPickCommit: (oid: string) => {
+        set(s => {
+          s.cherryPickQueue = s.cherryPickQueue.filter(item => item !== oid);
+        });
+      },
+      clearCherryPickQueue: () => set({ cherryPickQueue: [] }),
       addRepoPath: (repoPath: string) => {
         set(s => {
           s.projects.add(repoPath);
@@ -224,6 +242,7 @@ export const useAppStore = create<AppStoreProps>()(
           s.repoPath = repoPath;
           s.commitHead = null;
           s.commitPanels = [];
+          s.cherryPickQueue = [];
           s.projects.add(repoPath);
         });
       },

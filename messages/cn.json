@@ -39,6 +39,10 @@
   },
   "Cancel": "取消",
   "commit": {
+    "cherrypick_abort": "终止拣选",
+    "cherrypick_clear_queue": "清空拣选队列",
+    "cherrypick_conflict": "拣选发生冲突，已暂停。",
+    "cherrypick_dirty": "工作区有修改，请先提交或 stash",
     "checkout": "检出",
     "cherrypick": "拣选",
     "close_panel": "关闭面板",
@@ -94,6 +98,7 @@
   },
   "island": {
     "bisecting": "正在二份查找...",
+    "cherrypick_queue": "拣选",
     "rebase": {
       "firstbad": "第一个损坏的 commit 是：{oid}"
     }

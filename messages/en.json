@@ -39,6 +39,10 @@
   },
   "Cancel": "Cancel",
   "commit": {
+    "cherrypick_abort": "Abort cherry-pick",
+    "cherrypick_clear_queue": "Clear cherry-pick queue",
+    "cherrypick_conflict": "Cherry-pick paused due to conflicts.",
+    "cherrypick_dirty": "Workspace is dirty. Commit or Stash first.",
     "checkout": "checkout",
     "cherrypick": "Cherry-pick",
     "close_panel": "Close panel",
@@ -94,6 +98,7 @@
   },
   "island": {
     "bisecting": "Bisecting",
+    "cherrypick_queue": "Cherry-pick",
     "rebase": {
       "firstbad": "The first bad commit is {oid}"
     }

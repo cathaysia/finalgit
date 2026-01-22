@@ -59,6 +59,7 @@ export interface CommitItemProps
   isBad: boolean | undefined;
   isBisecting: boolean | undefined;
   isNext: boolean | undefined;
+  onCherryPick?: (commit: CommitInfo) => void;
 }
 
 const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
@@ -71,6 +72,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       isBad = false,
       isBisecting = false,
       isNext = false,
+      onCherryPick,
       ...props
     },
     ref,
@@ -217,23 +219,14 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.checkout')}
               </DropdownMenuItem>
-              <CollapseMenuGroup
-                isOpen={false}
-                trigger={
-                  <CollapseGroupTrigger isOpen={false} disabled>
-                    {t('commit.cherrypick')}
-                  </CollapseGroupTrigger>
-                }
+              <DropdownMenuItem
+                disabled={!onCherryPick}
+                onClick={() => {
+                  onCherryPick?.(commit);
+                }}
               >
-                <DropdownMenuItem disabled>{t('commit.copy')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>{t('commit.cut')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  {t('commit.insert_before')}
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  {t('commit.insert_after')}
-                </DropdownMenuItem>
-              </CollapseMenuGroup>
+                {t('commit.cherrypick')}
+              </DropdownMenuItem>
               <DropdownMenuItem className="text-red-600" disabled>
                 {t('commit.delete')}
               </DropdownMenuItem>

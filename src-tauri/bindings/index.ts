@@ -741,6 +741,35 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async remoteRemove(
+    repoPath: string,
+    name: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_remove', { repoPath, name }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
+  async remoteRename(
+    repoPath: string,
+    name: string,
+    newName: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('remote_rename', { repoPath, name, newName }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async stageAddFiles(
     repoPath: string,
     files: FileStatus[],

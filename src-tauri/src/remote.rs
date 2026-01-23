@@ -13,6 +13,8 @@ pub trait RemoteExt {
     async fn remote_get_list(&self) -> AppResult<Vec<Remote>>;
     async fn remote_add(&self, name: &str, url: &str) -> AppResult<()>;
     async fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()>;
+    async fn remote_remove(&self, name: &str) -> AppResult<()>;
+    async fn remote_rename(&self, name: &str, new_name: &str) -> AppResult<()>;
 }
 
 #[export_ts(scope = "remote")]
@@ -43,6 +45,23 @@ impl RemoteExt for git2::Repository {
 
     async fn remote_set_url(&self, name: &str, url: &str) -> AppResult<()> {
         self.remote_set_url(name, url)?;
+        Ok(())
+    }
+
+    async fn remote_remove(&self, name: &str) -> AppResult<()> {
+        self.remote_delete(name)?;
+        Ok(())
+    }
+
+    async fn remote_rename(&self, name: &str, new_name: &str) -> AppResult<()> {
+        let problems = self.remote_rename(name, new_name)?;
+        let problem_list: Vec<&str> = problems.into_iter().flatten().collect();
+        if !problem_list.is_empty() {
+            return Err(crate::AppError::InvalidOperation(format!(
+                "remote rename had unresolved refspecs: {}",
+                problem_list.join(", ")
+            )));
+        }
         Ok(())
     }
 }

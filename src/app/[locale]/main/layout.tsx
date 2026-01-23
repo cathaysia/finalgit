@@ -1,5 +1,13 @@
 'use client';
+import { type FileStatus, commands } from '@/bindings';
+import {
+  refreshBranches,
+  refreshChanges,
+  refreshHeadOid,
+  refreshHistory,
+} from '@/hooks/use-query';
 import { useAppStore } from '@/hooks/use-store';
+import NOTIFY from '@/lib/notify';
 import { DragDropProvider } from '@dnd-kit/react';
 
 export default function Layout({
@@ -11,7 +19,8 @@ export default function Layout({
   workspace: React.ReactNode;
   history: React.ReactNode;
 }>) {
-  const [addCommitPanelToStart, moveCommitPanel] = useAppStore(s => [
+  const [repoPath, addCommitPanelToStart, moveCommitPanel] = useAppStore(s => [
+    s.repoPath,
     s.addCommitPanelToStart,
     s.moveCommitPanel,
   ]);
@@ -29,6 +38,29 @@ export default function Layout({
           }
           const sourceId = String(source.id || '');
           const targetId = String(target.id || '');
+          const sourceData = source.data as
+            | {
+                type?: string;
+                item?: FileStatus;
+              }
+            | undefined;
+          const targetData = target.data as
+            | {
+                type?: string;
+                commit?: string;
+              }
+            | undefined;
+
+          if (
+            sourceData?.type === 'change-file' &&
+            targetData?.type === 'commit-amend'
+          ) {
+            if (!repoPath || !sourceData.item || !targetData.commit) {
+              return;
+            }
+            amendCommitFromDrop(repoPath, targetData.commit, sourceData.item);
+            return;
+          }
           if (
             sourceId.startsWith('panel:') &&
             targetId.startsWith('panel-drop:')
@@ -74,4 +106,25 @@ export default function Layout({
 
 function makePanelInstanceId(baseId: string) {
   return `${baseId}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
+}
+
+async function amendCommitFromDrop(
+  repoPath: string,
+  commit: string,
+  item: FileStatus,
+) {
+  const stageRes = await commands.stageAddFiles(repoPath, [item]);
+  if (stageRes.status === 'error') {
+    NOTIFY.error(stageRes.error);
+    return;
+  }
+  const amendRes = await commands.commitAmend(repoPath, commit);
+  if (amendRes.status === 'error') {
+    NOTIFY.error(amendRes.error);
+    return;
+  }
+  refreshChanges();
+  refreshHistory();
+  refreshHeadOid();
+  refreshBranches();
 }

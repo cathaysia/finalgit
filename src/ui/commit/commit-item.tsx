@@ -40,6 +40,7 @@ import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
+import { useDragOperation, useDroppable } from '@dnd-kit/react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import { useTranslations } from 'next-intl';
@@ -94,6 +95,17 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;
+    const dragOperation = useDragOperation();
+    const dragSourceType = (
+      dragOperation?.source?.data as { type?: string } | undefined
+    )?.type;
+    const isChangeDragging = dragSourceType === 'change-file';
+    const canAmend = isChangeDragging && head?.oid === commit.oid;
+    const { ref: dropRef, isDropTarget } = useDroppable({
+      id: `commit-amend:${commit.oid}`,
+      data: { type: 'commit-amend', commit: commit.oid },
+      disabled: !canAmend,
+    });
 
     if (commit.author.name !== commit.commiter.name) {
       names.push({
@@ -102,6 +114,14 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       });
     }
     const [hover, setHovering] = useState(false);
+    const setRefs = (element: HTMLDivElement | null) => {
+      dropRef(element);
+      if (typeof ref === 'function') {
+        ref(element);
+      } else if (ref) {
+        ref.current = element;
+      }
+    };
     return (
       <div
         className={cn(
@@ -114,9 +134,12 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             head?.is_detached &&
             head?.oid === commit.oid &&
             'border-green-600 dark:border-green-600',
+          canAmend && 'border-dashed',
+          isDropTarget &&
+            'border-emerald-500 bg-emerald-100/70 dark:border-emerald-400 dark:bg-emerald-950/40',
           className,
         )}
-        ref={ref}
+        ref={setRefs}
         {...props}
       >
         <div className="flex h-full grow items-center gap-2">

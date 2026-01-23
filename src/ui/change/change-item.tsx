@@ -47,6 +47,10 @@ function ChangeItem({ className, item, ...props }: ChangeItemProps) {
 
   const { ref } = useDraggable({
     id: item.path,
+    data: {
+      type: 'change-file',
+      item,
+    },
   });
 
   return (

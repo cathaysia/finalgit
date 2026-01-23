@@ -681,6 +681,25 @@ export const commands = {
       else return { status: 'error', error: e as any };
     }
   },
+  async rebaseReorder(
+    repoPath: string,
+    source: string,
+    target: string,
+  ): Promise<Result<null, string>> {
+    try {
+      return {
+        status: 'ok',
+        data: await TAURI_INVOKE('rebase_reorder', {
+          repoPath,
+          source,
+          target,
+        }),
+      };
+    } catch (e) {
+      if (e instanceof Error) throw e;
+      else return { status: 'error', error: e as any };
+    }
+  },
   async remoteGetList(repoPath: string): Promise<Result<Remote[], string>> {
     try {
       return {

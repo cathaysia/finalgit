@@ -42,18 +42,48 @@ export default function Layout({
             | {
                 type?: string;
                 item?: FileStatus;
+                commit?: string;
+                panelId?: string;
               }
             | undefined;
           const targetData = target.data as
             | {
                 type?: string;
                 commit?: string;
+                panelId?: string;
+                allowAmend?: boolean;
+                allowReorder?: boolean;
               }
             | undefined;
 
           if (
+            sourceData?.type === 'commit-item' &&
+            targetData?.type === 'commit-item'
+          ) {
+            if (
+              sourceData.panelId &&
+              sourceData.panelId === targetData.panelId &&
+              sourceData.commit &&
+              targetData.commit &&
+              sourceData.commit !== targetData.commit &&
+              targetData.allowReorder
+            ) {
+              if (!repoPath) {
+                return;
+              }
+              reorderCommitFromDrop(
+                repoPath,
+                sourceData.commit,
+                targetData.commit,
+              );
+            }
+            return;
+          }
+
+          if (
             sourceData?.type === 'change-file' &&
-            targetData?.type === 'commit-amend'
+            targetData?.type === 'commit-item' &&
+            targetData.allowAmend
           ) {
             if (!repoPath || !sourceData.item || !targetData.commit) {
               return;
@@ -127,4 +157,24 @@ async function amendCommitFromDrop(
   refreshHistory();
   refreshHeadOid();
   refreshBranches();
+}
+
+async function reorderCommitFromDrop(
+  repoPath: string,
+  sourceCommit: string,
+  targetCommit: string,
+) {
+  const res = await commands.rebaseReorder(
+    repoPath,
+    sourceCommit,
+    targetCommit,
+  );
+  if (res.status === 'error') {
+    NOTIFY.error(res.error);
+    return;
+  }
+  refreshHistory();
+  refreshHeadOid();
+  refreshBranches();
+  refreshChanges();
 }

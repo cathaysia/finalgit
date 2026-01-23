@@ -31,6 +31,7 @@ import { useDebounce } from 'use-debounce';
 export interface CommitPanelProps {
   title: string;
   commit: string;
+  panelId: string;
   subtitle?: string;
   onClose?: () => void;
   className?: string;
@@ -41,6 +42,7 @@ export interface CommitPanelProps {
 export default function CommitPanel({
   title,
   commit,
+  panelId,
   subtitle,
   onClose,
   className,
@@ -269,6 +271,8 @@ export default function CommitPanel({
         history={filteredData}
         bisectState={bisectState}
         filter={isHighOrder ? undefined : filter}
+        panelId={panelId}
+        allowReorder={isPrimary}
         className="min-h-0 flex-1"
         onCherryPick={item => {
           addCherryPickCommit(item.oid);

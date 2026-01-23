@@ -186,6 +186,7 @@ export default function Commit() {
                   title={primaryTitle}
                   subtitle={commitHead.slice(0, 6)}
                   commit={commitHead}
+                  panelId={COMMIT_HEAD_PANEL_ID}
                   isPrimary
                   targetBranch={headBranch}
                 />
@@ -204,6 +205,7 @@ export default function Commit() {
                 title={displayName}
                 subtitle={panel.oid.slice(0, 6)}
                 commit={panel.oid}
+                panelId={panel.id}
                 onClose={() => removeCommitPanel(panel.id)}
               />
             </PanelWrapper>

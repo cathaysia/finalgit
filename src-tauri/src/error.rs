@@ -18,6 +18,8 @@ pub enum AppError {
     StringUtf8(#[from] std::string::FromUtf8Error),
     #[error("Bad Git Status")]
     BadStatus,
+    #[error("{0}")]
+    InvalidOperation(String),
     #[error("Not implement")]
     NotImplement,
     #[error("Don't support bare repo.")]

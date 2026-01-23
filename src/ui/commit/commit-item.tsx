@@ -40,7 +40,7 @@ import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
-import { useDragOperation, useDroppable } from '@dnd-kit/react';
+import { useDragOperation, useDraggable, useDroppable } from '@dnd-kit/react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import { useTranslations } from 'next-intl';
@@ -56,6 +56,8 @@ export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
   commit: CommitInfo;
+  panelId: string;
+  allowReorder: boolean;
   isGood: boolean | undefined;
   isBad: boolean | undefined;
   isBisecting: boolean | undefined;
@@ -69,6 +71,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       className,
       filter,
       commit,
+      panelId,
+      allowReorder,
       isGood = false,
       isBad = false,
       isBisecting = false,
@@ -100,11 +104,23 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       dragOperation?.source?.data as { type?: string } | undefined
     )?.type;
     const isChangeDragging = dragSourceType === 'change-file';
+    const isCommitDragging = dragSourceType === 'commit-item';
     const canAmend = isChangeDragging && head?.oid === commit.oid;
+    const { ref: dragRef, isDragSource } = useDraggable({
+      id: `commit-drag:${panelId}:${commit.oid}`,
+      data: { type: 'commit-item', commit: commit.oid, panelId },
+      disabled: !allowReorder,
+    });
     const { ref: dropRef, isDropTarget } = useDroppable({
-      id: `commit-amend:${commit.oid}`,
-      data: { type: 'commit-amend', commit: commit.oid },
-      disabled: !canAmend,
+      id: `commit-drop:${panelId}:${commit.oid}`,
+      data: {
+        type: 'commit-item',
+        commit: commit.oid,
+        panelId,
+        allowAmend: canAmend,
+        allowReorder,
+      },
+      disabled: (!isCommitDragging || !allowReorder) && !canAmend,
     });
 
     if (commit.author.name !== commit.commiter.name) {
@@ -116,6 +132,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
     const [hover, setHovering] = useState(false);
     const setRefs = (element: HTMLDivElement | null) => {
       dropRef(element);
+      dragRef(element);
       if (typeof ref === 'function') {
         ref(element);
       } else if (ref) {
@@ -134,9 +151,12 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             head?.is_detached &&
             head?.oid === commit.oid &&
             'border-green-600 dark:border-green-600',
-          canAmend && 'border-dashed',
+          (canAmend || (allowReorder && isCommitDragging)) && 'border-dashed',
           isDropTarget &&
-            'border-emerald-500 bg-emerald-100/70 dark:border-emerald-400 dark:bg-emerald-950/40',
+            (canAmend
+              ? 'border-emerald-500 bg-emerald-100/70 dark:border-emerald-400 dark:bg-emerald-950/40'
+              : 'border-blue-500 bg-blue-100/70 dark:border-blue-400 dark:bg-blue-950/40'),
+          isDragSource && 'opacity-70',
           className,
         )}
         ref={setRefs}

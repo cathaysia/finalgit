@@ -7,18 +7,20 @@ const chalky = '#e5c07b';
 const coral = '#e06c75';
 const cyan = '#56b6c2';
 const invalid = '#ffffff';
-const ivory = 'hsl(var(--foreground))';
-const stone = '#7d8799'; // Brightened compared to original to increase contrast
+const foreground = 'hsl(var(--foreground))';
+const mutedForeground = 'hsl(var(--muted-foreground))';
 const malibu = '#61afef';
 const sage = '#98c379';
 const whiskey = '#d19a66';
 const violet = '#c678dd';
-const darkBackground = '#21252b';
-const highlightBackground = '#2c313a';
 const background = 'hsl(var(--background))';
-const tooltipBackground = '#353a42';
-const selection = '#3E4451';
-const cursor = '#528bff';
+const muted = 'hsl(var(--muted))';
+const accent = 'hsl(var(--accent))';
+const accentForeground = 'hsl(var(--accent-foreground))';
+const border = 'hsl(var(--border))';
+const popover = 'hsl(var(--popover))';
+const popoverForeground = 'hsl(var(--popover-foreground))';
+const ring = 'hsl(var(--ring))';
 
 /// The colors used in the theme, as CSS color strings.
 export const color = {
@@ -26,87 +28,100 @@ export const color = {
   coral,
   cyan,
   invalid,
-  ivory,
-  stone,
+  foreground,
+  mutedForeground,
   malibu,
   sage,
   whiskey,
   violet,
-  darkBackground,
-  highlightBackground,
   background,
-  tooltipBackground,
-  selection,
-  cursor,
+  muted,
+  accent,
+  accentForeground,
+  border,
+  popover,
+  popoverForeground,
+  ring,
 };
 
-/// The editor theme styles for One Dark.
+/// The editor theme styles aligned with shadcn UI tokens.
 export const shadcnDarkTheme = EditorView.theme(
   {
     '&': {
-      color: ivory,
+      color: foreground,
       backgroundColor: background,
     },
-
+    '.cm-scroller': {
+      fontFamily:
+        '"Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+      fontSize: '16px',
+      letterSpacing: 'normal',
+      lineHeight: '1.6',
+    },
     '.cm-content': {
-      caretColor: cursor,
+      caretColor: ring,
     },
 
-    '.cm-cursor, .cm-dropCursor': { borderLeftColor: cursor },
+    '.cm-cursor, .cm-dropCursor': { borderLeftColor: ring },
     '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection':
-      { backgroundColor: selection },
+      { backgroundColor: 'hsl(var(--accent) / 0.35)' },
 
-    '.cm-panels': { backgroundColor: darkBackground, color: ivory },
-    '.cm-panels.cm-panels-top': { borderBottom: '2px solid black' },
-    '.cm-panels.cm-panels-bottom': { borderTop: '2px solid black' },
+    '.cm-panels': { backgroundColor: popover, color: popoverForeground },
+    '.cm-panels.cm-panels-top': { borderBottom: `1px solid ${border}` },
+    '.cm-panels.cm-panels-bottom': { borderTop: `1px solid ${border}` },
 
     '.cm-searchMatch': {
-      backgroundColor: '#72a1ff59',
-      outline: '1px solid #457dff',
+      backgroundColor: 'hsl(var(--accent) / 0.25)',
+      outline: `1px solid ${accent}`,
     },
     '.cm-searchMatch.cm-searchMatch-selected': {
-      backgroundColor: '#6199ff2f',
+      backgroundColor: 'hsl(var(--accent) / 0.4)',
     },
 
-    '.cm-activeLine': { backgroundColor: 'transparent' },
-    '.cm-selectionMatch': { backgroundColor: 'hsl(var(--accent))' },
+    '.cm-activeLine': {
+      backgroundColor: 'hsl(var(--accent) / 0.08)',
+    },
+    '.cm-selectionMatch': { backgroundColor: 'hsl(var(--accent) / 0.3)' },
 
     '&.cm-focused .cm-matchingBracket, &.cm-focused .cm-nonmatchingBracket': {
-      backgroundColor: '#bad0f847',
+      backgroundColor: 'hsl(var(--accent) / 0.3)',
     },
 
     '.cm-gutters': {
-      backgroundColor: background,
-      color: stone,
+      backgroundColor: muted,
+      color: mutedForeground,
       border: 'none',
+      borderRight: `1px solid ${border}`,
     },
 
     '.cm-activeLineGutter': {
-      backgroundColor: highlightBackground,
+      backgroundColor: 'hsl(var(--accent) / 0.12)',
+      color: foreground,
     },
 
     '.cm-foldPlaceholder': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      color: '#ddd',
+      backgroundColor: muted,
+      border: `1px solid ${border}`,
+      color: mutedForeground,
     },
 
     '.cm-tooltip': {
-      border: 'none',
-      backgroundColor: tooltipBackground,
+      border: `1px solid ${border}`,
+      backgroundColor: popover,
+      color: popoverForeground,
     },
     '.cm-tooltip .cm-tooltip-arrow:before': {
       borderTopColor: 'transparent',
       borderBottomColor: 'transparent',
     },
     '.cm-tooltip .cm-tooltip-arrow:after': {
-      borderTopColor: tooltipBackground,
-      borderBottomColor: tooltipBackground,
+      borderTopColor: popover,
+      borderBottomColor: popover,
     },
     '.cm-tooltip-autocomplete': {
       '& > ul > li[aria-selected]': {
-        backgroundColor: highlightBackground,
-        color: ivory,
+        backgroundColor: accent,
+        color: accentForeground,
       },
     },
   },
@@ -122,7 +137,7 @@ export const shadcnDarkHighlightStyle = HighlightStyle.define([
   },
   { tag: [t.function(t.variableName), t.labelName], color: malibu },
   { tag: [t.color, t.constant(t.name), t.standard(t.name)], color: whiskey },
-  { tag: [t.definition(t.name), t.separator], color: ivory },
+  { tag: [t.definition(t.name), t.separator], color: foreground },
   {
     tag: [
       t.typeName,
@@ -148,11 +163,11 @@ export const shadcnDarkHighlightStyle = HighlightStyle.define([
     ],
     color: cyan,
   },
-  { tag: [t.meta, t.comment], color: stone },
+  { tag: [t.meta, t.comment], color: mutedForeground },
   { tag: t.strong, fontWeight: 'bold' },
   { tag: t.emphasis, fontStyle: 'italic' },
   { tag: t.strikethrough, textDecoration: 'line-through' },
-  { tag: t.link, color: stone, textDecoration: 'underline' },
+  { tag: t.link, color: mutedForeground, textDecoration: 'underline' },
   { tag: t.heading, fontWeight: 'bold', color: coral },
   { tag: [t.atom, t.bool, t.special(t.variableName)], color: whiskey },
   { tag: [t.processingInstruction, t.string, t.inserted], color: sage },

@@ -1,15 +1,3 @@
-.cm-editor.cm-focused {
-    @apply outline-none;
-}
-
 .cm-line {
     @apply break-all overflow-x-clip;
-}
-
-.cm-gutter.cm-lineNumbers {
-    @apply w-6 text-primary bg-secondary;
-}
-
-.cm-gutter.cm-foldGutter {
-    @apply text-primary bg-secondary;
 }

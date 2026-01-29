@@ -3,6 +3,7 @@
 import * as wasm from '@/crates/filetype/pkg/filetype';
 
 import { commands } from '@/bindings';
+import { Button } from '@/components/ui/button';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -29,6 +30,7 @@ import {
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { FaCode, FaRegEye } from 'react-icons/fa';
 import { MdHome } from 'react-icons/md';
 
 export default function FileTree() {
@@ -47,7 +49,9 @@ export default function FileTree() {
   const projectName = repoPath?.split('/').filter(Boolean).at(-1) ?? 'Project';
   const commitLabel = commit ? commit.slice(0, 7) : 'HEAD';
   const pathSegments = path.split('/').filter(Boolean);
-  const fileName = pathSegments.at(-1) ?? path;
+  const languageLabel = language ?? 'Text';
+  const [isLicensePreview, setIsLicensePreview] = useState(false);
+  const hasToggledPreview = useRef(false);
 
   useEffect(() => {
     if (!repoPath) {
@@ -96,6 +100,18 @@ export default function FileTree() {
   if (text && path.toLowerCase().includes('license')) {
     license = detectLicense(text);
   }
+  const hasLicense = license.length !== 0;
+
+  useEffect(() => {
+    if (!hasLicense) {
+      setIsLicensePreview(false);
+      hasToggledPreview.current = false;
+      return;
+    }
+    if (!hasToggledPreview.current) {
+      setIsLicensePreview(true);
+    }
+  }, [hasLicense]);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -134,49 +150,58 @@ export default function FileTree() {
         <ResizableHandle withHandle />
         <ResizablePanel className="flex min-h-0 flex-col">
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2 text-muted-foreground text-xs">
-              <span>{projectName}</span>
-              {pathSegments.map((segment, index) => (
-                <span key={`${segment}-${index}`} className="flex items-center">
-                  <span className="px-1">/</span>
-                  <span>{segment}</span>
-                </span>
-              ))}
-              {!pathSegments.length && <span>/</span>}
-            </div>
-            <ResizablePanelGroup
-              direction={'vertical'}
-              className="flex min-h-0 flex-1 flex-col overflow-hidden"
-            >
-              {license.length !== 0 && (
-                <>
-                  <ResizablePanel
-                    defaultSize={25}
-                    className="overflow-y-visible"
+            <div className="flex items-center justify-between gap-2 border-b px-3 py-2 text-muted-foreground text-xs">
+              <div className="flex flex-wrap items-center gap-1">
+                <span>{projectName}</span>
+                {pathSegments.map((segment, index) => (
+                  <span
+                    key={`${segment}-${index}`}
+                    className="flex items-center"
                   >
-                    <LicenseCard license={license} />
-                  </ResizablePanel>
-                  <ResizableHandle withHandle />
-                </>
-              )}
-              <ResizablePanel defaultSize={75} className="min-h-0">
-                {text ? (
-                  <CodeMirror
-                    value={text}
-                    className="h-full font-mono text-base"
-                    height="100%"
-                    theme={shadcnTheme}
-                    extensions={[
-                      ...extensions,
-                      blamePlugin,
-                      EditorView.lineWrapping,
-                    ]}
-                  />
-                ) : (
-                  <div className="" />
+                    <span className="px-1">/</span>
+                    <span>{segment}</span>
+                  </span>
+                ))}
+                {!pathSegments.length && <span>/</span>}
+              </div>
+              <div className="flex items-center gap-2">
+                {hasLicense && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      hasToggledPreview.current = true;
+                      setIsLicensePreview(current => !current);
+                    }}
+                    title={isLicensePreview ? 'Code' : 'Preview'}
+                    aria-label={isLicensePreview ? 'Code' : 'Preview'}
+                  >
+                    {isLicensePreview ? <FaCode /> : <FaRegEye />}
+                  </Button>
                 )}
-              </ResizablePanel>
-            </ResizablePanelGroup>
+              </div>
+            </div>
+            <div className="min-h-0 flex-1 overflow-hidden">
+              {hasLicense && isLicensePreview ? (
+                <div className="h-full overflow-auto p-2">
+                  <LicenseCard license={license} />
+                </div>
+              ) : text ? (
+                <CodeMirror
+                  value={text}
+                  className="h-full font-mono text-base"
+                  height="100%"
+                  theme={shadcnTheme}
+                  extensions={[
+                    ...extensions,
+                    blamePlugin,
+                    EditorView.lineWrapping,
+                  ]}
+                />
+              ) : (
+                <div className="" />
+              )}
+            </div>
           </div>
           <Portal.Root container={blameWidget.current} asChild>
             {hunk && <BlameCard blame={hunk} />}

@@ -22,6 +22,7 @@ import {
 } from '@/ui/codemirror/license/license-card';
 import { shadcnTheme } from '@/ui/codemirror/theme/shadcn';
 import FilePanel from '@/ui/panels/file-panel';
+import { evaluate } from '@mdx-js/mdx';
 import * as Portal from '@radix-ui/react-portal';
 import {
   type LanguageName,
@@ -29,9 +30,12 @@ import {
 } from '@uiw/codemirror-extensions-langs';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useSearchParams } from 'next/navigation';
+import type { ComponentType } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaCode, FaRegEye } from 'react-icons/fa';
 import { MdHome } from 'react-icons/md';
+import * as runtime from 'react/jsx-runtime';
+import remarkGfm from 'remark-gfm';
 
 export default function FileTree() {
   const router = useRouter();
@@ -49,9 +53,10 @@ export default function FileTree() {
   const projectName = repoPath?.split('/').filter(Boolean).at(-1) ?? 'Project';
   const commitLabel = commit ? commit.slice(0, 7) : 'HEAD';
   const pathSegments = path.split('/').filter(Boolean);
-  const languageLabel = language ?? 'Text';
   const [isLicensePreview, setIsLicensePreview] = useState(false);
   const hasToggledPreview = useRef(false);
+  const [mdxContent, setMdxContent] = useState<ComponentType | null>(null);
+  const [mdxError, setMdxError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!repoPath) {
@@ -101,9 +106,12 @@ export default function FileTree() {
     license = detectLicense(text);
   }
   const hasLicense = license.length !== 0;
+  const isMarkdown = /\.mdx?$/.test(path.toLowerCase());
+  const hasPreview = hasLicense || isMarkdown;
+  const MdxContent = mdxContent;
 
   useEffect(() => {
-    if (!hasLicense) {
+    if (!hasPreview) {
       setIsLicensePreview(false);
       hasToggledPreview.current = false;
       return;
@@ -111,7 +119,39 @@ export default function FileTree() {
     if (!hasToggledPreview.current) {
       setIsLicensePreview(true);
     }
-  }, [hasLicense]);
+  }, [hasPreview]);
+
+  useEffect(() => {
+    if (!isMarkdown || !isLicensePreview || !text || hasLicense) {
+      setMdxContent(null);
+      setMdxError(null);
+      return;
+    }
+    let active = true;
+    (async () => {
+      try {
+        const mod = await evaluate(text, {
+          ...runtime,
+          useDynamicImport: true,
+          remarkPlugins: [remarkGfm],
+        });
+        if (active) {
+          setMdxContent(() => mod.default);
+          setMdxError(null);
+        }
+      } catch (error) {
+        if (active) {
+          setMdxContent(null);
+          setMdxError(
+            error instanceof Error ? error.message : 'Failed to render MDX.',
+          );
+        }
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [hasLicense, isMarkdown, isLicensePreview, text]);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -165,7 +205,7 @@ export default function FileTree() {
                 {!pathSegments.length && <span>/</span>}
               </div>
               <div className="flex items-center gap-2">
-                {hasLicense && (
+                {hasPreview && (
                   <Button
                     variant="ghost"
                     size="icon"
@@ -182,9 +222,21 @@ export default function FileTree() {
               </div>
             </div>
             <div className="min-h-0 flex-1 overflow-hidden">
-              {hasLicense && isLicensePreview ? (
-                <div className="h-full overflow-auto p-2">
-                  <LicenseCard license={license} />
+              {hasPreview && isLicensePreview ? (
+                <div className="h-full overflow-auto p-4">
+                  {hasLicense ? (
+                    <LicenseCard license={license} />
+                  ) : MdxContent ? (
+                    <div className="prose prose-sm dark:prose-invert prose-table:w-full max-w-none prose-table:border-collapse prose-td:border prose-th:border prose-td:border-border/60 prose-th:border-border/60 prose-th:bg-muted/60 prose-td:px-2 prose-th:px-2 prose-td:py-1 prose-th:py-1">
+                      <MdxContent />
+                    </div>
+                  ) : mdxError ? (
+                    <div className="text-red-500 text-sm">{mdxError}</div>
+                  ) : (
+                    <div className="text-muted-foreground text-sm">
+                      Rendering preview...
+                    </div>
+                  )}
                 </div>
               ) : text ? (
                 <CodeMirror

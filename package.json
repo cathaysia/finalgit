@@ -26,6 +26,8 @@
     "@fontsource-variable/noto-sans-sc": "^5.2.5",
     "@fontsource/material-icons": "^5.2.5",
     "@lezer/highlight": "^1.2.1",
+    "@mdx-js/mdx": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
     "@mui/base": "5.0.0-beta.69",
     "@mui/material": "^6.4.11",
     "@mui/material-nextjs": "^6.4.3",

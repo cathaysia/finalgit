@@ -203,8 +203,8 @@ export default function SettingsMenu({
               {t('settings.ai')}
             </TabsTrigger>
           </TabsList>
-          <ScrollArea className="h-full">
-            <div className="flex h-full flex-col gap-6 px-6 py-5">
+          <ScrollArea className="h-full min-h-0">
+            <div className="flex flex-col gap-6 px-6 py-5">
               <TabsContent value="profile" className="m-0">
                 <div className="flex flex-col gap-6">
                   <SettingsSection title="Theme">

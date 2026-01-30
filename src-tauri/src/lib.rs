@@ -129,11 +129,10 @@ mod test {
     fn generate_bindings() {
         let builder = tauri_specta::Builder::<tauri::Wry>::new().commands(specta_commands!());
 
-        builder
-            .export(
-                specta_typescript::Typescript::default(),
-                "./bindings/index.ts",
-            )
+        let ts = builder
+            .export_str(specta_typescript::Typescript::default())
             .expect("Failed to export typescript bindings");
+
+        std::fs::write("./bindings/index.ts", format!("// @ts-nocheck\n\n{ts}")).unwrap();
     }
 }

@@ -66,6 +66,7 @@ export default function FileTree() {
     (async () => {
       await wasm.default();
       const language = wasm.resolve(path);
+      console.log(`${path} resolved as ${language}`);
       setLanguage(language || null);
       const res = await commands?.fileGetContent(repoPath, commit, path);
       if (res.status === 'ok') {

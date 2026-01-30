@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -46,11 +45,9 @@ export default function AiPrompt() {
   const isGitmoji = current === 'GitMoji';
 
   return (
-    <Card className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
-      <CardHeader>
-        <CardTitle>{t('ai.prompt')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
+    <div className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
+      <a>{t('ai.prompt')}</a>
+      <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <Select
             defaultValue={current}
@@ -107,7 +104,7 @@ export default function AiPrompt() {
           }}
           value={content}
         />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

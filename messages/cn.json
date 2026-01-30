@@ -129,7 +129,8 @@
     "behaviour": "行为",
     "git": {
       "commit": {
-        "gpgsign": "使用 GPG 签名提交"
+        "gpgsign": "使用 GPG 签名提交",
+        "gpgsign_desc": "为提交添加 GPG 签名以增强可信度。"
       },
       "core": "Core",
       "defaultBranch": "默认分支",
@@ -137,12 +138,15 @@
       "pull": {
         "ff": "Fast-Forward",
         "header": "Pull",
-        "rebase": "Rebase"
+        "rebase": "Rebase",
+        "ff_desc": "仅允许快进更新本地分支。",
+        "rebase_desc": "将本地提交变基到上游分支之上。"
       },
       "select_gpg": "选择 GPG",
       "signingKey": "签名密钥",
       "tag": {
-        "gpgsign": "GPG 密钥"
+        "gpgsign": "GPG 密钥",
+        "gpgsign_desc": "为发布标签签名以验证来源。"
       },
       "user": "用户",
       "username": "用户名"

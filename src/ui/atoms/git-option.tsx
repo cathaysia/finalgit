@@ -43,7 +43,7 @@ export default function GitOption({
   }, [debounce, repoPath, opt]);
 
   return (
-    <div className={cn(className)} {...props}>
+    <div className={cn('flex flex-col gap-2', className)} {...props}>
       <Label htmlFor={id}>{name}</Label>
       <Input
         type="text"

@@ -1,5 +1,4 @@
 'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAppStore } from '@/hooks/use-store';
@@ -19,24 +18,24 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
   ]);
 
   return (
-    <Card
+    <div
       className={cn(
         'w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60',
         className,
       )}
       {...props}
     >
-      <CardHeader>
-        <CardTitle>{t('profile.git.core')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
+      <a>{t('profile.git.core')}</a>
+      <div className="flex flex-col gap-2">
         <GitSwitch
           name={t('profile.git.commit.gpgsign')}
+          description={t('profile.git.commit.gpgsign_desc')}
           id="profile.git.commitsign"
           opt={'commit.gpgsign'}
         />
         <GitSwitch
           name={t('profile.git.tag.gpgsign')}
+          description={t('profile.git.tag.gpgsign_desc')}
           id="profile.git.tag.gpgsign"
           opt={'tag.gpgsign'}
         />
@@ -45,7 +44,7 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
           name={t('profile.git.defaultBranch')}
           opt={'init.defaultbranch'}
         />
-        <div>
+        <div className="flex flex-col gap-2">
           <Label>{t('profile.gh.api')}</Label>
           <Input
             type="url"
@@ -56,7 +55,7 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
             placeholder="https://api.github.com"
           />
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <Label>{t('profile.gh.token')}</Label>
           <Input
             type="text"
@@ -66,7 +65,7 @@ export default function GitCore({ className, ...props }: GitCoreProps) {
             value={ghToken}
           />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

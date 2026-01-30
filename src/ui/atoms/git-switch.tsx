@@ -12,12 +12,14 @@ export interface GitSwitchProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   id: string;
   name: string;
+  description?: string;
   opt: string;
 }
 
 export default function GitSwitch({
   className,
   name,
+  description,
   id,
   opt,
   ...props
@@ -34,8 +36,21 @@ export default function GitSwitch({
   }, [repoPath, gitOpt]);
 
   return (
-    <div className={cn('flex justify-between', className)} {...props}>
-      <Label htmlFor={id}>{name}</Label>
+    <div
+      className={cn(
+        'flex items-center justify-between gap-4 rounded-lg border px-4 py-3 transition hover:border-border/80 hover:bg-muted/40',
+        className,
+      )}
+      {...props}
+    >
+      <div className="flex flex-col gap-1">
+        <Label htmlFor={id} className="font-semibold text-sm">
+          {name}
+        </Label>
+        {description && (
+          <span className="text-muted-foreground text-xs">{description}</span>
+        )}
+      </div>
       <Switch
         id={id}
         checked={value}

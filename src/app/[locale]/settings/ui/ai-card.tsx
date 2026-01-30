@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -24,11 +23,9 @@ export default function AiCard() {
       : aiConfig.openAiCompatible.model;
 
   return (
-    <Card className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
-      <CardHeader>
-        <CardTitle>{t('profile.ai_provider')}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <div className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
+      <a>{t('profile.ai_provider')}</a>
+      <div>
         <Select
           value={aiConfig.current}
           onValueChange={val => {
@@ -49,7 +46,7 @@ export default function AiCard() {
         </Select>
         {aiConfig.current === AiKind.OpenAi && <OpenAi />}
         {aiConfig.current === AiKind.OpenAiCompatible && <OpenAiCompatible />}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

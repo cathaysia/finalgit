@@ -129,7 +129,8 @@
     "behaviour": "Behaviour",
     "git": {
       "commit": {
-        "gpgsign": "sign commit by GPG"
+        "gpgsign": "sign commit by GPG",
+        "gpgsign_desc": "Attach a GPG signature to your commits for extra trust."
       },
       "core": "Core",
       "defaultBranch": "Default branch",
@@ -137,12 +138,15 @@
       "pull": {
         "ff": "Fast-Forward",
         "header": "Pull",
-        "rebase": "Rebase"
+        "rebase": "Rebase",
+        "ff_desc": "Use fast-forward only when updating local branches.",
+        "rebase_desc": "Rebase local commits on top of the upstream branch."
       },
       "select_gpg": "Select GPG",
       "signingKey": "signingKey",
       "tag": {
-        "gpgsign": "sign tag by GPG"
+        "gpgsign": "sign tag by GPG",
+        "gpgsign_desc": "Sign release tags to verify their origin."
       },
       "user": "User",
       "username": "Name"

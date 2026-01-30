@@ -1,5 +1,6 @@
 use std::process::Stdio;
 
+use pulldown_cmark::{html, Options, Parser};
 use specta::Type;
 use std::str::FromStr;
 use tokio::io::AsyncReadExt;
@@ -29,6 +30,7 @@ pub trait UtilExt {
 
     fn git_get_version(&self) -> AppResult<semver::Version>;
     fn gpg_get_secret_list() -> AppResult<Vec<String>>;
+    fn markdown_to_html(markdown: &str, theme: Option<String>) -> AppResult<String>;
 
     async fn git_clone(args: CloneArgs, reader: ipc::Channel<&[u8]>) -> AppResult<()>;
 }
@@ -73,6 +75,22 @@ impl UtilExt for git2::Repository {
         }
 
         Ok(res)
+    }
+
+    fn markdown_to_html(markdown: &str, theme: Option<String>) -> AppResult<String> {
+        let mut options = Options::empty();
+        options.insert(Options::ENABLE_TABLES);
+        options.insert(Options::ENABLE_STRIKETHROUGH);
+        options.insert(Options::ENABLE_TASKLISTS);
+        options.insert(Options::ENABLE_FOOTNOTES);
+        options.insert(Options::ENABLE_HEADING_ATTRIBUTES);
+        options.insert(Options::ENABLE_SMART_PUNCTUATION);
+
+        let parser = Parser::new_ext(markdown, options);
+        let _ = theme;
+        let mut out = String::new();
+        html::push_html(&mut out, parser);
+        Ok(out)
     }
 
     async fn git_clone(args: CloneArgs, chan: ipc::Channel<&[u8]>) -> AppResult<()> {

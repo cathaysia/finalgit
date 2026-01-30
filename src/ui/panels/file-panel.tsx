@@ -38,7 +38,7 @@ export default function FilePanel({
   }, [items]);
 
   return (
-    <ScrollArea className={cn(className)} {...props}>
+    <ScrollArea className={cn('h-full min-h-0', className)} {...props}>
       <RichTreeView
         items={items}
         slots={{

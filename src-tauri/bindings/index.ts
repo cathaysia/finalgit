@@ -530,6 +530,14 @@ async gpgGetSecretList() : Promise<Result<string[], string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async markdownToHtml(markdown: string, theme?: string | null) : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("markdown_to_html", { markdown, theme }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async gitClone(args: CloneArgs, chan: TAURI_CHANNEL<number[]>) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("git_clone", { args, chan }) };

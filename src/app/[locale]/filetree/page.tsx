@@ -22,26 +22,23 @@ import {
 } from '@/ui/codemirror/license/license-card';
 import { shadcnTheme } from '@/ui/codemirror/theme/shadcn';
 import FilePanel from '@/ui/panels/file-panel';
-import { evaluate } from '@mdx-js/mdx';
 import * as Portal from '@radix-ui/react-portal';
-import rehypeShiki from '@shikijs/rehype';
 import {
   type LanguageName,
   loadLanguage,
 } from '@uiw/codemirror-extensions-langs';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import { useTheme } from 'next-themes';
 import { useSearchParams } from 'next/navigation';
-import type { ComponentType } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaCode, FaRegEye } from 'react-icons/fa';
 import { MdHome } from 'react-icons/md';
-import * as runtime from 'react/jsx-runtime';
-import remarkGfm from 'remark-gfm';
 
 export default function FileTree() {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
+  const { resolvedTheme } = useTheme();
   const commit = searchParams.get('commit') || '';
   const path = searchParams.get('path') || 'README.md';
   const doWarn = searchParams.get('doWarn') !== null;
@@ -56,8 +53,8 @@ export default function FileTree() {
   const pathSegments = path.split('/').filter(Boolean);
   const [isLicensePreview, setIsLicensePreview] = useState(false);
   const hasToggledPreview = useRef(false);
-  const [mdxContent, setMdxContent] = useState<ComponentType | null>(null);
-  const [mdxError, setMdxError] = useState<string | null>(null);
+  const [markdownHtml, setMarkdownHtml] = useState<string | null>(null);
+  const [markdownError, setMarkdownError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!repoPath) {
@@ -110,8 +107,6 @@ export default function FileTree() {
   const hasLicense = license.length !== 0;
   const isMarkdown = /\.mdx?$/.test(path.toLowerCase());
   const hasPreview = hasLicense || isMarkdown;
-  const MdxContent = mdxContent;
-
   useEffect(() => {
     if (!hasPreview) {
       setIsLicensePreview(false);
@@ -125,38 +120,39 @@ export default function FileTree() {
 
   useEffect(() => {
     if (!isMarkdown || !isLicensePreview || !text || hasLicense) {
-      setMdxContent(null);
-      setMdxError(null);
+      setMarkdownHtml(null);
+      setMarkdownError(null);
       return;
     }
     let active = true;
     (async () => {
       try {
-        const mod = await evaluate(text, {
-          ...runtime,
-          remarkPlugins: [remarkGfm],
-          rehypePlugins: [
-            [
-              rehypeShiki,
-              {
-                themes: {
-                  light: 'vitesse-light',
-                  dark: 'vitesse-dark',
-                },
-                defaultColor: 'light-dark()',
-              },
-            ],
-          ],
-        });
-        if (active) {
-          setMdxContent(() => mod.default);
-          setMdxError(null);
+        const res = await commands?.markdownToHtml?.(
+          text,
+          resolvedTheme === 'dark' ? 'dark' : 'light',
+        );
+        if (!active) {
+          return;
+        }
+        if (!res) {
+          setMarkdownHtml(null);
+          setMarkdownError('Markdown renderer unavailable.');
+          return;
+        }
+        if (res.status === 'ok') {
+          setMarkdownHtml(res.data);
+          setMarkdownError(null);
+        } else {
+          setMarkdownHtml(null);
+          setMarkdownError(res.error);
         }
       } catch (error) {
         if (active) {
-          setMdxContent(null);
-          setMdxError(
-            error instanceof Error ? error.message : 'Failed to render MDX.',
+          setMarkdownHtml(null);
+          setMarkdownError(
+            error instanceof Error
+              ? error.message
+              : 'Failed to render Markdown.',
           );
         }
       }
@@ -239,12 +235,13 @@ export default function FileTree() {
                 <div className="h-full overflow-auto p-4">
                   {hasLicense ? (
                     <LicenseCard license={license} />
-                  ) : MdxContent ? (
-                    <div className="prose dark:prose-invert prose-table:w-full max-w-none prose-table:border-collapse prose-td:border prose-th:border prose-td:border-border/60 prose-th:border-border/60 prose-th:bg-muted/60 prose-td:px-2 prose-th:px-2 prose-td:py-1 prose-th:py-1">
-                      <MdxContent />
-                    </div>
-                  ) : mdxError ? (
-                    <div className="text-red-500 text-sm">{mdxError}</div>
+                  ) : markdownHtml ? (
+                    <div
+                      className="prose dark:prose-invert prose-table:w-full max-w-none prose-table:border-collapse prose-td:border prose-th:border prose-td:border-border/60 prose-th:border-border/60 prose-th:bg-muted/60 prose-td:px-2 prose-th:px-2 prose-td:py-1 prose-th:py-1"
+                      dangerouslySetInnerHTML={{ __html: markdownHtml }}
+                    />
+                  ) : markdownError ? (
+                    <div className="text-red-500 text-sm">{markdownError}</div>
                   ) : (
                     <div className="text-muted-foreground text-sm">
                       Rendering preview...

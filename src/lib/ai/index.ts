@@ -1,20 +1,14 @@
-import { type OpenAIProviderSettings, createOpenAI } from '@ai-sdk/openai';
+import type { OpenAIProviderSettings } from '@ai-sdk/openai';
+import { openai } from '@ai-sdk/openai';
 import {
   type OpenAICompatibleProviderSettings,
   createOpenAICompatible,
 } from '@ai-sdk/openai-compatible';
 import { streamText } from 'ai';
-import { type OllamaProviderSettings, createOllama } from 'ollama-ai-provider';
 
 export enum AiKind {
-  Ollama = 'ollama',
   OpenAi = 'openai',
   OpenAiCompatible = 'openai-compatible',
-}
-
-export interface AiOllamaProps {
-  kind: AiKind.Ollama;
-  args?: OllamaProviderSettings;
 }
 
 export interface AiOpenAiProps {
@@ -27,17 +21,14 @@ export interface AiOpenAiCompatibleProps {
   args: OpenAICompatibleProviderSettings;
 }
 
-export type AiProps = AiOllamaProps | AiOpenAiProps | AiOpenAiCompatibleProps;
+export type AiProps = AiOpenAiProps | AiOpenAiCompatibleProps;
 
-function createAiProvider(props: AiProps) {
-  if (props.kind === AiKind.Ollama) {
-    return createOllama(props.args);
-  }
+function createAiProvider(props: AiProps, model: string) {
   if (props.kind === AiKind.OpenAi) {
-    return createOpenAI(props.args);
+    return openai(model);
   }
   if (props.kind === AiKind.OpenAiCompatible) {
-    return createOpenAICompatible(props.args);
+    return createOpenAICompatible(props.args).chatModel(model);
   }
 
   return null;
@@ -52,12 +43,12 @@ export async function generateCommit(
 ) {
   const controller = new AbortController();
   onGenerateText('', controller);
-  const provider = createAiProvider(aitype);
-  if (!provider) {
+  const llmModel = createAiProvider(aitype, model);
+  if (!llmModel) {
     return;
   }
   const { textStream } = await streamText({
-    model: provider(model),
+    model: llmModel,
     prompt: prompt.replace('%{diff}', diff),
     abortSignal: controller.signal,
   });

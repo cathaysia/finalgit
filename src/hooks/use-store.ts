@@ -146,7 +146,7 @@ export const useAppStore = create<AppStoreProps>()(
       projects: new Set<string>(),
       signoff: true,
       aiConfig: {
-        current: AiKind.Ollama,
+        current: AiKind.OpenAi,
         ollama: {
           endpoint: 'http://127.0.0.1:11434',
           model: '',

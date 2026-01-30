@@ -9,7 +9,6 @@ import {
 import { useAppStore } from '@/hooks/use-store';
 import { AiKind } from '@/lib/ai';
 import { useTranslations } from 'next-intl';
-import { Ollama } from './ai-card/ollama';
 import { OpenAi } from './ai-card/openai';
 import { OpenAiCompatible } from './ai-card/openai-compatible';
 
@@ -29,11 +28,7 @@ export default function AiCard() {
         <Select
           defaultValue={aiConfig.current}
           onValueChange={val => {
-            if (
-              val === AiKind.Ollama ||
-              val === AiKind.OpenAi ||
-              val === AiKind.OpenAiCompatible
-            ) {
+            if (val === AiKind.OpenAi || val === AiKind.OpenAiCompatible) {
               setCurrentAi(val);
             }
           }}
@@ -42,14 +37,12 @@ export default function AiCard() {
             <SelectValue defaultValue={aiConfig.ollama.model} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={AiKind.Ollama}>Ollama</SelectItem>
             <SelectItem value={AiKind.OpenAi}>OpenAi</SelectItem>
             <SelectItem value={AiKind.OpenAiCompatible}>
               OpenAi Compatible
             </SelectItem>
           </SelectContent>
         </Select>
-        {aiConfig.current === AiKind.Ollama && <Ollama />}
         {aiConfig.current === AiKind.OpenAi && <OpenAi />}
         {aiConfig.current === AiKind.OpenAiCompatible && <OpenAiCompatible />}
       </CardContent>

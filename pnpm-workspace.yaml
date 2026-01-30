@@ -7,5 +7,6 @@ ignoredBuiltDependencies:
   - esbuild
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - '@tailwindcss/oxide'
   - sharp

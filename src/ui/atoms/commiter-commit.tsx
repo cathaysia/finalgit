@@ -100,7 +100,7 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
               }
 
               let aiProps: AiProps = {
-                kind: AiKind.Ollama,
+                kind: AiKind.OpenAi,
               };
               let model = aiConfig.ollama.model;
 

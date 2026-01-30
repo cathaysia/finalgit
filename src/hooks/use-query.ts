@@ -1,6 +1,5 @@
 'use client';
 import { commands } from '@/bindings';
-import { queryModels } from '@/lib/ai';
 import { getGitConfig } from '@/lib/git';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import {
@@ -129,20 +128,6 @@ export function useFiles(commit: string) {
 
 export function refreshFiles() {
   queryClient.invalidateQueries({ queryKey: ['tags'] });
-}
-
-export function useOllamaModels() {
-  const aiConfig = useAppStore(s => s.aiConfig);
-  const endpoint = aiConfig.ollama.endpoint;
-
-  return useQuery({
-    queryKey: ['ollama_models'],
-    queryFn: async () => {
-      const v = await queryModels(endpoint);
-      const res = v.models.map(item => item.model);
-      return res;
-    },
-  });
 }
 
 function isInterest(e: WatchEventKind) {

@@ -109,17 +109,18 @@
       "firstbad": "The first bad commit is {oid}"
     }
   },
-  "ollama": {
-    "add_model": "Add model",
-    "apply": "Apply",
-    "cancel": "Cancel",
-    "endpoint": "Endpoint",
-    "model": "Model"
-  },
   "openai": {
     "endpoint": "Endpoint",
+    "invalid_endpoint": "Invalid endpoint.",
     "key": "Key",
-    "model": "Model"
+    "model": "Model",
+    "model_loading": "Loading models...",
+    "model_source": "Model source",
+    "model_source_custom": "Custom",
+    "model_source_remote": "Upstream",
+    "test": "Test connection",
+    "test_failed": "Connection failed: {error}",
+    "test_success": "Connection succeeded."
   },
   "profile": {
     "run_guide": "Run guide when next start",

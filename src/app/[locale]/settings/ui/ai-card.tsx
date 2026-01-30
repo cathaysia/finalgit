@@ -18,6 +18,10 @@ export default function AiCard() {
     s.aiConfig,
     s.setCurrentAi,
   ]);
+  const modelLabel =
+    aiConfig.current === AiKind.OpenAi
+      ? aiConfig.openai.model
+      : aiConfig.openAiCompatible.model;
 
   return (
     <Card className="w-full border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
@@ -26,7 +30,7 @@ export default function AiCard() {
       </CardHeader>
       <CardContent>
         <Select
-          defaultValue={aiConfig.current}
+          value={aiConfig.current}
           onValueChange={val => {
             if (val === AiKind.OpenAi || val === AiKind.OpenAiCompatible) {
               setCurrentAi(val);
@@ -34,7 +38,7 @@ export default function AiCard() {
           }}
         >
           <SelectTrigger>
-            <SelectValue defaultValue={aiConfig.ollama.model} />
+            <SelectValue placeholder={modelLabel} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value={AiKind.OpenAi}>OpenAi</SelectItem>

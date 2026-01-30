@@ -99,22 +99,9 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                 return;
               }
 
-              let aiProps: AiProps = {
-                kind: AiKind.OpenAi,
-              };
-              let model = aiConfig.ollama.model;
+              let aiProps: AiProps;
+              let model = '';
 
-              if (aiConfig.current === AiKind.OpenAi) {
-                aiProps = {
-                  kind: AiKind.OpenAi,
-                  args: {
-                    apiKey: aiConfig.openai.key,
-                    // biome-ignore lint/style/useNamingConvention: <explanation>
-                    baseURL: aiConfig.openai.endpoint,
-                  },
-                };
-                model = aiConfig.openai.model;
-              }
               if (aiConfig.current === AiKind.OpenAiCompatible) {
                 aiProps = {
                   kind: AiKind.OpenAiCompatible,
@@ -126,6 +113,16 @@ export function CommitCommit({ className, onCancel, ...props }: CommiterProps) {
                   },
                 };
                 model = aiConfig.openAiCompatible.model;
+              } else {
+                aiProps = {
+                  kind: AiKind.OpenAi,
+                  args: {
+                    apiKey: aiConfig.openai.key,
+                    // biome-ignore lint/style/useNamingConvention: <explanation>
+                    baseURL: aiConfig.openai.endpoint,
+                  },
+                };
+                model = aiConfig.openai.model;
               }
 
               try {

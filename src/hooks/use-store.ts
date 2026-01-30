@@ -14,10 +14,6 @@ export const COMMIT_HEAD_PANEL_ID = '__commit_head__';
 
 export interface AiConfig {
   current: AiKind;
-  ollama: {
-    endpoint: string;
-    model: string;
-  };
   openai: {
     endpoint: string;
     key: string;
@@ -28,6 +24,7 @@ export interface AiConfig {
     endpoint: string;
     key: string;
     model: string;
+    modelSource: 'remote' | 'custom';
   };
 }
 
@@ -65,11 +62,10 @@ export interface AppStoreProps {
   setOpenAiCompatibleKey: (key: string) => void;
   setOpenAiCompatibleEndpoint: (endpoint: string) => void;
   setOpenAiCompatibleModel: (model: string) => void;
+  setOpenAiCompatibleModelSource: (source: 'remote' | 'custom') => void;
   setOpenAiKey: (key: string) => void;
   setOpenAiEndpoint: (endpoint: string) => void;
   setOpenAiModel: (model: string) => void;
-  setOllamaModel: (model: string) => void;
-  setOllamaEndpoint: (endpoint: string) => void;
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
@@ -147,10 +143,6 @@ export const useAppStore = create<AppStoreProps>()(
       signoff: true,
       aiConfig: {
         current: AiKind.OpenAi,
-        ollama: {
-          endpoint: 'http://127.0.0.1:11434',
-          model: '',
-        },
         openai: {
           endpoint: 'https://api.openai.com',
           key: '',
@@ -161,6 +153,7 @@ export const useAppStore = create<AppStoreProps>()(
           endpoint: '',
           key: '',
           model: '',
+          modelSource: 'remote',
         },
       },
       promptList: defaultPrompt,
@@ -188,6 +181,10 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.aiConfig.openAiCompatible.model = model;
         }),
+      setOpenAiCompatibleModelSource: (source: 'remote' | 'custom') =>
+        set(s => {
+          s.aiConfig.openAiCompatible.modelSource = source;
+        }),
       setOpenAiKey: (key: string) =>
         set(s => {
           s.aiConfig.openai.key = key;
@@ -203,14 +200,6 @@ export const useAppStore = create<AppStoreProps>()(
       setCurrentAi: (model: AiKind) =>
         set(s => {
           s.aiConfig.current = model;
-        }),
-      setOllamaModel: (model: string) =>
-        set(s => {
-          s.aiConfig.ollama.model = model;
-        }),
-      setOllamaEndpoint: (endpoint: string) =>
-        set(s => {
-          s.aiConfig.ollama.endpoint = endpoint;
         }),
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),

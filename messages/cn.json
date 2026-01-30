@@ -109,17 +109,18 @@
       "firstbad": "第一个损坏的 commit 是：{oid}"
     }
   },
-  "ollama": {
-    "add_model": "添加模型",
-    "apply": "应用",
-    "cancel": "取消",
-    "endpoint": "API",
-    "model": "模型"
-  },
   "openai": {
     "endpoint": "端点",
+    "invalid_endpoint": "无效的端点。",
     "key": "密钥",
-    "model": "模型"
+    "model": "模型",
+    "model_loading": "正在加载模型…",
+    "model_source": "模型来源",
+    "model_source_custom": "自定义",
+    "model_source_remote": "上游",
+    "test": "测试连接",
+    "test_failed": "连接失败：{error}",
+    "test_success": "连接成功。"
   },
   "profile": {
     "run_guide": "下次启动时运行引导界面",

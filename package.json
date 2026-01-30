@@ -8,8 +8,6 @@
     "build": "next build",
     "tauri": "tauri",
     "i18n": "i18next",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
     "lint": "biome lint",
     "test": "vitest run",
     "build-wasm": "cd ./crates/filetype && wasm-pack build --target web --release"
@@ -106,19 +104,8 @@
     "zustand": "5.0.3"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.2.6",
     "@next/bundle-analyzer": "^15.3.2",
     "@playwright/test": "^1.52.0",
-    "@storybook/addon-a11y": "^8.6.12",
-    "@storybook/addon-essentials": "^8.6.12",
-    "@storybook/addon-interactions": "^8.6.12",
-    "@storybook/addon-links": "^8.6.12",
-    "@storybook/addon-themes": "^8.6.12",
-    "@storybook/blocks": "^8.6.12",
-    "@storybook/nextjs": "^8.6.12",
-    "@storybook/react": "^8.6.12",
-    "@storybook/test": "^8.6.12",
-    "@storybook/test-runner": "^0.21.3",
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/typography": "0.5.16",
     "@tauri-apps/cli": "2.2.7",
@@ -130,8 +117,6 @@
     "globals": "^15.15.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
-    "storybook": "^8.6.15",
-    "storybook-next-intl": "^1.2.6",
     "tailwindcss": "^4.1.6",
     "typescript": "^5.8.3",
     "vitest": "^3.1.3"

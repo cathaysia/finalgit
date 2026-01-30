@@ -261,7 +261,7 @@ export default function BranchItem({
               {!isLocal && (
                 <CollapseGroupItem disabled>
                   {t('set_url_of', {
-                    branch: info.remote,
+                    branch: info.remote || '',
                   })}
                 </CollapseGroupItem>
               )}

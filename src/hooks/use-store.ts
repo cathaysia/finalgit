@@ -83,6 +83,8 @@ export interface AppStoreProps {
   removeRepoPath: (path: string) => void;
   setAiConfig: (aiConfig: AiConfig) => void;
   setPrompt: (name: string, value: string) => void;
+  renamePrompt: (fromName: string, toName: string) => void;
+  removePrompt: (name: string) => void;
   setCurrentPrompt: (name: string) => void;
   addRepoPath: (repoPath: string) => void;
 }
@@ -293,6 +295,37 @@ export const useAppStore = create<AppStoreProps>()(
       setPrompt: (name: string, value: string) => {
         set(s => {
           s.promptList.set(name, value);
+        });
+      },
+      renamePrompt: (fromName: string, toName: string) => {
+        set(s => {
+          const nextName = toName.trim();
+          if (!nextName) {
+            return;
+          }
+          if (!s.promptList.has(fromName)) {
+            return;
+          }
+          if (fromName === nextName) {
+            return;
+          }
+          if (s.promptList.has(nextName)) {
+            return;
+          }
+          const value = s.promptList.get(fromName);
+          if (value === undefined) {
+            return;
+          }
+          s.promptList.delete(fromName);
+          s.promptList.set(nextName, value);
+          if (s.currentPrompt === fromName) {
+            s.currentPrompt = nextName;
+          }
+        });
+      },
+      removePrompt: (name: string) => {
+        set(s => {
+          s.promptList.delete(name);
         });
       },
       setCurrentPrompt: (name: string) => {

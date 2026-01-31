@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAppStore } from '@/hooks/use-store';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -42,6 +43,11 @@ export function OpenAiCompatible() {
     () => buildModelsUrl(aiConfig.openAiCompatible.endpoint),
     [aiConfig.openAiCompatible.endpoint],
   );
+  useEffect(()=>{
+    if (models.length !== 0 && aiConfig.openAiCompatible.model === '') {
+        setOpenAiModel(models[0]);
+    }
+  }, [models]);
 
   const fetchModels = async () => {
     if (!modelsUrl) {
@@ -161,7 +167,7 @@ export function OpenAiCompatible() {
           <Label htmlFor="openai.model_source">
             {t('openai.model_source')}
           </Label>
-          <Select
+          <Tabs
             value={modelSource}
             onValueChange={value => {
               if (value === 'remote' || value === 'custom') {
@@ -169,18 +175,15 @@ export function OpenAiCompatible() {
               }
             }}
           >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="remote">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="remote">
                 {t('openai.model_source_remote')}
-              </SelectItem>
-              <SelectItem value="custom">
+              </TabsTrigger>
+              <TabsTrigger value="custom">
                 {t('openai.model_source_custom')}
-              </SelectItem>
-            </SelectContent>
-          </Select>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
         {modelSource === 'remote' ? (
           <div className="flex flex-col gap-2">
@@ -192,7 +195,7 @@ export function OpenAiCompatible() {
               }}
               disabled={models.length === 0}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue
                   placeholder={
                     isLoading ? t('openai.model_loading') : t('openai.model')

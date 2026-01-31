@@ -3,6 +3,11 @@
 import { type BranchInfo, commands } from '@/bindings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { useBisectState } from '@/hooks/use-bisect';
 import {
   refreshBranches,
@@ -33,6 +38,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { MdCalendarToday, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { isMatching } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
@@ -70,9 +76,13 @@ export default function CommitPanel({
   const [isHighOrder, setIsHighOrder] = useState<boolean>(false);
   const [debounce] = useDebounce(filter, 200);
   const [keyDown, setKeyDown] = useState<number>();
-  const [dateValue, setDateValue] = useState<string>(() => {
-    const today = new Date();
-    return today.toISOString().slice(0, 10);
+  const [dateValue, setDateValue] = useState<string>('');
+  const [dateOp, setDateOp] = useState<'before' | 'after' | null>(null);
+  const [rangeStart, setRangeStart] = useState<string | null>(null);
+  const [rangeEnd, setRangeEnd] = useState<string | null>(null);
+  const [calendarMonth, setCalendarMonth] = useState<Date>(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const { data: history } = useHistory(commit);
   const currentHistory = history || [];
@@ -118,6 +128,55 @@ export default function CommitPanel({
   }, [filter, isHighOrder]);
 
   const isDirty = changes ? changes.length !== 0 : false;
+
+  const calendarDays = useMemo(() => {
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const slots: Array<{ day: number; monthOffset: number }> = [];
+    for (let i = 0; i < firstDay; i += 1) {
+      slots.push({ day: 0, monthOffset: -1 });
+    }
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      slots.push({ day, monthOffset: 0 });
+    }
+    const remaining = slots.length % 7 === 0 ? 0 : 7 - (slots.length % 7);
+    for (let i = 0; i < remaining; i += 1) {
+      slots.push({ day: 0, monthOffset: 1 });
+    }
+    return slots;
+  }, [calendarMonth]);
+
+  const selectDate = (year: number, month: number, day: number) => {
+    const formatted = `${year}-${String(month + 1).padStart(2, '0')}-${String(
+      day,
+    ).padStart(2, '0')}`;
+    setDateValue(formatted);
+    if (dateOp) {
+      setRangeStart(null);
+      setRangeEnd(null);
+      const expr = `${dateOp}=${formatted}`;
+      setFilter(prev => (prev.trim() ? `${prev.trim()} ${expr}` : expr));
+      setDateOp(null);
+      return;
+    }
+    if (!rangeStart || rangeEnd) {
+      setRangeStart(formatted);
+      setRangeEnd(null);
+      return;
+    }
+    let start = rangeStart;
+    let end = formatted;
+    if (end < start) {
+      [start, end] = [end, start];
+    }
+    setRangeStart(start);
+    setRangeEnd(end);
+    setFilter(prev =>
+      prev.trim() ? `${prev.trim()} ${start}..${end}` : `${start}..${end}`,
+    );
+  };
 
   const handleCherryPick = async () => {
     if (!repoPath || !targetBranch) {
@@ -276,6 +335,146 @@ export default function CommitPanel({
                 setKeyDown(undefined);
               }}
             />
+            {isHighOrder && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="Date builder"
+                    title="Date builder"
+                  >
+                    <MdCalendarToday className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-72 p-3">
+                  <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        if (dateValue) {
+                          const expr = `before=${dateValue}`;
+                          setFilter(prev =>
+                            prev.trim() ? `${prev.trim()} ${expr}` : expr,
+                          );
+                          setDateOp(null);
+                          return;
+                        }
+                        setDateOp('before');
+                      }}
+                    >
+                      之前
+                    </Button>
+                    <div className="rounded border bg-muted/60 px-2 py-1 text-center text-xs">
+                      {rangeStart && rangeEnd
+                        ? `${rangeStart} ~ ${rangeEnd}`
+                        : dateValue || '选择日期'}
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        if (dateValue) {
+                          const expr = `after=${dateValue}`;
+                          setFilter(prev =>
+                            prev.trim() ? `${prev.trim()} ${expr}` : expr,
+                          );
+                          setDateOp(null);
+                          return;
+                        }
+                        setDateOp('after');
+                      }}
+                    >
+                      之后
+                    </Button>
+                  </div>
+                  <div className="mt-3 flex flex-col gap-2 text-xs">
+                    <div className="font-medium">时间选择</div>
+                    <div className="flex items-center justify-between gap-2">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => {
+                          setCalendarMonth(prev => {
+                            return new Date(
+                              prev.getFullYear(),
+                              prev.getMonth() - 1,
+                              1,
+                            );
+                          });
+                        }}
+                        aria-label="Previous month"
+                      >
+                        <MdChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <div className="text-xs">
+                        {calendarMonth.getFullYear()} /{' '}
+                        {calendarMonth.getMonth() + 1}
+                      </div>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => {
+                          setCalendarMonth(prev => {
+                            return new Date(
+                              prev.getFullYear(),
+                              prev.getMonth() + 1,
+                              1,
+                            );
+                          });
+                        }}
+                        aria-label="Next month"
+                      >
+                        <MdChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-7 gap-1 text-center text-[11px] text-muted-foreground">
+                      {['日', '一', '二', '三', '四', '五', '六'].map(label => (
+                        <div key={label}>{label}</div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-1">
+                      {calendarDays.map((item, index) => {
+                        const year = calendarMonth.getFullYear();
+                        const month = calendarMonth.getMonth();
+                        if (item.day === 0) {
+                          return <div key={index} className="h-7" />;
+                        }
+                        const dateKey = `${year}-${String(month + 1).padStart(
+                          2,
+                          '0',
+                        )}-${String(item.day).padStart(2, '0')}`;
+                        const isRangeStart = rangeStart === dateKey;
+                        const isRangeEnd = rangeEnd === dateKey;
+                        const inRange =
+                          rangeStart &&
+                          rangeEnd &&
+                          dateKey >= rangeStart &&
+                          dateKey <= rangeEnd;
+                        const selected = isRangeStart || isRangeEnd;
+                        return (
+                          <Button
+                            key={`${year}-${month}-${item.day}`}
+                            size="icon"
+                            variant={selected ? 'secondary' : 'ghost'}
+                            className={cn(
+                              'h-7 w-7 text-xs',
+                              inRange && !selected && 'bg-muted/60',
+                            )}
+                            onClick={() => {
+                              selectDate(year, month, item.day);
+                            }}
+                          >
+                            {item.day}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
             <motion.div
               variants={{
                 visible: {
@@ -301,41 +500,15 @@ export default function CommitPanel({
             </motion.div>
           </div>
         </div>
-        {isHighOrder ? (
-          <div className="flex w-44 shrink-0 flex-col gap-2 rounded border p-2 text-xs">
-            <div className="font-medium">日期构建</div>
-            <input
-              type="date"
-              className="h-8 w-full rounded border bg-background px-2 text-xs"
-              value={dateValue}
-              onChange={e => {
-                setDateValue(e.target.value);
-              }}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              {['since', 'until', 'after', 'before'].map(op => (
-                <Button
-                  key={op}
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => {
-                    const expr = `${op}=${dateValue}`;
-                    setFilter(prev =>
-                      prev.trim() ? `${prev.trim()} ${expr}` : expr,
-                    );
-                  }}
-                >
-                  {op}
-                </Button>
-              ))}
-            </div>
-          </div>
-        ) : null}
       </div>
       <CommitList
         history={filteredData}
         bisectState={bisectState}
         filter={isHighOrder ? undefined : filter}
+        showDateFilterActions={isHighOrder}
+        onFilterExpression={expr => {
+          setFilter(prev => (prev.trim() ? `${prev.trim()} ${expr}` : expr));
+        }}
         panelId={panelId}
         allowReorder={isPrimary}
         className="min-h-0 flex-1"

@@ -62,6 +62,8 @@ export interface CommitItemProps
   isBad: boolean | undefined;
   isBisecting: boolean | undefined;
   isNext: boolean | undefined;
+  showDateFilterActions?: boolean;
+  onFilterExpression?: (expr: string) => void;
   onCherryPick?: (commit: CommitInfo) => void;
 }
 
@@ -77,6 +79,8 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       isBad = false,
       isBisecting = false,
       isNext = false,
+      showDateFilterActions = false,
+      onFilterExpression,
       onCherryPick,
       ...props
     },
@@ -240,6 +244,24 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <DropdownMenuItem disabled>
                 {t('commit.details')}
               </DropdownMenuItem>
+              {showDateFilterActions && (
+                <>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      onFilterExpression?.(`..${commit.oid}`);
+                    }}
+                  >
+                    此commit之前
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      onFilterExpression?.(`${commit.oid}..`);
+                    }}
+                  >
+                    此commit之后
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuItem>
                 <Link
                   href={{

@@ -20,6 +20,8 @@ export interface CommitListProps
   bisectState: BisectState;
   panelId: string;
   allowReorder: boolean;
+  showDateFilterActions?: boolean;
+  onFilterExpression?: (expr: string) => void;
   onCherryPick?: (commit: CommitInfo) => void;
 }
 
@@ -35,6 +37,8 @@ export default function CommitList({
   bisectState,
   panelId,
   allowReorder,
+  showDateFilterActions,
+  onFilterExpression,
   onCherryPick,
   ...props
 }: Omit<CommitListProps, 'count' | 'height' | 'getItem'>) {
@@ -124,6 +128,8 @@ export default function CommitList({
                   isBad={bisectState.bad === v.oid}
                   isBisecting={bisectState.isBisecting}
                   isNext={bisectState.next === v.oid}
+                  showDateFilterActions={showDateFilterActions}
+                  onFilterExpression={onFilterExpression}
                   onCherryPick={onCherryPick}
                 />
               </div>

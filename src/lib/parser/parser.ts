@@ -570,9 +570,13 @@ function createVisitor() {
 }
 
 export function parseReversion(reversion: string) {
+  const normalized = reversion.replace(
+    /\b(\d{4}-\d{2}-\d{2})\s*\.\.\s*(\d{4}-\d{2}-\d{2})\b/g,
+    'since=$1 until=$2',
+  );
   const error = console.error;
   console.error = () => {};
-  const value = new CharStream(reversion);
+  const value = new CharStream(normalized);
   const lexer = new reversionLexer(value);
   const stream = new CommonTokenStream(lexer);
   const parser = new reversionParser(stream);

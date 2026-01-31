@@ -60,6 +60,10 @@
     "head": "HEAD",
     "insert_after": "Insert After",
     "insert_before": "Insert Before",
+    "filter": {
+      "before": "Before this commit",
+      "after": "After this commit"
+    },
     "revert": "Revert",
     "viewtree": "Browse files"
   },
@@ -105,6 +109,8 @@
   "island": {
     "bisecting": "Bisecting",
     "cherrypick_queue": "Cherry-pick",
+    "filtering": "Filtering",
+    "stop_filtering": "Stop filtering",
     "rebase": {
       "firstbad": "The first bad commit is {oid}"
     }

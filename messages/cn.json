@@ -60,6 +60,10 @@
     "head": "HEAD",
     "insert_after": "在前面插入",
     "insert_before": "在后面插入",
+    "filter": {
+      "before": "在此 commit 之前",
+      "after": "在此 commit 之后"
+    },
     "revert": "撤销",
     "viewtree": "查看文件"
   },
@@ -105,6 +109,8 @@
   "island": {
     "bisecting": "正在二份查找...",
     "cherrypick_queue": "拣选",
+    "filtering": "筛选中",
+    "stop_filtering": "终止筛选",
     "rebase": {
       "firstbad": "第一个损坏的 commit 是：{oid}"
     }

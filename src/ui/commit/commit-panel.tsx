@@ -34,11 +34,13 @@ import {
 import { cn } from '@/lib/utils';
 import BisectCard from '@/ui/bisect/bisect-card';
 import CommitList from '@/ui/commit/commit-list';
+import * as Portal from '@radix-ui/react-portal';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { MdCalendarToday, MdChevronLeft, MdChevronRight } from 'react-icons/md';
+import { toast } from 'sonner';
 import { isMatching } from 'ts-pattern';
 import { useDebounce } from 'use-debounce';
 
@@ -89,6 +91,10 @@ export default function CommitPanel({
   const { data: changes } = useChanges();
   const { data: head } = useHeadOid();
   const [isCherryPicking, setIsCherryPicking] = useState(false);
+  const [filterToastId, setFilterToastId] = useState<
+    number | string | undefined
+  >();
+  const filterToastContainer = useRef<HTMLDivElement>(null);
 
   const bisectState = useBisectState(currentHistory);
   const filteredData = useMemo(() => {
@@ -128,6 +134,25 @@ export default function CommitPanel({
   }, [filter, isHighOrder]);
 
   const isDirty = changes ? changes.length !== 0 : false;
+
+  useEffect(() => {
+    const hasFilter = filter.trim().length > 0;
+    if (hasFilter && !filterToastId) {
+      const id = toast(<div ref={filterToastContainer} />, {
+        duration: Number.POSITIVE_INFINITY,
+        unstyled: true,
+        position: 'top-center',
+      });
+      setFilterToastId(id);
+    }
+  }, [filter, filterToastId]);
+
+  useEffect(() => {
+    if (filter.trim().length === 0 && filterToastId) {
+      toast.dismiss(filterToastId);
+      setFilterToastId(undefined);
+    }
+  }, [filter, filterToastId]);
 
   const calendarDays = useMemo(() => {
     const year = calendarMonth.getFullYear();
@@ -343,6 +368,7 @@ export default function CommitPanel({
                     size="icon"
                     aria-label="Date builder"
                     title="Date builder"
+                    className="ml-2"
                   >
                     <MdCalendarToday className="h-4 w-4" />
                   </Button>
@@ -434,7 +460,7 @@ export default function CommitPanel({
                         <div key={label}>{label}</div>
                       ))}
                     </div>
-                    <div className="grid grid-cols-7 gap-1">
+                    <div className="grid grid-cols-7 gap-x-0 gap-y-0.5">
                       {calendarDays.map((item, index) => {
                         const year = calendarMonth.getFullYear();
                         const month = calendarMonth.getMonth();
@@ -454,20 +480,29 @@ export default function CommitPanel({
                           dateKey <= rangeEnd;
                         const selected = isRangeStart || isRangeEnd;
                         return (
-                          <Button
+                          <div
                             key={`${year}-${month}-${item.day}`}
-                            size="icon"
-                            variant={selected ? 'secondary' : 'ghost'}
                             className={cn(
-                              'h-7 w-7 text-xs',
-                              inRange && !selected && 'bg-muted/60',
+                              'flex h-7 items-center justify-center',
+                              inRange && 'bg-muted',
+                              isRangeStart && 'rounded-l-sm',
+                              isRangeEnd && 'rounded-r-sm',
                             )}
-                            onClick={() => {
-                              selectDate(year, month, item.day);
-                            }}
                           >
-                            {item.day}
-                          </Button>
+                            <Button
+                              size="icon"
+                              variant={selected ? 'secondary' : 'ghost'}
+                              className={cn(
+                                'h-7 w-7 text-xs',
+                                inRange && !selected && 'bg-transparent',
+                              )}
+                              onClick={() => {
+                                selectDate(year, month, item.day);
+                              }}
+                            >
+                              {item.day}
+                            </Button>
+                          </div>
                         );
                       })}
                     </div>
@@ -517,6 +552,27 @@ export default function CommitPanel({
         }}
       />
       <BisectCard bisectState={bisectState} />
+      {filter.trim().length > 0 && (
+        <Portal.Root container={filterToastContainer.current} asChild>
+          <div className="flex items-center gap-2 rounded-2xl bg-primary pt-1 pr-4 pb-1 pl-4 text-white dark:text-black">
+            <span>{t('island.filtering')}</span>
+            <span className="max-w-[260px] truncate font-mono text-xs">
+              {filter}
+            </span>
+            <Button
+              title={t('island.stop_filtering')}
+              onClick={() => {
+                setFilter('');
+                setIsHighOrder(false);
+                setDateOp(null);
+                setRangeStart(null);
+                setRangeEnd(null);
+              }}
+              className="h-4 w-4 bg-red-500 p-0 hover:bg-red-300 dark:bg-red-500 hover:dark:bg-red-300"
+            />
+          </div>
+        </Portal.Root>
+      )}
     </div>
   );
 }

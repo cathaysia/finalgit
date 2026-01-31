@@ -97,6 +97,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       {
         name: commit.author.name,
         email: commit.author.email,
+        role: 'author' as const,
       },
     ];
     const [repoPath, useEmoji] = useAppStore(s => [s.repoPath, s.useEmoji]);
@@ -131,6 +132,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       names.push({
         name: commit.commiter.name,
         email: commit.commiter.email,
+        role: 'commiter' as const,
       });
     }
     const [hover, setHovering] = useState(false);
@@ -218,7 +220,20 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               {names.map(item => {
                 return (
                   <HoverCard key={item.name}>
-                    <HoverCardTrigger>
+                    <HoverCardTrigger
+                      onClick={event => {
+                        if (!showDateFilterActions) {
+                          return;
+                        }
+                        event.stopPropagation();
+                        const expr =
+                          item.role === 'author'
+                            ? `author=${item.name}`
+                            : `commiter=${item.name}`;
+                        onFilterExpression?.(expr);
+                      }}
+                      className={cn(showDateFilterActions && 'cursor-pointer')}
+                    >
                       <UserAvatar
                         userName={item.name}
                         className="max-h-8 max-w-8"
@@ -247,18 +262,21 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               {showDateFilterActions && (
                 <>
                   <DropdownMenuItem
+                    className="bg-primary/10 font-medium text-primary hover:bg-primary/15 focus:bg-primary/15"
                     onClick={() => {
                       onFilterExpression?.(`..${commit.oid}`);
                     }}
                   >
-                    此commit之前
+                    {t('commit.filter.before')}
                   </DropdownMenuItem>
+                  <div className="h-1" />
                   <DropdownMenuItem
+                    className="bg-primary/10 font-medium text-primary hover:bg-primary/15 focus:bg-primary/15"
                     onClick={() => {
                       onFilterExpression?.(`${commit.oid}..`);
                     }}
                   >
-                    此commit之后
+                    {t('commit.filter.after')}
                   </DropdownMenuItem>
                 </>
               )}

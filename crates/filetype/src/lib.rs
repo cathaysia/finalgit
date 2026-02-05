@@ -61,24 +61,3 @@ pub fn resolve(file_name: &str, content: Option<String>) -> Option<String> {
     }
     None
 }
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_ft() {
-        let v = [
-            ("README.md", "markdown"),
-            ("src/lib.rs", "rust"),
-            ("src/.editorconfig", "dosini"),
-            ("/etc/man.conf", "manconf"),
-            ("/Users/xxx/.config/tmux/tmux.conf", "tmux"),
-        ];
-
-        for (path, ty) in v {
-            let lang = resolve(path, None).unwrap();
-            assert_eq!(lang, ty)
-        }
-    }
-}

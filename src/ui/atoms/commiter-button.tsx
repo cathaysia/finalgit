@@ -13,7 +13,7 @@ import GitFileStatus from '@/lib/git-file-status';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { save } from '@tauri-apps/plugin-dialog';
+import { confirm, save } from '@tauri-apps/plugin-dialog';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { debug } from '@tauri-apps/plugin-log';
 import { useTranslations } from 'next-intl';
@@ -68,7 +68,19 @@ export function CommiterButton({
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-600"
-              onClick={() => discardChanges(changeSet, repoPath)}
+              onClick={async () => {
+                const shouldDiscard = await confirm(
+                  t('workspace.discard_confirm'),
+                  {
+                    title: t('workspace.discard'),
+                    kind: 'warning',
+                  },
+                );
+                if (!shouldDiscard) {
+                  return;
+                }
+                discardChanges(changeSet, repoPath);
+              }}
             >
               <VscDiscard className="mr-2 h-4 w-4" />
               {t('workspace.discard')}

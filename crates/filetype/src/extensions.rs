@@ -2,6 +2,9 @@ use std::{collections::HashMap, sync::LazyLock};
 
 pub(crate) static EXTENSIONS: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     [
+        ("ts", "typescript"),
+        ("jsonc", "json"),
+        ("nix", "nix"),
         (".ch", "chill"),
         ("4gh", "fgl"),
         ("4gl", "fgl"),

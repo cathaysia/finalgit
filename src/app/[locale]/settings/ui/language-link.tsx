@@ -1,6 +1,6 @@
 'use client';
 import { useAppStore } from '@/hooks/use-store';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 interface LinkProps extends React.ComponentProps<typeof Link> {
   lang: string;

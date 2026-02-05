@@ -40,6 +40,7 @@ import { useAppStore } from '@/hooks/use-store';
 import { Link } from '@/i18n/routing';
 import NOTIFY from '@/lib/notify';
 import { cn } from '@/lib/utils';
+import { useDragOperation, useDraggable, useDroppable } from '@dnd-kit/react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 import { useTranslations } from 'next-intl';
@@ -55,10 +56,15 @@ export interface CommitItemProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
   filter?: string;
   commit: CommitInfo;
+  panelId: string;
+  allowReorder: boolean;
   isGood: boolean | undefined;
   isBad: boolean | undefined;
   isBisecting: boolean | undefined;
   isNext: boolean | undefined;
+  showDateFilterActions?: boolean;
+  onFilterExpression?: (expr: string) => void;
+  onCherryPick?: (commit: CommitInfo) => void;
 }
 
 const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
@@ -67,10 +73,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       className,
       filter,
       commit,
+      panelId,
+      allowReorder,
       isGood = false,
       isBad = false,
       isBisecting = false,
       isNext = false,
+      showDateFilterActions = false,
+      onFilterExpression,
+      onCherryPick,
       ...props
     },
     ref,
@@ -86,20 +97,55 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       {
         name: commit.author.name,
         email: commit.author.email,
+        role: 'author' as const,
       },
     ];
     const [repoPath, useEmoji] = useAppStore(s => [s.repoPath, s.useEmoji]);
     const { data: head } = useHeadOid();
     const { data: changes } = useChanges();
     const isDirty = changes === undefined ? false : changes.length !== 0;
+    const dragOperation = useDragOperation();
+    const dragSourceType = (
+      dragOperation?.source?.data as { type?: string } | undefined
+    )?.type;
+    const isChangeDragging = dragSourceType === 'change-file';
+    const isCommitDragging = dragSourceType === 'commit-item';
+    const canAmend = isChangeDragging && head?.oid === commit.oid;
+    const { ref: dragRef, isDragSource } = useDraggable({
+      id: `commit-drag:${panelId}:${commit.oid}`,
+      data: { type: 'commit-item', commit: commit.oid, panelId },
+      disabled: !allowReorder,
+    });
+    const { ref: dropRef, isDropTarget } = useDroppable({
+      id: `commit-drop:${panelId}:${commit.oid}`,
+      data: {
+        type: 'commit-item',
+        commit: commit.oid,
+        panelId,
+        allowAmend: canAmend,
+        allowReorder,
+      },
+      disabled: (!isCommitDragging || !allowReorder) && !canAmend,
+    });
 
     if (commit.author.name !== commit.commiter.name) {
       names.push({
         name: commit.commiter.name,
         email: commit.commiter.email,
+        // @ts-expect-error
+        role: 'commiter' as const,
       });
     }
     const [hover, setHovering] = useState(false);
+    const setRefs = (element: HTMLDivElement | null) => {
+      dropRef(element);
+      dragRef(element);
+      if (typeof ref === 'function') {
+        ref(element);
+      } else if (ref) {
+        ref.current = element;
+      }
+    };
     return (
       <div
         className={cn(
@@ -112,9 +158,15 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
             head?.is_detached &&
             head?.oid === commit.oid &&
             'border-green-600 dark:border-green-600',
+          (canAmend || (allowReorder && isCommitDragging)) && 'border-dashed',
+          isDropTarget &&
+            (canAmend
+              ? 'border-emerald-500 bg-emerald-100/70 dark:border-emerald-400 dark:bg-emerald-950/40'
+              : 'border-blue-500 bg-blue-100/70 dark:border-blue-400 dark:bg-blue-950/40'),
+          isDragSource && 'opacity-70',
           className,
         )}
-        ref={ref}
+        ref={setRefs}
         {...props}
       >
         <div className="flex h-full grow items-center gap-2">
@@ -169,7 +221,20 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               {names.map(item => {
                 return (
                   <HoverCard key={item.name}>
-                    <HoverCardTrigger>
+                    <HoverCardTrigger
+                      onClick={event => {
+                        if (!showDateFilterActions) {
+                          return;
+                        }
+                        event.stopPropagation();
+                        const expr =
+                          item.role === 'author'
+                            ? `author=${item.name}`
+                            : `commiter=${item.name}`;
+                        onFilterExpression?.(expr);
+                      }}
+                      className={cn(showDateFilterActions && 'cursor-pointer')}
+                    >
                       <UserAvatar
                         userName={item.name}
                         className="max-h-8 max-w-8"
@@ -195,6 +260,27 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               <DropdownMenuItem disabled>
                 {t('commit.details')}
               </DropdownMenuItem>
+              {showDateFilterActions && (
+                <>
+                  <DropdownMenuItem
+                    className="bg-primary/10 font-medium text-primary hover:bg-primary/15 focus:bg-primary/15"
+                    onClick={() => {
+                      onFilterExpression?.(`..${commit.oid}`);
+                    }}
+                  >
+                    {t('commit.filter.before')}
+                  </DropdownMenuItem>
+                  <div className="h-1" />
+                  <DropdownMenuItem
+                    className="bg-primary/10 font-medium text-primary hover:bg-primary/15 focus:bg-primary/15"
+                    onClick={() => {
+                      onFilterExpression?.(`${commit.oid}..`);
+                    }}
+                  >
+                    {t('commit.filter.after')}
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuItem>
                 <Link
                   href={{
@@ -217,23 +303,14 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
               >
                 {t('commit.checkout')}
               </DropdownMenuItem>
-              <CollapseMenuGroup
-                isOpen={false}
-                trigger={
-                  <CollapseGroupTrigger isOpen={false} disabled>
-                    {t('commit.cherrypick')}
-                  </CollapseGroupTrigger>
-                }
+              <DropdownMenuItem
+                disabled={!onCherryPick}
+                onClick={() => {
+                  onCherryPick?.(commit);
+                }}
               >
-                <DropdownMenuItem disabled>{t('commit.copy')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>{t('commit.cut')}</DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  {t('commit.insert_before')}
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  {t('commit.insert_after')}
-                </DropdownMenuItem>
-              </CollapseMenuGroup>
+                {t('commit.cherrypick')}
+              </DropdownMenuItem>
               <DropdownMenuItem className="text-red-600" disabled>
                 {t('commit.delete')}
               </DropdownMenuItem>

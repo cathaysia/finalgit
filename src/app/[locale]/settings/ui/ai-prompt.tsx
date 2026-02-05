@@ -1,5 +1,20 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -9,25 +24,37 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAppStore } from '@/hooks/use-store';
-import { cn } from '@/lib/utils';
-import { open } from '@tauri-apps/plugin-shell';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
-import { FaLink } from 'react-icons/fa';
 import { IoIosAdd } from 'react-icons/io';
+import { MdDelete, MdEdit, MdMoreVert } from 'react-icons/md';
 
 export default function AiPrompt() {
   const t = useTranslations();
-  const [current, promptList, setPrompt, setCurrent] = useAppStore(s => [
+  const [
+    current,
+    promptList,
+    setPrompt,
+    renamePrompt,
+    removePrompt,
+    setCurrent,
+  ] = useAppStore(s => [
     s.currentPrompt,
     s.promptList,
     s.setPrompt,
+    s.renamePrompt,
+    s.removePrompt,
     s.setCurrentPrompt,
   ]);
 
   const prompt = promptList.get(current);
   const [content, setContent] = useState<string>(prompt || '');
+  const [name, setName] = useState<string>(current);
+  const [dialogType, setDialogType] = useState<
+    'create' | 'rename' | 'delete' | null
+  >(null);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
 
   const list = Array.from(promptList.keys());
 
@@ -36,21 +63,78 @@ export default function AiPrompt() {
     if (prompt) {
       setContent(prompt);
     }
+    setName(current);
+    setDialogType(null);
   }, [current, promptList]);
 
   useEffect(() => {
     setPrompt(current, content);
   }, [content]);
 
+  const builtinPrompts = new Set(['Conventional Commits', 'GitMoji']);
+  const isBuiltinPrompt = builtinPrompts.has(current);
   const isConventional = current === 'Conventional Commits';
   const isGitmoji = current === 'GitMoji';
 
+  const getCopyName = (base: string) => {
+    const baseName = `${base} Copy`;
+    if (!promptList.has(baseName)) {
+      return baseName;
+    }
+    let index = 2;
+    while (promptList.has(`${baseName} ${index}`)) {
+      index += 1;
+    }
+    return `${baseName} ${index}`;
+  };
+
+  const commitRename = () => {
+    const nextName = name.trim();
+    if (!nextName || nextName === current) {
+      setName(current);
+      setDialogType(null);
+      return;
+    }
+    if (promptList.has(nextName)) {
+      setName(current);
+      setDialogType(null);
+      return;
+    }
+    renamePrompt(current, nextName);
+    setDialogType(null);
+  };
+
+  const commitCreate = () => {
+    const nextName = name.trim();
+    if (!nextName || promptList.has(nextName)) {
+      return;
+    }
+    const value = promptList.get(current) ?? '';
+    setPrompt(nextName, value);
+    setCurrent(nextName);
+    setDialogType(null);
+  };
+
+  const commitDelete = () => {
+    if (isBuiltinPrompt) {
+      setDialogType(null);
+      return;
+    }
+    const nextList = Array.from(promptList.keys()).filter(
+      item => item !== current,
+    );
+    const fallback = nextList[nextList.length - 1];
+    removePrompt(current);
+    if (fallback) {
+      setCurrent(fallback);
+    }
+    setDialogType(null);
+  };
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>{t('ai.prompt')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-2">
+    <div className="flex w-full flex-col gap-2 border-border/60 bg-background/80 shadow-sm backdrop-blur dark:bg-background/60">
+      <a>{t('ai.prompt')}</a>
+      <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <Select
             defaultValue={current}
@@ -58,7 +142,7 @@ export default function AiPrompt() {
               setCurrent(val);
             }}
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue defaultValue={current} />
             </SelectTrigger>
             <SelectContent>
@@ -71,43 +155,150 @@ export default function AiPrompt() {
               })}
             </SelectContent>
           </Select>
-          <FaLink
-            className={cn(
-              'hover:text-foreground/50',
-              !isConventional && !isGitmoji && 'hidden',
-            )}
-            onClick={() => {
-              if (isConventional) {
-                open('https://www.conventionalcommits.org/');
-              }
-              if (isGitmoji) {
-                open('https://gitmoji.dev/');
-              }
-            }}
-          />
-          <Button
-            variant={'ghost'}
-            onClick={() => {
-              const value = promptList.get(current);
-              if (!value) {
-                return;
-              }
-              setPrompt(`${current} Copy`, value);
-            }}
-          >
-            <IoIosAdd className="ml-2 h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" aria-label="Prompt actions">
+                <MdMoreVert className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onSelect={() => {
+                  setName(getCopyName(current));
+                  setDialogType('create');
+                  setTimeout(() => {
+                    nameInputRef.current?.focus();
+                    nameInputRef.current?.select();
+                  }, 0);
+                }}
+              >
+                <IoIosAdd className="mr-2 h-4 w-4" />
+                New from current
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={isBuiltinPrompt}
+                onSelect={() => {
+                  if (isBuiltinPrompt) {
+                    return;
+                  }
+                  setName(current);
+                  setDialogType('rename');
+                  setTimeout(() => {
+                    nameInputRef.current?.focus();
+                    nameInputRef.current?.select();
+                  }, 0);
+                }}
+              >
+                <MdEdit className="mr-2 h-4 w-4" />
+                Rename
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                disabled={isBuiltinPrompt}
+                className="text-destructive"
+                onSelect={() => {
+                  if (isBuiltinPrompt) {
+                    return;
+                  }
+                  setDialogType('delete');
+                }}
+              >
+                <MdDelete className="mr-2 h-4 w-4 text-destructive" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <Textarea
           className="h-80 resize-none text-base"
           readOnly={isConventional || isGitmoji}
           onChange={val => {
-            setContent(val.target.value);
-            setPrompt(current, content);
+            const nextValue = val.target.value;
+            setContent(nextValue);
+            setPrompt(current, nextValue);
           }}
           value={content}
         />
-      </CardContent>
-    </Card>
+      </div>
+      <Dialog
+        open={dialogType !== null}
+        onOpenChange={() => setDialogType(null)}
+      >
+        <DialogContent>
+          {dialogType === 'create' && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Create prompt</DialogTitle>
+                <DialogDescription>
+                  Create a new prompt based on the current one.
+                </DialogDescription>
+              </DialogHeader>
+              <Input
+                ref={nameInputRef}
+                value={name}
+                onChange={event => setName(event.target.value)}
+                onKeyDown={event => {
+                  if (event.key !== 'Enter') {
+                    return;
+                  }
+                  commitCreate();
+                }}
+              />
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setDialogType(null)}>
+                  Cancel
+                </Button>
+                <Button onClick={commitCreate}>Create</Button>
+              </DialogFooter>
+            </>
+          )}
+          {dialogType === 'rename' && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Rename prompt</DialogTitle>
+                <DialogDescription>
+                  Enter a new name for this prompt.
+                </DialogDescription>
+              </DialogHeader>
+              <Input
+                ref={nameInputRef}
+                value={name}
+                onChange={event => setName(event.target.value)}
+                onKeyDown={event => {
+                  if (event.key !== 'Enter') {
+                    return;
+                  }
+                  commitRename();
+                }}
+              />
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setDialogType(null)}>
+                  Cancel
+                </Button>
+                <Button onClick={commitRename}>Rename</Button>
+              </DialogFooter>
+            </>
+          )}
+          {dialogType === 'delete' && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Delete prompt</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setDialogType(null)}>
+                  Cancel
+                </Button>
+                <Button variant="destructive" onClick={commitDelete}>
+                  Delete
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

@@ -22,14 +22,22 @@
     "checkout": "Checkout",
     "checkout_remote": "Checkout into local branch",
     "create_new_branch": "Create Branch",
+    "delete_remote": "Delete remote",
     "delete": "Delete",
     "details": "Details",
     "disable_dirty": "Workspace is dirty. Commit or Stash first.",
     "local": "Local",
+    "open_commit_panel": "Open commit panel",
     "pull": "Pull",
     "push": "Push",
     "remote": "Remote",
+    "remote_branches": "Remote Branches",
+    "remote_delete_confirm": "Delete remote \"{name}\"? This cannot be undone.",
+    "remote_name": "Remote name",
+    "remote_url": "Remote URL",
     "rename": "Rename",
+    "rename_remote": "Rename remote",
+    "set_url": "Set URL",
     "set_upstream": "Set Upstream",
     "set_url_of": "branch.set_url_of",
     "tags": "Tags",
@@ -37,15 +45,25 @@
   },
   "Cancel": "Cancel",
   "commit": {
+    "cherrypick_abort": "Abort cherry-pick",
+    "cherrypick_clear_queue": "Clear cherry-pick queue",
+    "cherrypick_conflict": "Cherry-pick paused due to conflicts.",
+    "cherrypick_dirty": "Workspace is dirty. Commit or Stash first.",
     "checkout": "checkout",
     "cherrypick": "Cherry-pick",
+    "close_panel": "Close panel",
     "copy": "Copy",
     "copy_to_clipboard": "Copy {val}",
     "cut": "Cut",
     "delete": "Delete",
     "details": "Details",
+    "head": "HEAD",
     "insert_after": "Insert After",
     "insert_before": "Insert Before",
+    "filter": {
+      "before": "Before this commit",
+      "after": "After this commit"
+    },
     "revert": "Revert",
     "viewtree": "Browse files"
   },
@@ -90,21 +108,25 @@
   },
   "island": {
     "bisecting": "Bisecting",
+    "cherrypick_queue": "Cherry-pick",
+    "filtering": "Filtering",
+    "stop_filtering": "Stop filtering",
     "rebase": {
       "firstbad": "The first bad commit is {oid}"
     }
   },
-  "ollama": {
-    "add_model": "Add model",
-    "apply": "Apply",
-    "cancel": "Cancel",
-    "endpoint": "Endpoint",
-    "model": "Model"
-  },
   "openai": {
     "endpoint": "Endpoint",
+    "invalid_endpoint": "Invalid endpoint.",
     "key": "Key",
-    "model": "Model"
+    "model": "Model",
+    "model_loading": "Loading models...",
+    "model_source": "Model source",
+    "model_source_custom": "Custom",
+    "model_source_remote": "Upstream",
+    "test": "Test connection",
+    "test_failed": "Connection failed: {error}",
+    "test_success": "Connection succeeded."
   },
   "profile": {
     "run_guide": "Run guide when next start",
@@ -113,7 +135,8 @@
     "behaviour": "Behaviour",
     "git": {
       "commit": {
-        "gpgsign": "sign commit by GPG"
+        "gpgsign": "sign commit by GPG",
+        "gpgsign_desc": "Attach a GPG signature to your commits for extra trust."
       },
       "core": "Core",
       "defaultBranch": "Default branch",
@@ -121,12 +144,15 @@
       "pull": {
         "ff": "Fast-Forward",
         "header": "Pull",
-        "rebase": "Rebase"
+        "rebase": "Rebase",
+        "ff_desc": "Use fast-forward only when updating local branches.",
+        "rebase_desc": "Rebase local commits on top of the upstream branch."
       },
       "select_gpg": "Select GPG",
       "signingKey": "signingKey",
       "tag": {
-        "gpgsign": "sign tag by GPG"
+        "gpgsign": "sign tag by GPG",
+        "gpgsign_desc": "Sign release tags to verify their origin."
       },
       "user": "User",
       "username": "Name"
@@ -179,6 +205,7 @@
     "changed_files": "Changed files",
     "create_pr": "Create PR",
     "discard": "Discard",
+    "discard_confirm": "Discard all changes? This cannot be undone.",
     "discard_all": "Discard all",
     "generate_patch": "Generate patch",
     "patch_save_path": "Path to save patch",
@@ -319,6 +346,7 @@
     "deleted": "deleted",
     "diff": "diff",
     "discard": "discard",
+    "discard_confirm": "Discard the selected file changes? This cannot be undone.",
     "ignore file": "ignore file",
     "modified": "modified",
     "new_file": "new_file",

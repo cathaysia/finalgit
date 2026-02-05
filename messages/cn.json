@@ -22,14 +22,22 @@
     "checkout": "检出",
     "checkout_remote": "检出到远程分支",
     "create_new_branch": "创建分支",
+    "delete_remote": "删除远程",
     "delete": "删除",
     "details": "详情",
     "disable_dirty": "工作区有修改，请先提交或 stash",
     "local": "本地",
+    "open_commit_panel": "打开提交面板",
     "pull": "拉取",
     "push": "推送",
     "remote": "远程",
+    "remote_branches": "远程分支",
+    "remote_delete_confirm": "确认删除远程 \"{name}\"？此操作不可撤销。",
+    "remote_name": "远程名称",
+    "remote_url": "远程 URL",
     "rename": "重命名",
+    "rename_remote": "重命名远程",
+    "set_url": "设置 URL",
     "set_upstream": "设置上游",
     "set_url_of": "设置 {branch} URL",
     "tags": "标签",
@@ -37,15 +45,25 @@
   },
   "Cancel": "取消",
   "commit": {
+    "cherrypick_abort": "终止拣选",
+    "cherrypick_clear_queue": "清空拣选队列",
+    "cherrypick_conflict": "拣选发生冲突，已暂停。",
+    "cherrypick_dirty": "工作区有修改，请先提交或 stash",
     "checkout": "检出",
     "cherrypick": "拣选",
+    "close_panel": "关闭面板",
     "copy": "复制",
     "copy_to_clipboard": "拷贝到粘贴板",
     "cut": "剪切",
     "delete": "删除",
     "details": "详情",
+    "head": "HEAD",
     "insert_after": "在前面插入",
     "insert_before": "在后面插入",
+    "filter": {
+      "before": "在此 commit 之前",
+      "after": "在此 commit 之后"
+    },
     "revert": "撤销",
     "viewtree": "查看文件"
   },
@@ -90,21 +108,25 @@
   },
   "island": {
     "bisecting": "正在二份查找...",
+    "cherrypick_queue": "拣选",
+    "filtering": "筛选中",
+    "stop_filtering": "终止筛选",
     "rebase": {
       "firstbad": "第一个损坏的 commit 是：{oid}"
     }
   },
-  "ollama": {
-    "add_model": "添加模型",
-    "apply": "应用",
-    "cancel": "取消",
-    "endpoint": "API",
-    "model": "模型"
-  },
   "openai": {
     "endpoint": "端点",
+    "invalid_endpoint": "无效的端点。",
     "key": "密钥",
-    "model": "模型"
+    "model": "模型",
+    "model_loading": "正在加载模型…",
+    "model_source": "模型来源",
+    "model_source_custom": "自定义",
+    "model_source_remote": "上游",
+    "test": "测试连接",
+    "test_failed": "连接失败：{error}",
+    "test_success": "连接成功。"
   },
   "profile": {
     "run_guide": "下次启动时运行引导界面",
@@ -113,7 +135,8 @@
     "behaviour": "行为",
     "git": {
       "commit": {
-        "gpgsign": "使用 GPG 签名提交"
+        "gpgsign": "使用 GPG 签名提交",
+        "gpgsign_desc": "为提交添加 GPG 签名以增强可信度。"
       },
       "core": "Core",
       "defaultBranch": "默认分支",
@@ -121,12 +144,15 @@
       "pull": {
         "ff": "Fast-Forward",
         "header": "Pull",
-        "rebase": "Rebase"
+        "rebase": "Rebase",
+        "ff_desc": "仅允许快进更新本地分支。",
+        "rebase_desc": "将本地提交变基到上游分支之上。"
       },
       "select_gpg": "选择 GPG",
       "signingKey": "签名密钥",
       "tag": {
-        "gpgsign": "GPG 密钥"
+        "gpgsign": "GPG 密钥",
+        "gpgsign_desc": "为发布标签签名以验证来源。"
       },
       "user": "用户",
       "username": "用户名"
@@ -178,6 +204,7 @@
     "changed_files": "变更列表",
     "create_pr": "创建 PR",
     "discard": "丢弃更改",
+    "discard_confirm": "确认丢弃所有变更？此操作不可撤销。",
     "discard_all": "丢弃全部更改",
     "generate_patch": "生成补丁文件",
     "patch_save_path": "补丁保存路径",
@@ -318,6 +345,7 @@
     "deleted": "删除",
     "diff": "查看差异",
     "discard": "丢弃变更",
+    "discard_confirm": "确认丢弃选中文件的变更？此操作不可撤销。",
     "ignore file": "忽略文件",
     "modified": "修改",
     "new_file": "新文件",

@@ -1,9 +1,11 @@
+use crate::branch::RepoExt;
 use crate::AppResult;
 use git2::{build::CheckoutBuilder, CherrypickOptions};
 use tauri_derive::export_ts;
 
 pub trait CherryPickExt {
     fn cherrypick(&self, commit: &str) -> AppResult<()>;
+    async fn cherry_pick_abort(&self) -> AppResult<()>;
 }
 
 #[export_ts(scope = "cherry_pick")]
@@ -18,6 +20,12 @@ impl CherryPickExt for git2::Repository {
         opts.checkout_builder(ck);
 
         self.cherrypick(&commit, Some(&mut opts))?;
+
+        Ok(())
+    }
+
+    async fn cherry_pick_abort(&self) -> AppResult<()> {
+        self.exec_git(["cherry-pick", "--abort"])?;
 
         Ok(())
     }

@@ -2,6 +2,9 @@ use std::{collections::HashMap, sync::LazyLock};
 
 pub(crate) static LITERAL: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     [
+        (".envrc", "sh"),
+        (".gitignore", "gitignore"),
+        ("flake.lock", "nix"),
         (".a2psrc", "a2ps"),
         (".asoundrc", "alsaconf"),
         (".babelrc", "json"),

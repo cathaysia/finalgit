@@ -1,3 +1,5 @@
+'use client';
+
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -14,16 +16,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { usePathname } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
-import { getTranslations } from 'next-intl/server';
+import { useLocale, useTranslations } from 'next-intl';
 import LangLink from './language-link';
 
-export async function LanguageCard({ locale }: { locale: string }) {
+export function LanguageCard({ locale }: { locale?: string }) {
   const languages = [
     { label: 'English', value: 'en' },
     { label: '中文', value: 'cn' },
   ];
-  const t = await getTranslations({ locale });
+  const t = useTranslations();
+  const activeLocale = locale ?? useLocale();
+  const pathname = usePathname();
 
   return (
     <Popover>
@@ -34,10 +39,10 @@ export async function LanguageCard({ locale }: { locale: string }) {
           role="combobox"
           className={cn(
             'w-[200px] justify-between',
-            !locale && 'text-muted-foreground',
+            !activeLocale && 'text-muted-foreground',
           )}
         >
-          {languages.find(language => language.value === locale)?.label}
+          {languages.find(language => language.value === activeLocale)?.label}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -52,11 +57,14 @@ export async function LanguageCard({ locale }: { locale: string }) {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      language.value === locale ? 'opacity-100' : 'opacity-0',
+                      language.value === activeLocale
+                        ? 'opacity-100'
+                        : 'opacity-0',
                     )}
                   />
                   <LangLink
-                    href={`/${language.value}/settings`}
+                    href={pathname}
+                    locale={language.value}
                     lang={language.value}
                   >
                     {language.label}

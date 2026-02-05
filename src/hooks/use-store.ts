@@ -10,12 +10,10 @@ enableMapSet();
 
 const tauriStore = new LazyStore('settings.json');
 
+export const COMMIT_HEAD_PANEL_ID = '__commit_head__';
+
 export interface AiConfig {
   current: AiKind;
-  ollama: {
-    endpoint: string;
-    model: string;
-  };
   openai: {
     endpoint: string;
     key: string;
@@ -26,7 +24,15 @@ export interface AiConfig {
     endpoint: string;
     key: string;
     model: string;
+    modelSource: 'remote' | 'custom';
   };
+}
+
+export interface CommitPanelState {
+  id: string;
+  name: string;
+  baseName: string;
+  oid: string;
 }
 
 export interface AppStoreProps {
@@ -37,6 +43,9 @@ export interface AppStoreProps {
   projects: Set<string>;
   renderMarkdown: boolean;
   commitHead: string | null;
+  commitPanels: CommitPanelState[];
+  commitPanelOrder: string[];
+  cherryPickQueue: string[];
   signoff: boolean;
   aiConfig: AiConfig;
   promptList: Map<string, string>;
@@ -53,20 +62,29 @@ export interface AppStoreProps {
   setOpenAiCompatibleKey: (key: string) => void;
   setOpenAiCompatibleEndpoint: (endpoint: string) => void;
   setOpenAiCompatibleModel: (model: string) => void;
+  setOpenAiCompatibleModelSource: (source: 'remote' | 'custom') => void;
   setOpenAiKey: (key: string) => void;
   setOpenAiEndpoint: (endpoint: string) => void;
   setOpenAiModel: (model: string) => void;
-  setOllamaModel: (model: string) => void;
-  setOllamaEndpoint: (endpoint: string) => void;
   setLang: (lang: string) => void;
   setRenderMarkdown: (enable: boolean) => void;
   setCommitHead: (head: string | null) => void;
+  addCommitPanel: (panel: CommitPanelState) => void;
+  addCommitPanelToStart: (panel: CommitPanelState) => void;
+  removeCommitPanel: (id: string) => void;
+  setCommitPanelOrder: (order: string[]) => void;
+  moveCommitPanel: (sourceId: string, targetId: string) => void;
+  addCherryPickCommit: (oid: string) => void;
+  removeCherryPickCommit: (oid: string) => void;
+  clearCherryPickQueue: () => void;
   setUseEmoji: (useEmoji: boolean) => void;
   setRepoPath: (isOpened: string) => void;
   setSignoff: (signoff: boolean) => void;
   removeRepoPath: (path: string) => void;
   setAiConfig: (aiConfig: AiConfig) => void;
   setPrompt: (name: string, value: string) => void;
+  renamePrompt: (fromName: string, toName: string) => void;
+  removePrompt: (name: string) => void;
   setCurrentPrompt: (name: string) => void;
   addRepoPath: (repoPath: string) => void;
 }
@@ -120,14 +138,13 @@ export const useAppStore = create<AppStoreProps>()(
       useEmoji: true,
       renderMarkdown: true,
       commitHead: null,
+      commitPanels: [],
+      commitPanelOrder: [COMMIT_HEAD_PANEL_ID],
+      cherryPickQueue: [],
       projects: new Set<string>(),
       signoff: true,
       aiConfig: {
-        current: AiKind.Ollama,
-        ollama: {
-          endpoint: 'http://127.0.0.1:11434',
-          model: '',
-        },
+        current: AiKind.OpenAi,
         openai: {
           endpoint: 'https://api.openai.com',
           key: '',
@@ -138,6 +155,7 @@ export const useAppStore = create<AppStoreProps>()(
           endpoint: '',
           key: '',
           model: '',
+          modelSource: 'remote',
         },
       },
       promptList: defaultPrompt,
@@ -165,6 +183,10 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.aiConfig.openAiCompatible.model = model;
         }),
+      setOpenAiCompatibleModelSource: (source: 'remote' | 'custom') =>
+        set(s => {
+          s.aiConfig.openAiCompatible.modelSource = source;
+        }),
       setOpenAiKey: (key: string) =>
         set(s => {
           s.aiConfig.openai.key = key;
@@ -181,16 +203,71 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.aiConfig.current = model;
         }),
-      setOllamaModel: (model: string) =>
-        set(s => {
-          s.aiConfig.ollama.model = model;
-        }),
-      setOllamaEndpoint: (endpoint: string) =>
-        set(s => {
-          s.aiConfig.ollama.endpoint = endpoint;
-        }),
       setRenderMarkdown: (enable: boolean) => set({ renderMarkdown: enable }),
       setCommitHead: (head: string | null) => set({ commitHead: head }),
+      addCommitPanel: (panel: CommitPanelState) => {
+        set(s => {
+          const exists = s.commitPanels.some(item => item.id === panel.id);
+          if (!exists) {
+            s.commitPanels.push(panel);
+            if (!s.commitPanelOrder.includes(panel.id)) {
+              const headIndex =
+                s.commitPanelOrder.indexOf(COMMIT_HEAD_PANEL_ID);
+              if (headIndex === -1) {
+                s.commitPanelOrder.push(panel.id);
+              } else {
+                s.commitPanelOrder.splice(headIndex, 0, panel.id);
+              }
+            }
+          }
+        });
+      },
+      addCommitPanelToStart: (panel: CommitPanelState) => {
+        set(s => {
+          const exists = s.commitPanels.some(item => item.id === panel.id);
+          if (!exists) {
+            s.commitPanels.unshift(panel);
+            if (!s.commitPanelOrder.includes(panel.id)) {
+              s.commitPanelOrder.unshift(panel.id);
+            }
+          }
+        });
+      },
+      removeCommitPanel: (id: string) => {
+        set(s => {
+          s.commitPanels = s.commitPanels.filter(item => item.id !== id);
+          s.commitPanelOrder = s.commitPanelOrder.filter(item => item !== id);
+        });
+      },
+      setCommitPanelOrder: (order: string[]) =>
+        set({ commitPanelOrder: order }),
+      moveCommitPanel: (sourceId: string, targetId: string) => {
+        set(s => {
+          const order = s.commitPanelOrder.slice();
+          const from = order.indexOf(sourceId);
+          const to = order.indexOf(targetId);
+          if (from === -1 || to === -1 || from === to) {
+            return;
+          }
+          order.splice(from, 1);
+          const insertAt = from < to ? to - 1 : to;
+          order.splice(insertAt, 0, sourceId);
+          s.commitPanelOrder = order;
+        });
+      },
+      addCherryPickCommit: (oid: string) => {
+        set(s => {
+          if (!s.cherryPickQueue.includes(oid)) {
+            s.cherryPickQueue.push(oid);
+          }
+        });
+      },
+      removeCherryPickCommit: (oid: string) => {
+        set(s => {
+          s.cherryPickQueue = s.cherryPickQueue.filter(item => item !== oid);
+        });
+      },
+      clearCherryPickQueue: () => set({ cherryPickQueue: [] }),
       addRepoPath: (repoPath: string) => {
         set(s => {
           s.projects.add(repoPath);
@@ -200,6 +277,9 @@ export const useAppStore = create<AppStoreProps>()(
         set(s => {
           s.repoPath = repoPath;
           s.commitHead = null;
+          s.commitPanels = [];
+          s.commitPanelOrder = [COMMIT_HEAD_PANEL_ID];
+          s.cherryPickQueue = [];
           s.projects.add(repoPath);
         });
       },
@@ -215,6 +295,37 @@ export const useAppStore = create<AppStoreProps>()(
       setPrompt: (name: string, value: string) => {
         set(s => {
           s.promptList.set(name, value);
+        });
+      },
+      renamePrompt: (fromName: string, toName: string) => {
+        set(s => {
+          const nextName = toName.trim();
+          if (!nextName) {
+            return;
+          }
+          if (!s.promptList.has(fromName)) {
+            return;
+          }
+          if (fromName === nextName) {
+            return;
+          }
+          if (s.promptList.has(nextName)) {
+            return;
+          }
+          const value = s.promptList.get(fromName);
+          if (value === undefined) {
+            return;
+          }
+          s.promptList.delete(fromName);
+          s.promptList.set(nextName, value);
+          if (s.currentPrompt === fromName) {
+            s.currentPrompt = nextName;
+          }
+        });
+      },
+      removePrompt: (name: string) => {
+        set(s => {
+          s.promptList.delete(name);
         });
       },
       setCurrentPrompt: (name: string) => {

@@ -67,16 +67,9 @@ function expressionFilter(expr: Rule, commits: CommitInfo[]): CommitInfo[] {
     });
   }
   if (expr.kind === RevKind.RevMulti) {
-    const arr = expr.rules.flatMap(expr => {
-      return expressionFilter(expr, commits);
-    });
-    const map = new Map<string, CommitInfo>();
-    arr.forEach(item => {
-      map.set(item.oid, item);
-    });
-    return Array.from(map.values()).sort((a, b) => {
-      return b.commiter.time - a.commiter.time;
-    });
+    return expr.rules.reduce((current, rule) => {
+      return expressionFilter(rule, current);
+    }, commits);
   }
   if (expr.kind === RevKind.SkipGrep) {
     const commit = commits.slice(expr.skip);
@@ -123,7 +116,7 @@ function filterRevRange(expr: RevRange, commits: CommitInfo[]): CommitInfo[] {
     switch (starts.kind) {
       case RevKind.Single: {
         let startPos = commit.findIndex(item => {
-          return item.oid.slice(0, 6) === starts.data.slice(0.6);
+          return item.oid.slice(0, 6) === starts.data.slice(0, 6);
         });
         if (starts.data === 'HEAD') {
           startPos = 0;
@@ -171,7 +164,7 @@ function filterRevRange(expr: RevRange, commits: CommitInfo[]): CommitInfo[] {
     switch (ends.kind) {
       case RevKind.Single: {
         let endPos = commit.findIndex(item => {
-          return item.oid.slice(0, 6) === ends.data.slice(0.6);
+          return item.oid.slice(0, 6) === ends.data.slice(0, 6);
         });
         if (ends.data === 'HEAD') {
           endPos = 0;

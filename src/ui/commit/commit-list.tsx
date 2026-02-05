@@ -18,6 +18,11 @@ export interface CommitListProps
   filter?: string;
   history: CommitInfo[];
   bisectState: BisectState;
+  panelId: string;
+  allowReorder: boolean;
+  showDateFilterActions?: boolean;
+  onFilterExpression?: (expr: string) => void;
+  onCherryPick?: (commit: CommitInfo) => void;
 }
 
 function easeInOutQuint(t: number) {
@@ -30,6 +35,11 @@ export default function CommitList({
   filter,
   history,
   bisectState,
+  panelId,
+  allowReorder,
+  showDateFilterActions,
+  onFilterExpression,
+  onCherryPick,
   ...props
 }: Omit<CommitListProps, 'count' | 'height' | 'getItem'>) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -112,10 +122,15 @@ export default function CommitList({
                 <CommitItem
                   filter={filter}
                   commit={v}
+                  panelId={panelId}
+                  allowReorder={allowReorder}
                   isGood={bisectState.good === v.oid}
                   isBad={bisectState.bad === v.oid}
                   isBisecting={bisectState.isBisecting}
                   isNext={bisectState.next === v.oid}
+                  showDateFilterActions={showDateFilterActions}
+                  onFilterExpression={onFilterExpression}
+                  onCherryPick={onCherryPick}
                 />
               </div>
             );

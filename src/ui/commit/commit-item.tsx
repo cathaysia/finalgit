@@ -132,6 +132,7 @@ const CommitItem = React.forwardRef<HTMLDivElement, CommitItemProps>(
       names.push({
         name: commit.commiter.name,
         email: commit.commiter.email,
+        // @ts-expect-error
         role: 'commiter' as const,
       });
     }

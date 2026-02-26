@@ -22,17 +22,14 @@ jobs:
           - name: linux-x86
             platform: 'ubuntu-22.04'
             args: ''
-          - name: window-x86
-            platform: 'windows-latest'
-            args: ''
+          # - name: window-x86
+          #   platform: 'windows-latest'
+          #   args: ''
 
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
 
       - name: setup node
         uses: actions/setup-node@v4
@@ -64,7 +61,6 @@ jobs:
 
       - name: setup icons
         run: |
-          mkdir -p public
           cp -r node_modules/material-icon-theme/icons public/
 
       - name: Install wasm-pack
